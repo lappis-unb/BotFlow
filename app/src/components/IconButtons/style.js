@@ -25,19 +25,4 @@ box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px
   border-style: solid;
   border-color: transparent #F2F2F2 #F2F2F2 transparent;
 }
-textarea {
-    width: inherit;
-    height: 100px;
-    background: inherit;
-    margin: 0;
-    padding: 0;
-    border: none;
-    resize: none;
-    overflow: auto
-}
-button {
-    color: #4F4F4F;
-    right: -140px;
-    top: 10px;
-}
 `

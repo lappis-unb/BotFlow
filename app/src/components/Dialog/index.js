@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
 import { DialogBox } from './style';
-
-export default class Dialog extends Component {
-  constructor() {
-    super();
-    this.state = {
-      key: 'sample', edit: false, utterValue: '', utterEdit: '', focus: false,
-    };
-    this.handleEdit = this.handleEdit.bind(this);
-    this.editText = this.editText.bind(this);
-    this.confirmEdit = this.confirmEdit.bind(this);
-    this.cancelEdit = this.cancelEdit.bind(this);
-  }
+import DeleteIcon from '@material-ui/icons/Delete';
+  
+  export default class Dialog extends Component {
+    constructor() {
+      super();
+      this.state = {
+        key: 'sample', edit: false, utterValue: '', utterEdit: '', focus: false, Dialog: false
+      };
+      this.handleEdit = this.handleEdit.bind(this);
+      this.editText = this.editText.bind(this);
+      this.confirmEdit = this.confirmEdit.bind(this);
+      this.cancelEdit = this.cancelEdit.bind(this);
+      this.closeDialog = this.closeDialog.bind(this)
+    }
 
   handleEdit() {
     const { edit } = this.state;
@@ -37,16 +39,27 @@ export default class Dialog extends Component {
     this.setState({ edit: false });
   }
 
+  closeDialog() {
+    this.setState({ Dialog: true });
+  }
+
+
   render() {
     const { key, edit, utterValue } = this.state;
-    return (
-      <DialogBox key={key} onClick={this.handleEdit}>
+    // const classes = useStyles();
+    return ( 
+      this.state.Dialog ? '' : <DialogBox key={key} onClick={this.handleEdit}>
         {!edit && (
-          <p>
+          <>
+            <p>
             {utterValue === ''
               ? 'Digite o conteudo da utter'
               : utterValue}
-          </p>
+            </p>
+            <Button color="#0000" onClick={this.closeDialog}>
+              <DeleteIcon />
+            </Button>
+          </>
         )}
         {edit && (
           <>
