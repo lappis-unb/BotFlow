@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
 import { DialogBox } from './style';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {Delete} from './style';
   
   export default class Dialog extends Component {
     constructor() {
@@ -56,9 +56,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
               ? 'Digite o conteudo da utter'
               : utterValue}
             </p>
-            <Button color="#0000" onClick={this.closeDialog}>
-              <DeleteIcon />
-            </Button>
+            <Delete color="#0000" onClick={this.closeDialog}>
+              <Delete/>
+            </Delete>
           </>
         )}
         {edit && (
