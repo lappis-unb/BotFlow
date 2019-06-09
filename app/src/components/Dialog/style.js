@@ -43,5 +43,5 @@ textarea {
 `
 export const Delete = styled(DeleteIcon)`
   color: #4F4F4F;
-  padding-left: 13em;
+  margin-left: 13em;
 `
