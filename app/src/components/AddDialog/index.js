@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
     constructor() {
       super();
       this.state = {
-        addDialog: false
+        addDialog: false,
       }
     }
 
@@ -17,9 +17,11 @@ import Button from '@material-ui/core/Button';
     }
 
     render(){
+        const { addDialog } = this.state;
         return(
             <div>   
                 <div className="Dialog">
+                  {addDialog && <Dialog />}
             <Button variant="outlined" component="span" onClick={this.handleClick}>
                 Adicionar
             </Button>
