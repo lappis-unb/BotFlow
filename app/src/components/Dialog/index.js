@@ -7,13 +7,14 @@ import {Delete} from './style';
     constructor() {
       super();
       this.state = {
-        key: 'sample', edit: false, utterValue: '', utterEdit: '', focus: false, Dialog: false
+        buttons: [1,1]
       };
       this.handleEdit = this.handleEdit.bind(this);
       this.editText = this.editText.bind(this);
       this.confirmEdit = this.confirmEdit.bind(this);
       this.cancelEdit = this.cancelEdit.bind(this);
       this.closeDialog = this.closeDialog.bind(this)
+
     }
 
   handleEdit() {
@@ -21,6 +22,14 @@ import {Delete} from './style';
     if (!edit) {
       this.setState({ edit: true });
     }
+  }
+
+  handleClick = () => {
+    var buttons = this.state.buttons
+    buttons = buttons.concat(1)
+    this.setState({
+       buttons: buttons,  
+   })
   }
 
   editText(e) {
@@ -43,12 +52,15 @@ import {Delete} from './style';
     this.setState({ Dialog: true });
   }
 
-
-  render() {
-    const { key, edit, utterValue } = this.state;
-    // const classes = useStyles();
-    return ( 
-      this.state.Dialog ? '' : <DialogBox key={key} onClick={this.handleEdit}>
+  renderButton(){
+    var key = 'sample'
+    var edit =  false
+    var utterValue =  ''
+    var utterEdit =  ''
+    var focus =  false 
+    var Dialog = false
+    return (
+    Dialog ? '' : <DialogBox key={key} onClick={this.handleEdit}>
         {!edit && (
           <>
             <p>
@@ -78,6 +90,18 @@ import {Delete} from './style';
           </>
         )}
       </DialogBox>
+    )
+  }
+
+
+  render() {
+    return ( 
+    <div>
+        {this.state.buttons.map(() => this.renderButton())}
+        <Button variant="outlined" component="span" onClick={this.handleClick}>
+            <h1>Adicionar</h1>
+        </Button>
+    </div>
     );
   }
 }
