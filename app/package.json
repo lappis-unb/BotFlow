@@ -13,6 +13,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "reduxsauce": "^1.1.0",
+    "seamless-immutable": "^7.1.4",
     "styled-components": "^4.2.1"
   },
   "scripts": {

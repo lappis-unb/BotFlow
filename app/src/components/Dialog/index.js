@@ -3,15 +3,18 @@ import { Button } from '@material-ui/core';
 import { DialogBox } from './style';
 
 export default class Dialog extends Component {
-  constructor() {
-    super();
-    this.state = {
-      key: 'sample', edit: false, utterValue: '', utterEdit: '', focus: false,
-    };
+  constructor(props) {
+    super(props);
+    this.state = { edit: false, utterEdit: '' };
     this.handleEdit = this.handleEdit.bind(this);
     this.editText = this.editText.bind(this);
     this.confirmEdit = this.confirmEdit.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
+  }
+
+  componentDidMount() {
+    const { utterValue } = this.state;
+    this.setState({ utterEdit: utterValue });
   }
 
   handleEdit() {
@@ -27,7 +30,7 @@ export default class Dialog extends Component {
 
   confirmEdit() {
     const { utterEdit } = this.state;
-    this.setState({ utterValue: utterEdit });
+    this.props.utterValue = utterEdit;
     this.setState({ utterEdit: '' });
     this.setState({ edit: false });
   }
@@ -38,7 +41,8 @@ export default class Dialog extends Component {
   }
 
   render() {
-    const { key, edit, utterValue } = this.state;
+    const { key, utterValue } = this.props;
+    const { edit } = this.state;
     return (
       <DialogBox key={key} onClick={this.handleEdit}>
         {!edit && (

@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
       <SiderMenu />
-      <Dialog />
+      <Dialog key="123" utterValue="teste" />
     </div>
   );
 }

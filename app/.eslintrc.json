@@ -24,6 +24,8 @@
         { "extensions": [".js", ".jsx"] }
       ],
       "import/prefer-default-export": "off",
+      "no-underscore-dangle": "off",
+      "no-param-reassign": "off",
       "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       "react/jsx-one-expression-per-line": "off",
       "react-native/no-color-literals": "off",
