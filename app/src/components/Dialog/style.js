@@ -1,32 +1,37 @@
 import styled from 'styled-components'
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export const DialogBox = styled.div`
-width: 300px;
+left: -250px;
+top: 170px;
+width: 350px;
 margin: 50px auto;
 background: #F2F2F2;
-padding: 20px;
+padding: 5px;
 text-align: center;
-font-weight: 900;
+font-weight: 500;
 color: #000;
-font-family: arial;
+border-radius: 10px;
+font-family: italic;
 position:relative;
 height:auto;
 max-height:200px;
-box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px 
+box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 15px 
 :before {
   content: "";
   position: absolute;
-  box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px ;
-  -moz-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  right: -8px;
-  top: 10px;
-  border-width: 8px;
+  box-shadow: rgba(0.0, 0.0, 0.0, 0.0) 2px 2px 100px ;
+  -moz-transform: rotate(280deg);
+  -webkit-transform: rotate(285deg);
+  left: -30px;
+  top: 20px;
+  border-width: 20px;
   border-style: solid;
   border-color: transparent #F2F2F2 #F2F2F2 transparent;
 }
 textarea {
     width: inherit;
+    text-align: center;
     height: 100px;
     background: inherit;
     margin: 0;
@@ -35,4 +40,8 @@ textarea {
     resize: none;
     overflow: auto
 }
+`
+export const Delete = styled(DeleteIcon)`
+  color: #4F4F4F;
+  margin-left: 13em;
 `
