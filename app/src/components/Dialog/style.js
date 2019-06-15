@@ -54,6 +54,17 @@ width: 357px;
 height: 42px;
 
 `
+
+export const Save = styled(Button)`
+background-color: 1E90FF;
+color: white;
+left: 1200px;
+top: -100px;
+height: 47px;
+width: 92px;
+
+
+`
 export const Delete = styled(DeleteIcon)`
   color: #4F4F4F;
   margin-left: 13em;

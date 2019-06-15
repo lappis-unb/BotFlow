@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Checkbox } from '@material-ui/core';
-import { DialogBox, Delete, Add, Check} from './style';
+import { DialogBox, Delete, Add, Check, Save} from './style';
 
 export default class Dialog extends Component {
   
@@ -152,6 +152,9 @@ export default class Dialog extends Component {
             <div style = {{marginLeft: 700, marginTop:-90}}>
               Balões são falas alternativas
             </div>
+        < Save variant="contained" onClick={() => this.handleClick()} >
+          Gravar
+        </Save>
       </div>
     );
   }
