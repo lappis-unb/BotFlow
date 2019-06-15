@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
-import { DialogBox, Delete, Add} from './style';
+import { Button, Checkbox } from '@material-ui/core';
+import { DialogBox, Delete, Add, Check} from './style';
 
 export default class Dialog extends Component {
   
@@ -142,6 +142,16 @@ export default class Dialog extends Component {
         < Add variant="contained" left="250px" onClick={() => this.handleClick()} >
           Adicionar
         </Add>
+            <Check
+              // checked={state.checkedB}
+              // onClick={() => this.handleClick()}
+              value="checkedB"
+              color="default"
+              label="kkkkkkkkkkk"
+            />
+            <div style = {{marginLeft: 700, marginTop:-90}}>
+              Balões são falas alternativas
+            </div>
       </div>
     );
   }
