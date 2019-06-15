@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
-import { DialogBox, Delete } from './style';
+import { DialogBox, Delete, Add} from './style';
 
 export default class Dialog extends Component {
+  
   constructor() {
     super();
     this.state = {
@@ -138,9 +139,9 @@ export default class Dialog extends Component {
     return (
       <div>
         {this.renderButton()}
-        <Button variant="outlined" component="span" onClick={this.handleClick}>
-          <h1>Adicionar</h1>
-        </Button>
+        < Add variant="contained" left="250px" onClick={() => this.handleClick()} >
+          Adicionar
+        </Add>
       </div>
     );
   }

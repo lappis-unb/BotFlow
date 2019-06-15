@@ -1,5 +1,6 @@
-import styled from 'styled-components'
 import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components'
 
 export const DialogBox = styled.div`
 left: -250px;
@@ -40,6 +41,17 @@ textarea {
     resize: none;
     overflow: auto
 }
+`
+export const Add = styled(Button)`
+padding-right: 6px;
+padding-top: 6px;
+padding-left: 6px;
+left: 330px;
+top: 140px;
+margin-left: 0px;
+width: 357px;
+height: 42px;
+
 `
 export const Delete = styled(DeleteIcon)`
   color: #4F4F4F;
