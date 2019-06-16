@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 export const DialogBox = styled.div`
 left: -250px;
-top: 20px;
+top: -10px;
 width: 350px;
 margin: 50px auto;
 background: #F2F2F2;
@@ -48,7 +48,7 @@ padding-right: 6px;
 padding-top: 6px;
 padding-left: 6px;
 left: 330px;
-top: 1px;
+top: -40px;
 margin-left: 0px;
 width: 357px;
 height: 42px;

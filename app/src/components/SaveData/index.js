@@ -1,11 +1,13 @@
 import React from 'react';
-import { Save, UtterName} from './style';
+import { Save, UtterName, IconMessage} from './style';
 
 const SaveData = () => (
         <div>
-                <Save variant="contained" onClick={() => this.handleClick()} >
-                    Gravar
-                </Save>
+            <Save variant="contained" onClick={() => this.handleClick()} >
+                Gravar
+            </Save>
+            <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
+            </IconMessage>
             <UtterName
                 id="filled-email-input"
                 label="Nome da Resposta"
@@ -15,6 +17,7 @@ const SaveData = () => (
                 margin="normal"
                 variant="filled"
             />
+            <hr></hr>
         </div>
     );
 
