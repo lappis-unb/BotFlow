@@ -1,7 +1,7 @@
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components'
-import Checkbox from '@material-ui/core/Checkbox';
+
 
 export const DialogBox = styled.div`
 left: -250px;
@@ -52,25 +52,8 @@ top: 140px;
 margin-left: 0px;
 width: 357px;
 height: 42px;
-
-`
-
-export const Save = styled(Button)`
-background-color: 1E90FF;
-color: white;
-left: 1200px;
-top: -100px;
-height: 47px;
-width: 92px;
-
-
 `
 export const Delete = styled(DeleteIcon)`
   color: #4F4F4F;
   margin-left: 13em;
-`
-export const Check = styled(Checkbox)`
-color: #4F4F4F;
-left: 550px;
-bottom: 60px;
 `
