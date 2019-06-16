@@ -34,8 +34,11 @@ export default class Dialog extends Component {
   handleClick = () => {
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
+    const lastData = objectsDialog[objectsDialog.length -1]
+    lastData.key.split('-');
+    console.log(parseInt(lastData.key.split('-')[1])+1)
     objectsDialog.push({
-      key: `sample-${objectsDialog.length}`,
+      key: `sample-${parseInt(lastData.key.split('-')[1])+1}`,
       edit: false,
       utterValue: '',
       utterEdit: '',
@@ -100,12 +103,12 @@ export default class Dialog extends Component {
 
   closeDialog(key) {
     const { dialog } = this.state;
-    const { dialogTemp } = this.state;
     this.setState({open: true});
     let objectsDialog = Object.assign([], dialog);
+    this.setState({ dialogTemp: objectsDialog});
+    console.log(objectsDialog)
     objectsDialog = objectsDialog.filter(elem => elem.key !== key);
     if (objectsDialog.length) {
-      this.setState({ dialogTemp: dialog});
       this.setState({ dialog: objectsDialog });
     }
   }
@@ -118,6 +121,7 @@ export default class Dialog extends Component {
       return;
     }
     this.setState({open: false});
+    console.log(this.state.dialog)
   }
 
   renderButton() {
