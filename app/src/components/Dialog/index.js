@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import { Button} from '@material-ui/core';
 import { DialogBox, Delete, Add} from './style';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 export default class Dialog extends Component {
   
   constructor() {
     super();
-    this.state = {
+    this.state = { open: false, setOpen: false,
       dialog: [
+        {
+          key: 'sample-0',
+          edit: false,
+          utterValue: '',
+          utterEdit: '',
+          dialogEnabled: false,
+        },
+      ],
+      dialogTemp: [
         {
           key: 'sample-0',
           edit: false,
@@ -88,11 +100,24 @@ export default class Dialog extends Component {
 
   closeDialog(key) {
     const { dialog } = this.state;
+    const { dialogTemp } = this.state;
+    this.setState({open: true});
     let objectsDialog = Object.assign([], dialog);
     objectsDialog = objectsDialog.filter(elem => elem.key !== key);
     if (objectsDialog.length) {
+      this.setState({ dialogTemp: dialog});
       this.setState({ dialog: objectsDialog });
     }
+  }
+
+  handleClose(reason) {
+    const { dialogTemp } = this.state;
+    if (reason === 'revert') {
+      this.setState({ dialog: dialogTemp});
+      this.setState({open: false});
+      return;
+    }
+    this.setState({open: false});
   }
 
   renderButton() {
@@ -130,6 +155,32 @@ export default class Dialog extends Component {
           <Delete color="#0000" onClick={() => this.closeDialog(key)}>
             <Delete />
           </Delete>
+          <Snackbar
+            anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+            }}
+            open={this.state.open}
+            autoHideDuration={3000}
+            onClose={() => this.handleClose()}
+            ContentProps={{
+            'aria-describedby': 'message-id',
+            }}
+            message={<span id="message-id">Resposta Apagada</span>}
+            action={[
+            <Button key="undo" color="secondary" size="small" onClick={() => this.handleClose("revert")}>
+                Desfazer
+            </Button>,
+            <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                onClick={() => this.handleClose("clickaway")}
+            >
+      <CloseIcon />
+     </IconButton>
+    ]}
+   />
         </DialogBox>
       );
     });
