@@ -168,7 +168,7 @@ export default class Dialog extends Component {
             }}
             message={<span id="message-id">Resposta Apagada</span>}
             action={[
-            <Button key="undo" color="secondary" size="small" onClick={() => this.handleClose("revert")}>
+            <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
                 Desfazer
             </Button>,
             <IconButton
