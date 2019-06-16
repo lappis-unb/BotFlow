@@ -1,10 +1,8 @@
 import React from 'react';
 import { Save, UtterName} from './style';
-import {Navbar} from './style';
 
 const SaveData = () => (
         <div>
-          <Navbar>
                 <Save variant="contained" onClick={() => this.handleClick()} >
                     Gravar
                 </Save>
@@ -17,7 +15,6 @@ const SaveData = () => (
                 margin="normal"
                 variant="filled"
             />
-          </Navbar> 
         </div>
     );
 

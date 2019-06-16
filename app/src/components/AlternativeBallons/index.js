@@ -10,7 +10,7 @@ const AlternativeBallons = () => (
           color="default"
           label="kkkkkkkkkkk"
           />
-      <div style = {{marginLeft: 700, marginTop:-90}}>
+      <div style = {{marginLeft: 750, marginTop:-10}}>
           Balões são falas alternativas
       </div>
         </div>
