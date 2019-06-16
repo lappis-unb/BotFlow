@@ -3,7 +3,7 @@ import { Save, UtterName, IconMessage} from './style';
 
 const SaveData = () => (
         <div>
-            <Save variant="contained" onClick={() => this.handleClick()} >
+            <Save style = {{background:"#169bd5", color:"#FFFAFA"}} variant="contained" onClick={() => this.handleClick()} >
                 Gravar
             </Save>
             <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
