@@ -13,6 +13,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "reduxsauce": "^1.1.0",
+    "seamless-immutable": "^7.1.4",
     "styled-components": "^4.2.1"
   },
   "scripts": {
@@ -38,11 +39,12 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-config-standard": "^12.0.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-react-native": "^3.7.0"
   }
 }
