@@ -4,8 +4,6 @@ import { Check} from './style';
 const AlternativeBallons = () => (
         <div>
         <Check
-          // checked={state.checkedB}
-          // onClick={() => this.handleClick()}
           value="checkedB"
           color="default"
           label="kkkkkkkkkkk"

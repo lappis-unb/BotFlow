@@ -1,0 +1,19 @@
+services:
+  - docker
+
+
+deploy-devel:
+  script:
+    - docker build . -t bot-flow:devel
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push lappis/bot-flow-lappis  
+  on
+    branch: devel
+
+deploy-master:
+  script:
+    - docker build . -t bot-flow:master
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push lappis/bot-flow-lappis  
+  on
+    branch: master
