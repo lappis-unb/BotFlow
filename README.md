@@ -1,6 +1,6 @@
 # BotFlow-Platform for creating and editing contents of Rasa chatbot.
 
-# # About the project
+## About the project
 BotFlow is a platform developed by LAPPIS-Advanced laboratory of production, research and innovation in Software (FGA/UnB), in partnership with the Ministry of Culture to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the RASA framework such as Tais, a chatbot developed for the project of the Rouanet law.
 
 <!-- Useful Links: -->
@@ -9,7 +9,7 @@ BotFlow is a platform developed by LAPPIS-Advanced laboratory of production, res
 * **What is Rasa?** [Meet Rasa](https://blog.rasa.com/)
 
 
-# # BotFlow Features
+## BotFlow Features
 * Creation and editing questions
 * Creating and editing responses
 * Creation and editing of conversation streams
@@ -111,6 +111,8 @@ Then the execution according to the choice of one of the previous operations, th
 Read the [Contribution Guide] () for better information.
 
 
+## Access the Platform
+To test the most stable version of the platform [Access here](https://botflow.lappis.rocks/)
 
 ## Linceça
 The entire BotFlow platform is developed under the license [GPL3]
