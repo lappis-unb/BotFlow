@@ -114,7 +114,7 @@ Read the [Contribution Guide] () for better information.
 ## Access the Platform
 To test the most stable version of the platform [Access here](https://botflow.lappis.rocks/)
 
-## Linceça
-The entire BotFlow platform is developed under the license [GPL3]
+## Lincese
+The entire BotFlow platform is developed under the license [GPL3](https://github.com/lappis-unb/BotFlow/blob/master/LICENSE)
 
 
