@@ -108,7 +108,6 @@ Then the execution according to the choice of one of the previous operations, th
     - Open a pull request describing your proposed changes
         Your pull request will be revised by one of the maintainers, who can raise questions for you about any necessary changes or issues.
 
-Read the [Contribution Guide] () for better information.
 
 
 ## Access the Platform
