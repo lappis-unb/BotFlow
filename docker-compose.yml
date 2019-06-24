@@ -1,10 +1,20 @@
 version: "3.4"
 services:
   botflow:
-    image: botflow-reactjs
-    build: .
+    image: lappis/bot-flow:devel 
     ports:
       - 3000:3000
     volumes:
       - ./app:/botFlow/
       - /app/node_modules
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
