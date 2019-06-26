@@ -72,35 +72,6 @@ export default class Dialog extends Component {
     this.setState({ dialog: objectsDialog });
   }
 
-  confirmEdit(key) {
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.utterValue = elem.utterEdit;
-        elem.utterEdit = '';
-        elem.edit = false;
-        elem.key = elem.key.replace(/-edit/gm, '');
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
-
-  cancelEdit(key) {
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.edit = false;
-        elem.utterEdit = '';
-        elem.key = elem.key.replace(/-edit/gm, '');
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
-
   closeDialog(key) {
     const { dialog } = this.state;
     this.setState({open: true});
@@ -148,12 +119,6 @@ export default class Dialog extends Component {
                 placeholder="Digite o conteudo da utter"
                 onChange={e => this.editText({ e, key })}
               />
-              <Button color="primary" onClick={() => this.confirmEdit(key)}>
-                Confirmar
-              </Button>
-              <Button color="secondary" onClick={() => this.cancelEdit(key)}>
-                Cancelar
-              </Button>
             </>
           )}
           <Delete color="#0000" onClick={() => this.closeDialog(key)}>
@@ -195,7 +160,7 @@ export default class Dialog extends Component {
       <div>
         {this.renderButton()}
         < Add variant="contained" left="250px" onClick={() => this.handleClick()} >
-          Adicionar
+          Novo balão de resposta
         </Add>
       </div>
     );
