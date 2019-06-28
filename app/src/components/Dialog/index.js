@@ -133,63 +133,65 @@ export default class Dialog extends Component {
       return dialogEnabled ? (
         ''
       ) : (
-        this.props.texts.map(text =>(
-        <DialogBox key={key}>
-          {!edit && (
-            <>
-              <p onClick={() => this.handleEdit(key)}>
-                {text !== ''? text : 'Digite o conteudo da utter' }
-              </p>
 
-            </>
-          )}
-          {edit && (
-            <>
-              <textarea
-                defaultValue={utterValue}
-                placeholder="Digite o conteudo da utter"
-                onChange={e => this.editText({ e, key })}
-                />
-              <Button color="primary" onClick={() => this.confirmEdit(key)}>
-                Confirmar
-              </Button>
-              <Button color="secondary" onClick={() => this.cancelEdit(key)}>
-                Cancelar
-              </Button>
-            </>
-          )}
-          <Delete color="#0000" onClick={() => this.closeDialog(key)}>
-            <Delete />
-          </Delete>
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            open={this.state.open}
-            autoHideDuration={3000}
-            onClose={() => this.handleClose()}
-            ContentProps={{
-              'aria-describedby': 'message-id',
-            }}
-            message={<span id="message-id">Resposta Apagada</span>}
-            action={[
-              <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
-                Desfazer
-            </Button>,
-            <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            onClick={() => this.handleClose("clickaway")}
-            >
-      <CloseIcon />
-     </IconButton>
-    ]}
-    />
-        </DialogBox>
-    ))
-      );
+          this.props.utterValue.map(text => (
+
+            <DialogBox key={key}>
+              {!edit && (
+                <>
+                  <p onClick={() => this.handleEdit(key)}>
+                    {text === '' ? 'Digite o conteudo da utter' : text}
+                  </p>
+                </>
+              )}
+              {edit && (
+                <>
+                  <textarea
+                    defaultValue={utterValue}
+                    placeholder="Digite o conteudo da utter"
+                    onChange={e => this.editText({ e, key })}
+                  />
+                  <Button color="primary" onClick={() => this.confirmEdit(key)}>
+                    Confirmar
+                  </Button>
+                  <Button color="secondary" onClick={() => this.cancelEdit(key)}>
+                    Cancelar
+                  </Button>
+                </>
+              )}
+              <Delete color="#0000" onClick={() => this.closeDialog(key)}>
+                <Delete />
+              </Delete>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                open={this.state.open}
+                autoHideDuration={3000}
+                onClose={() => this.handleClose()}
+                ContentProps={{
+                  'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">Resposta Apagada</span>}
+                action={[
+                  <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
+                    Desfazer
+                </Button>,
+                  <IconButton
+                    key="close"
+                    aria-label="Close"
+                    color="inherit"
+                    onClick={() => this.handleClose("clickaway")}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                ]}
+              />
+            </DialogBox>
+          ))
+
+        );
     });
   }
 

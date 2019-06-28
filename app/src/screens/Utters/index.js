@@ -15,7 +15,7 @@ class Utters extends Component {
         this.state = {
             utters: [],
             loading: true,
-            selected_utter: 2
+            selected_utter: 0
         }
     }
 
@@ -82,8 +82,7 @@ class Utters extends Component {
                         {this.renderSideMenu()}
                         <SaveData utterName={this.state.utters[this.state.selected_utter]["nameUtter"]}/>
                         <AlternativeBallons />
-                        {this.mountTextList()}
-                        <Dialog key="123" texts={this.mountTextList()} />
+                        <Dialog key="123" utterValue={this.mountTextList()} />
                     </div>
                 }
             </div>
