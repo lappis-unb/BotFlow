@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Save, UtterName, IconMessage} from './style';
 
-const SaveData = () => (
+class SaveData extends Component {
+    render(){
+        return(
         <div>
             <Save style = {{background:"#169bd5", color:"#FFFAFA"}} variant="contained" onClick={() => this.handleClick()} >
                 Gravar
@@ -16,9 +18,13 @@ const SaveData = () => (
                 autoComplete="Nome da Resposta"
                 margin="normal"
                 variant="filled"
+                value= {this.props.utterName? this.props.utterName : ""}
             />
             <hr></hr>
         </div>
-    );
+
+        )
+    }
+}
 
 export default SaveData;
