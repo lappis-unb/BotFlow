@@ -1,18 +1,15 @@
 # BotFlow-Platform for creating and editing contents of Rasa chatbot.
 
 ## About the project
-BotFlow is a platform developed by LAPPIS-Advanced laboratory of production, research and innovation in Software (FGA/UnB), in partnership with the Ministry of Culture to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the RASA framework such as Tais, a chatbot developed for the project of the Rouanet law.
+BotFlow is a platform developed by [LAPPIS](https://lappis.rocks)-Advanced laboratory of production, research and innovation in Software (FGA/UnB) to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the [Rasa](https://blog.rasa.com/) framework for development of chatbot.
 
 <!-- Useful Links: -->
-* **What is Lappis? ✏️** [Meet Lappis](https://lappis.rocks)
-* **What is Tais? 🤔** [Meet Tais](https://github.com/lappis-unb/tais)
-* **What is Rasa?** [Meet Rasa](https://blog.rasa.com/)
+* **Want to know how a chatbot is developed using the RASA Framework?? ✏️** [Access here](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
+
 
 
 ## BotFlow Features
-* Creation and editing questions
-* Creating and editing responses
-* Creation and editing of conversation streams
+* Creation and editing intents and called questions
 * Interaction test for content created or edited
 
 
@@ -57,13 +54,13 @@ To contribute to the BotFlow platform and facilitate the interaction of more peo
     `git clone https://github.com/lappis-unb/BotFlow`
 
 
-- Climbing platform locally using Docker
+- Run Botflow using Docker
     Make sure you are in the root folder of the project and run the command below:
 
     `sudo docker-compose -up --build`
 
 
-- Climbing platform locally using NODE8 with Yarn
+- Run Botflow using NODE8 with Yarn
     Make sure it is in the app folder by running the command below
 
     `cd /app`
@@ -75,7 +72,7 @@ To contribute to the BotFlow platform and facilitate the interaction of more peo
     `yarn start`
 
 
-- Climbing platform locally using NODE8 with NPM
+- Run Botflow using NODE8 with NPM
     Make sure it is in the app folder by running the command below
 
     `cd /app`
