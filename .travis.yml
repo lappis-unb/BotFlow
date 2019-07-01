@@ -1,0 +1,25 @@
+
+services:
+  - docker
+
+dist: trusty
+
+jobs:
+  include:
+    - stage: master_stage
+      if: branch = master
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t bot-flow . 
+        - docker images
+        - docker tag bot-flow lappis/bot-flow:master
+        - docker push lappis/bot-flow:master
+
+    - stage: homolog_stage
+      if: branch = devel
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t bot-flow . 
+        - docker images
+        - docker tag bot-flow lappis/bot-flow:devel
+        - docker push lappis/bot-flow:devel
