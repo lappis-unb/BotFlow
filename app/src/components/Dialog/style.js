@@ -34,7 +34,7 @@ box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 15px
 textarea {
     width: inherit;
     text-align: center;
-    height: 100px;
+    height: 50px;
     background: inherit;
     margin: 0;
     padding: 0;

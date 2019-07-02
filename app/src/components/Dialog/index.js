@@ -72,35 +72,6 @@ export default class Dialog extends Component {
     this.setState({ dialog: objectsDialog });
   }
 
-  confirmEdit(key) {
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.utterValue = elem.utterEdit;
-        elem.utterEdit = '';
-        elem.edit = false;
-        elem.key = elem.key.replace(/-edit/gm, '');
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
-
-  cancelEdit(key) {
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.edit = false;
-        elem.utterEdit = '';
-        elem.key = elem.key.replace(/-edit/gm, '');
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
-
   closeDialog(key) {
     const { dialog } = this.state;
     this.setState({open: true});
@@ -188,10 +159,39 @@ export default class Dialog extends Component {
                   </IconButton>
                 ]}
               />
-            </DialogBox>
-          ))
-
-        );
+            </>
+          )}
+          <Delete color="#0000" onClick={() => this.closeDialog(key)}>
+            <Delete />
+          </Delete>
+          <Snackbar
+            anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+            }}
+            open={this.state.open}
+            autoHideDuration={3000}
+            onClose={() => this.handleClose()}
+            ContentProps={{
+            'aria-describedby': 'message-id',
+            }}
+            message={<span id="message-id">Resposta Apagada</span>}
+            action={[
+            <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
+                Desfazer
+            </Button>,
+            <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                onClick={() => this.handleClose("clickaway")}
+            >
+      <CloseIcon />
+     </IconButton>
+    ]}
+   />
+        </DialogBox>
+      );
     });
   }
 
@@ -200,7 +200,7 @@ export default class Dialog extends Component {
       <div>
         {this.renderButton()}
         < Add variant="contained" left="250px" onClick={() => this.handleClick()} >
-          Adicionar
+          Novo balão de resposta
         </Add>
       </div>
     );
