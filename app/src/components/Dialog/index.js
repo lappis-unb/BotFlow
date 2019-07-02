@@ -159,11 +159,6 @@ export default class Dialog extends Component {
                   </IconButton>
                 ]}
               />
-            </>
-          )}
-          <Delete color="#0000" onClick={() => this.closeDialog(key)}>
-            <Delete />
-          </Delete>
           <Snackbar
             anchorOrigin={{
             vertical: 'bottom',
@@ -191,7 +186,7 @@ export default class Dialog extends Component {
     ]}
    />
         </DialogBox>
-      );
+      )));
     });
   }
 

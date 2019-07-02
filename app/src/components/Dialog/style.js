@@ -47,7 +47,7 @@ export const Add = styled(Button)`
 padding-right: 6px;
 padding-top: 6px;
 padding-left: 6px;
-left: 330px;
+left: 300px;
 top: -40px;
 margin-left: 0px;
 width: 357px;
