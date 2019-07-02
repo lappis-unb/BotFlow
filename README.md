@@ -9,7 +9,7 @@ BotFlow is a platform developed by [LAPPIS](https://lappis.rocks)-Advanced labor
 
 
 ## BotFlow Features
-* Creation and editing intents and called questions
+* Utterance (answer) creation and editing
 * Interaction test for content created or edited
 
 
