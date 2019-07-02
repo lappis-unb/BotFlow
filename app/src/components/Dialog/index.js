@@ -17,7 +17,7 @@ export default class Dialog extends Component {
           utterValue: '',
           utterEdit: '',
           dialogEnabled: false,
-        },
+        }
       ],
       dialogTemp: [
         {
@@ -105,31 +105,12 @@ export default class Dialog extends Component {
         ''
       ) : (
 
-          this.props.utterValue.map(text => (
-
             <DialogBox key={key}>
-              {!edit && (
-                <>
-                  <p onClick={() => this.handleEdit(key)}>
-                    {text === '' ? 'Digite o conteudo da utter' : text}
-                  </p>
-                </>
-              )}
-              {edit && (
-                <>
-                  <textarea
-                    defaultValue={utterValue}
-                    placeholder="Digite o conteudo da utter"
-                    onChange={e => this.editText({ e, key })}
-                  />
-                  <Button color="primary" onClick={() => this.confirmEdit(key)}>
-                    Confirmar
-                  </Button>
-                  <Button color="secondary" onClick={() => this.cancelEdit(key)}>
-                    Cancelar
-                  </Button>
-                </>
-              )}
+              <textarea
+                defaultValue={this.props.utterValue}
+                placeholder="Digite o conteudo da utter"
+                onChange={e => this.editText({ e, key })}
+              />
               <Delete color="#0000" onClick={() => this.closeDialog(key)}>
                 <Delete />
               </Delete>
@@ -186,7 +167,7 @@ export default class Dialog extends Component {
     ]}
    />
         </DialogBox>
-      )));
+      );
     });
   }
 

@@ -15,7 +15,7 @@ class Utters extends Component {
         this.state = {
             utters: [],
             loading: true,
-            selected_utter: 0
+            selected_utter: 0,
         }
     }
 
@@ -34,21 +34,23 @@ class Utters extends Component {
                     utter_list.push(utter)
                 });
             })
-        this.setState({utters: utter_list})
+        await this.setState({utters: utter_list})
+        var list = await this.mountTextList()
+        await this.setState({ textList: list })
+
     }
 
     mountTextList(){
+        var list = []
         console.log(this.state.utters[this.state.selected_utter]["nameUtter"]);
         
-        var texts = []
         this.state.utters[this.state.selected_utter].utters.forEach(alt => {
-            texts.push(alt["utterText"])
+            list.push(alt["utterText"])
         });
-        return texts
+        return list
     }
 
     truncateText(text){
-    
         if (text.length > 20){
             return text.substring(0,17) + "..."
         }
@@ -63,7 +65,7 @@ class Utters extends Component {
             >
                 <List>
                     {this.state.utters.map((utter, key) => (
-                        <ListItem button key={utter} onClick={() => {this.setState({selected_utter:key}); console.log(this.state.utters[key]) }}>
+                        <ListItem button key={utter} onClick={() => { this.setState({ selected_utter: key}); console.log(this.state.utters[key]);}}>
                             <ListItemText primary={this.truncateText(utter.nameUtter)} />
                         </ListItem>
                     ))}
@@ -71,6 +73,7 @@ class Utters extends Component {
             </SideNav>
         );
     };
+
     render(){
         return (
             <div>
