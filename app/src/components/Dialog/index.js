@@ -10,7 +10,7 @@ export default class Dialog extends Component {
   constructor(props) {
     super(props);
     this.state = { open: false, setOpen: false,
-      dialog: [
+      dialog: this.props.utterList? this.props.utterList : [
         {
           key: 'sample-0',
           edit: false,
@@ -107,7 +107,7 @@ export default class Dialog extends Component {
 
             <DialogBox key={key}>
               <textarea
-                defaultValue={this.props.utterValue}
+                defaultValue={utterValue}
                 placeholder="Digite o conteudo da utter"
                 onChange={e => this.editText({ e, key })}
               />
