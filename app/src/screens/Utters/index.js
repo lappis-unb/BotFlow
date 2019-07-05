@@ -9,9 +9,11 @@ class Utters extends Component {
     constructor(props){
         super(props);
         this.state = {
-            utter: this.props.location.state ? this.props.location.state: null
+            utter: this.props.location.state ? this.props.location.state: null,
+            enableSaveButton: false
         }
     }
+
 
     buildList(){
         if(this.state.utter !== null){
@@ -39,9 +41,13 @@ class Utters extends Component {
             <div>
                 <UtterSideBar/>
                     <div>
-                        <SaveData utterName={this.state.utter? this.state.utter["nameUtter"]: ''}/>
+                        <SaveData utterName={this.state.utter? this.state.utter["nameUtter"]: ''}
+                        enableSaveButton={this.state.enableSaveButton}
+                        />
                         <AlternativeBallons />
-                        <Dialog key="123" utterList={this.buildList()}/>
+                        <Dialog key="123" utterList={this.buildList()}
+                        stateUpdatingCallback={(stateEnable)=> {this.setState({enableSaveButton: stateEnable})}}
+                        />
                     </div>
                 
             </div>
