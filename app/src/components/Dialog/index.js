@@ -58,7 +58,6 @@ export default class Dialog extends Component {
 
   handleEdit(key) {
     this.setState({dialogTemp:this.state.dialog})
-    console.log(this.state.dialogTemp)
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
     objectsDialog.filter((elem) => {
@@ -77,18 +76,16 @@ export default class Dialog extends Component {
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
     objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.utterValue = e.target.value;
-      }
-      return elem;
+    if (elem.key === key) {
+      elem.utterValue = e.target.value;
+    }
+    return elem;
     });
     for (i=0; i<objectsDialog.length; i++) {
       if ((objectsDialog[i].utterValue !== '')) {
         shouldcheck = true;
       }
     }
-    console.log("qualquertexto")
-    console.log(objectsDialog)
     if (shouldcheck){
       this.props.stateUpdatingCallback(this.checkEnableSaveButton);
     } else {
@@ -128,7 +125,6 @@ export default class Dialog extends Component {
       return;
     }
     this.setState({open: false});
-    console.log(this.state.dialog)
   }
 
   renderButton() {
