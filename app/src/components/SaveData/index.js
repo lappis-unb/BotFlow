@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Save, UtterName, IconMessage} from './style';
-import {Dialog} from '../Dialog/index.js'
 
 class SaveData extends Component {
 

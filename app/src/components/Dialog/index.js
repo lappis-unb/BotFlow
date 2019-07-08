@@ -34,7 +34,7 @@ export default class Dialog extends Component {
     const {dialog} = this.state;
     const objectsDialog = Object.assign([], dialog);
     for (i=0; i<objectsDialog.length; i++) {
-      if (objectsDialog[i].utterValue != '' ){
+      if (objectsDialog[i].utterValue !== '' ){
         return true;
       }
     }
@@ -83,7 +83,7 @@ export default class Dialog extends Component {
       return elem;
     });
     for (i=0; i<objectsDialog.length; i++) {
-      if ((objectsDialog[i].utterValue != '')) {
+      if ((objectsDialog[i].utterValue !== '')) {
         shouldcheck = true;
       }
     }
@@ -105,7 +105,7 @@ export default class Dialog extends Component {
     let objectsDialog = Object.assign([], dialog);
     this.setState({ dialogTemp: objectsDialog});
     for (i=0; i<objectsDialog.length; i++) {
-      if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue != '' || objectsDialog[i].utterValue != '')) {
+      if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue !== '' || objectsDialog[i].utterValue !== '')) {
         shouldcheck = true;
       }
     }
