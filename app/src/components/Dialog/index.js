@@ -9,13 +9,12 @@ export default class Dialog extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { open: false, setOpen: false,
+    this.state = { open: false, setOpen: false, 
       dialog: this.props.utterList? this.props.utterList : [
         {
           key: 'sample-0',
           edit: false,
           utterValue: '',
-          utterEdit: '',
           dialogEnabled: false,
         }
       ],
@@ -24,11 +23,22 @@ export default class Dialog extends Component {
           key: 'sample-0',
           edit: false,
           utterValue: '',
-          utterEdit: '',
           dialogEnabled: false,
         },
       ],
     };
+  }
+
+  checkEnableSaveButton = () => {
+    var i = 0;
+    const {dialog} = this.state;
+    const objectsDialog = Object.assign([], dialog);
+    for (i=0; i<objectsDialog.length; i++) {
+      if (objectsDialog[i].utterValue !== '' ){
+        return true;
+      }
+    }
+    return false;
   }
 
   handleClick = () => {
@@ -41,13 +51,13 @@ export default class Dialog extends Component {
       key: `sample-${parseInt(lastData.key.split('-')[1])+1}`,
       edit: false,
       utterValue: '',
-      utterEdit: '',
       dialogEnabled: false,
     });
     this.setState({ dialog: objectsDialog });
   };
 
   handleEdit(key) {
+    this.setState({dialogTemp:this.state.dialog})
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
     objectsDialog.filter((elem) => {
@@ -61,26 +71,49 @@ export default class Dialog extends Component {
   }
 
   editText({ e, key }) {
+    var i = 0;
+    var shouldcheck = false;
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
     objectsDialog.filter((elem) => {
-      if (elem.key === key) {
-        elem.utterEdit = e.target.value;
-      }
-      return elem;
+    if (elem.key === key) {
+      elem.utterValue = e.target.value;
+    }
+    return elem;
     });
+    for (i=0; i<objectsDialog.length; i++) {
+      if ((objectsDialog[i].utterValue !== '')) {
+        shouldcheck = true;
+      }
+    }
+    if (shouldcheck){
+      this.props.stateUpdatingCallback(this.checkEnableSaveButton);
+    } else {
+      this.props.stateUpdatingCallback(shouldcheck);
+    }
     this.setState({ dialog: objectsDialog });
   }
 
   closeDialog(key) {
+    var i = 0;
+    var shouldcheck = false;
     const { dialog } = this.state;
     this.setState({open: true});
     let objectsDialog = Object.assign([], dialog);
     this.setState({ dialogTemp: objectsDialog});
-    console.log(objectsDialog)
+    for (i=0; i<objectsDialog.length; i++) {
+      if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue !== '' || objectsDialog[i].utterValue !== '')) {
+        shouldcheck = true;
+      }
+    }
     objectsDialog = objectsDialog.filter(elem => elem.key !== key);
     if (objectsDialog.length) {
       this.setState({ dialog: objectsDialog });
+      if (shouldcheck){
+        this.props.stateUpdatingCallback(this.checkEnableSaveButton);
+      } else {
+        this.props.stateUpdatingCallback(shouldcheck);
+      }
     }
   }
 
@@ -92,14 +125,13 @@ export default class Dialog extends Component {
       return;
     }
     this.setState({open: false});
-    console.log(this.state.dialog)
   }
 
   renderButton() {
     const { dialog } = this.state;
     return dialog.map((element) => {
       const {
-        key, edit, utterValue, dialogEnabled,
+        key, utterValue, dialogEnabled,
       } = element;
       return dialogEnabled ? (
         ''

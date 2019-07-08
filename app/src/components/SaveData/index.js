@@ -2,14 +2,23 @@ import React, {Component} from 'react';
 import { Save, UtterName, IconMessage} from './style';
 
 class SaveData extends Component {
+
+    constructor() {
+        super();
+        this.state = { enable: '', backgroundColor:'#DCDCDC' };
+    }
     render(){
+        var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc";
         return(
         <div>
-            <Save style = {{background:"#169bd5", color:"#FFFAFA"}} variant="contained" onClick={() => this.handleClick()} >
+            <Save style = {{background: enableSaveButton, color:"#FFFAFA"}} 
+                variant="contained" 
+                disabled={!this.props.enableSaveButton}
+                onClick={() => this.handleClick()} >
                 Gravar
             </Save>
             <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
-            </IconMessage>
+                </IconMessage>
             <UtterName
                 id="filled-email-input"
                 label="Nome da Resposta"
