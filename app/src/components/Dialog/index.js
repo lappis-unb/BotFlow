@@ -41,7 +41,7 @@ export default class Dialog extends Component {
     return false;
   }
 
-  handleClick = () => {
+  handleClick = async () => {
     const { dialog } = this.state;
     const objectsDialog = Object.assign([], dialog);
     const lastData = objectsDialog[objectsDialog.length -1]
@@ -53,24 +53,13 @@ export default class Dialog extends Component {
       utterValue: '',
       dialogEnabled: false,
     });
-    this.setState({ dialog: objectsDialog });
+    await this.setState({ dialog: objectsDialog });
+    console.log('dialog',this.state.dialog);
+    
   };
 
-  handleEdit(key) {
-    this.setState({dialogTemp:this.state.dialog})
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key && !elem.edit) {
-        elem.edit = true;
-        elem.key += '-edit';
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
 
-  editText({ e, key }) {
+  async editText({ e, key }) {    
     var i = 0;
     var shouldcheck = false;
     const { dialog } = this.state;
@@ -91,7 +80,7 @@ export default class Dialog extends Component {
     } else {
       this.props.stateUpdatingCallback(shouldcheck);
     }
-    this.setState({ dialog: objectsDialog });
+    await this.setState({ dialog: objectsDialog });
   }
 
   closeDialog(key) {
