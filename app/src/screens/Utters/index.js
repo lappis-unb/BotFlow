@@ -10,7 +10,30 @@ class Utters extends Component {
         super(props);
         this.state = {
             utter: this.props.location.state ? this.props.location.state: null,
-            enableSaveButton: false
+            enableSaveButton: false,
+            isAlternative:true,
+            builtList:false,
+            loading:true
+        }
+    }
+
+    componentDidMount(){
+        this.buildList()
+    }
+
+    verifyAlternatives(){
+        console.log('ta verificando');
+        
+        var alternatives = this.state.utter['utters']
+        var fragments = this.state.utter['utters'][0]['utterText']
+        console.log('len',alternatives.length );
+        
+        if (alternatives.length > fragments.length){
+            console.log('é alternativa');
+            
+            this.setState({isAlternative: true})
+        }else{
+            this.setState({ isAlternative: false })
         }
     }
 
@@ -19,36 +42,48 @@ class Utters extends Component {
         if(this.state.utter !== null){
             var list = []
             this.state.utter['utters'].forEach(utter => {
-                let obj = {
-                    key: 'sample-0',
-                    edit: false,
-                    utterValue: utter['utterText'],
-                    utterEdit: '',
-                    dialogEnabled: false,
-                }
-                list.push(obj)
+                utter['utterText'].forEach(text =>{                    
+                    let obj = {
+                        key: 'sample-0',
+                        edit: false,
+                        utterValue: text['text'],
+                        utterEdit: '',
+                        dialogEnabled: false,
+                    }
+                    list.push(obj)
+                });
             });
-            return list
-
-        }else{
-            return false
+            console.log('list',list);
+            this.verifyAlternatives()
+            this.setState({builtList: list, loading: false})
         }
     }
 
+    clickCheckbox(){
+        this.setState({isAlternative: !this.state.isAlternative})
+    }
+
     render(){
-        console.log(this.props.location)
+        console.log('utter:',this.state.utter)
         return (
             <div>
                 <UtterSideBar/>
+                {this.state.loading?
+                    null
+                    :
                     <div>
                         <SaveData utterName={this.state.utter? this.state.utter["nameUtter"]: ''}
                         enableSaveButton={this.state.enableSaveButton}
                         />
-                        <AlternativeBallons />
-                        <Dialog key="123" utterList={this.buildList()}
+                        <AlternativeBallons
+                            onClick={() => this.clickCheckbox()}
+                            checked={this.state.isAlternative}
+                         />
+                        <Dialog key="123" utterList={this.state.builtList}
                         stateUpdatingCallback={(stateEnable)=> {this.setState({enableSaveButton: stateEnable})}}
                         />
                     </div>
+                }
                 
             </div>
         );
