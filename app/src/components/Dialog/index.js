@@ -9,7 +9,7 @@ export default class Dialog extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { open: false, setOpen: false, 
+    this.state = { open: this.props.open, setOpen: false, 
       dialog: this.props.utterList? this.props.utterList : [
         {
           key: 'sample-0',
@@ -53,7 +53,7 @@ export default class Dialog extends Component {
                   vertical: 'bottom',
                   horizontal: 'left',
                 }}
-                open={this.state.open}
+                open={this.props.open}
                 autoHideDuration={3000}
                 onClose={() => this.props.handleClose()}
                 ContentProps={{
@@ -61,45 +61,19 @@ export default class Dialog extends Component {
                 }}
                 message={<span id="message-id">Resposta Apagada</span>}
                 action={[
-                  <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
+                  <Button key="undo" color="primary" size="small" onClick={() => this.props.handleClose("revert")}>
                     Desfazer
                 </Button>,
                   <IconButton
                     key="close"
                     aria-label="Close"
                     color="inherit"
-                    onClick={() => this.handleClose("clickaway")}
+                    onClick={() => this.props.handleClose("clickaway")}
                   >
                     <CloseIcon />
                   </IconButton>
                 ]}
               />
-          <Snackbar
-            anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-            }}
-            open={this.state.open}
-            autoHideDuration={3000}
-            onClose={() => this.handleClose()}
-            ContentProps={{
-            'aria-describedby': 'message-id',
-            }}
-            message={<span id="message-id">Resposta Apagada</span>}
-            action={[
-            <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
-                Desfazer
-            </Button>,
-            <IconButton
-                key="close"
-                aria-label="Close"
-                color="inherit"
-                onClick={() => this.handleClose("clickaway")}
-            >
-      <CloseIcon />
-     </IconButton>
-    ]}
-   />
         </DialogBox>
       );
     });

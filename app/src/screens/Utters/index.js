@@ -30,7 +30,8 @@ class Utters extends Component {
             ],
             loading:true,
             newUtter: {},
-            name: this.props.location.state ? this.props.location.state['nameUtter'] : ''
+            name: this.props.location.state ? this.props.location.state['nameUtter'] : '',
+            open: false
         }
     }
 
@@ -250,8 +251,9 @@ class Utters extends Component {
                         <Dialog key="123" utterList={this.state.dialog}
                         handleClick = {() => this.handleClick()}
                         editText = {(e) => this.editText(e)}
-                        handleClose = {() => this.handleClose()}
+                        handleClose = {(e) => this.handleClose(e)}
                         closeDialog = {(e) => this.closeDialog(e)}
+                        open= {this.state.open}
                         />
                     </div>
                 }
