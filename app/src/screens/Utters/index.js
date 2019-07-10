@@ -12,10 +12,25 @@ class Utters extends Component {
             utter: this.props.location.state ? this.props.location.state: null,
             enableSaveButton: false,
             isAlternative:true,
-            builtList:false,
+            dialog: [
+                {
+                    key: 'sample-0',
+                    edit: false,
+                    utterValue: '',
+                    dialogEnabled: false,
+                }
+            ],
+            dialogTemp: [
+                {
+                    key: 'sample-0',
+                    edit: false,
+                    utterValue: '',
+                    dialogEnabled: false,
+                },
+            ],
             loading:true,
             newUtter: {},
-            name: this.props.location.state['nameUtter']
+            name: this.props.location.state ? this.props.location.state['nameUtter'] : ''
         }
     }
 
@@ -59,7 +74,7 @@ class Utters extends Component {
             });
             console.log('list',list);
             this.verifyAlternatives()
-            this.setState({builtList: list, loading: false})
+            this.setState({dialog: list, loading: false})
         }
     }
 
@@ -72,7 +87,7 @@ class Utters extends Component {
     }
 
     buildNewUtter(){
-        console.log('list',this.state.builtList);
+        console.log('list',this.state.dialog);
         
         var obj = {
             utters:[],
@@ -80,7 +95,7 @@ class Utters extends Component {
         }        
 
         if(this.state.isAlternative){
-            this.state.builtList.forEach(utter => {
+            this.state.dialog.forEach(utter => {
                 let u1= {
                     utterText: [
                         {text: utter.utterValue}
@@ -93,7 +108,7 @@ class Utters extends Component {
             var u2 = {
                 utterText: []
             }
-            this.state.builtList.forEach(utter => {
+            this.state.dialog.forEach(utter => {
                 let u21 = {text: utter.utterValue}
                 u2.utterText.push(u21)
             });
@@ -119,8 +134,100 @@ class Utters extends Component {
             }
             this.props.history.replace('', obj);
         })
-        
     }
+
+//////// Funções para o Dialog
+
+    checkEnableSaveButton = () => {
+        var i = 0;
+        const { dialog } = this.state;
+        const objectsDialog = Object.assign([], dialog);
+        for (i = 0; i < objectsDialog.length; i++) {
+            if (objectsDialog[i].utterValue !== '') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    handleClick = async () => {
+        const { dialog } = this.state;
+        const objectsDialog = Object.assign([], dialog);
+        const lastData = objectsDialog[objectsDialog.length - 1]
+        lastData.key.split('-');
+        console.log(parseInt(lastData.key.split('-')[1]) + 1)
+        objectsDialog.push({
+            key: `sample-${parseInt(lastData.key.split('-')[1]) + 1}`,
+            edit: false,
+            utterValue: '',
+            dialogEnabled: false,
+        });
+        await this.setState({ dialog: objectsDialog });
+        console.log('dialog?????????');
+
+    };
+
+    async editText({ e, key }) {
+        var i = 0;
+        var shouldcheck = false;
+        const { dialog } = this.state;
+        const objectsDialog = Object.assign([], dialog);
+        objectsDialog.filter((elem) => {
+            if (elem.key === key) {
+                elem.utterValue = e.target.value;
+            }
+            return elem;
+        });
+        for (i = 0; i < objectsDialog.length; i++) {
+            if ((objectsDialog[i].utterValue !== '')) {
+                shouldcheck = true;
+            }
+        }
+        if (shouldcheck) {
+            this.stateUpdatingCallback(this.checkEnableSaveButton);
+        } else {
+            this.stateUpdatingCallback(shouldcheck);
+        };
+        await this.setState({ dialog: objectsDialog });
+    }
+
+    handleClose(reason) {
+        const { dialogTemp } = this.state;
+        if (reason === 'revert') {
+            this.setState({ dialog: dialogTemp });
+            this.setState({ open: false });
+            return;
+        }
+        this.setState({ open: false });
+    }
+
+    closeDialog(key) {
+        var i = 0;
+        var shouldcheck = false;
+        const { dialog } = this.state;
+        this.setState({ open: true });
+        let objectsDialog = Object.assign([], dialog);
+        this.setState({ dialogTemp: objectsDialog });
+        for (i = 0; i < objectsDialog.length; i++) {
+            if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue !== '' || objectsDialog[i].utterValue !== '')) {
+                shouldcheck = true;
+            }
+        }
+        objectsDialog = objectsDialog.filter(elem => elem.key !== key);
+        if (objectsDialog.length) {
+            this.setState({ dialog: objectsDialog });
+            if (shouldcheck) {
+                this.stateUpdatingCallback(this.checkEnableSaveButton);
+            } else {
+                this.stateUpdatingCallback(shouldcheck);
+            }
+        }
+    }
+
+    stateUpdatingCallback(stateEnable){
+        this.setState({ enableSaveButton: stateEnable })
+    }
+
 
     render(){
         console.log('utter:',this.state.utter)
@@ -140,8 +247,11 @@ class Utters extends Component {
                             onClick={() => this.clickCheckbox()}
                             checked={this.state.isAlternative}
                          />
-                        <Dialog key="123" utterList={this.state.builtList}
-                        stateUpdatingCallback={(stateEnable)=> {this.setState({enableSaveButton: stateEnable})}}
+                        <Dialog key="123" utterList={this.state.dialog}
+                        handleClick = {() => this.handleClick()}
+                        editText = {(e) => this.editText(e)}
+                        handleClose = {() => this.handleClose()}
+                        closeDialog = {(e) => this.closeDialog(e)}
                         />
                     </div>
                 }
