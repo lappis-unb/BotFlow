@@ -11,6 +11,8 @@ class Utters extends Component {
         this.state = {
             utter: this.props.location.state ? this.props.location.state: null,
             enableSaveButton: false,
+            checkClickChekbox: false,
+            checkChangeName: false,
             isAlternative:true,
             dialog: [
                 {
@@ -80,7 +82,12 @@ class Utters extends Component {
     }
 
     clickCheckbox(){
+        const { dialog } = this.state;
+        const objectsDialog = Object.assign([], dialog);
         this.setState({isAlternative: !this.state.isAlternative})
+        if((this.state.name !== '' && objectsDialog.length >= 2) || this.state.checkClickChekbox === true){
+            this.setState({checkClickChekbox: !this.state.checkClickChekbox})
+        }
     }
 
     changeName(event){        
@@ -240,7 +247,7 @@ class Utters extends Component {
                     :
                     <div>
                         <SaveData utterName={this.state.name}
-                        enableSaveButton={this.state.enableSaveButton}
+                        enableSaveButton={this.state.enableSaveButton || this.state.checkClickChekbox || this.state.checkChangeName}
                         onClick={() => this.save()}
                         onChange={(text) => this.changeName(text)}
                         />
