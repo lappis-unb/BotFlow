@@ -90,8 +90,12 @@ class Utters extends Component {
         }
     }
 
-    changeName(event){        
+    changeName(event){     
+        var nameUtter   
         this.setState({ name: event.target.value})
+        if(this.state.name !== '' || this.state.checkChangeName === true){
+            this.setState({ checkChangeName: event.target.value})
+        }
     }
 
     buildNewUtter(){
