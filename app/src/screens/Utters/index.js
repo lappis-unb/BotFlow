@@ -14,6 +14,7 @@ class Utters extends Component {
             checkClickChekbox: false,
             checkChangeName: false,
             isAlternative:true,
+            isCleanDialog: true,
             dialog: [
                 {
                     key: 'sample-0',
@@ -59,6 +60,7 @@ class Utters extends Component {
 
 
     buildList(){
+        var cleanText = false
         if(this.state.utter !== null){
             var list = [];
             var i = 0;
@@ -73,12 +75,18 @@ class Utters extends Component {
                     }
                     list.push(obj);
                     i ++;
+                    if(text['text'] === ""){
+                        cleanText = true
+                    }
                 });
             });
             console.log('list',list);
             this.verifyAlternatives()
             this.setState({dialog: list, loading: false})
+        }else{
+            cleanText = true
         }
+        this.setState({isCleanDialog: cleanText})
     }
 
     clickCheckbox(){
@@ -176,12 +184,14 @@ class Utters extends Component {
         });
         await this.setState({ dialog: objectsDialog });
         console.log('dialog?????????');
+        this.setState({isCleanDialog: true});
 
     };
 
     async editText({ e, key }) {
         var i = 0;
         var shouldcheck = false;
+        var cleanText = false;
         const { dialog } = this.state;
         const objectsDialog = Object.assign([], dialog);
         objectsDialog.filter((elem) => {
@@ -193,8 +203,12 @@ class Utters extends Component {
         for (i = 0; i < objectsDialog.length; i++) {
             if ((objectsDialog[i].utterValue !== '')) {
                 shouldcheck = true;
+            }else {
+                cleanText = true;
             }
         }
+        this.setState({isCleanDialog: cleanText || e.target.value === ""});
+
         if (shouldcheck) {
             this.stateUpdatingCallback(this.checkEnableSaveButton);
         } else {
@@ -216,15 +230,20 @@ class Utters extends Component {
     closeDialog(key) {
         var i = 0;
         var shouldcheck = false;
+        var cleanText = false;
         const { dialog } = this.state;
         this.setState({ open: true });
         let objectsDialog = Object.assign([], dialog);
         this.setState({ dialogTemp: objectsDialog });
         for (i = 0; i < objectsDialog.length; i++) {
-            if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue !== '' || objectsDialog[i].utterValue !== '')) {
+            if (objectsDialog[i].key !== key && objectsDialog[i].utterValue !== '') {
                 shouldcheck = true;
+            }else if( objectsDialog[i].key !== key){
+                cleanText = true;
             }
         }
+        this.setState({isCleanDialog: cleanText});
+
         objectsDialog = objectsDialog.filter(elem => elem.key !== key);
         if (objectsDialog.length) {
             this.setState({ dialog: objectsDialog });
@@ -242,6 +261,8 @@ class Utters extends Component {
 
 
     render(){
+        const { dialog } = this.state;
+        const objectsDialog = Object.assign([], dialog);
         console.log('utter:',this.state.utter)
         return (
             <div>
@@ -251,7 +272,10 @@ class Utters extends Component {
                     :
                     <div>
                         <SaveData utterName={this.state.name}
-                        enableSaveButton={this.state.enableSaveButton || this.state.checkClickChekbox || this.state.checkChangeName}
+                        enableSaveButton={
+                            (this.state.isCleanDialog === false && this.state.name !== "" && ((this.state.isAlternative === true && objectsDialog.length >= 2 ) || this.state.isAlternative === false)) &&
+                            (this.state.enableSaveButton || this.state.checkChangeName || this.state.checkClickChekbox)
+                        }
                         onClick={() => this.save()}
                         onChange={(text) => this.changeName(text)}
                         />
