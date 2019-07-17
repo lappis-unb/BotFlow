@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { SideNav } from './style';
 import { withRouter } from 'react-router-dom';
+import { Add } from './style';
 
 class UtterSideBar extends Component{
     constructor(props) {
@@ -58,6 +59,11 @@ class UtterSideBar extends Component{
                         anchor="left"
                     >
                     <List>
+                        <ListItem> 
+                            < Add variant="contained" onClick={this.props.handleClick} >
+                                Criar nova resposta
+                            </Add>      
+                        </ListItem>
                         {this.state.utters.map((utter, key) => (
                             <ListItem button key={key} onClick={() => { this.openUtter(key)}}>
                                 <ListItemText primary={this.truncateText(utter.nameUtter)} />

@@ -1,6 +1,16 @@
 import styled from 'styled-components'
+import Button from '@material-ui/core/Button';
 import { Drawer } from '@material-ui/core'
 
 export const SideNav = styled(Drawer)`
 width: 25%
+`
+export const Add = styled(Button)`
+padding-right: 6px;
+padding-top: 6px;
+padding-left: 6px;
+left: 1%;
+top: 10px;
+width: 200px;
+height: 35px;
 `
