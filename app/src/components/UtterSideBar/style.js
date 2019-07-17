@@ -10,7 +10,7 @@ padding-right: 6px;
 padding-top: 6px;
 padding-left: 6px;
 left: 1%;
-top: 10px;
+top: 1px;
 width: 200px;
 height: 35px;
 `
