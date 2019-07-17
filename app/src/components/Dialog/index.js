@@ -9,7 +9,7 @@ export default class Dialog extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { open: false, setOpen: false, 
+    this.state = { open: this.props.open, setOpen: false, 
       dialog: this.props.utterList? this.props.utterList : [
         {
           key: 'sample-0',
@@ -29,107 +29,9 @@ export default class Dialog extends Component {
     };
   }
 
-  checkEnableSaveButton = () => {
-    var i = 0;
-    const {dialog} = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    for (i=0; i<objectsDialog.length; i++) {
-      if (objectsDialog[i].utterValue !== '' ){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  handleClick = () => {
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    const lastData = objectsDialog[objectsDialog.length -1]
-    lastData.key.split('-');
-    console.log(parseInt(lastData.key.split('-')[1])+1)
-    objectsDialog.push({
-      key: `sample-${parseInt(lastData.key.split('-')[1])+1}`,
-      edit: false,
-      utterValue: '',
-      dialogEnabled: false,
-    });
-    this.setState({ dialog: objectsDialog });
-  };
-
-  handleEdit(key) {
-    this.setState({dialogTemp:this.state.dialog})
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-      if (elem.key === key && !elem.edit) {
-        elem.edit = true;
-        elem.key += '-edit';
-      }
-      return elem;
-    });
-    this.setState({ dialog: objectsDialog });
-  }
-
-  editText({ e, key }) {
-    var i = 0;
-    var shouldcheck = false;
-    const { dialog } = this.state;
-    const objectsDialog = Object.assign([], dialog);
-    objectsDialog.filter((elem) => {
-    if (elem.key === key) {
-      elem.utterValue = e.target.value;
-    }
-    return elem;
-    });
-    for (i=0; i<objectsDialog.length; i++) {
-      if ((objectsDialog[i].utterValue !== '')) {
-        shouldcheck = true;
-      }
-    }
-    if (shouldcheck){
-      this.props.stateUpdatingCallback(this.checkEnableSaveButton);
-    } else {
-      this.props.stateUpdatingCallback(shouldcheck);
-    }
-    this.setState({ dialog: objectsDialog });
-  }
-
-  closeDialog(key) {
-    var i = 0;
-    var shouldcheck = false;
-    const { dialog } = this.state;
-    this.setState({open: true});
-    let objectsDialog = Object.assign([], dialog);
-    this.setState({ dialogTemp: objectsDialog});
-    for (i=0; i<objectsDialog.length; i++) {
-      if (objectsDialog[i].key !== key && (objectsDialog[i].utterValue !== '' || objectsDialog[i].utterValue !== '')) {
-        shouldcheck = true;
-      }
-    }
-    objectsDialog = objectsDialog.filter(elem => elem.key !== key);
-    if (objectsDialog.length) {
-      this.setState({ dialog: objectsDialog });
-      if (shouldcheck){
-        this.props.stateUpdatingCallback(this.checkEnableSaveButton);
-      } else {
-        this.props.stateUpdatingCallback(shouldcheck);
-      }
-    }
-  }
-
-  handleClose(reason) {
-    const { dialogTemp } = this.state;
-    if (reason === 'revert') {
-      this.setState({ dialog: dialogTemp});
-      this.setState({open: false});
-      return;
-    }
-    this.setState({open: false});
-  }
-
   renderButton() {
     const { dialog } = this.state;
-    return dialog.map((element) => {
+    return this.props.utterList.map((element) => {
       const {
         key, utterValue, dialogEnabled,
       } = element;
@@ -141,9 +43,9 @@ export default class Dialog extends Component {
               <textarea
                 defaultValue={utterValue}
                 placeholder="Digite o conteudo da utter"
-                onChange={e => this.editText({ e, key })}
+                onChange={e => this.props.editText({ e, key })}
               />
-              <Delete color="#0000" onClick={() => this.closeDialog(key)}>
+              <Delete color="#0000" onClick={() => this.props.closeDialog(key)}>
                 <Delete />
               </Delete>
               <Snackbar
@@ -151,63 +53,37 @@ export default class Dialog extends Component {
                   vertical: 'bottom',
                   horizontal: 'left',
                 }}
-                open={this.state.open}
+                open={this.props.open}
                 autoHideDuration={3000}
-                onClose={() => this.handleClose()}
+                onClose={() => this.props.handleClose()}
                 ContentProps={{
                   'aria-describedby': 'message-id',
                 }}
                 message={<span id="message-id">Resposta Apagada</span>}
                 action={[
-                  <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
+                  <Button key="undo" color="primary" size="small" onClick={() => this.props.handleClose("revert")}>
                     Desfazer
                 </Button>,
                   <IconButton
                     key="close"
                     aria-label="Close"
                     color="inherit"
-                    onClick={() => this.handleClose("clickaway")}
+                    onClick={() => this.props.handleClose("clickaway")}
                   >
                     <CloseIcon />
                   </IconButton>
                 ]}
               />
-          <Snackbar
-            anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-            }}
-            open={this.state.open}
-            autoHideDuration={3000}
-            onClose={() => this.handleClose()}
-            ContentProps={{
-            'aria-describedby': 'message-id',
-            }}
-            message={<span id="message-id">Resposta Apagada</span>}
-            action={[
-            <Button key="undo" color="primary" size="small" onClick={() => this.handleClose("revert")}>
-                Desfazer
-            </Button>,
-            <IconButton
-                key="close"
-                aria-label="Close"
-                color="inherit"
-                onClick={() => this.handleClose("clickaway")}
-            >
-      <CloseIcon />
-     </IconButton>
-    ]}
-   />
         </DialogBox>
       );
     });
   }
 
-  render() {
+  render() {    
     return (
       <div>
         {this.renderButton()}
-        < Add variant="contained" left="250px" onClick={() => this.handleClick()} >
+        < Add variant="contained" left="250px" onClick={this.props.handleClick} >
           Novo balão de resposta
         </Add>
       </div>

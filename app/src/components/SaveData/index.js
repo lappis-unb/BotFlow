@@ -14,7 +14,7 @@ class SaveData extends Component {
             <Save style = {{background: enableSaveButton, color:"#FFFAFA"}} 
                 variant="contained" 
                 disabled={!this.props.enableSaveButton}
-                onClick={() => this.handleClick()} >
+                onClick={this.props.onClick}>
                 Gravar
             </Save>
             <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
@@ -28,6 +28,7 @@ class SaveData extends Component {
                 margin="normal"
                 variant="filled"
                 value= {this.props.utterName? this.props.utterName : ""}
+                onChange={this.props.onChange}
             />
             <hr></hr>
         </div>
