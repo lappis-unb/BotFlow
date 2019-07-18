@@ -18,6 +18,7 @@ class UtterSideBar extends Component{
 
     async componentDidMount() {
         await this.getUtters();
+        this.sortUtterName();
         this.setState({ loading: false })
         console.log(this.state.utters);
 
@@ -45,6 +46,15 @@ class UtterSideBar extends Component{
         await this.setState({ selected_utter: key });
         await this.props.history.push('/', this.state.utters[this.state.selected_utter])
         window.location.reload()
+    }
+
+    sortUtterName = function(){
+        // sorts alphabetically utters in sidebar
+        this.state.utters.sort(function(a, b){
+            if(a['nameUtter'] <  b['nameUtter']) { return -1; }
+            if(a['nameUtter'] >  b['nameUtter']) { return 1; }
+            return 0;
+        })
     }
 
     render() {
