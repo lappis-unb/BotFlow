@@ -3,12 +3,15 @@ import { Save, UtterName, IconMessage} from './style';
 
 class SaveData extends Component {
 
-    constructor() {
-        super();
-        this.state = { enable: '', backgroundColor:'#DCDCDC' };
+    constructor(props) {
+        super(props);
+        this.state = { enable: '', backgroundColor:'#DCDCDC',
+        };
     }
+
     render(){
-        var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc";
+        var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc"; 
+
         return(
         <div>
             <Save style = {{background: enableSaveButton, color:"#FFFAFA"}} 
@@ -17,8 +20,9 @@ class SaveData extends Component {
                 onClick={this.props.onClick}>
                 Gravar
             </Save>
-            <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
-                </IconMessage>
+            <IconMessage 
+                style = {{marginLeft: 200, marginTop:60, width:35, height:35}}>
+            </IconMessage>
             <UtterName
                 id="filled-email-input"
                 label="Nome da Resposta"
@@ -30,9 +34,7 @@ class SaveData extends Component {
                 value= {this.props.utterName? this.props.utterName : ""}
                 onChange={this.props.onChange}
             />
-            <hr></hr>
         </div>
-
         )
     }
 }

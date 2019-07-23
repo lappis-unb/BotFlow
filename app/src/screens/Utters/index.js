@@ -3,6 +3,7 @@ import SaveData from '../../components/SaveData';
 import Dialog from '../../components/Dialog';
 import AlternativeBallons from '../../components/AlternativeBallons';
 import UtterSideBar from '../../components/UtterSideBar/index.js';
+import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
 
 class Utters extends Component {
@@ -10,9 +11,11 @@ class Utters extends Component {
         super(props);
         this.state = {
             utter: this.props.location.state ? this.props.location.state: null,
+            openSnack: false,
             enableSaveButton: false,
             checkClickChekbox: false,
             checkChangeName: false,
+            isAlternativeTemp: true,
             isAlternative:true,
             isCleanDialog: true,
             dialog: [
@@ -34,6 +37,7 @@ class Utters extends Component {
             loading:true,
             newUtter: {},
             name: this.props.location.state ? this.props.location.state['nameUtter'] : '',
+            nameTemp: '',
             open: false
         }
     }
@@ -70,7 +74,6 @@ class Utters extends Component {
                         key: 'sample-' + i,
                         edit: false,
                         utterValue: text['text'],
-                        utterEdit: '',
                         dialogEnabled: false,
                     }
                     list.push(obj);
@@ -255,6 +258,58 @@ class Utters extends Component {
         }
     }
 
+    //Funções utterDelete
+
+    handleClickMenu(e){
+        console.log(e);
+        this.setState({ anchorEl: e.currentTarget })
+    }
+
+    handleDelete(){
+        const { dialog } = this.state;
+        this.setState({ anchorEl: null })
+        this.setState({ open: true });
+        let objectsDialog = Object.assign([], dialog);
+        this.setState({ dialogTemp: objectsDialog });
+        this.setState({ nameTemp: 'lalalala'});
+        // this.setState({ isAlternativeTemp: isAlternative});
+        let name = this.state;
+        console.log(name['name']);
+        name['name'] = 'textoqualquer';
+        this.setState({name});
+        this.setState({dialog: [
+            {
+                key: 'sample',
+                edit: false,
+                utterValue: '',
+                dialogEnabled: false,
+            }
+        ]});
+        this.setState({ openSnack: true });
+        this.setState({ isAlternative: false});
+    }
+
+    handleAllDelete(){
+        return;
+    }
+
+    handleCloseDelete(reason){
+        const { dialogTemp } = this.state;
+        const { nameTemp } = this.state.nameTemp;
+        const { isAlternativeTemp } = this.state.isAlternativeTemp;
+        this.setState({ name: ''});
+        if (reason === 'revert') {
+            this.setState({ name: nameTemp});
+            this.setState({ dialog: dialogTemp });
+            this.setState({ isAlternative: isAlternativeTemp});
+            this.setState({ openSnack: false });
+            return;
+        }
+        this.setState({ openSnack: false });
+    }
+
+
+
     stateUpdatingCallback(stateEnable){
         this.setState({ enableSaveButton: stateEnable })
     }
@@ -271,24 +326,33 @@ class Utters extends Component {
                     null
                     :
                     <div>
-                        <SaveData utterName={this.state.name}
-                        enableSaveButton={
-                            (this.state.isCleanDialog === false && this.state.name !== "" && ((this.state.isAlternative === true && objectsDialog.length >= 2 ) || this.state.isAlternative === false)) &&
-                            (this.state.enableSaveButton || this.state.checkChangeName || this.state.checkClickChekbox)
-                        }
-                        onClick={() => this.save()}
-                        onChange={(text) => this.changeName(text)}
+                        <SaveData 
+                            utterName={this.state.name}
+                            enableSaveButton={
+                                (this.state.isCleanDialog === false && this.state.name !== "" && ((this.state.isAlternative === true && objectsDialog.length >= 2 ) || this.state.isAlternative === false)) &&
+                                (this.state.enableSaveButton || this.state.checkChangeName || this.state.checkClickChekbox)
+                            }
+                            onClick={() => this.save()}
+                            onChange={(text) => this.changeName(text)}
+                        />
+                        <UtterDelete
+                            anchorEl={this.state.anchorEl}
+                            handleClickMenu = {(e) => this.handleClickMenu(e)}
+                            handleDelete = {() => this.handleDelete()}
+                            handleAllDelete = {() => this.handleAllDelete()}
+                            handleCloseDelete = {(reason) => this.handleCloseDelete(reason)}
+                            openSnack= {this.state.openSnack}
                         />
                         <AlternativeBallons
                             onClick={() => this.clickCheckbox()}
                             checked={this.state.isAlternative}
                          />
                         <Dialog key="123" utterList={this.state.dialog}
-                        handleClick = {() => this.handleClick()}
-                        editText = {(e) => this.editText(e)}
-                        handleClose = {(e) => this.handleClose(e)}
-                        closeDialog = {(e) => this.closeDialog(e)}
-                        open= {this.state.open}
+                            handleClick = {() => this.handleClick()}
+                            editText = {(e) => this.editText(e)}
+                            handleClose = {(e) => this.handleClose(e)}
+                            closeDialog = {(e) => this.closeDialog(e)}
+                            open= {this.state.open}
                         />
                     </div>
                 }
