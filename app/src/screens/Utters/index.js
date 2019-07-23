@@ -295,11 +295,11 @@ class Utters extends Component {
 
     handleCloseDelete(reason){
         const { dialogTemp } = this.state;
-        const { nameTemp } = this.state.nameTemp;
+        // const { nameTemp } = this.state.nameTemp;
+        let nameTemp = Object.assign({}, this.state.nameTemp);
         const { isAlternativeTemp } = this.state.isAlternativeTemp;
         this.setState({ name: ''});
         if (reason === 'revert') {
-            this.setState({ name: nameTemp});
             this.setState({ dialog: dialogTemp });
             this.setState({ isAlternative: isAlternativeTemp});
             this.setState({ openSnack: false });
