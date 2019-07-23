@@ -31,8 +31,15 @@ export default class Dialog extends Component {
   }
 
   renderButton() {
-    const { dialog } = this.state;
-    return this.props.utterList.map((element) => {
+    var  dialog = this.props.utterList.length > 0? this.props.utterList : [
+      {
+        key: 'sample',
+        edit: false,
+        utterValue: '',
+        dialogEnabled: false,
+      }
+    ]
+    return dialog.map((element) => {
       const {
         key, utterValue, dialogEnabled,
       } = element;

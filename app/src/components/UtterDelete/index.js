@@ -61,17 +61,17 @@ class UtterDelete extends Component {
                 ContentProps={{
                   'aria-describedby': 'message-id',
                 }}
-                message={<span id="message-id">Resposta Apagada</span>}
+                message={<span id="message-id">Todas as respostas foram Apagadas</span>}
                 action={[
                 <Button key="undo" color="primary" size="small" onClick={() => this.props.handleCloseDelete("revert")}>
                     Desfazer
                 </Button>,
-                  <IconButton
-                    key="close"
-                    aria-label="Close"
-                    color="inherit"
-                    onClick={() => this.props.handleClose("clickaway")}
-                  >
+                    <IconButton
+                      key="close"
+                      aria-label="Close"
+                      color="inherit"
+                      onClick={() => this.props.handleAllDelete()}
+                    >
                     <CloseIcon />
                   </IconButton>
                 ]}
