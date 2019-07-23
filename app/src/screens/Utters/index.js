@@ -98,11 +98,15 @@ class Utters extends Component {
         }
     }
 
-    changeName(event){     
-        var nameUtter   
-        this.setState({ name: event.target.value})
-        if(this.state.name !== '' || this.state.checkChangeName === true){
-            this.setState({ checkChangeName: event.target.value})
+    changeName(event){
+        var regex = /^(([A-Z]|[a-z]|_)*)$/;
+        var text = event.target.value;
+        
+        if (regex.test(text)){
+            this.setState({ name: text})
+            if(this.state.name !== '' || this.state.checkChangeName === true){
+                this.setState({ checkChangeName: text})
+            } 
         }
     }
 
