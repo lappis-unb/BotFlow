@@ -7,6 +7,7 @@ class SaveData extends Component {
         super();
         this.state = { enable: '', backgroundColor:'#DCDCDC' };
     }
+
     render(){
         var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc";
         return(
@@ -27,7 +28,7 @@ class SaveData extends Component {
                 autoComplete="Nome da Resposta"
                 margin="normal"
                 variant="filled"
-                value= {this.props.utterName? this.props.utterName : ""}
+                value= {this.props.utterName? this.props.utterName: ""}
                 onChange={this.props.onChange}
             />
             <hr></hr>

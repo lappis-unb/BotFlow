@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { SideNav } from './style';
 import { withRouter } from 'react-router-dom';
+import { Add } from './style';
 
 class UtterSideBar extends Component{
     constructor(props) {
@@ -13,13 +14,17 @@ class UtterSideBar extends Component{
             utters: [],
             loading: true,
             selected_utter: 0,
+            createUtter: false,
+            editUtter: false,
         }
     }
 
     async componentDidMount() {
         await this.getUtters();
+        if(this.state.loading === true){
         this.sortUtterName();
         this.setState({ loading: false })
+        }
         console.log(this.state.utters);
 
     }
@@ -43,8 +48,9 @@ class UtterSideBar extends Component{
     }
 
     async openUtter(key){
+        console.log(this.state.utters[this.state.selected_utter])
         await this.setState({ selected_utter: key });
-        await this.props.history.push('/', this.state.utters[this.state.selected_utter])
+        await this.props.history.push('/', this.state.utters[this.state.selected_utter]);
         window.location.reload()
     }
 
@@ -68,8 +74,19 @@ class UtterSideBar extends Component{
                         anchor="left"
                     >
                     <List>
+                            <ListItem> 
+                                < Add variant="contained" 
+                                onClick={() => {this.props.history.push('/', {
+                                    utters:[],nameUtter:'', projectName:'project',});
+                                    window.location.reload();
+                                    }
+                                }
+                                 >
+                                    Criar nova resposta
+                                </Add>      
+                            </ListItem>
                         {this.state.utters.map((utter, key) => (
-                            <ListItem button key={key} onClick={() => { this.openUtter(key)}}>
+                            <ListItem button key={key} onClick={() => { this.openUtter(key);}}>
                                 <ListItemText primary={this.truncateText(utter.nameUtter)} />
                             </ListItem>
                         ))}

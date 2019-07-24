@@ -10,6 +10,8 @@ class Utters extends Component {
         super(props);
         this.state = {
             utter: this.props.location.state ? this.props.location.state: null,
+            createUtter: false,
+            editUtter: false,
             enableSaveButton: false,
             checkClickChekbox: false,
             checkChangeName: false,
@@ -64,24 +66,37 @@ class Utters extends Component {
         if(this.state.utter !== null){
             var list = [];
             var i = 0;
-            this.state.utter['utters'].forEach(utter => {
-                utter['utterText'].forEach(text =>{                    
-                    let obj = {
-                        key: 'sample-' + i,
-                        edit: false,
-                        utterValue: text['text'],
-                        utterEdit: '',
-                        dialogEnabled: false,
-                    }
-                    list.push(obj);
-                    i ++;
-                    if(text['text'] === ""){
-                        cleanText = true
-                    }
+            if(this.state.utter['utters'].length > 0){
+                this.state.utter['utters'].forEach(utter => {
+                    utter['utterText'].forEach(text =>{                    
+                        let obj = {
+                            key: 'sample-' + i,
+                            edit: false,
+                            utterValue: text['text'],
+                            utterEdit: '',
+                            dialogEnabled: false,
+                        }
+                        list.push(obj);
+                        i ++;
+                        if(text['text'] === ""){
+                            cleanText = true
+                        }
+                    });
                 });
-            });
+                this.verifyAlternatives()
+            }else{
+                let obj = {
+                    key: 'sample-' + i,
+                    edit: false,
+                    utterValue: '',
+                    utterEdit: '',
+                    dialogEnabled: false,
+                }
+                list.push(obj);
+                this.setState({ isAlternative: false })
+                cleanText = true
+            }
             console.log('list',list);
-            this.verifyAlternatives()
             this.setState({dialog: list, loading: false})
         }else{
             cleanText = true
@@ -145,19 +160,33 @@ class Utters extends Component {
 
     async save(){
         console.log('oie');
-        
         await this.buildNewUtter()
-        const url = 'https://botflow.api.lappis.rocks/utter/' + this.state.utter._id;
-        await axios.put(url,this.state.newUtter)
-        .then((res) => {
-            console.log(res);
-            var obj = {
-                _id: this.state.utter._id,
-                ...this.state.newUtter,
-                projectName: this.state.utter.projectName
-            }
-            this.props.history.replace('', obj);
-        })
+        console.log(this.state.utter._id)
+        if(this.state.utter._id ){
+            const url = 'https://botflow.api.lappis.rocks/utter/' + this.state.utter._id;
+            await axios.put(url,this.state.newUtter)
+            .then((res) => {
+                console.log(res);
+                var obj = {
+                    _id: this.state.utter._id,
+                    ...this.state.newUtter,
+                    projectName: this.state.utter.projectName
+                }
+                this.props.history.replace('', obj);
+            })
+        }else {
+            const url = 'https://botflow.api.lappis.rocks/project/utter/' 
+            await axios.post(url,this.state.newUtter)
+            .then((res) => {
+                console.log(res);
+                var obj = {
+                    ...this.state.newUtter,
+                    projectName: this.state.utter.projectName
+                }
+                this.props.history.replace('', obj);
+            })
+        }
+        window.location.reload()
     }
 
 //////// Funções para o Dialog
