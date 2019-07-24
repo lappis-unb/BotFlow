@@ -65,6 +65,8 @@ class Utters extends Component {
 
 
     buildList(){
+        console.log('textoqualquer')
+        console.log(this.state.utter);
         var cleanText = false
         if(this.state.utter !== null){
             var list = [];
@@ -172,6 +174,7 @@ class Utters extends Component {
         })
         await this.setState({ openSnack: false});
         await this.setState({ deleteTemp: false });
+        await this.child.changeUtterOnDelete(this.state.utter._id);
     }
 
 //////// Funções para o Dialog
@@ -286,10 +289,6 @@ class Utters extends Component {
         this.setState({ openSnack: true });
     }
     
-    handleAllDelete(){
-        return;
-    }
-    
     handleCloseDelete(reason){
         this.setState({ deleteTemp: true});
         if (reason === 'revert') {
@@ -311,7 +310,7 @@ class Utters extends Component {
         console.log(this.state.openSnack);
         return (
             <div>
-                <UtterSideBar/>
+                <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
                     null
                     :
@@ -329,7 +328,7 @@ class Utters extends Component {
                             anchorEl={this.state.anchorEl}
                             handleClickMenu = {(e) => this.handleClickMenu(e)}
                             handleDelete = {() => this.handleDelete()}
-                            handleAllDelete = {() => this.delete()}
+                            delete = {() => this.delete()}
                             handleCloseDelete = {(reason) => this.handleCloseDelete(reason)}
                             openSnack= {this.state.openSnack}
                             />

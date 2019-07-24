@@ -57,7 +57,7 @@ class UtterDelete extends Component {
                 }}
                 open={this.props.openSnack}
                 autoHideDuration={3000}
-                onClose={() => this.props.handleAllDelete()}
+                onClose={() => this.props.delete()}
                 ContentProps={{
                   'aria-describedby': 'message-id',
                 }}
@@ -70,7 +70,7 @@ class UtterDelete extends Component {
                       key="close"
                       aria-label="Close"
                       color="inherit"
-                      onClick={() => this.props.handleAllDelete()}
+                      onClick={() => this.props.delete()}
                     >
                     <CloseIcon />
                   </IconButton>

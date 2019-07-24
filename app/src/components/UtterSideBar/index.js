@@ -20,8 +20,13 @@ class UtterSideBar extends Component{
         await this.getUtters();
         this.sortUtterName();
         this.setState({ loading: false })
+        this.props.onRef(this);
         console.log(this.state.utters);
 
+    }
+
+    async componentWillUnmount(){
+        this.props.onRef(undefined);
     }
 
     async getUtters() {
@@ -46,6 +51,10 @@ class UtterSideBar extends Component{
         await this.setState({ selected_utter: key });
         await this.props.history.push('/', this.state.utters[this.state.selected_utter])
         window.location.reload()
+    }
+
+    async changeUtterOnDelete(deletedId){
+        await deletedId !== this.state.utters[0]._id ? this.openUtter(0): this.openUtter(1);
     }
 
     sortUtterName = function(){
