@@ -2,8 +2,6 @@ import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Message from '@material-ui/icons/Message';
-import Info from '@material-ui/icons/Info';
-
 
 export const UtterName = styled(TextField)`
 background: white;
@@ -25,12 +23,6 @@ width: 92px;
 `
 
 export const IconMessage = styled(Message)`
-left: 1000px;
-top: 40px;
-height: 55px;
-width: 55px;
-`
-export const IconInfo = styled(Info)`
 left: 1000px;
 top: 40px;
 height: 55px;

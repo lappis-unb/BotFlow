@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Save, UtterName, IconMessage, IconInfo} from './style';
+import { Save, UtterName, IconMessage} from './style';
 import {Tooltip} from '@material-ui/core';
 
 class SaveData extends Component {
@@ -21,19 +21,18 @@ class SaveData extends Component {
             </Save>
             <IconMessage style = {{marginLeft: 200, marginTop:60, width:35, height:35}}/>
 
-            <UtterName
-                id="filled-email-input"
-                label="Nome da Resposta"
-                type="Nome da Resposta"
-                name="Nome da Resposta"
-                autoComplete="Nome da Resposta"
-                margin="normal"
-                variant="filled"
-                value= {this.props.utterName? this.props.utterName: ""}
-                onChange={this.props.onChange}
-                />
             <Tooltip title="O nome da resposta não pode ter acentos, espaços ou caracteres especiais. Só podem letras, números e underline.">
-                <IconInfo style= {{ marginLeft: 30, width: 25, height: 25 }}/>
+                <UtterName
+                    id="filled-email-input"
+                    label="Nome da Resposta"
+                    type="Nome da Resposta"
+                    name="Nome da Resposta"
+                    autoComplete="Nome da Resposta"
+                    margin="normal"
+                    variant="filled"
+                    value= {this.props.utterName? this.props.utterName: ""}
+                    onChange={this.props.onChange}
+                    />
             </Tooltip>
 
             <hr></hr>
