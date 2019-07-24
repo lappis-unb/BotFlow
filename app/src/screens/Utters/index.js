@@ -99,7 +99,7 @@ class Utters extends Component {
     }
 
     changeName(event){
-        var regex = /^(([A-Z]|[a-z]|_)*)$/;
+        var regex = /^(([A-Z]|[a-z]|[0-9]|_)*)$/;
         var text = event.target.value;
         
         if (regex.test(text)){
