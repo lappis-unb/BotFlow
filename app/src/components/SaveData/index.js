@@ -4,13 +4,15 @@ import {Tooltip} from '@material-ui/core';
 
 class SaveData extends Component {
 
-    constructor() {
-        super();
-        this.state = { enable: '', backgroundColor:'#DCDCDC' };
+    constructor(props) {
+        super(props);
+        this.state = { enable: '', backgroundColor:'#DCDCDC',
+        };
     }
 
     render(){
-        var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc";
+        var enableSaveButton = this.props.enableSaveButton?"#1E90FF":"#dcdcdc"; 
+
         return(
         <div>
             <Save style = {{background: enableSaveButton, color:"#FFFAFA"}} 
@@ -37,7 +39,6 @@ class SaveData extends Component {
 
             <hr></hr>
         </div>
-
         )
     }
 }

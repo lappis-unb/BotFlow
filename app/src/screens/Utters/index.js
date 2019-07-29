@@ -3,6 +3,7 @@ import SaveData from '../../components/SaveData';
 import Dialog from '../../components/Dialog';
 import AlternativeBallons from '../../components/AlternativeBallons';
 import UtterSideBar from '../../components/UtterSideBar/index.js';
+import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
 
 class Utters extends Component {
@@ -10,11 +11,13 @@ class Utters extends Component {
         super(props);
         this.state = {
             utter: this.props.location.state ? this.props.location.state: null,
+            openSnack: false,
             createUtter: false,
             editUtter: false,
             enableSaveButton: false,
             checkClickChekbox: false,
             checkChangeName: false,
+            isAlternativeTemp: true,
             isAlternative:true,
             isCleanDialog: true,
             dialog: [
@@ -36,6 +39,8 @@ class Utters extends Component {
             loading:true,
             newUtter: {},
             name: this.props.location.state ? this.props.location.state['nameUtter'] : '',
+            nameTemp: '',
+            deleteTemp: true,
             open: false
         }
     }
@@ -62,6 +67,8 @@ class Utters extends Component {
 
 
     buildList(){
+        console.log('textoqualquer')
+        console.log(this.state.utter);
         var cleanText = false
         if(this.state.utter !== null){
             var list = [];
@@ -105,11 +112,13 @@ class Utters extends Component {
     }
 
     clickCheckbox(){
-        const { dialog } = this.state;
-        const objectsDialog = Object.assign([], dialog);
-        this.setState({isAlternative: !this.state.isAlternative})
-        if((this.state.name !== '' && objectsDialog.length >= 2) || this.state.checkClickChekbox === true){
-            this.setState({checkClickChekbox: !this.state.checkClickChekbox})
+        if(this.state.deleteTemp === true){
+            const { dialog } = this.state;
+            const objectsDialog = Object.assign([], dialog);
+            this.setState({isAlternative: !this.state.isAlternative})
+            if((this.state.name !== '' && objectsDialog.length >= 2) || this.state.checkClickChekbox === true){
+                this.setState({checkClickChekbox: !this.state.checkClickChekbox})
+            }
         }
     }
 
@@ -187,6 +196,17 @@ class Utters extends Component {
             })
         }
         window.location.reload()
+    }
+
+    async delete(){
+        const url = 'https://botflow.api.lappis.rocks/utter/' + this.state.utter._id;
+        await axios.delete(url)
+        .then((res) => {
+            console.log(res);
+        })
+        await this.setState({ openSnack: false});
+        await this.setState({ deleteTemp: false });
+        await this.child.changeUtterOnDelete(this.state.utter._id);
     }
 
 //////// Funções para o Dialog
@@ -288,40 +308,72 @@ class Utters extends Component {
         }
     }
 
+    //Funções utterDelete
+
+    handleClickMenu(e){
+        console.log(e);
+        this.setState({ anchorEl: e.currentTarget })
+    }
+
+    handleDelete(){
+        this.setState({ anchorEl: null })
+        this.setState({ deleteTemp: false});
+        this.setState({ openSnack: true });
+    }
+    
+    handleCloseDelete(reason){
+        this.setState({ deleteTemp: true});
+        if (reason === 'revert') {
+            this.setState({ openSnack: false });
+        }
+        this.setState({ openSnack: false });
+    }
+    
+    
+    
     stateUpdatingCallback(stateEnable){
         this.setState({ enableSaveButton: stateEnable })
     }
 
-
+    
     render(){
         const { dialog } = this.state;
-        const objectsDialog = Object.assign([], dialog);
-        console.log('utter:',this.state.utter)
+        const objectsDialog = this.state.deleteTemp? Object.assign([], dialog): [];
+        console.log(this.state.openSnack);
         return (
             <div>
-                <UtterSideBar/>
+                <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
                     null
                     :
                     <div>
-                        <SaveData utterName={this.state.name}
-                        enableSaveButton={
-                            (this.state.isCleanDialog === false && this.state.name !== "" && ((this.state.isAlternative === true && objectsDialog.length >= 2 ) || this.state.isAlternative === false)) &&
-                            (this.state.enableSaveButton || this.state.checkChangeName || this.state.checkClickChekbox)
-                        }
-                        onClick={() => this.save()}
-                        onChange={(text) => this.changeName(text)}
-                        />
+                        <SaveData 
+                            utterName={this.state.deleteTemp? this.state.name: ''}
+                            enableSaveButton={
+                                (this.state.isCleanDialog === false && this.state.name !== "" && ((this.state.isAlternative === true && objectsDialog.length >= 2 ) || this.state.isAlternative === false)) &&
+                                (this.state.enableSaveButton || this.state.checkChangeName || this.state.checkClickChekbox)
+                            }
+                            onClick={() => this.save()}
+                            onChange={(text) => this.changeName(text)}
+                            />
+                        <UtterDelete 
+                            anchorEl={this.state.anchorEl}
+                            handleClickMenu = {(e) => this.handleClickMenu(e)}
+                            handleDelete = {() => this.handleDelete()}
+                            delete = {() => this.delete()}
+                            handleCloseDelete = {(reason) => this.handleCloseDelete(reason)}
+                            openSnack= {this.state.openSnack}
+                            />
                         <AlternativeBallons
                             onClick={() => this.clickCheckbox()}
-                            checked={this.state.isAlternative}
+                            checked={this.state.deleteTemp? this.state.isAlternative: false}
                          />
-                        <Dialog key="123" utterList={this.state.dialog}
-                        handleClick = {() => this.handleClick()}
-                        editText = {(e) => this.editText(e)}
-                        handleClose = {(e) => this.handleClose(e)}
-                        closeDialog = {(e) => this.closeDialog(e)}
-                        open= {this.state.open}
+                        <Dialog key="123" utterList={this.state.deleteTemp? this.state.dialog: []}
+                            handleClick = {() => this.handleClick()}
+                            editText = {(e) => this.editText(e)}
+                            handleClose = {(e) => this.handleClose(e)}
+                            closeDialog = {(e) => this.closeDialog(e)}
+                            open= {this.state.open}
                         />
                     </div>
                 }
