@@ -4,10 +4,10 @@ import styled from 'styled-components'
 
 
 export const DialogBox = styled.div`
-left: -250px;
+left: 23%;
 top: -10px;
+margin-top: 30px;
 width: 350px;
-margin: 50px auto;
 background: #F2F2F2;
 padding: 5px;
 text-align: center;
@@ -47,9 +47,8 @@ export const Add = styled(Button)`
 padding-right: 6px;
 padding-top: 6px;
 padding-left: 6px;
-left: 300px;
-top: -40px;
-margin-left: 0px;
+left: 23%;
+top: 10px;
 width: 357px;
 height: 42px;
 `
