@@ -16,9 +16,9 @@ class UtterSideBar extends Component{
             selected_utter: 0,
             createUtter: false,
             editUtter: false,
+            active: this.props.location.state ? this.props.location.state: -1,
         }
-    }
-
+    }   
     async componentDidMount() {
         await this.getUtters();
         if(this.state.loading === true){
@@ -55,7 +55,16 @@ class UtterSideBar extends Component{
         console.log(this.state.utters[this.state.selected_utter])
         await this.setState({ selected_utter: key });
         await this.props.history.push('/', this.state.utters[this.state.selected_utter]);
-        window.location.reload()
+        
+        console.log(this.state.active)
+    
+        this.setState({ active: key });    
+        console.log(this.state.active === key)
+        console.log(this.state.active)
+        //window.location.reload()
+    }
+    setActive(key){
+        
     }
 
     async changeUtterOnDelete(deletedId){
@@ -94,7 +103,7 @@ class UtterSideBar extends Component{
                                 </Add>      
                             </ListItem>
                         {this.state.utters.map((utter, key) => (
-                            <ListItem button key={key} onClick={() => { this.openUtter(key);}}>
+                            <ListItem button key={key} selected={this.state.active === key} onClick={() => { this.openUtter(key)}}>
                                 <ListItemText primary={this.truncateText(utter.nameUtter)} />
                             </ListItem>
                         ))}
