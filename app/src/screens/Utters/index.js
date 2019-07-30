@@ -168,9 +168,7 @@ class Utters extends Component {
     }
 
     async save(){
-        console.log('oie');
         await this.buildNewUtter()
-        console.log(this.state.utter._id)
         if(this.state.utter._id ){
             const url = 'https://botflow.api.lappis.rocks/utter/' + this.state.utter._id;
             await axios.put(url,this.state.newUtter)
@@ -190,12 +188,13 @@ class Utters extends Component {
                 console.log(res);
                 var obj = {
                     ...this.state.newUtter,
-                    projectName: this.state.utter.projectName
+                    projectName: this.state.utter.projectName,
+                    _id: res.data[0]._id
                 }
+
                 this.props.history.replace('', obj);
             })
         }
-        this.props.history.push('/')
         window.location.reload()
     }
 
