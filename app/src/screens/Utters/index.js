@@ -183,7 +183,7 @@ class Utters extends Component {
                 }
                 this.props.history.replace('', obj);
             })
-        }else {
+        }else{
             const url = 'https://botflow.api.lappis.rocks/project/utter/' 
             await axios.post(url,this.state.newUtter)
             .then((res) => {
@@ -195,6 +195,7 @@ class Utters extends Component {
                 this.props.history.replace('', obj);
             })
         }
+        this.props.history.push('/')
         window.location.reload()
     }
 
