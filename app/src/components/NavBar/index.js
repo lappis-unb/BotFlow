@@ -38,6 +38,7 @@ export default function NavBar() {
                     <Button onClick={() => changePage("/stories")} style={{marginLeft: '10%'}} color='inherit'>Diálogos</Button>
                     <Button onClick={() => changePage("/utters")} color='inherit'>Respostas</Button>
                     <Button onClick={() => changePage("/intents")} color='inherit'>Perguntas</Button>
+                    <Button onClick={() => changePage("/testing")} color='inherit'>Testar</Button>
                 </Toolbar>
             </AppBar>
         )
