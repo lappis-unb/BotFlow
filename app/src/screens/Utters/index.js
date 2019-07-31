@@ -182,7 +182,7 @@ class Utters extends Component {
                     ...this.state.newUtter,
                     projectName: this.state.utter.projectName
                 }
-                this.props.history.replace('', obj);
+                this.props.history.replace('/utters', obj);
             })
         }else {
             const url = 'https://botflow.api.lappis.rocks/project/utter/' 
@@ -193,7 +193,7 @@ class Utters extends Component {
                     ...this.state.newUtter,
                     projectName: this.state.utter.projectName
                 }
-                this.props.history.replace('', obj);
+                this.props.history.replace('/utters', obj);
             })
         }
         window.location.reload()
@@ -342,8 +342,6 @@ class Utters extends Component {
         const objectsDialog = this.state.deleteTemp? Object.assign([], dialog): [];
         console.log(this.state.openSnack);
         return (
-            <div>
-                <NavBar/>
             <div style={{marginTop: '3%'}}>
                 <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
@@ -381,7 +379,6 @@ class Utters extends Component {
                     </div>
                 }
                 
-            </div>
             </div>
         );
     }
