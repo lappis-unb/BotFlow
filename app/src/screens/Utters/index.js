@@ -5,6 +5,7 @@ import AlternativeBallons from '../../components/AlternativeBallons';
 import UtterSideBar from '../../components/UtterSideBar/index.js';
 import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
+import NavBar from '../../components/NavBar';
 
 class Utters extends Component {
     constructor(props){
@@ -342,6 +343,8 @@ class Utters extends Component {
         console.log(this.state.openSnack);
         return (
             <div>
+                <NavBar/>
+            <div style={{marginTop: '3%'}}>
                 <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
                     null
@@ -378,6 +381,7 @@ class Utters extends Component {
                     </div>
                 }
                 
+            </div>
             </div>
         );
     }
