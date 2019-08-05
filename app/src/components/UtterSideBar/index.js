@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {
-    List, ListItem, ListItemText,
+    ListItem, ListItemText,
 } from '@material-ui/core';
 import { SideNav } from './style';
 import { withRouter } from 'react-router-dom';
-import { Add } from './style';
+import { Add, Itens } from './style';
 
 class UtterSideBar extends Component{
     constructor(props) {
@@ -81,7 +81,7 @@ class UtterSideBar extends Component{
                         variant="permanent"
                         anchor="left"
                     >
-                    <List style={{marginTop: '30%'}}>
+                        <Itens>
                             <ListItem> 
                                 < Add variant="contained" 
                                 onClick={() => {this.props.history.push('/utters', {
@@ -98,7 +98,7 @@ class UtterSideBar extends Component{
                                 <ListItemText primary={this.truncateText(utter.nameUtter)} />
                             </ListItem>
                         ))}
-                    </List>
+                        </Itens>
                 </SideNav>
                 }
             </div>

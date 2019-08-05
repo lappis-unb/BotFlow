@@ -5,7 +5,7 @@ import AlternativeBallons from '../../components/AlternativeBallons';
 import UtterSideBar from '../../components/UtterSideBar/index.js';
 import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
-import NavBar from '../../components/NavBar';
+import { UtterPage } from './style';
 
 class Utters extends Component {
     constructor(props){
@@ -342,12 +342,12 @@ class Utters extends Component {
         const objectsDialog = this.state.deleteTemp? Object.assign([], dialog): [];
         console.log(this.state.openSnack);
         return (
-            <div style={{marginTop: '3%'}}>
+            <div className='oiiii'>
                 <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
                     null
                     :
-                    <div>
+                    <UtterPage>
                         <SaveData 
                             utterName={this.state.deleteTemp? this.state.name: ''}
                             enableSaveButton={
@@ -376,7 +376,7 @@ class Utters extends Component {
                             closeDialog = {(e) => this.closeDialog(e)}
                             open= {this.state.open}
                         />
-                    </div>
+                    </UtterPage>
                 }
                 
             </div>
