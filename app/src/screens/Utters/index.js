@@ -342,7 +342,7 @@ class Utters extends Component {
         const objectsDialog = this.state.deleteTemp? Object.assign([], dialog): [];
         console.log(this.state.openSnack);
         return (
-            <div className='oiiii'>
+            <div>
                 <UtterSideBar onRef={ref =>(this.child = ref)}/>
                 {this.state.loading?
                     null
