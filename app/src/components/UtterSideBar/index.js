@@ -11,21 +11,21 @@ class UtterSideBar extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            utters: [],
+            list: [],
             loading: true,
-            selected_utter: 0,
+            selected: 0,
             createUtter: false,
             editUtter: false,
         }
     }
 
     async componentDidMount() {
-        await this.getUtters();
+        await this.getList();
         if(this.state.loading === true){
-            this.sortUtterName();
+            this.sortName();
             this.setState({ loading: false })
             this.props.onRef(this);
-            console.log(this.state.utters);
+            console.log(this.state.list);
         }
     }
 
@@ -33,43 +33,80 @@ class UtterSideBar extends Component{
         this.props.onRef(undefined);
     }
 
-    async getUtters() {
-        var utter_list = []
-        await axios.get("https://botflow.api.lappis.rocks/project/utter")
+    async getList() {
+        var url = 'https://botflow.api.lappis.rocks/project' + this.props.path.slice(0,-1)
+        console.log('url',url);
+        
+        var temp_list = []
+        await axios.get(url)
             .then((res) => {
-                res.data.forEach(utter => {
-                    utter_list.push(utter)
+                res.data.forEach(item => {
+                    temp_list.push(item)
                 });
             })
-        await this.setState({ utters: utter_list })
+        await this.setState({ list: temp_list })
     }
 
-    truncateText(text) {
+    truncateText(item) {
+        var text = ''
+        if (this.props.path == '/utters'){
+            text = item.nameUtter
+        }else{
+            text = item.nameIntent
+        }
+        
         if (text.length > 20) {
             return text.substring(0, 17) + "..."
         }
         return text
     }
 
-    async openUtter(key){
-        console.log(this.state.utters[this.state.selected_utter])
-        await this.setState({ selected_utter: key });
-        await this.props.history.push('/utters', this.state.utters[this.state.selected_utter]);
+    async open(key){
+        var path = this.props.path
+
+        console.log(this.state.list[this.state.selected])
+        await this.setState({ selected: key });
+        await this.props.history.push(path, this.state.list[this.state.selected]);
         window.location.reload()
     }
 
     async changeUtterOnDelete(deletedId){
-        await deletedId !== this.state.utters[0]._id ? this.openUtter(0): this.openUtter(1);
+        await deletedId !== this.state.list[0]._id ? this.open(0): this.open(1);
     }
 
-    sortUtterName = function(){
-        // sorts alphabetically utters in sidebar
-        this.state.utters.sort(function(a, b){
-            if(a['nameUtter'] <  b['nameUtter']) { return -1; }
-            if(a['nameUtter'] >  b['nameUtter']) { return 1; }
-            return 0;
-        })
+    sortName = function(){
+        // sorts alphabetically list in sidebar
+        if(this.props.path == '/utters'){
+            this.state.list.sort(function(a, b){
+                if(a['nameUtter'] <  b['nameUtter']) { return -1; }
+                if(a['nameUtter'] >  b['nameUtter']) { return 1; }
+                return 0;
+            })
+        } else if (this.props.path == '/intents'){
+            this.state.list.sort(function (a, b) {
+                if (a['nameIntent'] < b['nameIntent']) { return -1; }
+                if (a['nameIntent'] > b['nameIntent']) { return 1; }
+                return 0;
+            })
+        }
     }
+
+    newItem(){
+        var path = this.props.path
+        var obj = {}
+        if(path == '/utters'){
+            obj = {
+                list: [], nameUtter: '', projectName: 'project',
+            }
+        }else if(path == '/intents'){
+            obj = {
+                list: [], nameIntent: '', projectName: 'project',
+            }
+        }
+        this.props.history.push(path, obj);
+        window.location.reload();
+    }
+
 
     render() {
         return (
@@ -84,18 +121,14 @@ class UtterSideBar extends Component{
                     <List style={{marginTop: '30%'}}>
                             <ListItem> 
                                 < Add variant="contained" 
-                                onClick={() => {this.props.history.push('/utters', {
-                                    utters:[],nameUtter:'', projectName:'project',});
-                                    window.location.reload();
-                                    }
-                                }
+                                onClick={() => this.newItem()}
                                  >
-                                    Criar nova resposta
+                                    Criar nova {this.props.path == '/utters'?'resposta' : 'pergunta'}
                                 </Add>      
                             </ListItem>
-                        {this.state.utters.map((utter, key) => (
-                            <ListItem button key={key} onClick={() => { this.openUtter(key);}}>
-                                <ListItemText primary={this.truncateText(utter.nameUtter)} />
+                        {this.state.list.map((item, key) => (
+                            <ListItem button key={key} onClick={() => { this.open(key);}}>
+                                <ListItemText primary={this.truncateText(item)} />
                             </ListItem>
                         ))}
                     </List>
