@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SaveData from '../../components/SaveData';
 import Dialog from '../../components/Dialog';
 import AlternativeBallons from '../../components/AlternativeBallons';
-import UtterSideBar from '../../components/UtterSideBar/index.js';
+import SideBar from '../../components/SideBar';
 import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
 import { UtterPage } from './style';
@@ -72,10 +72,12 @@ class Utters extends Component {
         console.log(this.state.utter);
         var cleanText = false
         if(this.state.utter !== null){
+            console.log('aki==>',this.state.utter);
+            
             var list = [];
             var i = 0;
-            if(this.state.utter['utters'].length > 0){
-                this.state.utter['utters'].forEach(utter => {
+            if (this.state.utter.utters.length > 0){
+                this.state.utter.utters.forEach(utter => {
                     utter['utterText'].forEach(text =>{                    
                         let obj = {
                             key: 'sample-' + i,
@@ -342,7 +344,7 @@ class Utters extends Component {
         console.log(this.state.openSnack);
         return (
             <div>
-                <UtterSideBar onRef={ref =>(this.child = ref)}/>
+                <SideBar onRef={ref =>(this.child = ref)} path='/utters'/>
                 {this.state.loading?
                     null
                     :
