@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {
-    List, ListItem, ListItemText,
+    ListItem, ListItemText,
 } from '@material-ui/core';
 import { SideNav } from './style';
 import { withRouter } from 'react-router-dom';
-import { Add } from './style';
+import { Add, Itens } from './style';
 
 class UtterSideBar extends Component{
     constructor(props) {
@@ -56,7 +56,7 @@ class UtterSideBar extends Component{
     async openUtter(key){
         console.log(this.state.utters[this.state.selected_utter])
         await this.setState({ selected_utter: key });
-        await this.props.history.push('/', this.state.utters[this.state.selected_utter]);
+        await this.props.history.push('/utters', this.state.utters[this.state.selected_utter]);
             
         this.setState({ active: key });    
         console.log(this.state.active === key)
@@ -91,10 +91,10 @@ class UtterSideBar extends Component{
                         variant="permanent"
                         anchor="left"
                     >
-                    <List>
+                        <Itens>
                             <ListItem> 
                                 < Add variant="contained" 
-                                onClick={() => {this.props.history.push('/', {
+                                onClick={() => {this.props.history.push('/utters', {
                                     utters:[],nameUtter:'', projectName:'project',});
                                     window.location.reload();
                                     }
@@ -108,7 +108,7 @@ class UtterSideBar extends Component{
                                 <ListItemText primary={this.truncateText(utter.nameUtter)} />
                             </ListItem>
                         ))}
-                    </List>
+                        </Itens>
                 </SideNav>
                 }
             </div>

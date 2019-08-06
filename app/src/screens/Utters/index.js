@@ -5,6 +5,7 @@ import AlternativeBallons from '../../components/AlternativeBallons';
 import UtterSideBar from '../../components/UtterSideBar/index.js';
 import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
+import { UtterPage } from './style';
 
 class Utters extends Component {
     constructor(props){
@@ -179,7 +180,7 @@ class Utters extends Component {
                     ...this.state.newUtter,
                     projectName: this.state.utter.projectName
                 }
-                this.props.history.replace('', obj);
+                this.props.history.replace('/utters', obj);
             })
         }else{
             const url = 'https://botflow.api.lappis.rocks/project/utter/' 
@@ -191,8 +192,7 @@ class Utters extends Component {
                     projectName: this.state.utter.projectName,
                     _id: res.data[0]._id
                 }
-
-                this.props.history.replace('', obj);
+                this.props.history.replace('/utters', obj);
             })
         }
         window.location.reload()
@@ -346,7 +346,7 @@ class Utters extends Component {
                 {this.state.loading?
                     null
                     :
-                    <div>
+                    <UtterPage>
                         <SaveData 
                             utterName={this.state.deleteTemp? this.state.name: ''}
                             enableSaveButton={
@@ -375,7 +375,7 @@ class Utters extends Component {
                             closeDialog = {(e) => this.closeDialog(e)}
                             open= {this.state.open}
                         />
-                    </div>
+                    </UtterPage>
                 }
                 
             </div>
