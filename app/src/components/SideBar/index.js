@@ -13,13 +13,14 @@ class SideBar extends Component{
         this.state = {
             list: [],
             loading: true,
-            selected: 0,
-            createUtter: false,
-            editUtter: false,
+            selected: 0
         }
     }
 
     async componentDidMount() {
+
+        var item = await localStorage.getItem('item');
+        await this.setState({ active: item })
         await this.getList();
         if(this.state.loading === true){
             this.sortName();
@@ -67,6 +68,10 @@ class SideBar extends Component{
         console.log(this.state.list[this.state.selected])
         await this.setState({ selected: key });
         await this.props.history.push(path, this.state.list[this.state.selected]);
+        this.setState({ active: key });
+        console.log(this.state.active === key)
+        console.log(this.state.active)
+        localStorage.setItem('item', JSON.stringify(this.state.active));
         window.location.reload()
     }
 
@@ -127,7 +132,7 @@ class SideBar extends Component{
                                 </Add>      
                             </ListItem>
                         {this.state.list.map((item, key) => (
-                            <ListItem button key={key} onClick={() => { this.open(key);}}>
+                            <ListItem button key={key} selected={key == this.state.active} onClick={() => { this.open(key);}}>
                                 <ListItemText primary={this.truncateText(item)} />
                             </ListItem>
                         ))}
