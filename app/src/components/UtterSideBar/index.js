@@ -56,7 +56,7 @@ class UtterSideBar extends Component{
     async openUtter(key){
         console.log(this.state.utters[this.state.selected_utter])
         await this.setState({ selected_utter: key });
-        await this.props.history.push('/', this.state.utters[this.state.selected_utter]);
+        await this.props.history.push('/utters', this.state.utters[this.state.selected_utter]);
             
         this.setState({ active: key });    
         console.log(this.state.active === key)
