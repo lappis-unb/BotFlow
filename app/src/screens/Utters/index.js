@@ -72,10 +72,12 @@ class Utters extends Component {
         console.log(this.state.utter);
         var cleanText = false
         if(this.state.utter !== null){
+            console.log('aki==>',this.state.utter);
+            
             var list = [];
             var i = 0;
-            if(this.state.utter['utters'].length > 0){
-                this.state.utter['utters'].forEach(utter => {
+            if (this.state.utter.utters.length > 0){
+                this.state.utter.utters.forEach(utter => {
                     utter['utterText'].forEach(text =>{                    
                         let obj = {
                             key: 'sample-' + i,

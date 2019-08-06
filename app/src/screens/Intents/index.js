@@ -10,13 +10,16 @@ class Intents extends Component {
             intent: this.props.location.state ? this.props.location.state : null
         }
     }
-    render(){
-        console.log('oi', this.state.intent.nameIntent);
-        
+    render(){        
         return(
             <div>
                 <SideBar onRef={ref => (this.child = ref)} path = '/intents'/>
-                <IntentName>{this.state.intent.nameIntent}</IntentName>
+
+                {
+                    this.state.intent?
+                    <IntentName>{this.state.intent.nameIntent}</IntentName>
+                    : null
+                }
             </div>
         )
     }

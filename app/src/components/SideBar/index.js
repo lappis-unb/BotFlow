@@ -96,11 +96,11 @@ class SideBar extends Component{
         var obj = {}
         if(path === '/utters'){
             obj = {
-                list: [], nameUtter: '', projectName: 'project',
+                utters: [], nameUtter: '', projectName: 'project',
             }
         }else if(path === '/intents'){
             obj = {
-                list: [], nameIntent: '', projectName: 'project',
+                intents: [], nameIntent: '', projectName: 'project',
             }
         }
         this.props.history.push(path, obj);
