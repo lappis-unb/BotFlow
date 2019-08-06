@@ -7,7 +7,7 @@ import { SideNav } from './style';
 import { withRouter } from 'react-router-dom';
 import { Add, Itens } from './style';
 
-class UtterSideBar extends Component{
+class SideBar extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -49,7 +49,7 @@ class UtterSideBar extends Component{
 
     truncateText(item) {
         var text = ''
-        if (this.props.path == '/utters'){
+        if (this.props.path === '/utters'){
             text = item.nameUtter
         }else{
             text = item.nameIntent
@@ -76,13 +76,13 @@ class UtterSideBar extends Component{
 
     sortName = function(){
         // sorts alphabetically list in sidebar
-        if(this.props.path == '/utters'){
+        if(this.props.path === '/utters'){
             this.state.list.sort(function(a, b){
                 if(a['nameUtter'] <  b['nameUtter']) { return -1; }
                 if(a['nameUtter'] >  b['nameUtter']) { return 1; }
                 return 0;
             })
-        } else if (this.props.path == '/intents'){
+        } else if (this.props.path === '/intents'){
             this.state.list.sort(function (a, b) {
                 if (a['nameIntent'] < b['nameIntent']) { return -1; }
                 if (a['nameIntent'] > b['nameIntent']) { return 1; }
@@ -94,11 +94,11 @@ class UtterSideBar extends Component{
     newItem(){
         var path = this.props.path
         var obj = {}
-        if(path == '/utters'){
+        if(path === '/utters'){
             obj = {
                 list: [], nameUtter: '', projectName: 'project',
             }
-        }else if(path == '/intents'){
+        }else if(path === '/intents'){
             obj = {
                 list: [], nameIntent: '', projectName: 'project',
             }
@@ -123,7 +123,7 @@ class UtterSideBar extends Component{
                                 < Add variant="contained" 
                                 onClick={() => this.newItem()}
                                  >
-                                    Criar nova {this.props.path == '/utters'?'resposta' : 'pergunta'}
+                                    Criar nova {this.props.path === '/utters'?'resposta' : 'pergunta'}
                                 </Add>      
                             </ListItem>
                         {this.state.list.map((item, key) => (
@@ -139,5 +139,5 @@ class UtterSideBar extends Component{
     };
 
 };
-export default withRouter(UtterSideBar);
+export default withRouter(SideBar);
 
