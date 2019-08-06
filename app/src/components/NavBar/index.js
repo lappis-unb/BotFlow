@@ -11,7 +11,7 @@ export const history = createHistory()
 
 function changePage(path){
     history.push(path);
-    window.location.reload();
+    
 }
 
 export default function NavBar() {

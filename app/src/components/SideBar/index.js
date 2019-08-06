@@ -109,7 +109,7 @@ class SideBar extends Component{
             }
         }
         this.props.history.push(path, obj);
-        window.location.reload();
+        
     }
 
 
