@@ -84,7 +84,11 @@ export const filterUtters = (value = "") => {
 }
 
 export const setUtterName = (utter_name = "") => {
-    return { type: "SET_UTTER_NAME", utter_name: utter_name }
+    var regex = /(([A-z]|[0-9]|_)*)/g;
+    var text = utter_name.match(regex).join('')
+
+    return { type: "SET_UTTER_NAME", utter_name: text }
+
 }
 
 export const createNewUtter = () => {
