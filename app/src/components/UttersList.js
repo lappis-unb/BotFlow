@@ -5,7 +5,8 @@ import * as utterAction from "../actions/uttersAction";
 import Button from '@material-ui/core/Button';
 
 class UttersList extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.props.getUtters();
   }
 
