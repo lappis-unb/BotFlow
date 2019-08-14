@@ -8,7 +8,9 @@ const INITIAL_STATE = {
   utters: [],
   filtered_utters: [],
   filter_value: '',
-  current_utter: new Utter()
+  current_utter: new Utter(),
+
+  helper_text: "",
 };
 
 function configureStore(state = INITIAL_STATE) {

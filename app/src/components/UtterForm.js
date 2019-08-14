@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import TextField from '@material-ui/core/TextField';
+
 import { connect } from "react-redux";
 import { setUtterName, setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
 
@@ -32,8 +34,15 @@ class UtterForm extends Component {
       <div>
         <form>
           <label>
-            <h1>Resposta:</h1>
-            <input type="text" value={utter_name} onChange={(e) => this.props.setUtterName(e.target.value)} />
+            <TextField
+                helperText={this.props.helper_text}
+                id="utter-name"
+                label="Nome da resposta"
+                margin="normal"
+                type="text"
+                value={utter_name}
+                onChange={(e) => this.props.setUtterName(e.target.value)}
+              />
           </label>
 
           <br />

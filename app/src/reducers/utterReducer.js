@@ -15,6 +15,7 @@ export default (state, action) => {
         case "SET_UTTER_NAME":
             return {
                 ...state,
+                helper_text: action.helper_text,
                 current_utter: {
                     ...state.current_utter,
                     nameUtter: action.utter_name

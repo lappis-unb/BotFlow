@@ -86,9 +86,13 @@ export const filterUtters = (value = "") => {
 export const setUtterName = (utter_name = "") => {
     var regex = /(([A-z]|[0-9]|_)*)/g;
     var text = utter_name.match(regex).join('')
+    let helper_text = "";
 
-    return { type: "SET_UTTER_NAME", utter_name: text }
+    if(!/^(([A-z]|[0-9]|_)*)$/.test(utter_name)) {
+        helper_text = "Use apenas letras sem acentos, números ou '_'";
+    }
 
+    return { type: "SET_UTTER_NAME", utter_name: text, helper_text: helper_text }
 }
 
 export const createNewUtter = () => {
