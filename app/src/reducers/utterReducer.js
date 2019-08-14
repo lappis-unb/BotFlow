@@ -1,7 +1,7 @@
 export default (state, action) => {
     switch (action.type) {
         case "CREATE_NEW_UTTER":
-            return { ...state, current_utter: action.new_utter }
+            return { ...state, current_utter: { ...action.new_utter }, old_utter: { ...action.new_utter } }
 
         case "FILTER_UTTERS":
             let filtered_utters = [...state.utters];
@@ -64,7 +64,7 @@ export default (state, action) => {
                 }
             };
 
-        case 'UNDO_TEXT_REMOTION':
+        case 'UNDO_TEXT_REMOVAL':
             return {
                 ...state,
                 current_utter: {
@@ -79,11 +79,39 @@ export default (state, action) => {
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
 
-        case "SELECT_UTTER":
+        case "SELECT_UTTER": {
+            let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
+            let utters_text = [...utter_selected.utters.map((utter) => {
+                return {
+                    ...utter,
+                    utterText: utter.utterText.map((utter_text) => {
+                        return { ...utter_text }
+                    })
+                }
+            })]
+
             return {
                 ...state,
-                current_utter: state.utters.find((utter) => utter._id === action.utter_id)
+                current_utter: { ...utter_selected },
+                old_utter: { ...utter_selected, utters: utters_text },
+                utter_submit_button_enable: false
             };
+        }
+
+        case "IS_ENABLE_BUTTON": {
+            let is_text_changed = (JSON.stringify(state.current_utter) !== JSON.stringify(state.old_utter));
+
+            return {
+                ...state,
+                utter_submit_button_enable: (action.utter_submit_button && is_text_changed)
+            }
+        }
+
+        case "SAVE_DATA":
+            return {
+                ...state,
+                helper_text: action.helper_text
+            }
 
         default:
             return state;

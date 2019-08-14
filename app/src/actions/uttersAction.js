@@ -76,7 +76,11 @@ export const removeUtter = (utter_id = "") => {
 };
 
 export const selectUtter = (utter_id = "") => {
-    return { type: "SELECT_UTTER", utter_id: utter_id }
+    return {
+        type: "SELECT_UTTER",
+        utter_id: utter_id,
+        utter_submit_button_enable: false,
+    }
 }
 
 export const filterUtters = (value = "") => {
@@ -106,19 +110,65 @@ export const addUtterText = () => {
     return { type: "ADD_UTTER_TEXT", text: utter.utters[0] }
 }
 
-export const setUtterText = (utter_position, text_position, text) => {
+const setUtterTextx = (utter_position, text_position, text) => {
     return {
         type: "SET_UTTER_TEXT",
         text: text,
         text_position: text_position,
         utter_position: utter_position
     }
-}
+} 
+
 
 export const removeUtterText = (text_position) => {
     return { type: "REMOVE_UTTER_TEXT", text_position: text_position }
 }
 
 export const undoTextRemotion = () => {
-    return { type: "UNDO_TEXT_REMOTION" }
+    return { type: "UNDO_TEXT_REMOVAL" }
+}
+export const setUtterText = (utter_position, text_position, text, current_utter, old_utter) => {
+    return async (dispatch) => {
+        dispatch(setUtterTextx(utter_position, text_position, text, current_utter));
+        dispatch(isEnableUtterButton(current_utter, old_utter));
+    }
+}
+
+export const isEnableUtterButton = (current_utter, old_utter) => {
+    let is_enable = checkNonEmptyFields(current_utter);
+    
+    return { type: "IS_ENABLE_BUTTON", utter_submit_button: is_enable }
+}
+
+const checkNonEmptyFields = (current_utter) => {
+    let is_enable = true;
+
+    current_utter.utters.forEach(utter => {
+        utter.utterText.forEach(text => {
+            if((text.text).trim().length === 0){
+                is_enable = false;
+            }
+        })
+    });
+    return is_enable;
+}
+
+export const saveData = (current_utter, utters) => {
+    let message = {type: "SAVE_DATA", helper_text: ""};
+    let founded = utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
+    
+    if(founded === undefined) {
+        return async (dispatch) => {
+            if (current_utter._id !== undefined) {
+                dispatch(updateUtter(current_utter, current_utter._id));
+            }
+            dispatch(createUtter(current_utter));
+        }
+    }
+    else {
+        console.log("Deu bom")
+        message.helper_text = "Por favor, insira um nome não repetido.";
+    } 
+
+    return message;
 }

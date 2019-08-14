@@ -16,7 +16,7 @@ class UtterForm extends Component {
           return (
             <li key={"utter_text" + utter_index + text_index}>
               <textarea type="text" value={utter_text.text}
-                onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value)} />
+                onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
               <button type="button" onClick={() => this.props.removeUtterText(utter_index)}>Deleter o texto</button>
             </li>
           )
@@ -35,14 +35,14 @@ class UtterForm extends Component {
         <form>
           <label>
             <TextField
-                helperText={this.props.helper_text}
-                id="utter-name"
-                label="Nome da resposta"
-                margin="normal"
-                type="text"
-                value={utter_name}
-                onChange={(e) => this.props.setUtterName(e.target.value)}
-              />
+              helperText={this.props.helper_text}
+              id="utter-name"
+              label="Nome da resposta"
+              margin="normal"
+              type="text"
+              value={utter_name}
+              onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
+            />
           </label>
 
           <br />
@@ -53,7 +53,7 @@ class UtterForm extends Component {
               {this.setUtterTexts()}
             </ul>
           </label>
-          
+
           <button type="button" onClick={() => this.props.undoTextRemotion()}>UNDO</button>
           <button type="button" onClick={() => this.props.addUtterText()}>ADD MORE</button>
         </form>
@@ -72,7 +72,7 @@ const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   setUtterName: (utter_name) => dispatch(setUtterName(utter_name)),
   removeUtterText: (text_position) => dispatch(removeUtterText(text_position)),
-  setUtterText: (utter_position, text_position, text) => dispatch(setUtterText(utter_position, text_position, text))
+  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

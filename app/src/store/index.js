@@ -9,7 +9,9 @@ const INITIAL_STATE = {
   filtered_utters: [],
   filter_value: '',
   current_utter: new Utter(),
-
+  
+  old_utter: new Utter(),
+  utter_submit_button_enable: false,
   helper_text: "",
 };
 
