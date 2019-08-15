@@ -17,7 +17,7 @@ class UtterPage extends Component {
     this.props.getUtters();
   }
 
-  render() {
+  render() {    
     return (
       <div>
         <Grid container>
@@ -27,7 +27,7 @@ class UtterPage extends Component {
                 Criar uma nova utter
               </Button>
             </center>
-            <ItemsList items={this.props.utters} text="Respostas cadastradas" />
+            <ItemsList items={this.props.utters} current_utter={this.props.current_utter} text="Respostas cadastradas" />
           </Grid>
           <Grid item xs={10}>
             <AppBar position="static" color="primary">

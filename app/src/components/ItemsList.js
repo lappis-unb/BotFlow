@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
+import {
+  List, ListItem,
+} from '@material-ui/core';
 
 class ItemsList extends Component {
   constructor(props) {
@@ -14,12 +17,20 @@ class ItemsList extends Component {
     const items = (this.state.filtered_items.length !== 0) ? this.state.filtered_items : this.props.items;
 
     if (items !== undefined) {
-      return items.map((item, index) => (
-        <li key={"items_list" + index}
-          onClick={() => this.props.selectItem(item._id)}>
-          {item.nameUtter}
-        </li>
-      ));
+      return (
+        <List>
+          {
+            items.map((item, index) => (
+              <ListItem key={"items_list" + index}
+                onClick={() => this.props.selectItem(item._id)}
+                selected={this.props.current_utter._id === item._id}>
+                {item.nameUtter}
+              </ListItem>
+            ))
+          }
+        </List>
+
+      )
     }
   }
 
