@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import TextField from '@material-ui/core/TextField';
 
 import { connect } from "react-redux";
-import { setUtterName, setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
+import { setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
 
 
 class UtterForm extends Component {
@@ -28,37 +27,18 @@ class UtterForm extends Component {
   }
 
   render() {
-    let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
-
     return (
       <div>
         <form>
-          <label>
-            <TextField
-              helperText={this.props.helper_text}
-              id="utter-name"
-              label="Nome da resposta"
-              margin="normal"
-              type="text"
-              value={utter_name}
-              onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
-            />
-          </label>
-
           <br />
-          
-          <label>
-            <h1>Textos das respostas:</h1>
-            <ul>
-              {this.setUtterTexts()}
-            </ul>
-          </label>
+          <ul>
+            {this.setUtterTexts()}
+          </ul>
 
           <button type="button" onClick={() => this.props.undoTextRemotion()}>UNDO</button>
           <button type="button" onClick={() => this.props.addUtterText()}>ADD MORE</button>
         </form>
 
-        <h1>{utter_name}</h1>
         <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
       </div>
     );
@@ -70,7 +50,6 @@ const mapStateToProps = state => { return { ...state } };
 const mapDispatchToProps = dispatch => ({
   addUtterText: () => dispatch(addUtterText()),
   undoTextRemotion: () => dispatch(undoTextRemotion()),
-  setUtterName: (utter_name) => dispatch(setUtterName(utter_name)),
   removeUtterText: (text_position) => dispatch(removeUtterText(text_position)),
   setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
 });
