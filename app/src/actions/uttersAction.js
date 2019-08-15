@@ -15,6 +15,7 @@ export const getUtters = () => {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
       let utters = sortUtterName(response.data);
       dispatch({type : "GET_UTTERS", utters : utters});
+      dispatch(selectItem(utters[0]._id))
     } catch (error) {
       throw(error);
     }
