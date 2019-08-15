@@ -47,7 +47,7 @@ class ItemsList extends Component {
           <ListItemIcon>
             {this.props.icon}
           </ListItemIcon>
-          <ListItemText primary={item.nameUtter} />
+          <ListItemText primary={this.truncateText(item.nameUtter)} />
         </ListItem>
       ));
     }
@@ -62,6 +62,13 @@ class ItemsList extends Component {
   handleListItemClick(item, index) {
     this.setState({ selected_item: index });
     this.props.selectItem(item._id)
+  }
+
+  truncateText(text) {
+    if (text.length > 20) {
+        return text.substring(0, 17) + "..."
+    }
+    return text
   }
 
   render() {

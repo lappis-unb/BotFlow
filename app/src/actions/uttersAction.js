@@ -3,8 +3,8 @@ import {
   Utter
 } from '../utils/utter.js'
 
-//const BASE = "https://botflow.api.lappis.rocks/";
-const BASE = "http://localhost:3030/";
+const BASE = "https://botflow.api.lappis.rocks/";
+//const BASE = "http://localhost:3030/";
 
 const UTTER_URL_API_GET_DELETE = BASE + "utter/";
 const UTTER_URL_API_CREATE_UPDATE = BASE + "project/utter/";
