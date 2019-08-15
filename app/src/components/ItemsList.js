@@ -6,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import {
   List, ListItem,
 } from '@material-ui/core';
+import './ItemList.css'
 
 class ItemsList extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class ItemsList extends Component {
               <ListItem key={"items_list" + index}
                 onClick={() => this.props.selectItem(item._id)}
                 selected={this.props.current_utter._id === item._id}>
-                {item.nameUtter}
+                {this.truncateText(item.nameUtter)}
               </ListItem>
             ))
           }
@@ -40,11 +41,18 @@ class ItemsList extends Component {
     });
   }
 
+  truncateText(text) {
+    if (text.length > 20) {
+        return text.substring(0, 17) + "..."
+    }
+    return text
+  }
+
   render() {
     return (
       <div>
         <h6>{this.props.text}</h6>
-        <ul>{this.itemsList()}</ul>
+        <ul className="List" >{this.itemsList()}</ul>
 
         <TextField
           id="outlined-search-field"
