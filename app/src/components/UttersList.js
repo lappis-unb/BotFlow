@@ -24,7 +24,7 @@ class UttersList extends Component {
   render() {
     return (
       <div>
-        <center><Button variant="contained" onClick={() => this.props.createNewUtter()}>Criar uma nova utter</Button></center>
+        <center><Button variant="contained" color="primary" onClick={() => this.props.createNewUtter()}>Criar uma nova utter</Button></center>
         <h6>Respostas cadastradas</h6>
         <ul>{this.uttersList()}</ul>
         <input value={this.props.filter_value} onChange={(e) => this.props.filterUtters(e.target.value)} />
