@@ -24,7 +24,7 @@ class UtterPage extends Component {
           <Grid item xs={3}>
             <center>
               <Button variant="contained" color="primary" onClick={() => this.props.createNewUtter()}>
-                Criar uma nova utter
+                + Criar Resposta
               </Button>
             </center>
             <ItemsList items={this.props.utters} text="Respostas cadastradas" />
@@ -35,7 +35,7 @@ class UtterPage extends Component {
                 <Typography variant="h6" color="inherit">
                   <Button disabled={!this.props.utter_submit_button_enable} variant="contained" size="small" onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
                     <SaveIcon />
-                    Save
+                    Gravar
                   </Button>
                   <button onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter</button>
                   {this.props.text}

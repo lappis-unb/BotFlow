@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 import { connect } from "react-redux";
 import { setUtterName, setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
@@ -15,9 +16,11 @@ class UtterForm extends Component {
         return utter_text_list.utterText.map((utter_text, text_index) => {
           return (
             <li key={"utter_text" + utter_index + text_index}>
+            <Grid item xs={1}>
               <textarea type="text" value={utter_text.text}
                 onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
-              <button type="button" onClick={() => this.props.removeUtterText(utter_index)}>Deleter o texto</button>
+              <button type="button" onClick={() => this.props.removeUtterText(utter_index)}>Deletar texto</button>
+            </Grid>
             </li>
           )
         })
@@ -32,34 +35,36 @@ class UtterForm extends Component {
 
     return (
       <div>
-        <form>
-          <label>
-            <TextField
-              helperText={this.props.helper_text}
-              id="utter-name"
-              label="Nome da resposta"
-              margin="normal"
-              type="text"
-              value={utter_name}
-              onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
-            />
-          </label>
+        <Grid container xs={9}>
+            <form>
+              <label>
+                <TextField
+                  helperText={this.props.helper_text}
+                  id="utter-name"
+                  label="Nome da resposta"
+                  margin="normal"
+                  type="text"
+                  value={utter_name}
+                  onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
+                />
+              </label>
 
-          <br />
-          
-          <label>
-            <h1>Textos das respostas:</h1>
-            <ul>
-              {this.setUtterTexts()}
-            </ul>
-          </label>
+              <br />
+              
+              <label>
+                <h1>Textos das respostas:</h1>
+                <ul>
+                  {this.setUtterTexts()}
+                </ul>
+              </label>
 
-          <button type="button" onClick={() => this.props.undoTextRemotion()}>UNDO</button>
-          <button type="button" onClick={() => this.props.addUtterText()}>ADD MORE</button>
-        </form>
+              <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button>
+              <button type="button" onClick={() => this.props.addUtterText()}>Novo Balão De Resposta</button>
+            </form>
 
-        <h1>{utter_name}</h1>
-        <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
+            <h1>{utter_name}</h1>
+            <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
+        </Grid>
       </div>
     );
   }

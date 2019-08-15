@@ -9,6 +9,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import { light } from '@material-ui/core/styles/createPalette';
 
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -20,6 +21,7 @@ const theme = createMuiTheme({
     },
   }
 })
+
 
 ReactDOM.render(
   <Provider store={configureStore()}>
