@@ -9,18 +9,33 @@ import {
 const UTTER_URL_API_GET_DELETE = BASE + "utter/";
 const UTTER_URL_API_CREATE_UPDATE = BASE + "project/utter/";
 
-export const getUtters = () => {
+export const getUtters = (name = undefined, deleted = false) => {
   return async(dispatch) => {
     try {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
       let utters = sortUtterName(response.data);
       dispatch({type : "GET_UTTERS", utters : utters});
-      dispatch(selectItem(utters[0]._id))
+      if(deleted){
+        dispatch(selectItem(utters[0]._id));
+      }else if(name){
+        dispatch(selectItem(findByName(name, utters)))
+      }
     } catch (error) {
       throw(error);
     }
   }
 };
+
+const findByName = (name, utters) => {
+  let id = utters[0]._id;
+  utters.forEach( utter => {
+    if(utter.nameUtter === name){
+      return utter._id;
+    };
+  });
+
+  return id;
+}
 
 const sortUtterName = (utters) =>{
   // sorts alphabetically utters in sidebar
@@ -69,7 +84,7 @@ export const removeUtter = (utter_id = "") => {
     try {
       await axios.delete(url_delete);
       dispatch(successAction(message));
-      dispatch(getUtters());
+      dispatch(getUtters(undefined, true));
     } catch (error) {
       throw(error);
     }
@@ -176,6 +191,7 @@ export const saveData = (current_utter, utters) => {
 
       if (founded === undefined) {
         dispatch(createUtter(current_utter));
+        dispatch(getUtters(current_utter.nameUtter));
       }
     }
     message.helper_text = "Por favor, insira um nome não repetido.";
