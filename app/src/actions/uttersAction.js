@@ -13,13 +13,24 @@ export const getUtters = () => {
   return async(dispatch) => {
     try {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
-      dispatch({type : "GET_UTTERS", utters : response.data});
+      let utters = sortUtterName(response.data);
+      dispatch({type : "GET_UTTERS", utters : utters});
     } catch (error) {
       throw(error);
     }
   }
 };
 
+const sortUtterName = (utters) =>{
+  // sorts alphabetically utters in sidebar
+  utters.sort(function(a, b){
+      if(a['nameUtter'] <  b['nameUtter']) { return -1; }
+      if(a['nameUtter'] >  b['nameUtter']) { return 1; }
+      return 0;
+  })
+
+  return utters;
+}
 export const createUtter = (new_utter = {}) => {
   let message = "Utter criada com sucesso!";
 
