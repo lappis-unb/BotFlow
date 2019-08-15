@@ -3,15 +3,6 @@ export default (state, action) => {
         case "CREATE_NEW_UTTER":
             return { ...state, current_utter: { ...action.new_utter }, old_utter: { ...action.new_utter } }
 
-        case "FILTER_UTTERS":
-            let filtered_utters = [...state.utters];
-            filtered_utters = filtered_utters.filter((utter) => utter.nameUtter.includes(action.value));
-
-            return {
-                ...state,
-                filtered_utters: filtered_utters
-            }
-
         case "SET_UTTER_NAME":
             return {
                 ...state,
@@ -79,8 +70,9 @@ export default (state, action) => {
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
 
-        case "SELECT_UTTER": {
+        case "SELECT_ITEM": {
             let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
+            
             let utters_text = [...utter_selected.utters.map((utter) => {
                 return {
                     ...utter,
@@ -92,9 +84,9 @@ export default (state, action) => {
 
             return {
                 ...state,
+                utter_submit_button_enable: false,
                 current_utter: { ...utter_selected },
-                old_utter: { ...utter_selected, utters: utters_text },
-                utter_submit_button_enable: false
+                old_utter: { ...utter_selected, utters: utters_text }
             };
         }
 

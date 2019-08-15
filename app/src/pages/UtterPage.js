@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UttersList from "../components/UttersList";
+import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
 import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
@@ -12,19 +12,28 @@ import SaveIcon from '@material-ui/icons/Save';
 import Grid from '@material-ui/core/Grid';
 
 class UtterPage extends Component {
+  constructor(props) {
+    super(props);
+    this.props.getUtters();
+  }
 
   render() {
     return (
       <div>
         <Grid container>
           <Grid item xs={2}>
-            <UttersList />
+            <center>
+              <Button variant="contained" color="primary" onClick={() => this.props.createNewUtter()}>
+                Criar uma nova utter
+              </Button>
+            </center>
+            <ItemsList items={this.props.utters} text="Respostas cadastradas" />
           </Grid>
           <Grid item xs={10}>
             <AppBar position="static" color="primary">
               <Toolbar>
                 <Typography variant="h6" color="inherit">
-                  <Button disabled={!this.props.utter_button} variant="contained" size="small" onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
+                  <Button disabled={!this.props.utter_submit_button_enable} variant="contained" size="small" onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
                     <SaveIcon />
                     Save
                   </Button>
@@ -41,14 +50,11 @@ class UtterPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  text: state.text,
-  utters: state.utters,
-  current_utter: state.current_utter,
-  utter_button: state.utter_submit_button_enable
-});
+const mapStateToProps = state => { return { ...state } };
 
 const mapDispatchToProps = dispatch => ({
+  getUtters: () => dispatch(utterAction.getUtters()),
+  createNewUtter: () => dispatch(utterAction.createNewUtter()),
   createUtter: (new_utter) => dispatch(utterAction.createUtter(new_utter)),
   removeUtter: (utter_id) => dispatch(utterAction.removeUtter(utter_id)),
   updateUtter: (new_utter, id) => dispatch(utterAction.updateUtter(new_utter, id)),
