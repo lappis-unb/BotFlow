@@ -20,8 +20,8 @@ class UtterPage extends Component {
   render() {
     return (
       <div>
-        <Grid container>
-          <Grid item xs={2}>
+        <Grid container xs={12}>
+          <Grid item xs={3}>
             <center>
               <Button variant="contained" color="primary" onClick={() => this.props.createNewUtter()}>
                 Criar uma nova utter
@@ -29,7 +29,7 @@ class UtterPage extends Component {
             </center>
             <ItemsList items={this.props.utters} text="Respostas cadastradas" />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={9}>
             <AppBar position="static" color="primary">
               <Toolbar>
                 <Typography variant="h6" color="inherit">
