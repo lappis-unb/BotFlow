@@ -13,12 +13,13 @@ export const getUtters = (name = undefined, deleted = false) => {
   return async(dispatch) => {
     try {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
-      let utters = sortUtterName(response.data);
-      dispatch({type : "GET_UTTERS", utters : utters});
+      let utters = await sortUtterName(response.data);
+      await dispatch({type : "GET_UTTERS", utters : utters});
       if(deleted){
         dispatch(selectItem(utters[0]._id));
       }else if(name){
-        dispatch(selectItem(findByName(name, utters)))
+        let id = findByName(name,utters);
+        await dispatch(selectItem(id))
       }
     } catch (error) {
       throw (error);
@@ -28,10 +29,12 @@ export const getUtters = (name = undefined, deleted = false) => {
 
 const findByName = (name, utters) => {
   let id = utters[0]._id;
+
   utters.forEach( utter => {
-    if(utter.nameUtter === name){
-      return utter._id;
-    };
+    if(utter.nameUtter == name){
+      id = utter._id;
+    }
+
   });
 
   return id;
@@ -69,7 +72,7 @@ export const updateUtter = (new_utter = {}, utter_id) => {
     try {
       await axios.put(url, new_utter);
       dispatch(successAction(message));
-      dispatch(getUtters());
+      await dispatch(getUtters());
     } catch (error) {
       throw (error);
     }
@@ -174,8 +177,8 @@ export const saveData = (current_utter, utters) => {
         utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
 
       if (founded === undefined) {
-        dispatch(createUtter(current_utter));
-        dispatch(getUtters(current_utter.nameUtter));
+        await dispatch(createUtter(current_utter));
+        await dispatch(getUtters(current_utter.nameUtter));
       }
     }
 
