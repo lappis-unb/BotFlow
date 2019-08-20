@@ -99,7 +99,7 @@ export default (state, action) => {
             }
         }
 
-        case "SAVE_DATA":
+        case "SAVE_DATA":            
             return {
                 ...state,
                 helper_text: action.helper_text
