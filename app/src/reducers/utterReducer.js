@@ -27,7 +27,11 @@ export default (state, action) => {
 
         case "ADD_UTTER_TEXT":
             let new_utters = [...state.current_utter.utters];
-            new_utters.push(action.text);
+            if(state.alternatives){
+                new_utters.push(action.text);
+            }else{
+                new_utters[0].utterText.push(action.text.utterText[0]);
+            }
 
             return {
                 ...state,
