@@ -164,26 +164,25 @@ export const setUtterText = (utter_position, text_position, text, current_utter)
 }
 
 export const saveData = (current_utter, utters) => {
-  let message = {
-    type: "SAVE_DATA",
-    helper_text: ""
-  };
-
-  return async (dispatch) => {
-    if (current_utter._id !== undefined) {
-      dispatch(updateUtter(current_utter, current_utter._id));
-    } else {
-      let founded =
-        utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
-
-      if (founded === undefined) {
+  return async(dispatch) => {
+    let founded =
+    utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
+    if(founded === undefined){
+      if (current_utter._id !== undefined) {
+        dispatch(updateUtter(current_utter, current_utter._id));
+      } else  {
         await dispatch(createUtter(current_utter));
         await dispatch(getUtters(current_utter.nameUtter));
       }
+    }else{
+      dispatch(saveDataError());
     }
-
-    message.helper_text = "Por favor, insira um nome não repetido.";
-
-    return message;
   }
+}
+
+export const saveDataError = () => {   
+  return {
+  type : "SAVE_DATA", 
+  helper_text : "Por favor, insira um nome não repetido."
+  };
 }
