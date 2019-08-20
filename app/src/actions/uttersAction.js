@@ -31,7 +31,7 @@ const findByName = (name, utters) => {
   let id = utters[0]._id;
 
   utters.forEach( utter => {
-    if(utter.nameUtter == name){
+    if(utter.nameUtter === name){
       id = utter._id;
     }
 
@@ -70,7 +70,9 @@ export const updateUtter = (new_utter = {}, utter_id) => {
 
   return async(dispatch) => {
     try {
-      await axios.put(url, new_utter);
+      await axios.put(url, new_utter)
+      .then(res => console.log(res)
+      );
       dispatch(successAction(message));
       await dispatch(getUtters());
     } catch (error) {
@@ -184,19 +186,29 @@ export const setUtterText =
 
 export const saveData = (current_utter, utters) => {
   return async(dispatch) => {
-    let founded =
-    utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
-    if(founded === undefined){
-      if (current_utter._id !== undefined) {
-        dispatch(updateUtter(current_utter, current_utter._id));
-      } else  {
-        await dispatch(createUtter(current_utter));
-        await dispatch(getUtters(current_utter.nameUtter));
+    let founded = searchUtters(utters, current_utter);
+    if(founded.length ===0){
+      if (current_utter._id !== undefined){
+          dispatch(updateUtter(current_utter, current_utter._id));
+      } else{
+          await dispatch(createUtter(current_utter));
+          await dispatch(getUtters(current_utter.nameUtter));
       }
     }else{
       dispatch(saveDataError());
     }
   }
+}
+
+const searchUtters = (utters, u) => {
+  let response = []
+  utters.forEach(utter =>{
+    if (utter.nameUtter === u.nameUtter && utter._id !== u._id){
+      response.push(utter);
+    }
+  })
+  return response;
+
 }
 
 export const saveDataError = () => {   

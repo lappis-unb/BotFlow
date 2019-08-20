@@ -95,6 +95,8 @@ export default (state, action) => {
         }
 
         case "IS_ENABLE_BUTTON": {
+            console.log('old_utter', JSON.stringify(state.old_utter));
+            
             let is_text_changed = (JSON.stringify(state.current_utter) !== JSON.stringify(state.old_utter));
 
             return {
