@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { setUtterText, addUtterText, undoTextRemotion, removeUtterText, changeUtterForm } from "../actions/uttersAction";
+import Checkbox from '@material-ui/core/Checkbox';
 
-import { setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
 
 class UtterForm extends Component {
   setUtterTexts() {
@@ -46,6 +47,13 @@ class UtterForm extends Component {
       <div style={{ overflowY: "auto", height: "85vh" }}>
         <form>
           <Grid item xs={5}>
+            <Checkbox
+              value="checkedA"
+              color="default"
+              checked={this.props.alternatives}
+              onChange={() => this.props.changeUtterForm(this.props.alternatives, this.props.current_utter)}
+            />
+            <p>Os balões são falas alternativas</p>
             <ul>
               {this.setUtterTexts()}
             </ul>
@@ -66,7 +74,8 @@ const mapDispatchToProps = dispatch => ({
   addUtterText: () => dispatch(addUtterText()),
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   removeUtterText: (text_position) => dispatch(removeUtterText(text_position)),
-  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
+  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter)),
+  changeUtterForm: (alternatives, current_utter) => dispatch(changeUtterForm(alternatives, current_utter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

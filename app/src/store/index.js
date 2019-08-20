@@ -13,6 +13,8 @@ const INITIAL_STATE = {
   old_utter: new Utter(),
   
   helper_text: "",
+
+  alternatives: false
 };
 
 function configureStore(state = INITIAL_STATE) {
