@@ -72,7 +72,10 @@ export default (state, action) => {
 
         case "SELECT_ITEM": {
             let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
-            
+            let alternatives = false;
+            if(utter_selected.utters.length > 1){
+                alternatives = true;
+            }
             let utters_text = [...utter_selected.utters.map((utter) => {
                 return {
                     ...utter,
@@ -86,7 +89,8 @@ export default (state, action) => {
                 ...state,
                 utter_submit_button_enable: false,
                 current_utter: { ...utter_selected },
-                old_utter: { ...utter_selected, utters: utters_text }
+                old_utter: { ...utter_selected, utters: utters_text },
+                alternatives: alternatives
             };
         }
 
@@ -103,6 +107,16 @@ export default (state, action) => {
             return {
                 ...state,
                 helper_text: action.helper_text
+            }
+
+        case "CHANGE_UTTER_FORM":            
+            return {
+                ...state,
+                alternatives: action.alternatives,
+                current_utter:{
+                    ...state.current_utter,
+                    utters: action.utters
+                }
             }
 
         default:

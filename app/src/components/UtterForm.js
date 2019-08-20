@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
 
 import { connect } from "react-redux";
-import { setUtterName, setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
+import { setUtterName, setUtterText, addUtterText, undoTextRemotion, removeUtterText, changeUtterForm } from "../actions/uttersAction";
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 class UtterForm extends Component {
@@ -46,6 +47,13 @@ class UtterForm extends Component {
           </label>
 
           <br />
+          <Checkbox
+                value="checkedA"
+                color="default"
+                checked={this.props.alternatives}
+                onChange={() => this.props.changeUtterForm(this.props.alternatives, this.props.current_utter)}
+          />
+          <p>Os balões são falas alternativas</p>
           
           <label>
             <h1>Textos das respostas:</h1>
@@ -72,7 +80,8 @@ const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   setUtterName: (utter_name) => dispatch(setUtterName(utter_name)),
   removeUtterText: (text_position) => dispatch(removeUtterText(text_position)),
-  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
+  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter)),
+  changeUtterForm: (alternatives, current_utter) => dispatch(changeUtterForm(alternatives, current_utter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

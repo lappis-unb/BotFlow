@@ -205,3 +205,39 @@ export const saveDataError = () => {
   helper_text : "Por favor, insira um nome não repetido."
   };
 }
+
+export const changeUtterForm = (alternatives, current_utter) => {
+  console.log("current_utter", current_utter);
+  let old_utters = current_utter.utters;
+  let texts = [];
+  let new_utters = [];
+    old_utters.forEach(i => {
+      i.utterText.forEach(j => {
+        texts.push(j.text);
+      })
+    })
+
+  // true
+  if(!alternatives){
+    texts.forEach(text => {
+      let utter = {'utterText': [
+        {'text': text}
+      ]};
+      new_utters.push(utter);
+    })
+
+  } else {
+
+  let utters = {"utterText": []}
+  texts.forEach(text => {
+    let utter = {"text": text};
+    utters["utterText"].push(utter);
+  })
+  new_utters.push(utters);  
+}
+
+  return{
+    type: "CHANGE_UTTER_FORM", alternatives: !alternatives, utters: new_utters
+  }
+  
+}

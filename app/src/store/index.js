@@ -14,6 +14,8 @@ const INITIAL_STATE = {
   
   utter_submit_button_enable: false,
   helper_text: "",
+
+  alternatives: false
 };
 
 function configureStore(state = INITIAL_STATE) {
