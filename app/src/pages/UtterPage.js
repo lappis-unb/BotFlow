@@ -3,12 +3,12 @@ import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
 import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
+import { SaveButtonCheck} from '../styles/button';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 import Grid from '@material-ui/core/Grid';
 
 import TextField from '@material-ui/core/TextField';
@@ -23,7 +23,7 @@ class UtterPage extends Component {
     let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
 
     return (
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color="background">
         <Toolbar>
           <TextField
             helperText={this.props.helper_text}
@@ -34,14 +34,21 @@ class UtterPage extends Component {
             value={utter_name}
             onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
           />
+          {
+          console.log('oiiiiii', this.props.button_background_color)
+          }
           <Typography variant="h6" color="inherit">
             <Button
               disabled={!this.props.utter_submit_button_enable}
               variant="contained"
               size="small"
+              color={this.props.button_background_color}
               onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
-              <SaveIcon />
-                Salvar
+              <SaveButtonCheck>
+                <label>
+                  Salvar
+                </label>
+              </SaveButtonCheck>
               </Button>
             <button onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter</button>
             {this.props.text}
@@ -58,7 +65,7 @@ class UtterPage extends Component {
         <Grid container spacing={1}>
           <Grid item xs={3}>
             <center>
-              <Button variant="contained" color="primary" onClick={() => this.props.createNewUtter()}>
+              <Button variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
                 Criar uma nova utter
               </Button>
             </center>

@@ -86,16 +86,21 @@ export default (state, action) => {
                 ...state,
                 utter_submit_button_enable: false,
                 current_utter: { ...utter_selected },
-                old_utter: { ...utter_selected, utters: utters_text }
+                old_utter: { ...utter_selected, utters: utters_text },
+                button_background_color:(action.button_background_color)
             };
         }
 
         case "IS_ENABLE_BUTTON": {
             let is_text_changed = (JSON.stringify(state.current_utter) !== JSON.stringify(state.old_utter));
-
+            let color="red"
+            if(action.utter_submit_button && is_text_changed){
+                color = "secondary"
+            }
             return {
                 ...state,
-                utter_submit_button_enable: (action.utter_submit_button && is_text_changed)
+                utter_submit_button_enable: (action.utter_submit_button && is_text_changed),
+                button_background_color: color
             }
         }
 

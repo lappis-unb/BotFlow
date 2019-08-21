@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DialogBox, Add} from '../styles/dialog';
+import { DialogBox} from '../styles/dialog';
 
 import { connect } from "react-redux";
 import { setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
