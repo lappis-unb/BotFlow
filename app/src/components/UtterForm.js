@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { DialogBox, Add} from '../styles/dialog';
 
 import { connect } from "react-redux";
 import { setUtterText, addUtterText, undoTextRemotion, removeUtterText } from "../actions/uttersAction";
@@ -11,7 +12,6 @@ class UtterForm extends Component {
     let utters_texts = [];
 
     if (this.props.current_utter.utters !== undefined) {
-
       utters_texts = this.props.current_utter.utters.map((utter_text_list, utter_index) => {
         return utter_text_list.utterText.map((utter_text, text_index) => {
           return (
@@ -19,13 +19,16 @@ class UtterForm extends Component {
             <div>
               <Grid container spacing={1} justify="space-between" alignItems="flex-end" >
                 <Grid item xs={10}>
+              <DialogBox>
                   <textarea type="text" value={utter_text.text}
                     onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
+              </DialogBox>
                 </Grid>
                 <Grid item xs={2}>
                   <DeleteIcon 
-                  type="button" 
-                  onClick={() => this.props.removeUtterText(utter_index)}>
+                    style={{color:"#4b3953", opacity: 0.5}}
+                    type="button" 
+                    onClick={() => this.props.removeUtterText(utter_index)}>
                   </DeleteIcon>
                 </Grid>
               </Grid>
@@ -45,14 +48,13 @@ class UtterForm extends Component {
       <div>
             <form>
               <br />
+              <Grid item xs={5}>
                 <label>
-                  <h1>Textos das respostas:</h1>
-                  <Grid container xs={3}>
                   <ul>
                     {this.setUtterTexts()}
                   </ul>
-                  </Grid>
                 </label>  
+                </Grid>
                 <br />
               <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button>
               <button type="button" onClick={() => this.props.addUtterText()}>Novo Balão De Resposta</button>

@@ -15,22 +15,22 @@ const theme = createMuiTheme({
       default: "#fcfcfc"
     },
     primary: {
-        light: "#f6f9f9",
-        main: "#4b3953",
-        contrastText: "#fff"
+      light: "#f6f9f9",
+      main: "#4b3953",
+      contrastText: "#fff"
     },
     secondary: {
-        light: "#fef4f3",
-        main: "#f15035",
-        contrastText: "#fff"
+      light: "#fef4f3",
+      main: "#f15035",
+      contrastText: "#fff"
     },
     error: {
-        main: "#AF0C00",
-        contrastText: "#fff"
+      main: "#AF0C00",
+      contrastText: "#fff"
     },
     text: {
-        primary: "rgba(0, 0, 0, 0.87)",
-        hint: "rgba(0, 0, 0, 0.38)"
+      primary: "rgba(0, 0, 0, 0.87)",
+      hint: "rgba(0, 0, 0, 0.38)"
     }
   },
   typography: {
