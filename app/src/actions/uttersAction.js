@@ -105,8 +105,10 @@ export const successAction = (message) => {
 
 export const selectItem =
   (item_id = "") => {
+    console.log('ta no certo');
+    
     return {
-      type: "SELECT_ITEM",
+      type: "SELECT_UTTER",
       utter_id: item_id,
       utter_submit_button_enable: false,
     };
@@ -156,7 +158,7 @@ export const removeUtterText = (text_position) => {
   };
 }
 
-export const undoTextRemotion = () => { return { type: "UNDO_TEXT_REMOVAL" }; }
+export const undoTextRemotion = () => { return { type: "UNDO_UTTER_TEXT_REMOVAL" }; }
 
 export const setUtterText = (utter_position, text_position, text, current_utter) => {
   return async (dispatch) => {

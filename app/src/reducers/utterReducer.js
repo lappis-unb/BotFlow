@@ -1,4 +1,17 @@
-export default (state, action) => {
+import {Utter} from '../utils/utter';
+
+const INITIAL_STATE = {
+    utters: [],
+    filtered_utters: [],
+    old_utter_texts: [],
+    current_utter: new Utter(),
+    old_utter: new Utter(),
+    utter_submit_button_enable: false,
+    helper_text: "",
+    alternatives: false,
+};
+
+export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "CREATE_NEW_UTTER":
             return { ...state, current_utter: { ...action.new_utter }, old_utter: { ...action.new_utter } }
@@ -46,8 +59,14 @@ export default (state, action) => {
             let utters_text = [...state.current_utter.utters];
             let old_utter_history = [...utters_text];
 
-            if (utters_text.length !== 1) {
+            console.log("entrou", utters_text);
+            if (state.alternative && utters_text.length > 1){
+                console.log('haha');
+                
                 utters_text.splice(action.text_position, 1);
+            }else if (!state.alternatives && utters_text[0].utterText.length > 1){
+                utters_text[0].utterText.splice(action.text_position, 1);
+
             }
 
             return {
@@ -59,7 +78,7 @@ export default (state, action) => {
                 }
             };
 
-        case 'UNDO_TEXT_REMOVAL':
+        case 'UNDO_UTTER_TEXT_REMOVAL':
             return {
                 ...state,
                 current_utter: {
@@ -74,7 +93,7 @@ export default (state, action) => {
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
 
-        case "SELECT_ITEM": {
+        case "SELECT_UTTER": {
             let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
             let alternatives = false;
             if(utter_selected.utters.length > 1){

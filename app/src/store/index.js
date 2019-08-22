@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from '../reducers/index;js';
+import reducer from '../reducers/index.js';
 import { Utter } from '../utils/utter.js';
 import { Intent } from '../utils/intent.js';
 

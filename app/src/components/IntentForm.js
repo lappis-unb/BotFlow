@@ -55,7 +55,7 @@ class IntentForm extends Component {
                 </Grid>
                 <br />
               <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button>
-              <button type="button" onClick={() => this.props.addIntentText()}>Novo Balão De Resposta</button>
+              <button type="button" onClick={() => this.props.addIntentText()}>Novo Exemplo de Pergunta</button>
             </form>
             <h1>{intent_name}</h1>
             <pre>{JSON.stringify(this.props.current_intent, null, 2)}</pre>
@@ -64,7 +64,7 @@ class IntentForm extends Component {
   }
 }
 
-const mapStateToProps = state => { return { ...state } };
+const mapStateToProps = state => { return { ...state.intentReducer } };
 
 const mapDispatchToProps = dispatch => ({
   addIntentText: () => dispatch(addIntentText()),

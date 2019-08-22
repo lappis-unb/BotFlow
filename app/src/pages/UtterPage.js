@@ -146,7 +146,7 @@ class UtterPage extends Component {
   }
 }
 
-const mapStateToProps = state => { return { ...state } };
+const mapStateToProps = state => { return { ...state.utterReducer } };
 
 const mapDispatchToProps = dispatch => ({
   getUtters: () => dispatch(utterAction.getUtters()),
