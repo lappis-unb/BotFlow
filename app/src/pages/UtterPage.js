@@ -101,7 +101,7 @@ class UtterPage extends Component {
       <div>
         <Grid container spacing={1}>
           <Grid item xs={3}>
-          <div style={{marginLeft: '5%'}}>
+          <div style={{marginLeft: '5%', marginTop: '4%'}}>
               <Button 
               variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
               <CreateNewUtter>
