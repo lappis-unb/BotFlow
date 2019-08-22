@@ -3,9 +3,9 @@ export class Utter {
         this.nameUtter = "";
         this.utters = [
             {
-                "utterText": [
+                utterText: [
                     {
-                        "text": ""
+                        text: ""
                     }
                 ]
             }

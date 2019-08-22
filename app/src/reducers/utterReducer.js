@@ -1,20 +1,12 @@
 export default (state, action) => {
     switch (action.type) {
         case "CREATE_NEW_UTTER":
-            return { ...state, current_utter: action.new_utter }
-
-        case "FILTER_UTTERS":
-            let filtered_utters = [...state.utters];
-            filtered_utters = filtered_utters.filter((utter) => utter.nameUtter.includes(action.value));
-
-            return {
-                ...state,
-                filtered_utters: filtered_utters
-            }
+            return { ...state, current_utter: { ...action.new_utter }, old_utter: { ...action.new_utter } }
 
         case "SET_UTTER_NAME":
             return {
                 ...state,
+                helper_text: action.helper_text,
                 current_utter: {
                     ...state.current_utter,
                     nameUtter: action.utter_name
@@ -35,7 +27,11 @@ export default (state, action) => {
 
         case "ADD_UTTER_TEXT":
             let new_utters = [...state.current_utter.utters];
-            new_utters.push(action.text);
+            if(state.alternatives){
+                new_utters.push(action.text);
+            }else{
+                new_utters[0].utterText.push(action.text.utterText[0]);
+            }
 
             return {
                 ...state,
@@ -63,7 +59,7 @@ export default (state, action) => {
                 }
             };
 
-        case 'UNDO_TEXT_REMOTION':
+        case 'UNDO_TEXT_REMOVAL':
             return {
                 ...state,
                 current_utter: {
@@ -78,11 +74,56 @@ export default (state, action) => {
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
 
-        case "SELECT_UTTER":
+        case "SELECT_ITEM": {
+            let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
+            let alternatives = false;
+            if(utter_selected.utters.length > 1){
+                alternatives = true;
+            }
+            let utters_text = [...utter_selected.utters.map((utter) => {
+                return {
+                    ...utter,
+                    utterText: utter.utterText.map((utter_text) => {
+                        return { ...utter_text }
+                    })
+                }
+            })]
+
             return {
                 ...state,
-                current_utter: state.utters.find((utter) => utter._id === action.utter_id)
+                utter_submit_button_enable: false,
+                current_utter: { ...utter_selected },
+                old_utter: { ...utter_selected, utters: utters_text },
+                alternatives: alternatives
             };
+        }
+
+        case "IS_ENABLE_BUTTON": {
+            console.log('old_utter', JSON.stringify(state.old_utter));
+            
+            let is_text_changed = (JSON.stringify(state.current_utter) !== JSON.stringify(state.old_utter));
+
+            return {
+                ...state,
+                utter_submit_button_enable: (action.utter_submit_button && is_text_changed)
+            }
+        }
+
+        case "SAVE_DATA":            
+            return {
+                ...state,
+                helper_text: action.helper_text
+            }
+
+        case "CHANGE_UTTER_FORM":            
+            return {
+                ...state,
+                alternatives: action.alternatives,
+                current_utter:{
+                    ...state.current_utter,
+                    utters: action.utters
+                }
+            }
 
         default:
             return state;

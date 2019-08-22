@@ -4,11 +4,18 @@ import utterReducer from '../reducers/utterReducer';
 import { Utter } from '../utils/utter.js';
 
 const INITIAL_STATE = {
-  old_utter_texts: [],
   utters: [],
   filtered_utters: [],
-  filter_value: '',
-  current_utter: new Utter()
+  
+  old_utter_texts: [],
+
+  current_utter: new Utter(),
+  old_utter: new Utter(),
+  
+  utter_submit_button_enable: false,
+  helper_text: "",
+
+  alternatives: false
 };
 
 function configureStore(state = INITIAL_STATE) {
