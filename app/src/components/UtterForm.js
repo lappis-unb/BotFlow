@@ -74,7 +74,8 @@ class UtterForm extends Component {
   }
 }
 
-const mapStateToProps = state => { return { ...state } };
+const mapStateToProps = state => { console.log(state);
+ return {...state.utterReducer } };
 
 const mapDispatchToProps = dispatch => ({
   addUtterText: () => dispatch(addUtterText()),

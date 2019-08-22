@@ -28,7 +28,7 @@ class IntentPage extends Component {
           <TextField
             helperText={this.props.helper_text}
             id="intent-name"
-            label="Nome da resposta"
+            label="Nome da pergunta"
             margin="normal"
             type="text"
             value={intent_name}
@@ -74,7 +74,7 @@ class IntentPage extends Component {
   }
 }
 
-const mapStateToProps = state => { return { ...state } };
+const mapStateToProps = state => { return { ...state.intentReducer } };
 
 const mapDispatchToProps = dispatch => ({
   getIntents: () => dispatch(intentsAction.getIntents()),

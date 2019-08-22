@@ -105,8 +105,10 @@ export const successAction = (message) => {
 
 export const selectItem =
   (item_id = "") => {
+    console.log('ta no certo');
+    
     return {
-      type: "SELECT_ITEM",
+      type: "SELECT_UTTER",
       utter_id: item_id,
       utter_submit_button_enable: false,
     };
@@ -156,14 +158,14 @@ export const removeUtterText = (text_position) => {
   };
 }
 
-export const undoTextRemotion = () => { return { type: "UNDO_TEXT_REMOVAL" }; }
+export const undoTextRemotion = () => { return { type: "UNDO_UTTER_TEXT_REMOVAL" }; }
 
 export const isEnableUtterButton = (current_utter) => {
     let has_name = current_utter.nameUtter.length > 0;
     let is_enable = checkNonEmptyFields(current_utter);
 
     return {
-      type: "IS_ENABLE_BUTTON",
+      type: "IS_ENABLE_BUTTON_UTTER",
       utter_submit_button: is_enable && has_name
     };
   }

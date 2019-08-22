@@ -103,8 +103,10 @@ export const successAction = (message) => {
 
 export const selectItem =
   (item_id = "") => {
+    console.log('ta no errado');
+    
     return {
-      type: "SELECT_ITEM",
+      type: "SELECT_INTENT",
       intent_id: item_id,
       intent_submit_button_enable: false,
     };
@@ -153,14 +155,14 @@ export const removeIntentText = (text_position) => {
   };
 }
 
-export const undoTextRemotion = () => { return { type: "UNDO_TEXT_REMOVAL" }; }
+export const undoTextRemotion = () => { return { type: "UNDO_INTENT_TEXT_REMOVAL" }; }
 
 export const isEnableIntentButton = (current_intent) => {    
     let has_name = current_intent.nameIntent.length > 0;
     let is_enable = checkNonEmptyFields(current_intent);
 
     return {
-      type: "IS_ENABLE_BUTTON",
+      type: "IS_ENABLE_BUTTON_INTENT",
       intent_submit_button: is_enable && has_name
     };
   }

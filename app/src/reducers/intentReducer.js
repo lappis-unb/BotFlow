@@ -1,4 +1,16 @@
-export default (state, action) => {
+import {Intent} from '../utils/intent';
+
+const INITIAL_STATE = {
+    helper_text: "",
+    intents: [],
+    filtered_intents: [],
+    old_intents_texts: [],
+    current_intent: new Intent(),
+    old_intent: new Intent(),
+    intent_submit_button_enable: false,
+};
+
+export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "CREATE_NEW_INTENT":
             return { ...state, current_intent: { ...action.new_intent }, old_intent: { ...action.new_intent } }
@@ -39,7 +51,7 @@ export default (state, action) => {
             };
 
         case "REMOVE_INTENT_TEXT":
-            let intents_text = [...state.current_intent.intents];
+            let intents_text = [...state.current_intent.intent];
             let old_intent_history = [...intents_text];
 
             if (intents_text.length !== 1) {
@@ -51,16 +63,16 @@ export default (state, action) => {
                 old_intent_texts: old_intent_history,
                 current_intent: {
                     ...state.current_intent,
-                    intents: intents_text
+                    intent: intents_text
                 }
             };
 
-        case 'UNDO_TEXT_REMOVAL':
+        case 'UNDO_INTENT_TEXT_REMOVAL':
             return {
                 ...state,
                 current_intent: {
                     ...state.current_intent,
-                    intents: [...state.old_intent_texts]
+                    intent: [...state.old_intent_texts]
                 }
             }
 
@@ -70,8 +82,10 @@ export default (state, action) => {
         case "GET_INTENTS":
             return { ...state, intents: [...action.intents], filtered_intents: [...action.intents] };
 
-        case "SELECT_ITEM": {
+        case "SELECT_INTENT": {
             let intent_selected = state.intents.find((intent) => intent._id === action.intent_id);
+            console.log('reducer errado');
+            
             
             let intents_text = [...intent_selected.intent.map((intent) => {
                 return {
@@ -89,7 +103,7 @@ export default (state, action) => {
             };
         }
 
-        case "IS_ENABLE_BUTTON": {            
+        case "IS_ENABLE_BUTTON_INTENT": {            
             let is_text_changed = (JSON.stringify(state.current_intent) !== JSON.stringify(state.old_intent));
 
             return {
@@ -109,7 +123,7 @@ export default (state, action) => {
                 ...state,
                 current_intent:{
                     ...state.current_intent,
-                    intents: action.intents
+                    intent: action.intents
                 }
             }
 
