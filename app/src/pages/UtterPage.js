@@ -12,6 +12,12 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer'
 
+import IconButton from '@material-ui/core/IconButton';
+
+import Menu from '@material-ui/core/Menu';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import TextField from '@material-ui/core/TextField';
 
 class UtterPage extends Component {
@@ -23,6 +29,8 @@ class UtterPage extends Component {
   getAppBar() {
     let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
 
+    const options = ['Apagar'];
+    const ITEM_HEIGHT = 20;
     return (
       <AppBar position="static" color="background">
         <Toolbar>
@@ -52,7 +60,33 @@ class UtterPage extends Component {
                 </label>
               </SaveButtonCheck>
               </Button>
-            <button onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter</button>
+              <IconButton
+                    onClick = {e => this.props.handleClickMenu(e)}>
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu   
+                    id="long-menu"
+                    anchorEl={this.props.anchorEl}
+                    keepMounted
+                    open={this.props.anchorEl}
+                    onClose= {this.props.handleCloseDelete}
+                    PaperProps={{
+                        style: {
+                        maxHeight: ITEM_HEIGHT * 4.0,
+                        width: 80,
+                        },
+                    }}
+                    >
+                    {options.map(option => (
+                    <MenuItem 
+                        key={option} 
+                        selected={option === 'Apagar'} 
+                        onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter}
+                    >
+                        {option}
+                    </MenuItem>
+                    ))}
+                </Menu>
             {this.props.text}
           </Typography>
           </Grid>
