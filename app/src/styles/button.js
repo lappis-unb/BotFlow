@@ -27,7 +27,7 @@ export const Done = styled(DoneIcon)`
 
 export const CreateNewUtter = styled.div`
     width: 130px;
-    height: 16px;
+    height: 36px;
     display: flex;
     top: 0px;
     justify-content: center;

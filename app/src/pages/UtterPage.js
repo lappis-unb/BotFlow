@@ -10,6 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Drawer from '@material-ui/core/Drawer'
 
 import TextField from '@material-ui/core/TextField';
 
@@ -66,6 +67,7 @@ class UtterPage extends Component {
       <div>
         <Grid container spacing={1}>
           <Grid item xs={3}>
+          <div style={{marginLeft: '5%'}}>
               <Button 
               variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
               <CreateNewUtter>
@@ -76,6 +78,7 @@ class UtterPage extends Component {
                 </CreateNewUtter>
               </Button>
             <ItemsList items={this.props.utters} text="Respostas cadastradas" />
+          </div>
           </Grid>
           <Grid item xs={9}>
             {this.getAppBar()}
