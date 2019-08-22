@@ -3,7 +3,7 @@ import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
 import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
-import { SaveButtonCheck} from '../styles/button';
+import { SaveButtonCheck, Done, Add, CreateNewUtter} from '../styles/button';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,6 +25,7 @@ class UtterPage extends Component {
     return (
       <AppBar position="static" color="background">
         <Toolbar>
+        <Grid item xs={9}>
           <TextField
             helperText={this.props.helper_text}
             id="utter-name"
@@ -34,9 +35,8 @@ class UtterPage extends Component {
             value={utter_name}
             onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
           />
-          {
-          console.log('oiiiiii', this.props.button_background_color)
-          }
+          </Grid>
+          <Grid item xs={3}>
           <Typography variant="h6" color="inherit">
             <Button
               disabled={!this.props.utter_submit_button_enable}
@@ -45,14 +45,16 @@ class UtterPage extends Component {
               color={this.props.button_background_color}
               onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
               <SaveButtonCheck>
+              <Done/>
                 <label>
-                  Salvar
+                  Gravar
                 </label>
               </SaveButtonCheck>
               </Button>
             <button onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter</button>
             {this.props.text}
           </Typography>
+          </Grid>
         </Toolbar>
       </AppBar>
     )
@@ -64,11 +66,15 @@ class UtterPage extends Component {
       <div>
         <Grid container spacing={1}>
           <Grid item xs={3}>
-            <center>
-              <Button variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
-                Criar uma nova utter
+              <Button 
+              variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
+              <CreateNewUtter>
+              <Add/>
+              <label>
+                Criar Resposta
+                </label>
+                </CreateNewUtter>
               </Button>
-            </center>
             <ItemsList items={this.props.utters} text="Respostas cadastradas" />
           </Grid>
           <Grid item xs={9}>
@@ -76,6 +82,7 @@ class UtterPage extends Component {
             <UtterForm />
           </Grid>
         </Grid>
+        <script  src = "https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
       </div>
     )
   }
@@ -93,5 +100,6 @@ const mapDispatchToProps = dispatch => ({
   setUtterName: (utter_name) => dispatch(utterAction.setUtterName(utter_name)),
 
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);
