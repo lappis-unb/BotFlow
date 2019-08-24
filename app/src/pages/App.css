@@ -1,0 +1,8 @@
+li {
+    list-style-type: none;
+}
+html, body {
+    height: 100%;
+    display: "flex";
+    flex-flow: "column";
+}

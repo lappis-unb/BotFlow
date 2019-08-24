@@ -4,7 +4,7 @@ import AddIcon from '@material-ui/icons/Add'
 
 export const SaveButtonCheck = styled.div`
     width: 112px;
-    height: 36px;
+    max-height: 36px;
     display: flex;
     top: 0px;
     justify-content: center;
@@ -26,13 +26,14 @@ export const Done = styled(DoneIcon)`
 `
 
 export const CreateNewUtter = styled.div`
-    width: 130px;
-    height: 36px;
+    width: 172px;
+    max-height: 36px;
     display: flex;
     top: 0px;
     justify-content: center;
     align-items: center;
     label {
+        margin-left: 5px;
         font-family: Roboto;
         text-align: center;
         font-size: 14px;
@@ -40,9 +41,11 @@ export const CreateNewUtter = styled.div`
         font-style: normal;
         font-stretch: normal;
         line-height: normal;
-        letter-spacing: 0.2px;
+        letter-spacing: 0.5px;
+        color: var(--white);
       }
     `
+  
 export const Add = styled(AddIcon)`
     height: 55px;
     width: 55px;

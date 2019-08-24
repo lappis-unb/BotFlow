@@ -34,25 +34,22 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    h4:{
-      fontSize: 'Roboto-Regular',
+    h4: {
+      fontStyle: 'Roboto-Regular',
       fontSize: 34,
       color: '#000000'
     },
-    h5Center:{
-      fontSize: 'Roboto-Regular',
+    h5: {
+      fontStyle: 'Roboto-Regular',
       fontSize: 24,
       color: '#000000'
     },
-    h5Left:{
-      fontSize: 'Roboto-Regular',
-      fontSize: 24,
-      color:'#000000'
-    },
-    h6:{
-      fontSize: 'Roboto-Medium',
-      fontSize: 20,
-      color: '#ffffff'
+    h6: {
+      fontStyle: 'Roboto-Regular',
+      fontSize: 14,
+      color: '#000000',
+      fontWeight: 'normal',
+      fontStretch: 'normal',
     },
     AppbarMenuActive: {
       fontStyle: 'Roboto-Bold-Italic',
@@ -72,7 +69,7 @@ const theme = createMuiTheme({
     body1Dark: {
       fontStyle: 'Roboto-Regular',
       fontSize: 16,
-      color:'#000000'
+      color: '#000000'
     },
     body1Light: {
       fontStyle: 'Roboto-Regular',
@@ -101,17 +98,17 @@ const theme = createMuiTheme({
     },
     body2Accent: {
       fontStyle: 'Roboto-Regular',
-      fontSize:14,
+      fontSize: 14,
       color: '#f15035'
     },
     body2Dark: {
       fontStyle: 'Roboto-Regular',
-      fontSize:14,
+      fontSize: 14,
       color: '#000000'
     },
     body2Light: {
       fontStyle: 'Roboto-Regular',
-      fontSize:14,
+      fontSize: 14,
       color: '#ffffff'
     },
     Subheader: {

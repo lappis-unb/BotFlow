@@ -3,14 +3,14 @@ import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
 import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
-import { SaveButtonCheck, Done, Add, CreateNewUtter} from '../styles/button';
+import { SaveButtonCheck, Done, Add, CreateNewUtter } from '../styles/button';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Drawer from '@material-ui/core/Drawer'
+//import Drawer from '@material-ui/core/Drawer'
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -32,63 +32,63 @@ class UtterPage extends Component {
     const options = ['Apagar'];
     const ITEM_HEIGHT = 20;
     return (
-      <AppBar position="static" color="background">
+      <AppBar position="static" style={{ background: "#f6f9f9" }}>
         <Toolbar>
-        <Grid item xs={9}>
-          <TextField
-            helperText={this.props.helper_text}
-            id="utter-name"
-            label="Nome da resposta"
-            margin="normal"
-            type="text"
-            value={utter_name}
-            onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
-          />
+          <Grid item xs={9}>
+            <TextField
+              helperText={this.props.helper_text}
+              id="utter-name"
+              label="Nome da resposta"
+              margin="normal"
+              type="text"
+              value={utter_name}
+              onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
+            />
           </Grid>
           <Grid item xs={3}>
-          <Typography variant="h6" color="inherit">
-            <Button
-              disabled={!this.props.utter_submit_button_enable}
-              variant="contained"
-              size="small"
-              color={this.props.button_background_color}
-              onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
-              <SaveButtonCheck>
-              <Done/>
-                <label>
-                  Gravar
+            <Typography variant="h6" color="inherit">
+              <Button
+                disabled={!this.props.utter_submit_button_enable}
+                variant="contained"
+                size="small"
+                color={this.props.button_background_color}
+                onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
+                <SaveButtonCheck>
+                  <Done />
+                  <label>
+                    Gravar
                 </label>
-              </SaveButtonCheck>
+                </SaveButtonCheck>
               </Button>
               <IconButton
-                    onClick = {e => this.props.handleClickMenu(e)}>
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu   
-                    id="long-menu"
-                    anchorEl={this.props.anchorEl}
-                    keepMounted
-                    open={this.props.anchorEl}
-                    onClose= {this.props.handleCloseDelete}
-                    PaperProps={{
-                        style: {
-                        maxHeight: ITEM_HEIGHT * 4.0,
-                        width: 80,
-                        },
-                    }}
-                    >
-                    {options.map(option => (
-                    <MenuItem 
-                        key={option} 
-                        selected={option === 'Apagar'} 
-                        onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter}
-                    >
+                onClick={e => this.props.handleClickMenu(e)}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={this.props.anchorEl}
+                keepMounted
+                open={this.props.anchorEl}
+                onClose={this.props.handleCloseDelete}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.0,
+                    width: 80,
+                  },
+                }}
+              >
+                {options.map(option => (
+                  <MenuItem
+                    key={option}
+                    selected={option === 'Apagar'}
+                    onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter}
+                >
                         {option}
-                    </MenuItem>
-                    ))}
-                </Menu>
-            {this.props.text}
-          </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+              {this.props.text}
+            </Typography>
           </Grid>
         </Toolbar>
       </AppBar>
@@ -96,30 +96,32 @@ class UtterPage extends Component {
   }
 
   render() {
-    
+
     return (
       <div>
-        <Grid container spacing={1}>
-          <Grid item xs={3}>
-          <div style={{marginLeft: '5%', marginTop: '4%'}}>
-              <Button 
-              variant="contained" color="secondary" onClick={() => this.props.createNewUtter()}>
-              <CreateNewUtter>
-              <Add/>
-              <label>
-                Criar Resposta
+        <Grid container style={{ height: "calc(100vh - 64px)", overflow: "hidden" }}>
+          <Grid item xs={3} style={{ background: "#dae8ea"}}>
+            <div style={{ height: "100%" }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => this.props.createNewUtter()}
+                style={{ margin: "1vw 2vw" }}>
+                <CreateNewUtter>
+                  <Add />
+                  <label>
+                    Criar Resposta
                 </label>
                 </CreateNewUtter>
               </Button>
-            <ItemsList items={this.props.utters} text="Respostas cadastradas" />
-          </div>
+              <ItemsList items={this.props.utters} text="Respostas cadastradas" />
+            </div>
           </Grid>
           <Grid item xs={9}>
             {this.getAppBar()}
             <UtterForm />
           </Grid>
         </Grid>
-        <script  src = "https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
       </div>
     )
   }
