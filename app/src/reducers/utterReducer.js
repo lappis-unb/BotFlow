@@ -117,10 +117,14 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "SAVE_DATA":
+        case "SAVE_DATA":            
             return {
                 ...state,
-                helper_text: action.helper_text
+                alternatives: action.alternatives,
+                current_utter:{
+                    ...state.current_utter,
+                    utters: action.utters
+                }
             }
 
         case "CHANGE_UTTER_FORM":            

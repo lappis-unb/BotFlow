@@ -19,7 +19,6 @@ function App() {
             <Typography variant="h6" color="inherit">
               Logo
           </Typography>
-            <ul>
               <List>
                 <Link to="/">Home</Link>
               </List>
@@ -29,7 +28,6 @@ function App() {
               <List>
                 <Link to="/intents">Intents</Link>
               </List>
-            </ul>
           </Toolbar>
         </AppBar>
       </div>
