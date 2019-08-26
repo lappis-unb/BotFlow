@@ -3,6 +3,7 @@ import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
 import { connect } from "react-redux";
 import * as utterAction from "../actions/uttersAction";
+import MessageIcon from '@material-ui/icons/Message';
 import { SaveButtonCheck, Done, Add, CreateNewUtter } from '../styles/button';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -24,6 +25,25 @@ class UtterPage extends Component {
   constructor(props) {
     super(props);
     this.props.getUtters();
+  }
+
+  isEnableUtterButton() {
+    let has_empty_fields = false;
+    const no_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+
+    this.props.current_utter.utters.forEach(utter => {
+      utter.utterText.forEach(text => {
+        if ((text.text).trim().length === 0) {
+          has_empty_fields = true;
+        }
+      })
+    });
+
+    return (
+      no_modifications &&
+      !has_empty_fields &&
+      (this.props.current_utter.nameUtter.length !== 0)
+    );
   }
 
   getAppBar() {
@@ -48,10 +68,10 @@ class UtterPage extends Component {
           <Grid item xs={3}>
             <Typography variant="h6" color="inherit">
               <Button
-                disabled={!this.props.utter_submit_button_enable}
+                disabled={!this.isEnableUtterButton()}
                 variant="contained"
                 size="small"
-                color={this.props.button_background_color}
+                color="secondary"
                 onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
                 <SaveButtonCheck>
                   <Done />
@@ -81,9 +101,8 @@ class UtterPage extends Component {
                   <MenuItem
                     key={option}
                     selected={option === 'Apagar'}
-                    onClick={() => this.props.removeUtter(this.props.current_utter._id)}>Deletar utter}
-                >
-                        {option}
+                    onClick={() => this.props.removeUtter(this.props.current_utter._id)}>
+                    {option}
                   </MenuItem>
                 ))}
               </Menu>
@@ -100,7 +119,7 @@ class UtterPage extends Component {
     return (
       <div>
         <Grid container style={{ height: "calc(100vh - 64px)", overflow: "hidden" }}>
-          <Grid item xs={3} style={{ background: "#dae8ea"}}>
+          <Grid item xs={3} style={{ background: "#dae8ea" }}>
             <div style={{ height: "100%" }}>
               <Button
                 variant="contained"
@@ -114,7 +133,7 @@ class UtterPage extends Component {
                 </label>
                 </CreateNewUtter>
               </Button>
-              <ItemsList items={this.props.utters} text="Respostas cadastradas" />
+              <ItemsList items={this.props.utters} icon={<MessageIcon />} text="Respostas cadastradas" />
             </div>
           </Grid>
           <Grid item xs={9}>
@@ -132,12 +151,9 @@ const mapStateToProps = state => { return { ...state } };
 const mapDispatchToProps = dispatch => ({
   getUtters: () => dispatch(utterAction.getUtters()),
   createNewUtter: () => dispatch(utterAction.createNewUtter()),
-  createUtter: (new_utter) => dispatch(utterAction.createUtter(new_utter)),
   removeUtter: (utter_id) => dispatch(utterAction.removeUtter(utter_id)),
-  updateUtter: (new_utter, id) => dispatch(utterAction.updateUtter(new_utter, id)),
-  saveData: (current_utter, utters) => dispatch(utterAction.saveData(current_utter, utters)),
   setUtterName: (utter_name) => dispatch(utterAction.setUtterName(utter_name)),
-
+  saveData: (current_utter, utters) => dispatch(utterAction.saveData(current_utter, utters)),
 });
 
 

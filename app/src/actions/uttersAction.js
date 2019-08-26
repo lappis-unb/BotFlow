@@ -43,7 +43,6 @@ export const updateUtter = (new_utter = {}, utter_id) => {
       await axios.put(url, new_utter);
       dispatch(successAction(message));
       dispatch(getUtters());
-      console.log("Entrou aqui", utter_id, new_utter);
     } catch (error) {
       throw (error);
     }
@@ -127,37 +126,12 @@ export const removeUtterText = (text_position) => {
 
 export const undoTextRemotion = () => { return { type: "UNDO_TEXT_REMOVAL" }; }
 
-export const isEnableUtterButton = (current_utter) => {
-    let has_name = current_utter.nameUtter.length > 0;
-    let is_enable = checkNonEmptyFields(current_utter);
-
-    return {
-      type: "IS_ENABLE_BUTTON",
-      utter_submit_button: is_enable && has_name
-    };
-  }
-
-const checkNonEmptyFields = (current_utter) => {
-  let is_enable = true;
-
-  current_utter.utters.forEach(utter => {
-    utter.utterText.forEach(text => {
-      if ((text.text).trim().length === 0) {
-        is_enable = false;
-      }
-    })
-  });
-
-  return is_enable;
-}
-
 export const setUtterText = (utter_position, text_position, text, current_utter) => {
-    return async (dispatch) => {
-      dispatch(setUtterTextAction(utter_position, text_position, text,
-        current_utter));
-      dispatch(isEnableUtterButton(current_utter));
-    }
+  return async (dispatch) => {
+    dispatch(setUtterTextAction(utter_position, text_position, text,
+      current_utter));
   }
+}
 
 export const saveData = (current_utter, utters) => {
   let message = {
@@ -167,10 +141,8 @@ export const saveData = (current_utter, utters) => {
 
   return async (dispatch) => {
     if (current_utter._id !== undefined) {
-      console.log("Entrou no 1");
       dispatch(updateUtter(current_utter, current_utter._id));
     } else {
-      console.log("Entrou no 2");
       let founded =
         utters.find((utter) => utter.nameUtter === current_utter.nameUtter);
 
@@ -178,9 +150,9 @@ export const saveData = (current_utter, utters) => {
         dispatch(createUtter(current_utter));
       }
     }
-    console.log("Entrou");
+
     message.helper_text = "Por favor, insira um nome não repetido.";
-    
+
     return message;
   }
 }

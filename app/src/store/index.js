@@ -12,10 +12,7 @@ const INITIAL_STATE = {
   current_utter: new Utter(),
   old_utter: new Utter(),
   
-  utter_submit_button_enable: false,
   helper_text: "",
-  button_background_color: "#000000",
-  
 };
 
 function configureStore(state = INITIAL_STATE) {

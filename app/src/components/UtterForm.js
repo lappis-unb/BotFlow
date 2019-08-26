@@ -42,23 +42,18 @@ class UtterForm extends Component {
   }
 
   render() {
-    let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
     return (
-      <div style={{overflowY: "auto", height: "80vh" }}>
+      <div style={{ overflowY: "auto", height: "85vh" }}>
         <form>
-          <br />
           <Grid item xs={5}>
-            <label>
-              <ul>
-                {this.setUtterTexts()}
-              </ul>
-            </label>
+            <ul>
+              {this.setUtterTexts()}
+            </ul>
           </Grid>
-          <br />
           <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button>
           <button type="button" onClick={() => this.props.addUtterText()}>Novo Balão De Resposta</button>
         </form>
-        <h1>{utter_name}</h1>
+
         <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
       </div>
     );

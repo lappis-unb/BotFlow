@@ -65,7 +65,7 @@ export default (state, action) => {
             }
 
         case "SUCESS_ACTION_UTTER":
-            return { ...state, text: action.text };
+            return { ...state, text: action.text, old_utter: state.current_utter };
 
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
@@ -89,19 +89,6 @@ export default (state, action) => {
                 old_utter: { ...utter_selected, utters: utters_text },
                 button_background_color:(action.button_background_color)
             };
-        }
-
-        case "IS_ENABLE_BUTTON": {
-            let is_text_changed = (JSON.stringify(state.current_utter) !== JSON.stringify(state.old_utter));
-            let color="red"
-            if(action.utter_submit_button && is_text_changed){
-                color = "secondary"
-            }
-            return {
-                ...state,
-                utter_submit_button_enable: (action.utter_submit_button && is_text_changed),
-                button_background_color: color
-            }
         }
 
         case "SAVE_DATA":

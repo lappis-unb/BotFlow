@@ -8,7 +8,6 @@ import * as utterAction from "../actions/uttersAction";
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import MessageIcon from '@material-ui/icons/Message';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -31,7 +30,6 @@ const style = {
   }
 }
 
-
 class ItemsList extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +45,7 @@ class ItemsList extends Component {
           selected={this.state.selected_item === index}
           onClick={() => this.handleListItemClick(item, index)}>
           <ListItemIcon>
-            <MessageIcon />
+            {this.props.icon}
           </ListItemIcon>
           <ListItemText primary={item.nameUtter} />
         </ListItem>
@@ -89,11 +87,7 @@ class ItemsList extends Component {
             variant="outlined"
             style={style.field_form}
             onChange={(e) => this.filterItems(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <SearchIcon />
-              ),
-            }}
+            InputProps={{ endAdornment: (<SearchIcon />) }}
           />
         </div>
       </div>
