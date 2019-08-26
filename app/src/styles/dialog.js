@@ -3,35 +3,39 @@ import styled from 'styled-components';
 
 export const DialogBox = styled.div`
 position:relative;
-margin-top: 30px;
-background: #fef4f3;
-border-radius: 10px;
-padding: 8px 0;
-overflow: none;
-box-shadow: rgba(78, 78, 78, 0.16) 0px 8px 16px
-:before {
+  margin-top: 80px;
+  background: #fef4f3;
+  border-radius: 8px;
+  padding: 8px 0;
+  filter: drop-shadow(0 8px 12px rgba(78, 78, 78, 0.16));
+  overflow: none;
+
+:after {
   content: "";
-  position: absolute;
-  -moz-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-  left: -0px;
-  top: -25px;
-  border-width: 20px;
-  border-style: solid;
-  border-color: transparent #fef4f3 #fef4f3 transparent;
-  z-index: 90;
+  position: absolute;               
+  left: 0px;
+  top: -19px;     
+  width: 40px;
+  height: 32px;
+  border: inherit;
+  border-radius: inherit;
+  background: #fef4f3;
+  clip-path: polygon(22% 0, 25% 2%, 27% 4%, 100% 69%, 0 99%, 0 0);
 }
+
+
 
 textarea {
   background: inherit;
   width: calc(100% - 20px);
   border: none;
   margin: 10px;
-  padding: 0;
+  padding: 4px;
   resize: none;
   overflow: auto;
   display: block;
 }
+
 textarea:focus {
     outline: none;
     border-style: none;

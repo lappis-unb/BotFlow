@@ -4,10 +4,20 @@ import Grid from '@material-ui/core/Grid';
 import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { setUtterText, addUtterText, undoTextRemotion, removeUtterText, changeUtterForm } from "../actions/uttersAction";
-import Checkbox from '@material-ui/core/Checkbox';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import TextField from '@material-ui/core/TextField';
 
 
 class UtterForm extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      values: ["", "alternativas"],
+      value: ""
+    }
+  }
 
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
@@ -25,7 +35,7 @@ class UtterForm extends Component {
             <li key={"utter_text" + utter_index + text_index}>
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={11}>
-                  <DialogBox>
+                  <DialogBox className="dialog_box">
                     <textarea type="text" value={utter_text.text}
                       onChange={(e) => this.changeTextarea(utter_index, text_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
@@ -48,19 +58,31 @@ class UtterForm extends Component {
     return utters_texts;
   }
 
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+    this.props.changeUtterForm((this.state.value === "alternativas"), this.props.current_utter)
+  }
+
   render() {
     return (
       <Grid container>
         <Grid item xs={1} />
         <Grid item xs={7}>
-
-          <p>Os balões são falas alternativas</p>
-          <Checkbox
-            value="checkedA"
-            color="default"
-            checked={this.props.alternatives}
-            onChange={() => this.props.changeUtterForm(this.props.alternatives, this.props.current_utter)}
-          />
+          <TextField
+            fullWidth
+            select
+            margin="normal"
+            variant="outlined"
+            value={this.state.value}
+            id="outlined-select-currency"
+            label="Balões aparecem como:"
+            onChange={(e) => this.handleChange(e)}>
+            {(this.state.values).map((option, index) => (
+              <MenuItem key={"menu" + index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
 
           <ul>
             {this.setUtterTexts()}
@@ -68,9 +90,24 @@ class UtterForm extends Component {
 
           {/* <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button> */}
 
-          <DialogBox onClick={() => this.props.addUtterText()} >
-            <textarea disabled type="text" value="Novo balão de resposta" />
-          </DialogBox>
+          <Grid container spacing={2} alignItems="flex-end" >
+            <Grid item xs={11}>
+              <DialogBox
+                style={{
+                  opacity: "0.6",
+                  filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
+                }}
+                onClick={() => this.props.addUtterText()} >
+                <textarea
+                  readOnly
+                  type="text"
+                  style={{ cursor: "pointer" }}
+                  placeholder="Novo balão de resposta" />
+              </DialogBox>
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
+
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>

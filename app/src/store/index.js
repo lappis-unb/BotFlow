@@ -1,34 +1,14 @@
-import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from '../reducers/index.js';
-import { Utter } from '../utils/utter.js';
-import { Intent } from '../utils/intent.js';
+import { combineReducers } from 'redux'
+import utterReducer from '../reducers/utterReducer'
+import { createStore, applyMiddleware } from 'redux';
+import intentReducer from '../reducers/intentReducer.js'
 
-const INITIAL_STATE = {
-  helper_text: "",
-  alternatives: false,
-
-  // Utters
-  utters: [],
-  filtered_utters: [],
-
-  old_utter_texts: [],
-
-  current_utter: new Utter(),
-  old_utter: new Utter(),
-
-  // Intents
-  intents: [],
-  filtered_intents: [],
-
-  old_intents_texts: [],
-
-  current_intent: new Intent(),
-  old_intent: new Intent(),
-};
-
-function configureStore(state = INITIAL_STATE) {
-  return createStore(reducer, state, applyMiddleware(thunk));
+function configureStore() {
+  return createStore(
+    combineReducers({ utterReducer, intentReducer }),
+    applyMiddleware(thunk)
+  );
 }
 
 export default configureStore;

@@ -11,12 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import IconButton from '@material-ui/core/IconButton';
-
-import Menu from '@material-ui/core/Menu';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import MenuItem from '@material-ui/core/MenuItem';
-
 import TextField from '@material-ui/core/TextField';
 import { Divider } from "@material-ui/core";
 
@@ -50,7 +44,7 @@ class UtterPage extends Component {
 
     return (
       <Toolbar style={{ background: "#f6f9f9", padding: "4px" }}>
-        <Grid item xs={1}></Grid>
+        <Grid item xs={1} />
         <Grid item xs={7}>
           <TextField
             fullWidth
@@ -62,7 +56,7 @@ class UtterPage extends Component {
             onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
           />
         </Grid>
-        <Grid item xs={1}></Grid>
+        <Grid item xs={1} />
         <Grid item xs={3}>
           <Typography variant="h6" color="inherit">
             <Button
@@ -106,7 +100,7 @@ class UtterPage extends Component {
         <Grid item xs={9}>
           {this.getAppBar()}
           <Divider />
-          <div style={{ height: "calc(100vh - 164px)", overflowY: "auto" }}>
+          <div style={{ height: "calc(100vh - 164px)", overflowY: "auto", overflowX: "hidden" }}>
             <UtterForm />
           </div>
         </Grid>
