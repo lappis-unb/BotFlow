@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import IntentList from "../components/IntentList";
-import IntentForm from "../components/IntentForm";
 import { connect } from "react-redux";
+import React, { Component } from "react";
+import ItemsList from "../components/ItemsList";
+import IntentForm from "../components/IntentForm";
 import * as intentsAction from "../actions/intentsAction";
 
+import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
-import Grid from '@material-ui/core/Grid';
-
+import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
+import MessageIcon from '@material-ui/icons/Message';
+import Typography from '@material-ui/core/Typography';
 
 class IntentPage extends Component {
   constructor(props) {
@@ -43,7 +43,9 @@ class IntentPage extends Component {
               <SaveIcon />
                 Salvar
               </Button>
+
             <button onClick={() => this.props.removeIntent(this.props.current_intent._id)}>Deletar intent</button>
+
             {this.props.text}
           </Typography>
         </Toolbar>
@@ -62,7 +64,7 @@ class IntentPage extends Component {
                 Criar uma nova intent
               </Button>
             </center>
-            <IntentList items={this.props.intents} current_intent={this.props.current_intent} text="Perguntas cadastradas" />
+            <ItemsList items={this.props.intents} icon={<MessageIcon />} text="Perguntas cadastradas" />
           </Grid>
           <Grid item xs={9}>
             {this.getAppBar()}

@@ -44,7 +44,7 @@ class UtterForm extends Component {
 
   render() {
     return (
-      <div style={{ overflowY: "auto", height: "85vh" }}>
+      <div>
         <form>
           <Grid item xs={5}>
             <Checkbox

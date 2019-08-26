@@ -1,4 +1,4 @@
-import {Utter} from '../utils/utter';
+import { Utter } from '../utils/utter';
 
 const INITIAL_STATE = {
     utters: [],
@@ -40,9 +40,9 @@ export default (state = INITIAL_STATE, action) => {
 
         case "ADD_UTTER_TEXT":
             let new_utters = [...state.current_utter.utters];
-            if(state.alternatives){
+            if (state.alternatives) {
                 new_utters.push(action.text);
-            }else{
+            } else {
                 new_utters[0].utterText.push(action.text.utterText[0]);
             }
 
@@ -60,11 +60,11 @@ export default (state = INITIAL_STATE, action) => {
             let old_utter_history = [...utters_text];
 
             console.log("entrou", utters_text);
-            if (state.alternative && utters_text.length > 1){
+            if (state.alternative && utters_text.length > 1) {
                 console.log('haha');
-                
+
                 utters_text.splice(action.text_position, 1);
-            }else if (!state.alternatives && utters_text[0].utterText.length > 1){
+            } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
                 utters_text[0].utterText.splice(action.text_position, 1);
 
             }
@@ -96,7 +96,7 @@ export default (state = INITIAL_STATE, action) => {
         case "SELECT_UTTER": {
             let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
             let alternatives = false;
-            if(utter_selected.utters.length > 1){
+            if (utter_selected.utters.length > 1) {
                 alternatives = true;
             }
             let utters_text = [...utter_selected.utters.map((utter) => {
@@ -117,21 +117,21 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "SAVE_DATA":            
+        case "SAVE_DATA":
             return {
                 ...state,
                 alternatives: action.alternatives,
-                current_utter:{
+                current_utter: {
                     ...state.current_utter,
                     utters: action.utters
                 }
             }
 
-        case "CHANGE_UTTER_FORM":            
+        case "CHANGE_UTTER_FORM":
             return {
                 ...state,
                 alternatives: action.alternatives,
-                current_utter:{
+                current_utter: {
                     ...state.current_utter,
                     utters: action.utters
                 }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DialogBox, Add} from '../styles/dialog';
+import { DialogBox } from '../styles/dialog';
 
 import { connect } from "react-redux";
-import { setIntentName, setIntentText, addIntentText, undoTextRemotion, removeIntentText, changeIntentForm } from "../actions/intentsAction";
+import { setIntentText, addIntentText, undoTextRemotion, removeIntentText } from "../actions/intentsAction";
 
 
 class IntentForm extends Component {

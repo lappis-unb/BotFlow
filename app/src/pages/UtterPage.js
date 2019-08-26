@@ -115,33 +115,32 @@ class UtterPage extends Component {
   }
 
   render() {
-
+    // style={{ height: "calc(100vh - 64px)", background: "red" }}
+    // , height: "calc(100vh - 64px)", overflowY: "auto"
+    // style={{ height: "calc(100vh - 138px )", overflowY: "auto" }}
     return (
-      <div>
-        <Grid container style={{ height: "calc(100vh - 64px)", overflow: "hidden" }}>
-          <Grid item xs={3} style={{ background: "#dae8ea" }}>
-            <div style={{ height: "100%" }}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => this.props.createNewUtter()}
-                style={{ margin: "1vw 2vw" }}>
-                <CreateNewUtter>
-                  <Add />
-                  <label>
-                    Criar Resposta
-                </label>
-                </CreateNewUtter>
-              </Button>
-              <ItemsList items={this.props.utters} icon={<MessageIcon />} text="Respostas cadastradas" />
-            </div>
-          </Grid>
-          <Grid item xs={9}>
-            {this.getAppBar()}
-            <UtterForm />
-          </Grid>
+      <Grid container>
+        <Grid item xs={3} style={{ background: "#dae8ea"}}>
+          <Button
+            style={{margin: "16px 24px"}}
+            variant="contained"
+            color="secondary"
+            onClick={() => this.props.createNewUtter()}
+            >
+            <CreateNewUtter>
+              <Add />
+              <label>Criar Resposta</label>
+            </CreateNewUtter>
+          </Button>
+          <ItemsList items={this.props.utters} icon={<MessageIcon />} text="Respostas cadastradas" />
         </Grid>
-      </div>
+        <Grid item xs={9}>
+          {this.getAppBar()}
+          <div style={{height:"calc(100vh - 64px - 72px)", overflowY: "auto"}}>
+            <UtterForm />
+          </div>
+        </Grid>
+      </Grid>
     )
   }
 }

@@ -11,22 +11,23 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import Grid from '@material-ui/core/Grid';
+
 const style = {
   list_container: {
-    position: "relative",
-    height: "calc(100% - 64px)"
+    paddingLeft: "24px"
   },
   filter_items_container: {
-    bottom: 0,
-    width: "100%",
-    position: "absolute"
+    padding: "12px 8px"
   },
   items_list: {
-    marginLeft: "2vw"
+    // marginLeft: "2vw",
+    height: "64.8vh",
+    overflowY: "auto"
   },
   field_form: {
-    width: "90%",
-    margin: "2vh"
+    // width: "90%",
+    // margin: "2vh"
   }
 }
 
@@ -47,7 +48,11 @@ class ItemsList extends Component {
           <ListItemIcon>
             {this.props.icon}
           </ListItemIcon>
-          <ListItemText primary={this.truncateText(item.nameUtter)} />
+          <ListItemText>
+            <Typography noWrap>
+              {item.nameUtter}
+            </Typography>
+          </ListItemText>
         </ListItem>
       ));
     }
@@ -64,29 +69,24 @@ class ItemsList extends Component {
     this.props.selectItem(item._id)
   }
 
-  truncateText(text) {
-    if (text.length > 20) {
-        return text.substring(0, 17) + "..."
-    }
-    return text
-  }
-
   render() {
     return (
-      <div style={style.list_container}>
-        <div style={style.items_list}>
+      <div>
+        <div style={style.list_container} id="arroz">
           <Typography variant="h6" color="primary">
             {this.props.text}
           </Typography>
-        
-          <List>
-            {this.itemsList()}
-          </List>
-        </div>
 
+          <Grid container wrap="nowrap" style={style.items_list}>
+            <Grid item zeroMinWidth>
+              <List>
+                {this.itemsList()}
+              </List>
+            </Grid>
+          </Grid>
+        </div>
+        <Divider />
         <div style={style.filter_items_container}>
-          <Divider />
-        
           <TextField
             fullWidth
             type="text"
