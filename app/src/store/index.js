@@ -5,6 +5,10 @@ import { Utter } from '../utils/utter.js';
 import { Intent } from '../utils/intent.js';
 
 const INITIAL_STATE = {
+  helper_text: "",
+  alternatives: false,
+
+  // Utters
   utters: [],
   filtered_utters: [],
 
@@ -13,10 +17,7 @@ const INITIAL_STATE = {
   current_utter: new Utter(),
   old_utter: new Utter(),
 
-  helper_text: "",
-
-  alternatives: false,
-
+  // Intents
   intents: [],
   filtered_intents: [],
 

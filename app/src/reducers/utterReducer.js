@@ -6,7 +6,6 @@ const INITIAL_STATE = {
     old_utter_texts: [],
     current_utter: new Utter(),
     old_utter: new Utter(),
-    utter_submit_button_enable: false,
     helper_text: "",
     alternatives: false,
 };
@@ -99,6 +98,7 @@ export default (state = INITIAL_STATE, action) => {
             if (utter_selected.utters.length > 1) {
                 alternatives = true;
             }
+            
             let utters_text = [...utter_selected.utters.map((utter) => {
                 return {
                     ...utter,
@@ -110,7 +110,6 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                utter_submit_button_enable: false,
                 current_utter: { ...utter_selected },
                 old_utter: { ...utter_selected, utters: utters_text },
                 alternatives: alternatives

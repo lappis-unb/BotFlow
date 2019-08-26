@@ -16,23 +16,21 @@ class UtterForm extends Component {
         return utter_text_list.utterText.map((utter_text, text_index) => {
           return (
             <li key={"utter_text" + utter_index + text_index}>
-              <div>
-                <Grid container spacing={1} justify="space-between" alignItems="flex-end" >
-                  <Grid item xs={10}>
-                    <DialogBox>
-                      <textarea type="text" value={utter_text.text}
-                        onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
-                    </DialogBox>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <DeleteIcon
-                      style={{ color: "#4b3953", opacity: 0.5 }}
-                      type="button"
-                      onClick={() => this.props.removeUtterText(utter_index)}>
-                    </DeleteIcon>
-                  </Grid>
+              <Grid container spacing={2} alignItems="flex-end" >
+                <Grid item xs={11}>
+                  <DialogBox>
+                    <textarea type="text" value={utter_text.text}
+                      onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
+                  </DialogBox>
                 </Grid>
-              </div>
+                <Grid item xs={1}>
+                  <DeleteIcon
+                    style={{ color: "#4b3953", opacity: 0.5 }}
+                    type="button"
+                    onClick={() => this.props.removeUtterText(utter_index)}>
+                  </DeleteIcon>
+                </Grid>
+              </Grid>
             </li>
           )
         })
@@ -44,32 +42,41 @@ class UtterForm extends Component {
 
   render() {
     return (
-      <div>
-        <form>
-          <Grid item xs={5}>
-            <Checkbox
-              value="checkedA"
-              color="default"
-              checked={this.props.alternatives}
-              onChange={() => this.props.changeUtterForm(this.props.alternatives, this.props.current_utter)}
-            />
-            <p>Os balões são falas alternativas</p>
-            <ul>
-              {this.setUtterTexts()}
-            </ul>
-          </Grid>
-          <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button>
-          <button type="button" onClick={() => this.props.addUtterText()}>Novo Balão De Resposta</button>
-        </form>
+      <Grid container>
+        <Grid item xs={1} />
+        <Grid item xs={7}>
 
-        <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
-      </div>
+          <p>Os balões são falas alternativas</p>
+          <Checkbox
+            value="checkedA"
+            color="default"
+            checked={this.props.alternatives}
+            onChange={() => this.props.changeUtterForm(this.props.alternatives, this.props.current_utter)}
+          />
+
+          <ul>
+            {this.setUtterTexts()}
+          </ul>
+
+          {/* <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button> */}
+
+          <DialogBox onClick={() => this.props.addUtterText()} >
+            <textarea disabled type="text"value="Novo balão de resposta" />
+          </DialogBox>
+        </Grid>
+        <Grid item xs={1} />
+        <Grid item xs={3}>
+          <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
+        </Grid>
+      </Grid>
     );
   }
 }
 
-const mapStateToProps = state => { console.log(state);
- return {...state.utterReducer } };
+const mapStateToProps = state => {
+  console.log(state);
+  return { ...state.utterReducer }
+};
 
 const mapDispatchToProps = dispatch => ({
   addUtterText: () => dispatch(addUtterText()),

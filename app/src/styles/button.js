@@ -17,7 +17,7 @@ export const CreateNewUtter = styled.div`
     justify-content: center;
     align-items: center;
 `
-  
+
 export const Add = styled(AddIcon)`
     height: 55px;
     width: 55px;

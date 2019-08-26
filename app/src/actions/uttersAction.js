@@ -3,8 +3,8 @@ import {
   Utter
 } from '../utils/utter.js'
 
-const BASE = "https://botflow.api.lappis.rocks/";
 //const BASE = "http://localhost:3030/";
+const BASE = "https://botflow.api.lappis.rocks/";
 
 const UTTER_URL_API_GET_DELETE = BASE + "utter/";
 const UTTER_URL_API_CREATE_UPDATE = BASE + "project/utter/";
@@ -14,31 +14,17 @@ export const getUtters = (name = undefined, deleted = false) => {
     try {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
       let utters = await sortUtterName(response.data);
+      
       await dispatch({type : "GET_UTTERS", utters : utters});
+      
       if(deleted){
         dispatch(selectItem(utters[0]._id));
-      }else if(name){
-        let id = findByName(name,utters);
-        await dispatch(selectItem(id))
       }
     } catch (error) {
       throw (error);
     }
   }
 };
-
-const findByName = (name, utters) => {
-  let id = utters[0]._id;
-
-  utters.forEach( utter => {
-    if(utter.nameUtter === name){
-      id = utter._id;
-    }
-
-  });
-
-  return id;
-}
 
 const sortUtterName = (utters) =>{
   // sorts alphabetically utters in sidebar
@@ -71,8 +57,7 @@ export const updateUtter = (new_utter = {}, utter_id) => {
   return async (dispatch) => {
     try {
       await axios.put(url, new_utter)
-      .then(res => console.log(res)
-      );
+      .then(res => console.log(res));
       dispatch(successAction(message));
       await dispatch(getUtters());
     } catch (error) {
@@ -89,7 +74,7 @@ export const removeUtter = (utter_id = "") => {
     try {
       await axios.delete(url_delete);
       dispatch(successAction(message));
-      dispatch(getUtters(undefined, true));
+      await dispatch(getUtters(undefined, true));
     } catch (error) {
       throw (error);
     }
@@ -103,14 +88,10 @@ export const successAction = (message) => {
   };
 };
 
-export const selectItem =
-  (item_id = "") => {
-    console.log('ta no certo');
-    
+export const selectItem = (item_id = "") => {
     return {
       type: "SELECT_UTTER",
       utter_id: item_id,
-      utter_submit_button_enable: false,
     };
   }
 
