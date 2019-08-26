@@ -8,6 +8,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 
 class UtterForm extends Component {
+
+  changeTextarea = (utter_index, text_index, e) => {
+    this.multilineTextarea.style.height = 'auto';
+    this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
+    this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)
+  }
+
   setUtterTexts() {
     let utters_texts = [];
 
@@ -20,7 +27,8 @@ class UtterForm extends Component {
                 <Grid item xs={11}>
                   <DialogBox>
                     <textarea type="text" value={utter_text.text}
-                      onChange={(e) => this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)} />
+                      onChange={(e) => this.changeTextarea(utter_index, text_index, e)}
+                      ref={ref => this.multilineTextarea = ref} />
                   </DialogBox>
                 </Grid>
                 <Grid item xs={1}>
@@ -61,7 +69,7 @@ class UtterForm extends Component {
           {/* <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button> */}
 
           <DialogBox onClick={() => this.props.addUtterText()} >
-            <textarea disabled type="text"value="Novo balão de resposta" />
+            <textarea disabled type="text" value="Novo balão de resposta" />
           </DialogBox>
         </Grid>
         <Grid item xs={1} />
@@ -74,7 +82,6 @@ class UtterForm extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return { ...state.utterReducer }
 };
 

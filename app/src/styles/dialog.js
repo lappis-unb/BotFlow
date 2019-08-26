@@ -21,16 +21,18 @@ box-shadow: rgba(78, 78, 78, 0.16) 0px 8px 16px
   border-color: transparent #fef4f3 #fef4f3 transparent;
   z-index: 90;
 }
+
 textarea {
   background: inherit;
   width: calc(100% - 20px);
-  border: 1px solid red;
+  border: none;
   margin: 10px;
   padding: 0;
   resize: none;
   overflow: auto;
+  display: block;
 }
-textarea:focus{
+textarea:focus {
     outline: none;
     border-style: none;
     border-color: transparent;
