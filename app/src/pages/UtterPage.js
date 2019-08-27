@@ -126,7 +126,6 @@ class UtterPage extends Component {
           <div style={{ height: "calc(100vh - 164px)", overflowY: "auto", overflowX: "hidden" }}>
             <UtterForm />
           </div>
-          {this.props.notification_text}
           <Snackbar
             anchorOrigin={{
               vertical: 'bottom',
