@@ -129,10 +129,13 @@ const setUtterTextAction = (utter_position, text_position, text) => {
   };
 }
 
-export const removeUtterText = (text_position) => {
+export const removeUtterText = (text_position, items) => {
+  console.log("Items", items)
+
   return {
     type: "REMOVE_UTTER_TEXT",
-    text_position: text_position
+    text_position: text_position,
+    items: items
   };
 }
 
@@ -150,7 +153,7 @@ export const setUtterText = (utter_position, text_position, text, current_utter)
 export const saveData = (current_utter, utters) => {
   return async (dispatch) => {
     let founded = utters.find((utter) => (utter._id !== current_utter._id));
-    
+
     if ((founded !== undefined) && (current_utter._id !== undefined)) {
       dispatch(updateUtter(current_utter, current_utter._id));
     } else {

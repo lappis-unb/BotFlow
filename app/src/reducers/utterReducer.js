@@ -43,7 +43,8 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case "ADD_UTTER_TEXT":
-            let new_utters = [...state.current_utter.utters];
+            let new_utters = state.current_utter.utters.map(i => i);
+
             if (state.alternatives) {
                 new_utters.push(action.text);
             } else {
@@ -52,16 +53,30 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                old_utter_texts: [...state.current_utter.utters],
                 current_utter: {
                     ...state.current_utter,
-                    utters: [...new_utters]
+                    utters: new_utters.map(i => i)
                 }
             };
 
         case "REMOVE_UTTER_TEXT":
-            let utters_text = [...state.current_utter.utters];
-            let old_utter_history = [...utters_text];
+            let utters_text = (state.current_utter.utters).map((utter) => {
+                return {
+                    ...utter,
+                    utterText: utter.utterText.map((utter_text) => {
+                        return { ...utter_text }
+                    })
+                }
+            })
+
+            let old_utter_history = (state.current_utter.utters).map((utter) => {
+                return {
+                    ...utter,
+                    utterText: utter.utterText.map((utter_text) => {
+                        return { ...utter_text }
+                    })
+                }
+            })
 
             if ((state.alternatives) && utters_text.length > 1) {
                 utters_text.splice(action.text_position, 1);
@@ -71,10 +86,10 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                old_utter_texts: old_utter_history,
+                old_utter_texts: old_utter_history.map(item => item),
                 current_utter: {
                     ...state.current_utter,
-                    utters: utters_text
+                    utters: utters_text.map(item => item)
                 }
             };
 
@@ -117,7 +132,7 @@ export default (state = INITIAL_STATE, action) => {
                 selected_item = index;
                 return (item._id === action.item._id || item.nameUtter === action.item.nameUtter);
             });
-            
+
             let alternatives = false;
             let utters_text = [];
 
@@ -137,8 +152,6 @@ export default (state = INITIAL_STATE, action) => {
             } else {
                 selected_item = 0;
             }
-
-            console.log("Select Utter", selected_item, utters_text, state.current_utter)
 
             utter_selected = (utter_selected !== undefined) ? { ...utter_selected } : { ...state.current_utter };
             let old_utter = (utters_text.length !== 0) ? { ...utter_selected, utters: utters_text } : { ...utter_selected };

@@ -5,6 +5,10 @@ import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { setUtterText, addUtterText, undoTextRemotion, removeUtterText, changeUtterForm } from "../actions/uttersAction";
 import MenuItem from '@material-ui/core/MenuItem';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
+import { Button } from '@material-ui/core';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -15,7 +19,8 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: ["", "alternativas"],
-      value: ""
+      value: "",
+      undoDelete: false
     }
   }
 
@@ -23,6 +28,51 @@ class UtterForm extends Component {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
     this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)
+  }
+
+  handleDelete(text_index) {
+    if (this.props.current_utter.utters[0].utterText.length > 1) {
+      this.setState({ undoDelete: true });
+    }
+    this.props.removeUtterText(text_index, this.props.current_utter.utters);
+  }
+
+  handleUndo() {
+    this.props.undoTextRemotion();
+    this.setState({ undoDelete: false });
+  }
+
+  deleteSnack() {
+    return (<Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      open={this.state.undoDelete}
+      autoHideDuration={3000}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+      }}
+      message={<span id="message-id">Removido com sucesso!</span>}
+      action={[
+        <Button
+          key="undo"
+          color="secondary"
+          size="small"
+          onClick={() => this.handleUndo()}>
+          Desfazer
+        </Button>,
+        <IconButton
+          key="close"
+          aria-label="Close"
+          color="inherit"
+          onClick={() => this.setState({ undoDelete: false })}
+        >
+          <CloseIcon />
+        </IconButton>
+      ]
+      }
+    />)
   }
 
   setUtterTexts() {
@@ -45,7 +95,7 @@ class UtterForm extends Component {
                   <DeleteIcon
                     style={{ color: "#4b3953", opacity: 0.5 }}
                     type="button"
-                    onClick={() => this.props.removeUtterText(utter_index)}>
+                    onClick={() => this.handleDelete(text_index)}>
                   </DeleteIcon>
                 </Grid>
               </Grid>
@@ -88,9 +138,8 @@ class UtterForm extends Component {
             {this.setUtterTexts()}
           </ul>
 
-          {/* <button type="button" onClick={() => this.props.undoTextRemotion()}>Desfazer</button> */}
-
           <Grid container spacing={2} alignItems="flex-end" >
+            {this.deleteSnack()}
             <Grid item xs={11}>
               <DialogBox
                 style={{
