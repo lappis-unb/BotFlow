@@ -47,7 +47,7 @@ const useStyles1 = makeStyles(theme => ({
 
 export default function SnackbarContentCustom(props) {
   const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
+  const { className, message, onClose, variant, } = props;
   const Icon = variantIcon[variant];
 
   return (

@@ -87,22 +87,41 @@ export default (state = INITIAL_STATE, action) => {
                 }
             }
 
-        case "SUCESS_ACTION_UTTER":
-            return { ...state, notification_text: action.text, old_utter: state.current_utter };
+        case "SUCESS_ACTION_UTTER": {
+            let utters_text = [...state.current_utter.utters.map((utter) => {
+                return {
+                    ...utter,
+                    utterText: utter.utterText.map((utter_text) => {
+                        return { ...utter_text }
+                    })
+                }
+            })]
+
+            return {
+                ...state,
+                notification_text: action.text,
+                old_utter: { ...state.current_utter, utters: utters_text }
+            };
+        }
 
         case "GET_UTTERS":
-            return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
+            return {
+                ...state,
+                utters: [...action.utters],
+                filtered_utters: [...action.utters]
+            };
 
         case "SELECT_UTTER": {
-            let selected_item = -1;
+            let selected_item = 0;
             let utter_selected = state.utters.find((item, index) => {
                 selected_item = index;
-                return item.nameUtter === action.item.nameUtter
+                return (item._id === action.item._id || item.nameUtter === action.item.nameUtter);
             });
-
+            
             let alternatives = false;
             let utters_text = [];
-            if (utter_selected) {
+
+            if (utter_selected !== undefined) {
                 if (utter_selected.utters.length > 1) {
                     alternatives = true;
                 }
@@ -115,14 +134,21 @@ export default (state = INITIAL_STATE, action) => {
                         })
                     }
                 })]
+            } else {
+                selected_item = 0;
             }
+
+            console.log("Select Utter", selected_item, utters_text, state.current_utter)
+
+            utter_selected = (utter_selected !== undefined) ? { ...utter_selected } : { ...state.current_utter };
+            let old_utter = (utters_text.length !== 0) ? { ...utter_selected, utters: utters_text } : { ...utter_selected };
 
             return {
                 ...state,
-                current_utter: { ...utter_selected },
-                old_utter: { ...utter_selected, utters: utters_text },
                 alternatives: alternatives,
-                selected_item: selected_item
+                old_utter: { ...old_utter },
+                selected_item: (selected_item),
+                current_utter: { ...utter_selected }
             };
         }
 

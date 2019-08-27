@@ -18,9 +18,9 @@ export const getUtters = (operation = '', utter = undefined) => {
       await dispatch({ type: "GET_UTTERS", utters: utters });
 
       if (operation === 'delete') {
-        dispatch(selectItem(utters[0], 0));
+        await dispatch(selectItem(utters[0], 0));
       } else if (operation === 'create_update') {
-        dispatch(selectItem(utter));
+        await dispatch(selectItem(utter));
       }
     } catch (error) {
       throw (error);
@@ -38,7 +38,7 @@ const sortUtterName = (utters) => {
 
   return utters;
 }
-export const createUtter = (new_utter = {}) => {
+export const createUtter = (new_utter) => {
   let message = "Utter criada com sucesso!";
 
   return async (dispatch) => {
@@ -52,13 +52,13 @@ export const createUtter = (new_utter = {}) => {
   }
 };
 
-export const updateUtter = (new_utter = {}, utter_id) => {
+export const updateUtter = (new_utter, utter_id) => {
   let url = UTTER_URL_API_GET_DELETE + utter_id;
   let message = "Utter atualizada com sucesso!";
 
   return async (dispatch) => {
     try {
-      await axios.put(url, new_utter).then(res => console.log(res));
+      await axios.put(url, new_utter);
       await dispatch(getUtters('create_update', new_utter));
       dispatch(successAction(message));
     } catch (error) {
@@ -82,14 +82,14 @@ export const removeUtter = (utter = { _id: "" }) => {
   }
 };
 
-export const successAction = (message) => {
+export const successAction = (text) => {
   return {
     type: "SUCESS_ACTION_UTTER",
-    text: message
+    text: text
   };
 };
 
-export const selectItem = (item, index = -1) => {
+export const selectItem = (item, index = 0) => {
   return {
     type: "SELECT_UTTER",
     item: item,
@@ -114,7 +114,10 @@ export const setUtterName = (utter_name = "") => {
 
 export const addUtterText = () => {
   const utter = new Utter();
-  return { type: "ADD_UTTER_TEXT", text: { ...utter.utters[0] } };
+  return {
+    type: "ADD_UTTER_TEXT",
+    text: { ...utter.utters[0] }
+  };
 }
 
 const setUtterTextAction = (utter_position, text_position, text) => {
@@ -146,24 +149,18 @@ export const setUtterText = (utter_position, text_position, text, current_utter)
 
 export const saveData = (current_utter, utters) => {
   return async (dispatch) => {
-    let founded = utters.find((utter) => (
-      utter.nameUtter === current_utter.nameUtter ||
-      utter._id !== current_utter._id)
-    );
-
-    if (founded === undefined) {
-      if (current_utter._id !== undefined) {
-        dispatch(updateUtter(current_utter, current_utter._id));
-      } else {
-        await dispatch(createUtter(current_utter));
-        await dispatch(getUtters(current_utter.nameUtter));
-      }
+    let founded = utters.find((utter) => (utter._id !== current_utter._id));
+    
+    if ((founded !== undefined) && (current_utter._id !== undefined)) {
+      dispatch(updateUtter(current_utter, current_utter._id));
+    } else {
+      await dispatch(createUtter(current_utter));
+      await dispatch(getUtters(current_utter.nameUtter));
     }
   }
 }
 
 export const changeUtterForm = (alternatives, current_utter) => {
-  console.log("current_utter", current_utter);
   let old_utters = current_utter.utters;
   let texts = [];
   let new_utters = [];

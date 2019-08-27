@@ -49,7 +49,11 @@ class UtterPage extends Component {
       item_name = item_name.substr(0, item_name.length - 1);
     }
 
-    let founded = this.props.utters.find((utter) => (utter.nameUtter === item_name));
+    let founded = this.props.utters.find((item) => (
+      (item.nameUtter === item_name) &&
+      (this.props.current_utter._id === undefined) &&
+      (this.props.current_utter._id === this.props.old_utter._id)
+    ));
 
     if (founded !== undefined) {
       helper_text = "Por favor, insira um nome não repetido."
@@ -61,13 +65,14 @@ class UtterPage extends Component {
 
   isEnableUtterButton() {
     let has_empty_fields = this.checkEmptyFields();
-    const no_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+    const has_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
 
     return (
-      no_modifications &&
+      has_modifications &&
       !has_empty_fields &&
       (this.state.helper_text === '') &&
-      (this.props.current_utter.nameUtter.length !== 0)
+      ((this.props.current_utter.nameUtter !== undefined) &&
+        (this.props.current_utter.nameUtter).length !== 0)
     );
   }
 
