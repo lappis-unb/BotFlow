@@ -59,14 +59,10 @@ export default (state = INITIAL_STATE, action) => {
             let utters_text = [...state.current_utter.utters];
             let old_utter_history = [...utters_text];
 
-            console.log("entrou", utters_text);
-            if (state.alternative && utters_text.length > 1) {
-                console.log('haha');
-
+            if ((state.alternatives) && utters_text.length > 1) {
                 utters_text.splice(action.text_position, 1);
             } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
-                utters_text[0].utterText.splice(action.text_position, 1);
-
+                utters_text[0].utterText.splice(action.text_position, 1);                
             }
 
             return {
