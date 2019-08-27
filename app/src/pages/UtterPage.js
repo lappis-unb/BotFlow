@@ -21,13 +21,13 @@ class UtterPage extends Component {
     super(props);
     this.state = {
       open: false,
+      helper_text: ""
     }
     this.props.getUtters();
   }
 
-  isEnableUtterButton() {
+  checkEmptyFields() {
     let has_empty_fields = false;
-    const no_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
     if (this.props.current_utter.utters !== undefined) {
       this.props.current_utter.utters.forEach(utter => {
         utter.utterText.forEach(text => {
@@ -36,16 +36,39 @@ class UtterPage extends Component {
           }
         })
       });
-
-      // TODO verificar se o nome esta na lista de utters
-      
-      return (
-        no_modifications &&
-        !has_empty_fields &&
-        (this.props.current_utter.nameUtter.length !== 0)
-      );
     }
-    return false
+    return has_empty_fields;
+  }
+
+  checkIsValidName(item_name) {
+    let helper_text = "";
+    let regex = /^[\w\d_]+$/;
+
+    if (!regex.test(item_name)) {
+      helper_text = "Use apenas letras sem acentos, números ou '_'";
+      item_name = item_name.substr(0, item_name.length - 1);
+    }
+
+    let founded = this.props.utters.find((utter) => (utter.nameUtter === item_name));
+
+    if (founded !== undefined) {
+      helper_text = "Por favor, insira um nome não repetido."
+    }
+
+    this.setState({ helper_text: helper_text })
+    this.props.setUtterName(item_name, this.props.utters)
+  }
+
+  isEnableUtterButton() {
+    let has_empty_fields = this.checkEmptyFields();
+    const no_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+
+    return (
+      no_modifications &&
+      !has_empty_fields &&
+      (this.state.helper_text === '') &&
+      (this.props.current_utter.nameUtter.length !== 0)
+    );
   }
 
   getAppBar() {
@@ -61,8 +84,8 @@ class UtterPage extends Component {
             id="utter-name"
             value={utter_name}
             label="Nome da resposta"
-            helperText={this.props.helper_text}
-            onChange={(e) => this.props.setUtterName(e.target.value, this.props.utters)}
+            helperText={this.state.helper_text}
+            onChange={(e) => this.checkIsValidName(e.target.value)}
           />
         </Grid>
         <Grid item xs={1} />
@@ -118,7 +141,11 @@ class UtterPage extends Component {
               <label>Criar Resposta</label>
             </CreateNewUtter>
           </Button>
-          <ItemsList items={this.props.utters} selected_item={this.props.selected_item} icon={<MessageIcon />} text="Respostas cadastradas" />
+          <ItemsList
+            icon={<MessageIcon />}
+            items={this.props.utters}
+            text="Respostas cadastradas"
+            selected_item={this.props.selected_item} />
         </Grid>
         <Grid item xs={9}>
           {this.getAppBar()}

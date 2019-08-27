@@ -41,7 +41,6 @@ class ItemsList extends Component {
     if (items !== undefined) {
       return items.map((item, index) => (
         <ListItem
-          tabIndex="-1"
           id={"items_list_" + index}
           button key={"items_list" + index}
           selected={(this.props.selected_item) === index}

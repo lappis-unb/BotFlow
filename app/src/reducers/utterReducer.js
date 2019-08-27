@@ -6,7 +6,6 @@ const INITIAL_STATE = {
     old_utter_texts: [],
     current_utter: new Utter(),
     old_utter: new Utter(),
-    helper_text: "",
     notification_text: "",
     alternatives: false,
     selected_item: -1
@@ -25,7 +24,6 @@ export default (state = INITIAL_STATE, action) => {
         case "SET_UTTER_NAME":
             return {
                 ...state,
-                helper_text: action.helper_text,
                 current_utter: {
                     ...state.current_utter,
                     nameUtter: action.utter_name
@@ -134,7 +132,7 @@ export default (state = INITIAL_STATE, action) => {
                 alternatives: action.alternatives,
                 current_utter: {
                     ...state.current_utter,
-                    utters: action.utters
+                    utters: action.utters,
                 }
             }
 

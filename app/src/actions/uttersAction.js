@@ -106,18 +106,9 @@ export const createNewUtter = () => {
 }
 
 export const setUtterName = (utter_name = "") => {
-  let helper_text = "";
-  let regex = /^[\w\d_]+$/;
-
-  if (!regex.test(utter_name)) {
-    helper_text = "Use apenas letras sem acentos, números ou '_'";
-    utter_name = utter_name.substr(0, utter_name.length - 1);
-  };
-
   return {
     type: "SET_UTTER_NAME",
-    utter_name: utter_name,
-    helper_text: helper_text
+    utter_name: utter_name
   };
 }
 
@@ -142,7 +133,9 @@ export const removeUtterText = (text_position) => {
   };
 }
 
-export const undoTextRemotion = () => { return { type: "UNDO_UTTER_TEXT_REMOVAL" }; }
+export const undoTextRemotion = () => {
+  return { type: "UNDO_UTTER_TEXT_REMOVAL" };
+}
 
 export const setUtterText = (utter_position, text_position, text, current_utter) => {
   return async (dispatch) => {
@@ -153,37 +146,20 @@ export const setUtterText = (utter_position, text_position, text, current_utter)
 
 export const saveData = (current_utter, utters) => {
   return async (dispatch) => {
-    let founded = searchUtters(utters, current_utter);
-    if (founded.length === 0) {
+    let founded = utters.find((utter) => (
+      utter.nameUtter === current_utter.nameUtter ||
+      utter._id !== current_utter._id)
+    );
+
+    if (founded === undefined) {
       if (current_utter._id !== undefined) {
         dispatch(updateUtter(current_utter, current_utter._id));
       } else {
         await dispatch(createUtter(current_utter));
         await dispatch(getUtters(current_utter.nameUtter));
-        //dispatch(selectItem(current_utter))
       }
-    } else {
-      dispatch(saveDataError());
     }
   }
-}
-
-const searchUtters = (utters, u) => {
-  let response = []
-  utters.forEach(utter => {
-    if (utter.nameUtter === u.nameUtter && utter._id !== u._id) {
-      response.push(utter);
-    }
-  })
-  return response;
-
-}
-
-export const saveDataError = () => {
-  return {
-    type: "SAVE_DATA",
-    helper_text: "Por favor, insira um nome não repetido."
-  };
 }
 
 export const changeUtterForm = (alternatives, current_utter) => {
