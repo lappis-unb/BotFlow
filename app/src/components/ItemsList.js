@@ -11,8 +11,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import Grid from '@material-ui/core/Grid';
-
 const style = {
   list_container: {
     paddingLeft: "24px"
@@ -45,9 +43,7 @@ class ItemsList extends Component {
         <ListItem button key={"items_list" + index}
           selected={this.state.selected_item === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>
-            {this.props.icon}
-          </ListItemIcon>
+          <ListItemIcon>{this.props.icon}</ListItemIcon>
           <ListItemText>
             <Typography noWrap>
               {item.nameUtter}
@@ -77,13 +73,9 @@ class ItemsList extends Component {
             {this.props.text}
           </Typography>
 
-          <Grid container wrap="nowrap" style={style.items_list}>
-            <Grid item zeroMinWidth>
-              <List>
-                {this.itemsList()}
-              </List>
-            </Grid>
-          </Grid>
+          <List style={style.items_list}>
+            {this.itemsList()}
+          </List>
         </div>
         <Divider />
         <div style={style.filter_items_container}>
@@ -93,8 +85,8 @@ class ItemsList extends Component {
             label="Filtrar"
             variant="outlined"
             style={style.field_form}
-            onChange={(e) => this.filterItems(e.target.value)}
             InputProps={{ endAdornment: (<SearchIcon />) }}
+            onChange={(e) => this.filterItems(e.target.value)}
           />
         </div>
       </div>

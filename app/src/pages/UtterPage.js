@@ -1,42 +1,51 @@
+import { connect } from "react-redux";
 import React, { Component } from "react";
 import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
-import { connect } from "react-redux";
-import * as utterAction from "../actions/uttersAction";
 import MessageIcon from '@material-ui/icons/Message';
+import * as utterAction from "../actions/uttersAction";
 import { SaveButtonCheck, Done, Add, CreateNewUtter } from '../styles/button';
 
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 
-import TextField from '@material-ui/core/TextField';
 import { Divider } from "@material-ui/core";
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
+import SnackbarContent from "../components/CustomSnackbar"
 
 class UtterPage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      open: false,
+    }
     this.props.getUtters();
   }
 
   isEnableUtterButton() {
     let has_empty_fields = false;
     const no_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+    if (this.props.current_utter.utters !== undefined) {
+      this.props.current_utter.utters.forEach(utter => {
+        utter.utterText.forEach(text => {
+          if ((text.text).trim().length === 0) {
+            has_empty_fields = true;
+          }
+        })
+      });
 
-    this.props.current_utter.utters.forEach(utter => {
-      utter.utterText.forEach(text => {
-        if ((text.text).trim().length === 0) {
-          has_empty_fields = true;
-        }
-      })
-    });
-
-    return (
-      no_modifications &&
-      !has_empty_fields &&
-      (this.props.current_utter.nameUtter.length !== 0)
-    );
+      // TODO verificar se o nome esta na lista de utters
+      
+      return (
+        no_modifications &&
+        !has_empty_fields &&
+        (this.props.current_utter.nameUtter.length !== 0)
+      );
+    }
+    return false
   }
 
   getAppBar() {
@@ -64,7 +73,7 @@ class UtterPage extends Component {
               variant="contained"
               size="small"
               color="secondary"
-              onClick={() => this.props.saveData(this.props.current_utter, this.props.utters)}>
+              onClick={() => this.handleClick(false)}>
               <SaveButtonCheck>
                 <Done />
                 <label>
@@ -72,15 +81,29 @@ class UtterPage extends Component {
                 </label>
               </SaveButtonCheck>
             </Button>
-            <Button onClick={() => this.props.removeUtter(this.props.current_utter._id)}>DELETAR</Button>
-            {this.props.text}
+            <Button onClick={() => this.handleClick(true)}>DELETAR</Button>
           </Typography>
         </Grid>
       </Toolbar>
     )
   }
 
+  handleClick(remove) {
+    this.setState({ open: true });
+    if (remove) {
+      this.props.removeUtter(this.props.current_utter._id)
+    }
+    else {
+      this.props.saveData(this.props.current_utter, this.props.utters)
+    }
+  }
+
+  handleClose() {
+    this.setState({ open: false });
+  }
+
   render() {
+
     return (
       <Grid container>
         <Grid item xs={3} style={{ background: "#dae8ea" }}>
@@ -103,8 +126,24 @@ class UtterPage extends Component {
           <div style={{ height: "calc(100vh - 164px)", overflowY: "auto", overflowX: "hidden" }}>
             <UtterForm />
           </div>
+          {this.props.notification_text}
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            open={this.state.open}
+            autoHideDuration={6000}
+            onClose={() => this.handleClose()}
+          >
+            <SnackbarContent
+              onClose={() => this.handleClose()}
+              variant="success"
+              message={this.props.notification_text}
+            />
+          </Snackbar>
         </Grid>
-      </Grid>
+      </Grid >
     )
   }
 }

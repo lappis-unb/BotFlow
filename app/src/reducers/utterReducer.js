@@ -7,6 +7,7 @@ const INITIAL_STATE = {
     current_utter: new Utter(),
     old_utter: new Utter(),
     helper_text: "",
+    notification_text: "",
     alternatives: false,
 };
 
@@ -87,7 +88,7 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case "SUCESS_ACTION_UTTER":
-            return { ...state, text: action.text, old_utter: state.current_utter };
+            return { ...state, notification_text: action.text, old_utter: state.current_utter };
 
         case "GET_UTTERS":
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
