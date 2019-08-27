@@ -9,16 +9,18 @@ const BASE = "https://botflow.api.lappis.rocks/";
 const UTTER_URL_API_GET_DELETE = BASE + "utter/";
 const UTTER_URL_API_CREATE_UPDATE = BASE + "project/utter/";
 
-export const getUtters = (name = undefined, deleted = false) => {
-  return async(dispatch) => {
+export const getUtters = (operation = '', utter = undefined) => {
+  return async (dispatch) => {
     try {
       const response = await axios.get(UTTER_URL_API_CREATE_UPDATE);
       let utters = await sortUtterName(response.data);
-      
-      await dispatch({type : "GET_UTTERS", utters : utters});
-      
-      if(deleted){
-        dispatch(selectItem(utters[0]._id));
+
+      await dispatch({ type: "GET_UTTERS", utters: utters });
+
+      if (operation === 'delete') {
+        dispatch(selectItem(utters[0], 0));
+      } else if (operation === 'create_update') {
+        dispatch(selectItem(utter));
       }
     } catch (error) {
       throw (error);
@@ -26,12 +28,12 @@ export const getUtters = (name = undefined, deleted = false) => {
   }
 };
 
-const sortUtterName = (utters) =>{
-  // sorts alphabetically utters in sidebar
-  utters.sort(function(a, b){
-      if(a['nameUtter'] <  b['nameUtter']) { return -1; }
-      if(a['nameUtter'] >  b['nameUtter']) { return 1; }
-      return 0;
+const sortUtterName = (utters) => {
+  // Sorts alphabetically utters in sidebar
+  utters.sort(function (a, b) {
+    if (a['nameUtter'] < b['nameUtter']) { return -1; }
+    if (a['nameUtter'] > b['nameUtter']) { return 1; }
+    return 0;
   })
 
   return utters;
@@ -42,8 +44,8 @@ export const createUtter = (new_utter = {}) => {
   return async (dispatch) => {
     try {
       await axios.post(UTTER_URL_API_CREATE_UPDATE, new_utter);
+      await dispatch(getUtters('create_update', new_utter));
       dispatch(successAction(message));
-      dispatch(getUtters());
     } catch (error) {
       throw (error);
     }
@@ -56,25 +58,24 @@ export const updateUtter = (new_utter = {}, utter_id) => {
 
   return async (dispatch) => {
     try {
-      await axios.put(url, new_utter)
-      .then(res => console.log(res));
+      await axios.put(url, new_utter).then(res => console.log(res));
+      await dispatch(getUtters('create_update', new_utter));
       dispatch(successAction(message));
-      await dispatch(getUtters());
     } catch (error) {
       throw (error);
     }
   }
 };
 
-export const removeUtter = (utter_id = "") => {
+export const removeUtter = (utter = { _id: "" }) => {
   let message = "Utter removida com sucesso!";
-  let url_delete = UTTER_URL_API_GET_DELETE + utter_id;
+  let url_delete = UTTER_URL_API_GET_DELETE + utter._id;
 
   return async (dispatch) => {
     try {
       await axios.delete(url_delete);
+      await dispatch(getUtters('delete'));
       dispatch(successAction(message));
-      await dispatch(getUtters(undefined, true));
     } catch (error) {
       throw (error);
     }
@@ -88,17 +89,19 @@ export const successAction = (message) => {
   };
 };
 
-export const selectItem = (item_id = "") => {
-    return {
-      type: "SELECT_UTTER",
-      utter_id: item_id,
-    };
-  }
+export const selectItem = (item, index = -1) => {
+  return {
+    type: "SELECT_UTTER",
+    item: item,
+    selected_item: index
+  };
+}
 
 export const createNewUtter = () => {
   return {
     type: "CREATE_NEW_UTTER",
-    new_utter: new Utter()
+    new_utter: new Utter(),
+    selected_item: -1
   };
 }
 
@@ -149,16 +152,17 @@ export const setUtterText = (utter_position, text_position, text, current_utter)
 }
 
 export const saveData = (current_utter, utters) => {
-  return async(dispatch) => {
+  return async (dispatch) => {
     let founded = searchUtters(utters, current_utter);
-    if(founded.length ===0){
-      if (current_utter._id !== undefined){
-          dispatch(updateUtter(current_utter, current_utter._id));
-      } else{
-          await dispatch(createUtter(current_utter));
-          await dispatch(getUtters(current_utter.nameUtter));
+    if (founded.length === 0) {
+      if (current_utter._id !== undefined) {
+        dispatch(updateUtter(current_utter, current_utter._id));
+      } else {
+        await dispatch(createUtter(current_utter));
+        await dispatch(getUtters(current_utter.nameUtter));
+        //dispatch(selectItem(current_utter))
       }
-    }else{
+    } else {
       dispatch(saveDataError());
     }
   }
@@ -166,8 +170,8 @@ export const saveData = (current_utter, utters) => {
 
 const searchUtters = (utters, u) => {
   let response = []
-  utters.forEach(utter =>{
-    if (utter.nameUtter === u.nameUtter && utter._id !== u._id){
+  utters.forEach(utter => {
+    if (utter.nameUtter === u.nameUtter && utter._id !== u._id) {
       response.push(utter);
     }
   })
@@ -175,10 +179,10 @@ const searchUtters = (utters, u) => {
 
 }
 
-export const saveDataError = () => {   
+export const saveDataError = () => {
   return {
-  type : "SAVE_DATA", 
-  helper_text : "Por favor, insira um nome não repetido."
+    type: "SAVE_DATA",
+    helper_text: "Por favor, insira um nome não repetido."
   };
 }
 
@@ -187,33 +191,35 @@ export const changeUtterForm = (alternatives, current_utter) => {
   let old_utters = current_utter.utters;
   let texts = [];
   let new_utters = [];
-    old_utters.forEach(i => {
-      i.utterText.forEach(j => {
-        texts.push(j.text);
-      })
+  old_utters.forEach(i => {
+    i.utterText.forEach(j => {
+      texts.push(j.text);
     })
+  })
 
   // true
-  if(!alternatives){
+  if (!alternatives) {
     texts.forEach(text => {
-      let utter = {'utterText': [
-        {'text': text}
-      ]};
+      let utter = {
+        'utterText': [
+          { 'text': text }
+        ]
+      };
       new_utters.push(utter);
     })
 
   } else {
 
-  let utters = {"utterText": []}
-  texts.forEach(text => {
-    let utter = {"text": text};
-    utters["utterText"].push(utter);
-  })
-  new_utters.push(utters);  
-}
+    let utters = { "utterText": [] }
+    texts.forEach(text => {
+      let utter = { "text": text };
+      utters["utterText"].push(utter);
+    })
+    new_utters.push(utters);
+  }
 
-  return{
+  return {
     type: "CHANGE_UTTER_FORM", alternatives: !alternatives, utters: new_utters
   }
-  
+
 }

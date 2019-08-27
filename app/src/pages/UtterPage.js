@@ -91,7 +91,7 @@ class UtterPage extends Component {
   handleClick(remove) {
     this.setState({ open: true });
     if (remove) {
-      this.props.removeUtter(this.props.current_utter._id)
+      this.props.removeUtter(this.props.current_utter)
     }
     else {
       this.props.saveData(this.props.current_utter, this.props.utters)
@@ -118,7 +118,7 @@ class UtterPage extends Component {
               <label>Criar Resposta</label>
             </CreateNewUtter>
           </Button>
-          <ItemsList items={this.props.utters} icon={<MessageIcon />} text="Respostas cadastradas" />
+          <ItemsList items={this.props.utters} selected_item={this.props.selected_item} icon={<MessageIcon />} text="Respostas cadastradas" />
         </Grid>
         <Grid item xs={9}>
           {this.getAppBar()}
@@ -126,7 +126,6 @@ class UtterPage extends Component {
           <div style={{ height: "calc(100vh - 164px)", overflowY: "auto", overflowX: "hidden" }}>
             <UtterForm />
           </div>
-          {this.props.notification_text}
           <Snackbar
             anchorOrigin={{
               vertical: 'bottom',
@@ -155,6 +154,7 @@ const mapDispatchToProps = dispatch => ({
   createNewUtter: () => dispatch(utterAction.createNewUtter()),
   removeUtter: (utter_id) => dispatch(utterAction.removeUtter(utter_id)),
   setUtterName: (utter_name) => dispatch(utterAction.setUtterName(utter_name)),
+  selectItem: (items, item_index) => dispatch(utterAction.selectItem(items, item_index)),
   saveData: (current_utter, utters) => dispatch(utterAction.saveData(current_utter, utters)),
 });
 

@@ -32,7 +32,7 @@ const style = {
 class ItemsList extends Component {
   constructor(props) {
     super(props);
-    this.state = { filtered_items: [], selected_item: 0 };
+    this.state = { filtered_items: [] };
   }
 
   itemsList() {
@@ -40,8 +40,11 @@ class ItemsList extends Component {
 
     if (items !== undefined) {
       return items.map((item, index) => (
-        <ListItem button key={"items_list" + index}
-          selected={this.state.selected_item === index}
+        <ListItem
+          tabIndex="-1"
+          id={"items_list_" + index}
+          button key={"items_list" + index}
+          selected={(this.props.selected_item) === index}
           onClick={() => this.handleListItemClick(item, index)}>
           <ListItemIcon>{this.props.icon}</ListItemIcon>
           <ListItemText>
@@ -61,8 +64,7 @@ class ItemsList extends Component {
   }
 
   handleListItemClick(item, index) {
-    this.setState({ selected_item: index });
-    this.props.selectItem(item._id)
+    this.props.selectItem(item, index);
   }
 
   render() {
@@ -95,7 +97,7 @@ class ItemsList extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  selectItem: (items, utter_id) => dispatch(utterAction.selectItem(items, utter_id))
+  selectItem: (items, item_index) => dispatch(utterAction.selectItem(items, item_index))
 });
 
 export default connect(null, mapDispatchToProps)(ItemsList);

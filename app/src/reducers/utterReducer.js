@@ -9,12 +9,18 @@ const INITIAL_STATE = {
     helper_text: "",
     notification_text: "",
     alternatives: false,
+    selected_item: -1
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "CREATE_NEW_UTTER":
-            return { ...state, current_utter: { ...action.new_utter }, old_utter: { ...action.new_utter } }
+            return {
+                ...state,
+                current_utter: { ...action.new_utter },
+                old_utter: { ...action.new_utter },
+                selected_item: action.selected_item
+            }
 
         case "SET_UTTER_NAME":
             return {
@@ -62,7 +68,7 @@ export default (state = INITIAL_STATE, action) => {
             if ((state.alternatives) && utters_text.length > 1) {
                 utters_text.splice(action.text_position, 1);
             } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
-                utters_text[0].utterText.splice(action.text_position, 1);                
+                utters_text[0].utterText.splice(action.text_position, 1);
             }
 
             return {
@@ -90,26 +96,35 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, utters: [...action.utters], filtered_utters: [...action.utters] };
 
         case "SELECT_UTTER": {
-            let utter_selected = state.utters.find((utter) => utter._id === action.utter_id);
+            let selected_item = -1;
+            let utter_selected = state.utters.find((item, index) => {
+                selected_item = index;
+                return item.nameUtter === action.item.nameUtter
+            });
+
             let alternatives = false;
-            if (utter_selected.utters.length > 1) {
-                alternatives = true;
-            }
-            
-            let utters_text = [...utter_selected.utters.map((utter) => {
-                return {
-                    ...utter,
-                    utterText: utter.utterText.map((utter_text) => {
-                        return { ...utter_text }
-                    })
+            let utters_text = [];
+            if (utter_selected) {
+                if (utter_selected.utters.length > 1) {
+                    alternatives = true;
                 }
-            })]
+
+                utters_text = [...utter_selected.utters.map((utter) => {
+                    return {
+                        ...utter,
+                        utterText: utter.utterText.map((utter_text) => {
+                            return { ...utter_text }
+                        })
+                    }
+                })]
+            }
 
             return {
                 ...state,
                 current_utter: { ...utter_selected },
                 old_utter: { ...utter_selected, utters: utters_text },
-                alternatives: alternatives
+                alternatives: alternatives,
+                selected_item: selected_item
             };
         }
 
