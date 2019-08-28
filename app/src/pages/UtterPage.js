@@ -21,7 +21,8 @@ class UtterPage extends Component {
     super(props);
     this.state = {
       open: false,
-      helper_text: ""
+      helper_text: "",
+      error_name: false
     }
     this.props.getUtters();
   }
@@ -44,22 +45,24 @@ class UtterPage extends Component {
     let helper_text = "";
     let regex = /^[\w\d_]+$/;
 
-    if (!regex.test(item_name)) {
+    let error = false;
+    if (!regex.test(item_name) && item_name.length > 0) {
       helper_text = "Use apenas letras sem acentos, números ou '_'";
       item_name = item_name.substr(0, item_name.length - 1);
+      error = true;
     }
 
     let founded = this.props.utters.find((item) => (
       (item.nameUtter === item_name) &&
-      (this.props.current_utter._id === undefined) &&
       (this.props.current_utter._id === this.props.old_utter._id)
     ));
 
     if (founded !== undefined) {
       helper_text = "Por favor, insira um nome não repetido."
+      error = true;
     }
 
-    this.setState({ helper_text: helper_text })
+    this.setState({ helper_text: helper_text, error_name: error })
     this.props.setUtterName(item_name, this.props.utters)
   }
 
@@ -76,20 +79,25 @@ class UtterPage extends Component {
     );
   }
 
+  verifyText(name) {
+    return (name === this.props.old_utter.nameUtter) ? "" : this.state.helper_text;
+  }
+
   getAppBar() {
     let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
-
+    let text = this.verifyText(utter_name);
     return (
       <Toolbar style={{ background: "#f6f9f9", padding: "4px" }}>
         <Grid item xs={1} />
         <Grid item xs={7}>
           <TextField
             fullWidth
+            error={text !== ""}
             type="text"
             id="utter-name"
             value={utter_name}
             label="Nome da resposta"
-            helperText={this.state.helper_text}
+            helperText={text}
             onChange={(e) => this.checkIsValidName(e.target.value)}
           />
         </Grid>
