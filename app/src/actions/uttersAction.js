@@ -197,3 +197,10 @@ export const changeUtterForm = (alternatives, current_utter) => {
   }
 
 }
+
+export const setHelperText = (helper_text) => {
+  return {
+    type: "SET_HELPER_TEXT",
+    helper_text: helper_text
+  }
+}

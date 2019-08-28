@@ -21,83 +21,80 @@ class UtterPage extends Component {
     super(props);
     this.state = {
       open: false,
-      helper_text: "",
-      error_name: false
     }
     this.props.getUtters();
   }
 
   checkEmptyFields() {
-    let has_empty_fields = false;
+    let has_not_empty_fields = true;
     if (this.props.current_utter.utters !== undefined) {
       this.props.current_utter.utters.forEach(utter => {
         utter.utterText.forEach(text => {
           if ((text.text).trim().length === 0) {
-            has_empty_fields = true;
+            has_not_empty_fields = false;
           }
         })
       });
     }
-    return has_empty_fields;
+    return has_not_empty_fields;
   }
 
   checkIsValidName(item_name) {
     let helper_text = "";
     let regex = /^[\w\d_]+$/;
 
-    let error = false;
     if (!regex.test(item_name) && item_name.length > 0) {
       helper_text = "Use apenas letras sem acentos, números ou '_'";
       item_name = item_name.substr(0, item_name.length - 1);
-      error = true;
     }
 
     let founded = this.props.utters.find((item) => (
       (item.nameUtter === item_name) &&
-      (this.props.current_utter._id === this.props.old_utter._id)
+      (item._id !== this.props.old_utter._id)
     ));
 
     if (founded !== undefined) {
       helper_text = "Por favor, insira um nome não repetido."
-      error = true;
     }
 
-    this.setState({ helper_text: helper_text, error_name: error })
-    this.props.setUtterName(item_name, this.props.utters)
+    this.props.setHelperText(helper_text);
+    this.props.setUtterName(item_name, this.props.utters);
   }
 
   isEnableUtterButton() {
-    let has_empty_fields = this.checkEmptyFields();
-    const has_modifications = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+    const no_empty_fields = this.checkEmptyFields();
+    const have_changes = (JSON.stringify(this.props.current_utter) !== JSON.stringify(this.props.old_utter));
+    const no_errors = this.props.helper_text === '';
+    const no_empty_name = ((this.props.current_utter.nameUtter !== undefined) &&
+      (this.props.current_utter.nameUtter).length !== 0);
 
     return (
-      has_modifications &&
-      !has_empty_fields &&
-      (this.state.helper_text === '') &&
-      ((this.props.current_utter.nameUtter !== undefined) &&
-        (this.props.current_utter.nameUtter).length !== 0)
+      have_changes &&
+      no_empty_fields &&
+      no_errors &&
+      no_empty_name
     );
   }
 
   verifyText(name) {
-    return (name === this.props.old_utter.nameUtter) ? "" : this.state.helper_text;
+    return (name === this.props.old_utter.nameUtter) ? "" : this.props.helper_text;
   }
 
   getAppBar() {
     let utter_name = (this.props.current_utter !== undefined) ? this.props.current_utter.nameUtter : "";
-    let text = this.verifyText(utter_name);
+
     return (
       <Toolbar style={{ background: "#f6f9f9", padding: "4px" }}>
         <Grid item xs={1} />
         <Grid item xs={7}>
           <TextField
             fullWidth
-            error={text !== ""}
+            error={this.props.helper_text !== ""}
             type="text"
             id="utter-name"
             value={utter_name}
             label="Nome da resposta"
-            helperText={text}
+            helperText={this.props.helper_text}
             onChange={(e) => this.checkIsValidName(e.target.value)}
           />
         </Grid>
@@ -196,6 +193,7 @@ const mapDispatchToProps = dispatch => ({
   setUtterName: (utter_name) => dispatch(utterAction.setUtterName(utter_name)),
   selectItem: (items, item_index) => dispatch(utterAction.selectItem(items, item_index)),
   saveData: (current_utter, utters) => dispatch(utterAction.saveData(current_utter, utters)),
+  setHelperText: (helper_text) => dispatch(utterAction.setHelperText(helper_text))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);

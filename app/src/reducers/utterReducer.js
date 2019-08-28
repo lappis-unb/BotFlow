@@ -2,6 +2,7 @@ import { Utter } from '../utils/utter';
 
 const INITIAL_STATE = {
     utters: [],
+    helper_text: "",
     filtered_utters: [],
     old_utter_texts: [],
     current_utter: new Utter(),
@@ -77,7 +78,7 @@ export default (state = INITIAL_STATE, action) => {
                     })
                 }
             })
-            
+
             if ((state.alternatives) && utters_text.length > 1) {
                 utters_text.splice(action.utter_position, 1);
             } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
@@ -158,6 +159,7 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
+                helper_text: "",
                 alternatives: alternatives,
                 old_utter: { ...old_utter },
                 selected_item: (selected_item),
@@ -175,7 +177,7 @@ export default (state = INITIAL_STATE, action) => {
                 }
             }
 
-        case "CHANGE_UTTER_FORM":
+        case "CHANGE_UTTER_FORM": {
             return {
                 ...state,
                 alternatives: action.alternatives,
@@ -184,6 +186,15 @@ export default (state = INITIAL_STATE, action) => {
                     utters: action.utters
                 }
             }
+        }
+
+        case "SET_HELPER_TEXT": {
+            return {
+                ...state,
+                helper_text: action.helper_text
+            }
+        }
+
 
         default:
             return state;

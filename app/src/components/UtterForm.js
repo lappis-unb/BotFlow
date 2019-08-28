@@ -18,8 +18,8 @@ class UtterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      values: ["", "alternativas"],
-      value: "",
+      values: ["em sequência", "como alternativas"],
+      value: "em sequência",
       undoDelete: false
     }
   }
@@ -33,11 +33,11 @@ class UtterForm extends Component {
   handleDelete(utter_index, text_index) {
     let utters_length = this.props.current_utter.utters.length;
     let utters_text_length = this.props.current_utter.utters[0].utterText.length;
-    
+
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undoDelete: true });
     }
-    
+
     this.props.removeUtterText(utter_index, text_index, this.props.current_utter.utters);
   }
 
@@ -114,7 +114,7 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    this.props.changeUtterForm((this.state.value === "alternativas"), this.props.current_utter)
+    this.props.changeUtterForm((this.state.value === "como alternativas"), this.props.current_utter)
   }
 
   render() {
@@ -129,7 +129,7 @@ class UtterForm extends Component {
             variant="outlined"
             value={this.state.value}
             id="outlined-select-currency"
-            label="Balões aparecem como:"
+            label="Balões aparecem:"
             onChange={(e) => this.handleChange(e)}>
             {(this.state.values).map((option, index) => (
               <MenuItem key={"menu" + index} value={option}>
