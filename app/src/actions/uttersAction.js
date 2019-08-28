@@ -129,13 +129,11 @@ const setUtterTextAction = (utter_position, text_position, text) => {
   };
 }
 
-export const removeUtterText = (text_position, items) => {
-  console.log("Items", items)
-
+export const removeUtterText = (utter_position, text_position) => {
   return {
     type: "REMOVE_UTTER_TEXT",
     text_position: text_position,
-    items: items
+    utter_position: utter_position
   };
 }
 

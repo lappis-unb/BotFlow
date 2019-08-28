@@ -30,11 +30,15 @@ class UtterForm extends Component {
     this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)
   }
 
-  handleDelete(text_index) {
-    if (this.props.current_utter.utters[0].utterText.length > 1) {
+  handleDelete(utter_index, text_index) {
+    let utters_length = this.props.current_utter.utters.length;
+    let utters_text_length = this.props.current_utter.utters[0].utterText.length;
+    
+    if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undoDelete: true });
     }
-    this.props.removeUtterText(text_index, this.props.current_utter.utters);
+    
+    this.props.removeUtterText(utter_index, text_index, this.props.current_utter.utters);
   }
 
   handleUndo() {
@@ -95,7 +99,7 @@ class UtterForm extends Component {
                   <DeleteIcon
                     style={{ color: "#4b3953", opacity: 0.5 }}
                     type="button"
-                    onClick={() => this.handleDelete(text_index)}>
+                    onClick={() => this.handleDelete(utter_index, text_index)}>
                   </DeleteIcon>
                 </Grid>
               </Grid>
@@ -174,7 +178,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   addUtterText: () => dispatch(addUtterText()),
   undoTextRemotion: () => dispatch(undoTextRemotion()),
-  removeUtterText: (text_position) => dispatch(removeUtterText(text_position)),
+  removeUtterText: (utter_position, text_position) => dispatch(removeUtterText(utter_position, text_position)),
   setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter)),
   changeUtterForm: (alternatives, current_utter) => dispatch(changeUtterForm(alternatives, current_utter))
 });

@@ -77,9 +77,9 @@ export default (state = INITIAL_STATE, action) => {
                     })
                 }
             })
-
+            
             if ((state.alternatives) && utters_text.length > 1) {
-                utters_text.splice(action.text_position, 1);
+                utters_text.splice(action.utter_position, 1);
             } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
                 utters_text[0].utterText.splice(action.text_position, 1);
             }
