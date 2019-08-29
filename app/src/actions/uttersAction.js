@@ -18,9 +18,9 @@ export const getUtters = (operation = '', utter = undefined) => {
       await dispatch({ type: "GET_UTTERS", utters: utters });
 
       if (operation === 'delete') {
-        await dispatch(selectItem(utters[0], 0));
+        await dispatch(createNewUtter());
       } else if (operation === 'create_update') {
-        await dispatch(selectItem(utter));
+        await dispatch(selectItem(utter, 0, utters));
       }
     } catch (error) {
       throw (error);
@@ -45,7 +45,7 @@ export const createUtter = (new_utter) => {
     try {
       await axios.post(UTTER_URL_API_CREATE_UPDATE, new_utter);
       await dispatch(getUtters('create_update', new_utter));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
@@ -60,7 +60,7 @@ export const updateUtter = (new_utter, utter_id) => {
     try {
       await axios.put(url, new_utter);
       await dispatch(getUtters('create_update', new_utter));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
@@ -75,25 +75,26 @@ export const removeUtter = (utter = { _id: "" }) => {
     try {
       await axios.delete(url_delete);
       await dispatch(getUtters('delete'));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
   }
 };
 
-export const successAction = (text) => {
+export const notifyAction = (text) => {
   return {
     type: "SUCESS_ACTION_UTTER",
     text: text
   };
 };
 
-export const selectItem = (item, index = 0) => {
+export const selectItem = (item, index = -1, items = []) => {
   return {
-    type: "SELECT_UTTER",
+    type: "SELECT_ITEM",
     item: item,
-    selected_item: index
+    items: items,
+    selected_item_position: index
   };
 }
 
@@ -101,7 +102,7 @@ export const createNewUtter = () => {
   return {
     type: "CREATE_NEW_UTTER",
     new_utter: new Utter(),
-    selected_item: -1
+    selected_item_position: -1
   };
 }
 
@@ -161,39 +162,33 @@ export const saveData = (current_utter, utters) => {
   }
 }
 
-export const changeUtterForm = (alternatives, current_utter) => {
+export const changeUtterForm = (have_alternatives, current_utter) => {
   let old_utters = current_utter.utters;
-  let texts = [];
   let new_utters = [];
+  let texts = [];
+
   old_utters.forEach(i => {
     i.utterText.forEach(j => {
       texts.push(j.text);
     })
   })
 
-  // true
-  if (!alternatives) {
-    texts.forEach(text => {
-      let utter = {
-        'utterText': [
-          { 'text': text }
-        ]
-      };
-      new_utters.push(utter);
-    })
-
+  if (have_alternatives) {
+    new_utters = texts.map(text => ({ utterText: [{ text: text }] }));
   } else {
-
-    let utters = { "utterText": [] }
-    texts.forEach(text => {
-      let utter = { "text": text };
-      utters["utterText"].push(utter);
-    })
-    new_utters.push(utters);
+    new_utters = [{ utterText: texts.map(text => ({ text: text })) }];
   }
 
   return {
-    type: "CHANGE_UTTER_FORM", alternatives: !alternatives, utters: new_utters
+    type: "CHANGE_UTTER_FORM",
+    have_alternatives: have_alternatives,
+    utters: new_utters
   }
+}
 
+export const setHelperText = (helper_text) => {
+  return {
+    type: "SET_HELPER_TEXT",
+    helper_text: helper_text
+  }
 }
