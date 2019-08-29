@@ -45,7 +45,7 @@ export const createUtter = (new_utter) => {
     try {
       await axios.post(UTTER_URL_API_CREATE_UPDATE, new_utter);
       await dispatch(getUtters('create_update', new_utter));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
@@ -60,7 +60,7 @@ export const updateUtter = (new_utter, utter_id) => {
     try {
       await axios.put(url, new_utter);
       await dispatch(getUtters('create_update', new_utter));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
@@ -75,25 +75,26 @@ export const removeUtter = (utter = { _id: "" }) => {
     try {
       await axios.delete(url_delete);
       await dispatch(getUtters('delete'));
-      dispatch(successAction(message));
+      dispatch(notifyAction(message));
     } catch (error) {
       throw (error);
     }
   }
 };
 
-export const successAction = (text) => {
+export const notifyAction = (text) => {
   return {
     type: "SUCESS_ACTION_UTTER",
     text: text
   };
 };
 
-export const selectItem = (item, index = 0) => {
+export const selectItem = (item, index = 0, items = []) => {
   return {
-    type: "SELECT_UTTER",
+    type: "SELECT_ITEM",
     item: item,
-    selected_item: index
+    items: items,
+    selected_item_position: index
   };
 }
 
@@ -101,7 +102,7 @@ export const createNewUtter = () => {
   return {
     type: "CREATE_NEW_UTTER",
     new_utter: new Utter(),
-    selected_item: -1
+    selected_item_position: 0
   };
 }
 
@@ -161,7 +162,7 @@ export const saveData = (current_utter, utters) => {
   }
 }
 
-export const changeUtterForm = (alternatives, current_utter) => {
+export const changeUtterForm = (have_alternatives, current_utter) => {
   let old_utters = current_utter.utters;
   let texts = [];
   let new_utters = [];
@@ -172,7 +173,7 @@ export const changeUtterForm = (alternatives, current_utter) => {
   })
 
   // true
-  if (!alternatives) {
+  if (!have_alternatives) {
     texts.forEach(text => {
       let utter = {
         'utterText': [
@@ -184,16 +185,16 @@ export const changeUtterForm = (alternatives, current_utter) => {
 
   } else {
 
-    let utters = { "utterText": [] }
+    let utters = { utterText: [] }
     texts.forEach(text => {
-      let utter = { "text": text };
+      let utter = { text: text };
       utters["utterText"].push(utter);
     })
     new_utters.push(utters);
   }
 
   return {
-    type: "CHANGE_UTTER_FORM", alternatives: !alternatives, utters: new_utters
+    type: "CHANGE_UTTER_FORM", have_alternatives: !have_alternatives, utters: new_utters
   }
 
 }

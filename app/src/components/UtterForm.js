@@ -180,7 +180,7 @@ const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   removeUtterText: (utter_position, text_position) => dispatch(removeUtterText(utter_position, text_position)),
   setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter)),
-  changeUtterForm: (alternatives, current_utter) => dispatch(changeUtterForm(alternatives, current_utter))
+  changeUtterForm: (have_alternatives, current_utter) => dispatch(changeUtterForm(have_alternatives, current_utter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

@@ -19,14 +19,9 @@ const style = {
     padding: "12px 8px"
   },
   items_list: {
-    // marginLeft: "2vw",
     height: "64.8vh",
     overflowY: "auto"
   },
-  field_form: {
-    // width: "90%",
-    // margin: "2vh"
-  }
 }
 
 class ItemsList extends Component {
@@ -37,15 +32,16 @@ class ItemsList extends Component {
 
   itemsList() {
     const items = (this.state.filtered_items.length !== 0) ? this.state.filtered_items : this.props.items;
-
     if (items !== undefined) {
       return items.map((item, index) => (
         <ListItem
           id={"items_list_" + index}
           button key={"items_list" + index}
-          selected={(this.props.selected_item) === index}
+          selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>{this.props.icon}</ListItemIcon>
+          <ListItemIcon>
+            {this.props.icon}
+          </ListItemIcon>
           <ListItemText>
             <Typography noWrap>
               {item.nameUtter}
@@ -56,9 +52,9 @@ class ItemsList extends Component {
     }
   }
 
-  filterItems(value) {
+  filterItems(wanted_name) {
     this.setState({
-      filtered_items: this.props.items.filter((item) => item.nameUtter.includes(value))
+      filtered_items: this.props.items.filter((item) => item.nameUtter.includes(wanted_name))
     });
   }
 
@@ -69,7 +65,7 @@ class ItemsList extends Component {
   render() {
     return (
       <div>
-        <div style={style.list_container} id="arroz">
+        <div style={style.list_container}>
           <Typography variant="h6" color="primary">
             {this.props.text}
           </Typography>

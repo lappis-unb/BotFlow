@@ -8,11 +8,31 @@ const INITIAL_STATE = {
     current_utter: new Utter(),
     old_utter: new Utter(),
     notification_text: "",
-    alternatives: false,
-    selected_item: -1
+    have_alternatives: false,
+    selected_item_position: -1
 };
 
+
 export default (state = INITIAL_STATE, action) => {
+
+    function createCopyOf(item) {
+        let new_alternatives;
+        if (item.utters !== undefined) {
+            new_alternatives = (
+                item.utters.map((utter) => {
+                    return {
+                        ...utter,
+                        utterText: utter.utterText.map((utter_text) => {
+                            return { ...utter_text }
+                        })
+                    }
+                })
+            )
+            return { ...item, utters: new_alternatives }
+        }
+        return { ...item };
+    }
+
     switch (action.type) {
         case "CREATE_NEW_UTTER":
             return {
@@ -46,7 +66,7 @@ export default (state = INITIAL_STATE, action) => {
         case "ADD_UTTER_TEXT":
             let new_utters = state.current_utter.utters.map(i => i);
 
-            if (state.alternatives) {
+            if (state.have_alternatives) {
                 new_utters.push(action.text);
             } else {
                 new_utters[0].utterText.push(action.text.utterText[0]);
@@ -79,9 +99,9 @@ export default (state = INITIAL_STATE, action) => {
                 }
             })
 
-            if ((state.alternatives) && utters_text.length > 1) {
+            if ((state.have_alternatives) && utters_text.length > 1) {
                 utters_text.splice(action.utter_position, 1);
-            } else if (!state.alternatives && utters_text[0].utterText.length > 1) {
+            } else if (!state.have_alternatives && utters_text[0].utterText.length > 1) {
                 utters_text[0].utterText.splice(action.text_position, 1);
             }
 
@@ -127,50 +147,49 @@ export default (state = INITIAL_STATE, action) => {
                 filtered_utters: [...action.utters]
             };
 
-        case "SELECT_UTTER": {
-            let selected_item = 0;
-            let utter_selected = state.utters.find((item, index) => {
-                selected_item = index;
+        case "SELECT_ITEM": {
+            let selected_item_position = 0;
+
+            let selected_item = action.items.find((item, index) => {
+                selected_item_position = index;
                 return (item._id === action.item._id || item.nameUtter === action.item.nameUtter);
             });
 
-            let alternatives = false;
-            let utters_text = [];
+            let new_item = [];
+            let have_alternatives = false;
 
-            if (utter_selected !== undefined) {
-                if (utter_selected.utters.length > 1) {
-                    alternatives = true;
+            if (selected_item !== undefined) {
+                if (selected_item.utters.length > 1) {
+                    have_alternatives = true;
                 }
-
-                utters_text = [...utter_selected.utters.map((utter) => {
-                    return {
-                        ...utter,
-                        utterText: utter.utterText.map((utter_text) => {
-                            return { ...utter_text }
-                        })
-                    }
-                })]
+                new_item = createCopyOf(selected_item);
             } else {
-                selected_item = 0;
+                selected_item_position = 0;
             }
 
-            utter_selected = (utter_selected !== undefined) ? { ...utter_selected } : { ...state.current_utter };
-            let old_utter = (utters_text.length !== 0) ? { ...utter_selected, utters: utters_text } : { ...utter_selected };
+            selected_item = (selected_item !== undefined) ? createCopyOf(selected_item) : createCopyOf(state.current_utter);
+
+            let old_utter = {}
+            if (new_item.length !== 0) {
+                old_utter = { ...(createCopyOf(selected_item)), utters: new_item }
+            } else {
+                old_utter = createCopyOf(selected_item);
+            }
 
             return {
                 ...state,
                 helper_text: "",
-                alternatives: alternatives,
-                old_utter: { ...old_utter },
-                selected_item: (selected_item),
-                current_utter: { ...utter_selected }
+                old_utter: old_utter,
+                current_utter: selected_item,
+                have_alternatives: have_alternatives,
+                selected_item_position: selected_item_position
             };
         }
 
         case "SAVE_DATA":
             return {
                 ...state,
-                alternatives: action.alternatives,
+                have_alternatives: action.have_alternatives,
                 current_utter: {
                     ...state.current_utter,
                     utters: action.utters,
@@ -180,7 +199,7 @@ export default (state = INITIAL_STATE, action) => {
         case "CHANGE_UTTER_FORM": {
             return {
                 ...state,
-                alternatives: action.alternatives,
+                have_alternatives: action.have_alternatives,
                 current_utter: {
                     ...state.current_utter,
                     utters: action.utters
