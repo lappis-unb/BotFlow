@@ -82,6 +82,7 @@ class UtterPage extends Component {
   }
 
   isEnableUtterButton(current_item, old_item) {
+
     const no_empty_fields = this.checkEmptyFields();
     const have_changes = JSON.stringify(current_item) !== JSON.stringify(old_item);
     const no_errors = this.props.helper_text === '';
@@ -90,12 +91,12 @@ class UtterPage extends Component {
       ((current_item.nameUtter).length !== 0)
     );
 
-    console.log("============================")
-    console.log("have_changes", have_changes);
-    console.log("no_empty_fields", no_empty_fields);
-    console.log("no_errors", no_errors);
-    console.log("no_empty_name", no_empty_name);
-    console.log("============================")
+    //console.log("============================")
+    //console.log("have_changes", have_changes);
+    //console.log("no_empty_fields", no_empty_fields);
+    //console.log("no_errors", no_errors);
+    //console.log("no_empty_name", no_empty_name);
+    //console.log("============================")
 
     return (
       have_changes &&

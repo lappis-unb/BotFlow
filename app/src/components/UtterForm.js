@@ -19,7 +19,7 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: ["em sequência", "como alternativas"],
-      value: "em sequência",
+      value: (this.props.current_utter!==undefined && this.props.current_utter.utters.length > 1) ?  "como alternativas" : "em sequência",
       undoDelete: false
     }
   }
@@ -31,8 +31,9 @@ class UtterForm extends Component {
   }
 
   handleDelete(utter_index, text_index) {
-    let utters_length = this.props.current_utter.utters.length;
-    let utters_text_length = this.props.current_utter.utters[0].utterText.length;
+    const utters = this.props.current_utter.utters;
+    const utters_length = utters.length;
+    const utters_text_length = utters[0].utterText.length;
 
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undoDelete: true });
@@ -57,7 +58,7 @@ class UtterForm extends Component {
       ContentProps={{
         'aria-describedby': 'message-id',
       }}
-      message={<span id="message-id">Removido com sucesso!</span>}
+      message={<span id="message-id">Deletado com sucesso!</span>}
       action={[
         <Button
           key="undo"
@@ -114,7 +115,11 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    this.props.changeUtterForm((this.state.value === "como alternativas"), this.props.current_utter)
+    this.props.changeUtterForm((event.target.value === "como alternativas"), this.props.current_utter)
+  }
+
+  getSelectedOption(){
+    return (this.props.current_utter!==undefined && this.props.current_utter.utters.length > 1) ?  "como alternativas" : "em sequência";
   }
 
   render() {
@@ -127,7 +132,7 @@ class UtterForm extends Component {
             select
             margin="normal"
             variant="outlined"
-            value={this.state.value}
+            value={this.getSelectedOption()}
             id="outlined-select-currency"
             label="Balões aparecem:"
             onChange={(e) => this.handleChange(e)}>
