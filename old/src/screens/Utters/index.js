@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import SaveData from '../../components/SaveData';
 import Dialog from '../../components/Dialog';
 import AlternativeBallons from '../../components/AlternativeBallons';
-import UtterSideBar from '../../components/UtterSideBar/index.js';
+import SideBar from '../../components/SideBar';
 import UtterDelete from '../../components/UtterDelete';
 import axios from 'axios';
-import NavBar from '../../components/NavBar';
+import { UtterPage } from './style';
 
 class Utters extends Component {
     constructor(props){
@@ -72,10 +72,12 @@ class Utters extends Component {
         console.log(this.state.utter);
         var cleanText = false
         if(this.state.utter !== null){
+            console.log('aki==>',this.state.utter);
+            
             var list = [];
             var i = 0;
-            if(this.state.utter['utters'].length > 0){
-                this.state.utter['utters'].forEach(utter => {
+            if (this.state.utter.utters.length > 0){
+                this.state.utter.utters.forEach(utter => {
                     utter['utterText'].forEach(text =>{                    
                         let obj = {
                             key: 'sample-' + i,
@@ -169,9 +171,7 @@ class Utters extends Component {
     }
 
     async save(){
-        console.log('oie');
         await this.buildNewUtter()
-        console.log(this.state.utter._id)
         if(this.state.utter._id ){
             const url = 'https://botflow.api.lappis.rocks/utter/' + this.state.utter._id;
             await axios.put(url,this.state.newUtter)
@@ -184,14 +184,15 @@ class Utters extends Component {
                 }
                 this.props.history.replace('/utters', obj);
             })
-        }else {
+        }else{
             const url = 'https://botflow.api.lappis.rocks/project/utter/' 
             await axios.post(url,this.state.newUtter)
             .then((res) => {
                 console.log(res);
                 var obj = {
                     ...this.state.newUtter,
-                    projectName: this.state.utter.projectName
+                    projectName: this.state.utter.projectName,
+                    _id: res.data[0]._id
                 }
                 this.props.history.replace('/utters', obj);
             })
@@ -342,12 +343,12 @@ class Utters extends Component {
         const objectsDialog = this.state.deleteTemp? Object.assign([], dialog): [];
         console.log(this.state.openSnack);
         return (
-            <div style={{marginTop: '3%'}}>
-                <UtterSideBar onRef={ref =>(this.child = ref)}/>
+            <div>
+                <SideBar onRef={ref =>(this.child = ref)} path='/utters'/>
                 {this.state.loading?
                     null
                     :
-                    <div>
+                    <UtterPage>
                         <SaveData 
                             utterName={this.state.deleteTemp? this.state.name: ''}
                             enableSaveButton={
@@ -376,7 +377,7 @@ class Utters extends Component {
                             closeDialog = {(e) => this.closeDialog(e)}
                             open= {this.state.open}
                         />
-                    </div>
+                    </UtterPage>
                 }
                 
             </div>

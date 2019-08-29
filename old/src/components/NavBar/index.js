@@ -1,26 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import createHistory from 'history/createBrowserHistory'
+import { FirstButton, useStyles } from './style';
 export const history = createHistory()
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    toolbar: theme.mixins.toolbar,
-    appBar:{
-        zIndex: theme.zIndex.drawer + 1
-    },
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-    },
-}));
+
 
 function changePage(path){
     history.push(path);
@@ -35,7 +22,7 @@ export default function NavBar() {
                     <Typography variant="h6">
                         BotFlow
                     </Typography>
-                    <Button onClick={() => changePage("/stories")} style={{marginLeft: '10%'}} color='inherit'>Diálogos</Button>
+                    <FirstButton onClick={() => changePage("/stories")} color='inherit'>Diálogos</FirstButton>
                     <Button onClick={() => changePage("/utters")} color='inherit'>Respostas</Button>
                     <Button onClick={() => changePage("/intents")} color='inherit'>Perguntas</Button>
                     <Button onClick={() => changePage("/testing")} color='inherit'>Testar</Button>
