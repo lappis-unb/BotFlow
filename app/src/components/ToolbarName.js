@@ -6,7 +6,13 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import * as utterAction from "../actions/uttersAction";
+import {
+    saveData,
+    setItemName,
+    deleteItem,
+    setHelperText
+} from "../actions/itemsAction";
+
 import { SaveButtonCheck, Done } from '../styles/button';
 
 const style = {
@@ -70,7 +76,7 @@ class ToolbarName extends Component {
         const no_errors = this.props.helper_text === '';
         const no_empty_fields = this.checkEmptyFields(current_item);
         const have_changes = JSON.stringify(current_item) !== JSON.stringify(old_item);
-        
+
         // TODO update json format
         const no_empty_name = (
             (current_item.nameUtter !== undefined) &&
@@ -94,9 +100,22 @@ class ToolbarName extends Component {
 
     handleClick(remove) {
         if (remove) {
-            this.props.deleteUtter(this.props.current_item)
+            const item = this.props.current_item;
+            const delete_url = item ? this.props.delete_update_url + item._id : "";
+            this.props.deleteItem(
+                delete_url,
+                this.props.create_get_url,
+                this.props.mode,
+                this.props.new_item
+            )
         } else {
-            this.props.saveData(this.props.current_item, this.props.items)
+            this.props.saveData(
+                this.props.current_item,
+                this.props.items,
+                this.props.create_get_url,
+                this.props.delete_update_url,
+                this.props.mode
+            )
         }
     }
 
@@ -147,10 +166,18 @@ class ToolbarName extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    deleteUtter: (utter_id) => dispatch(utterAction.deleteUtter(utter_id)),
-    setItemName: (item_name) => dispatch(utterAction.setItemName(item_name)),
-    setHelperText: (helper_text) => dispatch(utterAction.setHelperText(helper_text)),
-    saveData: (current_item, items) => dispatch(utterAction.saveData(current_item, items))
+    deleteItem: (delete_url, get_url, mode, item) => dispatch(deleteItem(delete_url, get_url, mode, item)),
+    setItemName: (item_name) => dispatch(setItemName(item_name)),
+    setHelperText: (helper_text) => dispatch(setHelperText(helper_text)),
+    saveData: (
+        current_item,
+        items,
+        create_get_url,
+        delete_update_url,
+        mode
+    ) => (
+            dispatch(saveData(current_item, items, create_get_url, delete_update_url, mode))
+        )
 });
 
 export default connect(null, mapDispatchToProps)(ToolbarName);

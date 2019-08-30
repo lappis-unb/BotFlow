@@ -19,7 +19,7 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: ["em sequência", "como alternativas"],
-      value: (this.props.current_utter!==undefined && this.props.current_utter.utters.length > 1) ?  "como alternativas" : "em sequência",
+      value: (this.props.current_utter !== undefined && this.props.current_utter.utters.length > 1) ? "como alternativas" : "em sequência",
       undoDelete: false
     }
   }
@@ -119,9 +119,9 @@ class UtterForm extends Component {
   }
 
   // TODO BUG selection dropdown
-  getSelectedOption(){
+  getSelectedOption() {
     const items = this.props.current_utter;
-    return (items !==undefined && items.length > 1) ?  "como alternativas" : "em sequência";
+    return (items !== undefined && items.length > 1) ? "como alternativas" : "em sequência";
   }
 
   render() {
@@ -157,7 +157,7 @@ class UtterForm extends Component {
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
                 }}
-                onClick={() => this.props.addUtterText()} >
+                onClick={() => this.props.addUtterText(this.props.new_utter)} >
                 <textarea
                   readOnly
                   type="text"
@@ -183,11 +183,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  addUtterText: () => dispatch(addUtterText()),
   undoTextRemotion: () => dispatch(undoTextRemotion()),
+  addUtterText: (new_utter) => dispatch(addUtterText(new_utter)),
   removeUtterText: (utter_position, text_position) => dispatch(removeUtterText(utter_position, text_position)),
-  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter)),
-  changeUtterForm: (have_alternatives, current_utter) => dispatch(changeUtterForm(have_alternatives, current_utter))
+  changeUtterForm: (have_alternatives, current_utter) => dispatch(changeUtterForm(have_alternatives, current_utter)),
+  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

@@ -14,7 +14,7 @@ export const getIntents = (operation = '', intent = undefined) => {
       let intents = await sortIntentName(response.data);
       await dispatch({ type: "GET_INTENTS", intents: intents });
       if (operation === 'delete') {
-        await dispatch(createNewUtter());
+        await dispatch(createNewIntent());
       } else if (operation === 'create_update') {
         await dispatch(selectItem(intent, 0, intents));
       }
