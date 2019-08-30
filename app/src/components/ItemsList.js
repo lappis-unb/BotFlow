@@ -4,9 +4,9 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import SearchIcon from '@material-ui/icons/Search';
+import { selectItem } from "../actions/uttersAction";
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import * as utterAction from "../actions/uttersAction";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -93,7 +93,7 @@ class ItemsList extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  selectItem: (item, item_index, items) => dispatch(utterAction.selectItem(item, item_index, items))
+  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
 });
 
 export default connect(null, mapDispatchToProps)(ItemsList);
