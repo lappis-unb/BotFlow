@@ -28,6 +28,7 @@ export const getUtters = (operation = '', utter = undefined) => {
   }
 };
 
+// TODO REMOVE THIS - IMPLEMENT IN API
 const sortUtterName = (utters) => {
   // Sorts alphabetically utters in sidebar
   utters.sort(function (a, b) {
@@ -38,6 +39,7 @@ const sortUtterName = (utters) => {
 
   return utters;
 }
+
 export const createUtter = (new_utter) => {
   let message = "Utter criada com sucesso!";
 

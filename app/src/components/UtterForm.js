@@ -118,8 +118,10 @@ class UtterForm extends Component {
     this.props.changeUtterForm((event.target.value === "como alternativas"), this.props.current_utter)
   }
 
+  // TODO BUG selection dropdown
   getSelectedOption(){
-    return (this.props.current_utter!==undefined && this.props.current_utter.utters.length > 1) ?  "como alternativas" : "em sequência";
+    const items = this.props.current_utter;
+    return (items !==undefined && items.length > 1) ?  "como alternativas" : "em sequência";
   }
 
   render() {
