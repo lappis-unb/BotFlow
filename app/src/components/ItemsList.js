@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import SearchIcon from '@material-ui/icons/Search';
-import { selectItem } from "../actions/uttersAction";
+import { selectItem } from "../actions/itemsAction";
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';

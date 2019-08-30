@@ -8,7 +8,7 @@ import UtterForm from "../components/UtterForm";
 import Snackbar from '@material-ui/core/Snackbar';
 import ToolbarName from '../components/ToolbarName'
 import MessageIcon from '@material-ui/icons/Message';
-import * as utterAction from "../actions/uttersAction";
+import { createNewItem, notifyAction } from "../actions/itemsAction";
 import { Add, CreateNewUtter } from '../styles/button';
 import SnackbarContent from "../components/CustomSnackbar"
 
@@ -44,7 +44,7 @@ class ItemPage extends Component {
         color="secondary"
         variant="contained"
         style={style.create_button}
-        onClick={() => this.props.createNewUtter()}>
+        onClick={() => this.props.createNewItem(this.props.new_item)}>
         <CreateNewUtter>
           <Add />
           <label>{text}</label>
@@ -72,8 +72,8 @@ class ItemPage extends Component {
     )
   }
 
-  getForm(){
-    return (this.props.mode==="utter") ? <UtterForm /> : "Outro form";
+  getForm() {
+    return (this.props.mode === "Utter") ? <UtterForm new_utter={this.props.new_item} /> : "Outro form";
   }
 
   render() {
@@ -95,10 +95,14 @@ class ItemPage extends Component {
         <Grid item xs={9}>
           <ToolbarName
             old_item={OLD_ITEM}
+            mode={this.props.mode}
             items={this.props.items}
             current_item={CURRENT_ITEM}
+            new_item={this.props.new_item}
             name_label={this.props.name_label}
             helper_text={this.props.helper_text}
+            create_get_url={this.props.create_get_url}
+            delete_update_url={this.props.delete_update_url}
           />
 
           <Divider />
@@ -115,8 +119,8 @@ class ItemPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createNewUtter: () => dispatch(utterAction.createNewUtter()),
-  notifyAction: (text) => dispatch(utterAction.notifyAction(text))
+  createNewItem: (new_item) => dispatch(createNewItem(new_item)),
+  notifyAction: (text) => dispatch(notifyAction(text))
 });
 
 export default connect(null, mapDispatchToProps)(ItemPage);

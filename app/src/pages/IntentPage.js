@@ -1,7 +1,14 @@
 import { connect } from "react-redux";
 import ItemPage from "../pages/ItemPage"
 import React, { Component } from "react";
-import * as utterAction from "../actions/uttersAction";
+import { getItems } from "../actions/itemsAction";
+
+const BASE = "https://botflow.api.lappis.rocks/";
+//const BASE = "http://localhost:3030/";
+
+//const INTENT_URL_API_GET_DELETE = BASE + "intent/";
+const INTENT_URL_API_CREATE_UPDATE_GET = BASE + "project/intent/";
+
 
 class IntentPage extends Component {
   constructor(props) {
@@ -9,7 +16,7 @@ class IntentPage extends Component {
     this.state = {
       open: false,
     }
-    this.props.getUtters();
+    this.props.getItems(INTENT_URL_API_CREATE_UPDATE_GET);
   }
 
   render() {
@@ -33,7 +40,7 @@ class IntentPage extends Component {
 const mapStateToProps = state => { return { ...state.utterReducer } };
 
 const mapDispatchToProps = dispatch => ({
-  getUtters: () => dispatch(utterAction.getUtters())
+  getItems: (url) => dispatch(getItems(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntentPage);

@@ -1,7 +1,7 @@
 import { Utter } from '../utils/utter';
 
 const INITIAL_STATE = {
-    utters: [],
+    items: [],
     helper_text: "",
     filtered_utters: [],
     old_utter_texts: [],
@@ -12,11 +12,10 @@ const INITIAL_STATE = {
     selected_item_position: -1
 };
 
-
 export default (state = INITIAL_STATE, action) => {
 
     function createObjectCopyOf(item) {
-        if (item.utters !== undefined) {
+        if (item !== undefined) {
             return { ...item, utters: createArrayCopyOf(item.utters) }
         }
         return { ...item }
@@ -37,11 +36,11 @@ export default (state = INITIAL_STATE, action) => {
     }
 
     switch (action.type) {
-        case "CREATE_NEW_UTTER":
+        case "CREATE_NEW_ITEM":
             return {
                 ...state,
-                current_utter: createObjectCopyOf(action.new_utter),
-                old_utter: createObjectCopyOf(action.new_utter),
+                current_utter: createObjectCopyOf(action.new_item),
+                old_utter: createObjectCopyOf(action.new_item),
                 selected_item_position: action.selected_item_position
             }
 
@@ -112,11 +111,11 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "GET_UTTERS":
+        case "GET_ITEMS":
             return {
                 ...state,
-                utters: action.utters.map(el => el),
-                filtered_utters: action.utters.map(el => el)
+                items: action.items.map(el => el),
+                filtered_items: action.items.map(el => el)
             };
 
         case "SELECT_ITEM": {
