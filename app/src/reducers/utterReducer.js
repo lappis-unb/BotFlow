@@ -45,12 +45,12 @@ export default (state = INITIAL_STATE, action) => {
                 selected_item_position: action.selected_item_position
             }
 
-        case "SET_UTTER_NAME":
+        case "SET_ITEM_NAME":
             return {
                 ...state,
                 current_utter: {
                     ...(createObjectCopyOf(state.current_utter)),
-                    nameUtter: action.utter_name
+                    nameUtter: action.item_name
                 }
             };
 

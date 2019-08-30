@@ -67,7 +67,7 @@ export const updateUtter = (new_utter, utter_id) => {
   }
 };
 
-export const removeUtter = (utter = { _id: "" }) => {
+export const deleteUtter = (utter = { _id: "" }) => {
   let message = "Utter removida com sucesso!";
   let url_delete = UTTER_URL_API_GET_DELETE + utter._id;
 
@@ -106,10 +106,10 @@ export const createNewUtter = () => {
   };
 }
 
-export const setUtterName = (utter_name = "") => {
+export const setItemName = (item_name = "") => {
   return {
-    type: "SET_UTTER_NAME",
-    utter_name: utter_name
+    type: "SET_ITEM_NAME",
+    item_name: item_name
   };
 }
 

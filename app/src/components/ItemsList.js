@@ -1,13 +1,12 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import * as utterAction from "../actions/uttersAction";
-
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -39,14 +38,14 @@ class ItemsList extends Component {
           button key={"items_list" + index}
           selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>
-            {this.props.icon}
-          </ListItemIcon>
-          <ListItemText>
-            <Typography noWrap>
-              {item.nameUtter}
-            </Typography>
-          </ListItemText>
+            <ListItemIcon>
+              {this.props.icon}
+            </ListItemIcon>
+            <ListItemText>
+              <Typography noWrap>
+                {item.nameUtter}
+              </Typography>
+            </ListItemText>
         </ListItem>
       ));
     }
@@ -74,7 +73,9 @@ class ItemsList extends Component {
             {this.itemsList()}
           </List>
         </div>
+        
         <Divider />
+
         <div style={style.filter_items_container}>
           <TextField
             fullWidth
