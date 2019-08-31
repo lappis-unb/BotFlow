@@ -95,14 +95,13 @@ class ItemPage extends Component {
         <Grid item xs={9}>
           <ToolbarName
             old_item={OLD_ITEM}
+            url={this.props.url}
             mode={this.props.mode}
             items={this.props.items}
             current_item={CURRENT_ITEM}
             new_item={this.props.new_item}
             name_label={this.props.name_label}
             helper_text={this.props.helper_text}
-            create_get_url={this.props.create_get_url}
-            delete_update_url={this.props.delete_update_url}
           />
 
           <Divider />

@@ -5,8 +5,8 @@ const INITIAL_STATE = {
     helper_text: "",
     filtered_utters: [],
     old_utter_texts: [],
-    current_utter: new Utter(),
-    old_utter: new Utter(),
+    current_item: new Utter(),
+    old_item: new Utter(),
     notification_text: "",
     have_alternatives: false,
     selected_item_position: -1
@@ -39,31 +39,31 @@ export default (state = INITIAL_STATE, action) => {
         case "CREATE_NEW_ITEM":
             return {
                 ...state,
-                current_utter: createObjectCopyOf(action.new_item),
-                old_utter: createObjectCopyOf(action.new_item),
+                current_item: createObjectCopyOf(action.new_item),
+                old_item: createObjectCopyOf(action.new_item),
                 selected_item_position: action.selected_item_position
             }
 
         case "SET_ITEM_NAME":
             return {
                 ...state,
-                current_utter: {
-                    ...(createObjectCopyOf(state.current_utter)),
+                current_item: {
+                    ...(createObjectCopyOf(state.current_item)),
                     nameUtter: action.item_name
                 }
             };
 
         case "SET_UTTER_TEXT":
-            let new_current_utter = createObjectCopyOf(state.current_utter);
-            new_current_utter.utters[action.utter_position].utterText[action.text_position].text = action.text
+            let new_current_item = createObjectCopyOf(state.current_item);
+            new_current_item.utters[action.utter_position].utterText[action.text_position].text = action.text
 
             return {
                 ...state,
-                current_utter: new_current_utter
+                current_item: new_current_item
             };
 
         case "ADD_UTTER_TEXT":
-            let new_utter = createObjectCopyOf(state.current_utter);
+            let new_utter = createObjectCopyOf(state.current_item);
 
             if (state.have_alternatives) {
                 new_utter.utters.push(action.text);
@@ -73,40 +73,40 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                current_utter: new_utter
+                current_item: new_utter
             };
 
         case "REMOVE_UTTER_TEXT":
-            let current_utter = createObjectCopyOf(state.current_utter)
-            let old_utter_history = createObjectCopyOf(state.current_utter)
+            let current_item = createObjectCopyOf(state.current_item)
+            let old_item_history = createObjectCopyOf(state.current_item)
 
-            if (state.have_alternatives && current_utter.utters.length > 1) {
-                current_utter.utters.splice(action.utter_position, 1);
-            } else if (!state.have_alternatives && current_utter.utters[0].utterText.length > 1) {
-                current_utter.utters[0].utterText.splice(action.text_position, 1);
+            if (state.have_alternatives && current_item.utters.length > 1) {
+                current_item.utters.splice(action.utter_position, 1);
+            } else if (!state.have_alternatives && current_item.utters[0].utterText.length > 1) {
+                current_item.utters[0].utterText.splice(action.text_position, 1);
             }
 
             return {
                 ...state,
-                current_utter: current_utter,
-                old_utter_texts: old_utter_history.utters
+                current_item: current_item,
+                old_utter_texts: old_item_history.utters
             };
 
         case 'UNDO_UTTER_TEXT_REMOVAL':
             return {
                 ...state,
-                current_utter: {
-                    ...state.current_utter,
+                current_item: {
+                    ...state.current_item,
                     utters: createArrayCopyOf(state.old_utter_texts)
                 }
             }
 
         case "SUCESS_ACTION_UTTER": {
-            let old_utter = createObjectCopyOf(state.current_utter)
+            let old_item = createObjectCopyOf(state.current_item)
 
             return {
                 ...state,
-                old_utter: old_utter,
+                old_item: old_item,
                 notification_text: action.text
             };
         }
@@ -114,16 +114,16 @@ export default (state = INITIAL_STATE, action) => {
         case "GET_ITEMS":
             return {
                 ...state,
-                items: action.items.map(el => el),
-                filtered_items: action.items.map(el => el)
+                items: action.items,
+                filtered_items: action.items
             };
 
         case "SELECT_ITEM": {
             let selected_item_position = 0;
 
-            let selected_item = action.items.find((item, index) => {
+            let selected_item = state.items.find((item, index) => {
                 selected_item_position = index;
-                return (item._id === action.item._id || item.nameUtter === action.item.nameUtter);
+                return (item.id === action.item.id || item.nameUtter === action.item.nameUtter);
             });
 
             let new_item = [];
@@ -138,21 +138,21 @@ export default (state = INITIAL_STATE, action) => {
                 selected_item_position = 0;
             }
 
-            selected_item = (selected_item !== undefined) ? createObjectCopyOf(selected_item) : createObjectCopyOf(state.current_utter);
+            selected_item = (selected_item !== undefined) ? createObjectCopyOf(selected_item) : createObjectCopyOf(state.current_item);
 
-            let old_utter = {}
+            let old_item = {}
             if (new_item.length !== 0) {
-                old_utter = { ...(createObjectCopyOf(selected_item)), utters: new_item }
+                old_item = { ...(createObjectCopyOf(selected_item)), utters: new_item }
             } else {
-                old_utter = createObjectCopyOf(selected_item);
+                old_item = createObjectCopyOf(selected_item);
             }
 
 
             return {
                 ...state,
                 helper_text: "",
-                old_utter: old_utter,
-                current_utter: selected_item,
+                old_item: old_item,
+                current_item: selected_item,
                 have_alternatives: have_alternatives,
                 selected_item_position: selected_item_position
             };
@@ -162,15 +162,15 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 have_alternatives: action.have_alternatives,
-                current_utter: createObjectCopyOf(state.current_utter)
+                current_item: createObjectCopyOf(state.current_item)
             }
 
         case "CHANGE_UTTER_FORM": {
             return {
                 ...state,
                 have_alternatives: action.have_alternatives,
-                current_utter: {
-                    ...createObjectCopyOf(state.current_utter),
+                current_item: {
+                    ...createObjectCopyOf(state.current_item),
                     utters: createArrayCopyOf(action.utters)
                 }
             }

@@ -19,7 +19,7 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: ["em sequência", "como alternativas"],
-      value: (this.props.current_utter !== undefined && this.props.current_utter.utters.length > 1) ? "como alternativas" : "em sequência",
+      value: (this.props.current_item !== undefined && this.props.current_item.utters.length > 1) ? "como alternativas" : "em sequência",
       undoDelete: false
     }
   }
@@ -27,11 +27,11 @@ class UtterForm extends Component {
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_utter)
+    this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_item)
   }
 
   handleDelete(utter_index, text_index) {
-    const utters = this.props.current_utter.utters;
+    const utters = this.props.current_item.utters;
     const utters_length = utters.length;
     const utters_text_length = utters[0].utterText.length;
 
@@ -39,7 +39,7 @@ class UtterForm extends Component {
       this.setState({ undoDelete: true });
     }
 
-    this.props.removeUtterText(utter_index, text_index, this.props.current_utter.utters);
+    this.props.removeUtterText(utter_index, text_index, this.props.current_item.utters);
   }
 
   handleUndo() {
@@ -83,8 +83,8 @@ class UtterForm extends Component {
   setUtterTexts() {
     let utters_texts = [];
 
-    if (this.props.current_utter.utters !== undefined) {
-      utters_texts = this.props.current_utter.utters.map((utter_text_list, utter_index) => {
+    if (this.props.current_item.utters !== undefined) {
+      utters_texts = this.props.current_item.utters.map((utter_text_list, utter_index) => {
         return utter_text_list.utterText.map((utter_text, text_index) => {
           return (
             <li key={"utter_text" + utter_index + text_index}>
@@ -115,12 +115,12 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    this.props.changeUtterForm((event.target.value === "como alternativas"), this.props.current_utter)
+    this.props.changeUtterForm((event.target.value === "como alternativas"), this.props.current_item)
   }
 
   // TODO BUG selection dropdown
   getSelectedOption() {
-    const items = this.props.current_utter;
+    const items = this.props.current_item;
     return (items !== undefined && items.length > 1) ? "como alternativas" : "em sequência";
   }
 
@@ -171,7 +171,7 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
-          <pre>{JSON.stringify(this.props.current_utter, null, 2)}</pre>
+          <pre>{JSON.stringify(this.props.current_item, null, 2)}</pre>
         </Grid>
       </Grid>
     );
@@ -186,8 +186,8 @@ const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   addUtterText: (new_utter) => dispatch(addUtterText(new_utter)),
   removeUtterText: (utter_position, text_position) => dispatch(removeUtterText(utter_position, text_position)),
-  changeUtterForm: (have_alternatives, current_utter) => dispatch(changeUtterForm(have_alternatives, current_utter)),
-  setUtterText: (utter_position, text_position, text, current_utter) => dispatch(setUtterText(utter_position, text_position, text, current_utter))
+  changeUtterForm: (have_alternatives, current_item) => dispatch(changeUtterForm(have_alternatives, current_item)),
+  setUtterText: (utter_position, text_position, text, current_item) => dispatch(setUtterText(utter_position, text_position, text, current_item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

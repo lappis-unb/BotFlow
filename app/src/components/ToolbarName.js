@@ -52,7 +52,7 @@ class ToolbarName extends Component {
 
     checkRepeatedName(items, item_name, old_id) {
         return items.find((item) => (
-            (item.nameUtter === item_name) && (item._id !== old_id)
+            (item.nameUtter === item_name) && (item.id !== old_id)
         ));
     }
 
@@ -100,21 +100,17 @@ class ToolbarName extends Component {
 
     handleClick(remove) {
         if (remove) {
-            const item = this.props.current_item;
-            const delete_url = item ? this.props.delete_update_url + item._id : "";
             this.props.deleteItem(
-                delete_url,
-                this.props.create_get_url,
+                this.props.url,
+                this.props.current_item.id,
                 this.props.mode,
                 this.props.new_item
             )
         } else {
             this.props.saveData(
-                this.props.current_item,
-                this.props.items,
-                this.props.create_get_url,
-                this.props.delete_update_url,
-                this.props.mode
+                this.props.url,
+                this.props.mode,
+                this.props.current_item
             )
         }
     }
@@ -140,7 +136,7 @@ class ToolbarName extends Component {
                         value={ITEM_NAME}
                         label={NAME_ITEM_LABEL}
                         helperText={HELPER_TEXT}
-                        onChange={(e) => this.checkIsValidName(ITEMS, e.target.value, OLD_ITEM._id)}
+                        onChange={(e) => this.checkIsValidName(ITEMS, e.target.value, OLD_ITEM.id)}
                     />
                 </Grid>
                 <Grid item xs={1} />
@@ -166,18 +162,10 @@ class ToolbarName extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    deleteItem: (delete_url, get_url, mode, item) => dispatch(deleteItem(delete_url, get_url, mode, item)),
     setItemName: (item_name) => dispatch(setItemName(item_name)),
     setHelperText: (helper_text) => dispatch(setHelperText(helper_text)),
-    saveData: (
-        current_item,
-        items,
-        create_get_url,
-        delete_update_url,
-        mode
-    ) => (
-            dispatch(saveData(current_item, items, create_get_url, delete_update_url, mode))
-        )
+    saveData: (url, mode, item) => (dispatch(saveData(url, mode, item))),
+    deleteItem: (url, delete_item_id, mode, item) => dispatch(deleteItem(url, delete_item_id, mode, item))
 });
 
 export default connect(null, mapDispatchToProps)(ToolbarName);

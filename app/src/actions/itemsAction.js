@@ -1,17 +1,29 @@
 import axios from "axios";
 
-export const getItems = (url, operation = '', item = undefined) => {
+export const getItems = (url) => {
     return async (dispatch) => {
         try {
             const response = await axios.get(url);
-            const items = await sortItemName(response.data, 'nameUtter');
+            console.log("Reponse1", response.data)
 
-            await dispatch({ type: "GET_ITEMS", items: items });
+            await dispatch({ type: "GET_ITEMS", items:  response.data });
+        } catch (error) {
+            throw (error);
+        }
+    }
+};
 
-            if (operation === 'delete' && item !== undefined) {
-                await dispatch(createNewItem(item));
-            } else if (operation === 'create_update' && item !== undefined) {
-                await dispatch(selectItem(item, 0, items));
+export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = "") => {
+    return async (dispatch) => {
+        try {
+            const mode_url = (mode==='post') ? url : url + new_item.id;
+            
+            await axios[mode](mode_url, new_item);
+            await dispatch(getItems(url));
+            dispatch(notifyAction(message));
+
+            if (new_item !== undefined) {
+                dispatch(selectItem(new_item, 0));
             }
         } catch (error) {
             throw (error);
@@ -19,47 +31,26 @@ export const getItems = (url, operation = '', item = undefined) => {
     }
 };
 
-// TODO REMOVE THIS - IMPLEMENT IN API
-const sortItemName = (utters) => {
-    // Sorts alphabetically utters in sidebar
-    utters.sort(function (a, b) {
-        if (a['nameUtter'] < b['nameUtter']) { return -1; }
-        if (a['nameUtter'] > b['nameUtter']) { return 1; }
-        return 0;
-    })
-
-    return utters;
-}
-
-export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = "") => {
+export const saveData = (url, mode = "Utter", item) => {
     return async (dispatch) => {
-        try {
-            await axios[mode](url, new_item);
-            await dispatch(getItems(url, 'create_update', new_item));
-            dispatch(notifyAction(message));
-        } catch (error) {
-            throw (error);
-        }
-    }
-};
-
-export const saveData = (item, items, create_get_url, update_url, mode = "Utter") => {
-    return async (dispatch) => {
-
-        if ((item._id === undefined)) {
-            await dispatch(createOrUpdateItem('post', create_get_url, item, mode + " criada com sucesso!"));
-        } else if (item._id !== undefined) {
-            dispatch(createOrUpdateItem('put', (update_url + item._id), item, mode + " atualizada com sucesso!"));
+        if ((item.id === undefined)) {
+            dispatch(createOrUpdateItem('post', url, item, mode + " criada com sucesso!"));
+        } else if (item.id !== undefined) {
+            dispatch(createOrUpdateItem('put', url, item, mode + " atualizada com sucesso!"));
         }
     }
 }
 
-export const deleteItem = (url = "", get_url, mode, item) => {
+export const deleteItem = (url = "", delete_item_id, mode, item) => {
     return async (dispatch) => {
         try {
-            await axios.delete(url);
-            await dispatch(getItems(get_url, 'delete', item));
+            await axios.delete(url + delete_item_id);
+            await dispatch(getItems(url));
             dispatch(notifyAction(mode + "  removida com sucesso!"));
+
+            if (item !== undefined) {
+                await dispatch(createNewItem(item))
+            }
         } catch (error) {
             throw (error);
         }
@@ -73,11 +64,10 @@ export const notifyAction = (text) => {
     };
 };
 
-export const selectItem = (item, index = -1, items = []) => {
+export const selectItem = (item, index = -1) => {
     return {
         type: "SELECT_ITEM",
         item: item,
-        items: items,
         selected_item_position: index
     };
 }
