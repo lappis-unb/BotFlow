@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { getItems } from "../actions/itemsAction";
 
 import ItemPage from "../pages/ItemPage"
-import { Utter } from '../utils/utter.js'
+import { Utter } from '../utils/DataFormat'
 
 
 const BASE = "http://localhost:3000/";

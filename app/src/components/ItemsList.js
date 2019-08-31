@@ -43,7 +43,7 @@ class ItemsList extends Component {
             </ListItemIcon>
             <ListItemText>
               <Typography noWrap>
-                {item.nameUtter}
+                {item.name}
               </Typography>
             </ListItemText>
         </ListItem>
@@ -53,7 +53,7 @@ class ItemsList extends Component {
 
   filterItems(wanted_name) {
     this.setState({
-      filtered_items: this.props.items.filter((item) => item.nameUtter.includes(wanted_name))
+      filtered_items: this.props.items.filter((item) => item.name.includes(wanted_name))
     });
   }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Intent } from '../utils/intent.js'
+import { Intent } from '../utils/DataFormat.js'
 
 const BASE = "https://botflow.api.lappis.rocks/";
 //const BASE = "http://localhost:3030/";

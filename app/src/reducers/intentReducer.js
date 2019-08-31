@@ -1,4 +1,4 @@
-import {Intent} from '../utils/intent';
+import { Intent } from '../utils/DataFormat';
 
 const INITIAL_STATE = {
     helper_text: "",
@@ -85,14 +85,14 @@ export default (state = INITIAL_STATE, action) => {
         case "SELECT_INTENT": {
             let intent_selected = state.intents.find((intent) => intent._id === action.intent_id);
             console.log('reducer errado');
-            
-            
+
+
             let intents_text = [...intent_selected.intent.map((intent) => {
                 return {
                     ...intent,
                     text: intent.text
-                    }
                 }
+            }
             )]
 
             return {
@@ -103,7 +103,7 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "IS_ENABLE_BUTTON_INTENT": {            
+        case "IS_ENABLE_BUTTON_INTENT": {
             let is_text_changed = (JSON.stringify(state.current_intent) !== JSON.stringify(state.old_intent));
 
             return {
@@ -112,16 +112,16 @@ export default (state = INITIAL_STATE, action) => {
             }
         }
 
-        case "SAVE_DATA":            
+        case "SAVE_DATA":
             return {
                 ...state,
                 helper_text: action.helper_text
             }
 
-        case "CHANGE_INTENT_FORM":            
+        case "CHANGE_INTENT_FORM":
             return {
                 ...state,
-                current_intent:{
+                current_intent: {
                     ...state.current_intent,
                     intent: action.intents
                 }
