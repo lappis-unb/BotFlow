@@ -35,12 +35,11 @@ const style = {
 
 
 class ToolbarName extends Component {
-    // TODO update json format
     checkEmptyFields(items) {
         let no_empty_fields = true;
-        if (items.utters !== undefined) {
-            items.utters.forEach(utter => {
-                utter.utterText.forEach(text => {
+        if (items.alternatives !== undefined) {
+            items.alternatives.forEach(alternative => {
+                alternative.contents.forEach(text => {
                     if ((text.text).trim().length === 0) {
                         no_empty_fields = false;
                     }
@@ -52,7 +51,7 @@ class ToolbarName extends Component {
 
     checkRepeatedName(items, item_name, old_id) {
         return items.find((item) => (
-            (item.nameUtter === item_name) && (item.id !== old_id)
+            (item.name === item_name) && (item.id !== old_id)
         ));
     }
 
@@ -79,8 +78,8 @@ class ToolbarName extends Component {
 
         // TODO update json format
         const no_empty_name = (
-            (current_item.nameUtter !== undefined) &&
-            ((current_item.nameUtter).length !== 0)
+            (current_item.name !== undefined) &&
+            ((current_item.name).length !== 0)
         );
 
         //console.log("============================")
@@ -122,7 +121,7 @@ class ToolbarName extends Component {
         const NAME_ITEM_LABEL = "Nome da resposta";
         const HELPER_TEXT = this.props.helper_text;
         const CURRENT_ITEM = this.props.current_item;
-        const ITEM_NAME = (this.props.current_item !== undefined) ? this.props.current_item.nameUtter : "";
+        const ITEM_NAME = (this.props.current_item !== undefined) ? this.props.current_item.name : "";
 
         return (
             <Toolbar style={style.toolbar}>

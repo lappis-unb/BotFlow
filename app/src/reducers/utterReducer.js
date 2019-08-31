@@ -1,14 +1,12 @@
-import { Utter } from '../utils/utter';
+import { Utter } from '../utils/DataFormat';
 
 const INITIAL_STATE = {
     items: [],
     helper_text: "",
-    filtered_utters: [],
     old_utter_texts: [],
     current_item: new Utter(),
     old_item: new Utter(),
     notification_text: "",
-    have_alternatives: false,
     selected_item_position: -1
 };
 
@@ -16,7 +14,7 @@ export default (state = INITIAL_STATE, action) => {
 
     function createObjectCopyOf(item) {
         if (item !== undefined) {
-            return { ...item, utters: createArrayCopyOf(item.utters) }
+            return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
         }
         return { ...item }
     }
@@ -26,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
             return items.map((utter) => {
                 return {
                     ...utter,
-                    utterText: utter.utterText.map((utter_text) => {
+                    contents: utter.contents.map((utter_text) => {
                         return { ...utter_text }
                     })
                 }
@@ -49,26 +47,26 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 current_item: {
                     ...(createObjectCopyOf(state.current_item)),
-                    nameUtter: action.item_name
+                    name: action.item_name
                 }
             };
 
-        case "SET_UTTER_TEXT":
+        case "SET_UTTER_CONTENT":
             let new_current_item = createObjectCopyOf(state.current_item);
-            new_current_item.utters[action.utter_position].utterText[action.text_position].text = action.text
+            new_current_item.alternatives[action.utter_position].contents[action.text_position].text = action.text
 
             return {
                 ...state,
                 current_item: new_current_item
             };
 
-        case "ADD_UTTER_TEXT":
+        case "ADD_UTTER_CONTENT":
             let new_utter = createObjectCopyOf(state.current_item);
 
-            if (state.have_alternatives) {
-                new_utter.utters.push(action.text);
+            if (new_utter.have_alternatives) {
+                new_utter.alternatives.push(action.text);
             } else {
-                new_utter.utters[0].utterText.push(action.text.utterText[0]);
+                new_utter.alternatives[0].contents.push(action.text.contents[0]);
             }
 
             return {
@@ -76,28 +74,28 @@ export default (state = INITIAL_STATE, action) => {
                 current_item: new_utter
             };
 
-        case "REMOVE_UTTER_TEXT":
+        case "REMOVE_UTTER_CONTENT":
             let current_item = createObjectCopyOf(state.current_item)
             let old_item_history = createObjectCopyOf(state.current_item)
 
-            if (state.have_alternatives && current_item.utters.length > 1) {
-                current_item.utters.splice(action.utter_position, 1);
-            } else if (!state.have_alternatives && current_item.utters[0].utterText.length > 1) {
-                current_item.utters[0].utterText.splice(action.text_position, 1);
+            if (current_item.have_alternatives) {
+                current_item.alternatives.splice(action.utter_position, 1);
+            } else if (current_item.alternatives[0].contents.length > 1) {
+                current_item.alternatives[0].contents.splice(action.text_position, 1);
             }
 
             return {
                 ...state,
                 current_item: current_item,
-                old_utter_texts: old_item_history.utters
+                old_utter_texts: old_item_history.alternatives
             };
 
-        case 'UNDO_UTTER_TEXT_REMOVAL':
+        case 'UNDO_UTTER_CONTENT_REMOVAL':
             return {
                 ...state,
                 current_item: {
                     ...state.current_item,
-                    utters: createArrayCopyOf(state.old_utter_texts)
+                    alternatives: createArrayCopyOf(state.old_utter_texts)
                 }
             }
 
@@ -115,7 +113,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 items: action.items,
-                filtered_items: action.items
             };
 
         case "SELECT_ITEM": {
@@ -123,17 +120,13 @@ export default (state = INITIAL_STATE, action) => {
 
             let selected_item = state.items.find((item, index) => {
                 selected_item_position = index;
-                return (item.id === action.item.id || item.nameUtter === action.item.nameUtter);
+                return (item.id === action.item.id || item.name === action.item.name);
             });
 
             let new_item = [];
-            let have_alternatives = false;
 
             if (selected_item !== undefined) {
-                if (selected_item.utters.length > 1) {
-                    have_alternatives = true;
-                }
-                new_item = createObjectCopyOf(selected_item).utters;
+                new_item = createObjectCopyOf(selected_item).alternatives;
             } else {
                 selected_item_position = 0;
             }
@@ -142,7 +135,7 @@ export default (state = INITIAL_STATE, action) => {
 
             let old_item = {}
             if (new_item.length !== 0) {
-                old_item = { ...(createObjectCopyOf(selected_item)), utters: new_item }
+                old_item = { ...(createObjectCopyOf(selected_item)), alternatives: new_item }
             } else {
                 old_item = createObjectCopyOf(selected_item);
             }
@@ -153,25 +146,26 @@ export default (state = INITIAL_STATE, action) => {
                 helper_text: "",
                 old_item: old_item,
                 current_item: selected_item,
-                have_alternatives: have_alternatives,
                 selected_item_position: selected_item_position
             };
         }
 
-        case "SAVE_DATA":
+        case "SAVE_DATA":{
             return {
                 ...state,
-                have_alternatives: action.have_alternatives,
                 current_item: createObjectCopyOf(state.current_item)
             }
+        }
 
         case "CHANGE_UTTER_FORM": {
+            let new_current_item = createObjectCopyOf(state.current_item);
+        
             return {
                 ...state,
-                have_alternatives: action.have_alternatives,
                 current_item: {
-                    ...createObjectCopyOf(state.current_item),
-                    utters: createArrayCopyOf(action.utters)
+                    ...new_current_item,
+                    have_alternatives: action.have_alternatives,
+                    alternatives: createArrayCopyOf(action.alternatives)
                 }
             }
         }

@@ -4,8 +4,6 @@ export const getItems = (url) => {
     return async (dispatch) => {
         try {
             const response = await axios.get(url);
-            console.log("Reponse1", response.data)
-
             await dispatch({ type: "GET_ITEMS", items:  response.data });
         } catch (error) {
             throw (error);

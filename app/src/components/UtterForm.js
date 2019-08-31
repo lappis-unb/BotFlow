@@ -1,45 +1,53 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
+import { Button } from '@material-ui/core';
 import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { setUtterText, addUtterText, undoTextRemotion, removeUtterText, changeUtterForm } from "../actions/uttersAction";
+import CloseIcon from '@material-ui/icons/Close';
 import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
-import { Button } from '@material-ui/core';
-
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import {
+  setUtterContent,
+  addUtterContent,
+  undoTextRemotion,
+  removeUtterContent,
+  changeUtterForm
+} from "../actions/uttersAction";
 
+const ALTERNATIVES_TEXT = "como alternativas";
+const SEQUENCE_TEXT = "em sequência";
 
 class UtterForm extends Component {
-
+  
   constructor(props) {
     super(props);
     this.state = {
-      values: ["em sequência", "como alternativas"],
-      value: (this.props.current_item !== undefined && this.props.current_item.utters.length > 1) ? "como alternativas" : "em sequência",
+      values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
+      value: (this.props.current_item !== undefined && this.props.current_item.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT,
       undoDelete: false
     }
   }
 
+  
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setUtterText(utter_index, text_index, e.target.value, this.props.current_item)
+    this.props.setUtterContent(utter_index, text_index, e.target.value, this.props.current_item)
   }
 
   handleDelete(utter_index, text_index) {
-    const utters = this.props.current_item.utters;
+    const utters = this.props.current_item.alternatives;
     const utters_length = utters.length;
-    const utters_text_length = utters[0].utterText.length;
+    const utters_text_length = utters[0].contents.length;
 
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undoDelete: true });
     }
 
-    this.props.removeUtterText(utter_index, text_index, this.props.current_item.utters);
+    this.props.removeUtterContent(utter_index, text_index, this.props.current_item.alternatives);
   }
 
   handleUndo() {
@@ -48,44 +56,45 @@ class UtterForm extends Component {
   }
 
   deleteSnack() {
-    return (<Snackbar
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      open={this.state.undoDelete}
-      autoHideDuration={3000}
-      ContentProps={{
-        'aria-describedby': 'message-id',
-      }}
-      message={<span id="message-id">Deletado com sucesso!</span>}
-      action={[
-        <Button
-          key="undo"
-          color="secondary"
-          size="small"
-          onClick={() => this.handleUndo()}>
-          Desfazer
+    return (
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={this.state.undoDelete}
+        autoHideDuration={3000}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">Deletado com sucesso!</span>}
+        action={[
+          <Button
+            key="undo"
+            color="secondary"
+            size="small"
+            onClick={() => this.handleUndo()}>
+            Desfazer
         </Button>,
-        <IconButton
-          key="close"
-          aria-label="Close"
-          color="inherit"
-          onClick={() => this.setState({ undoDelete: false })}
-        >
-          <CloseIcon />
-        </IconButton>
-      ]
-      }
-    />)
+          <IconButton
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            onClick={() => this.setState({ undoDelete: false })}
+          >
+            <CloseIcon />
+          </IconButton>
+        ]}
+      />
+    )
   }
 
-  setUtterTexts() {
+  setUtterContents() {
     let utters_texts = [];
 
-    if (this.props.current_item.utters !== undefined) {
-      utters_texts = this.props.current_item.utters.map((utter_text_list, utter_index) => {
-        return utter_text_list.utterText.map((utter_text, text_index) => {
+    if (this.props.current_item.alternatives !== undefined) {
+      utters_texts = this.props.current_item.alternatives.map((utter_text_list, utter_index) => {
+        return utter_text_list.contents.map((utter_text, text_index) => {
           return (
             <li key={"utter_text" + utter_index + text_index}>
               <Grid container spacing={2} alignItems="flex-end" >
@@ -115,13 +124,14 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    this.props.changeUtterForm((event.target.value === "como alternativas"), this.props.current_item)
+    if((event.target.value !== this.props.current_item.have_alternatives)){
+      this.props.changeUtterForm(this.props.current_item, (event.target.value === ALTERNATIVES_TEXT))
+    }
   }
 
-  // TODO BUG selection dropdown
   getSelectedOption() {
     const items = this.props.current_item;
-    return (items !== undefined && items.length > 1) ? "como alternativas" : "em sequência";
+    return (items !== undefined && items.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
   }
 
   render() {
@@ -146,7 +156,7 @@ class UtterForm extends Component {
           </TextField>
 
           <ul>
-            {this.setUtterTexts()}
+            {this.setUtterContents()}
           </ul>
 
           <Grid container spacing={2} alignItems="flex-end" >
@@ -157,7 +167,7 @@ class UtterForm extends Component {
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
                 }}
-                onClick={() => this.props.addUtterText(this.props.new_utter)} >
+                onClick={() => this.props.addUtterContent(this.props.new_utter)} >
                 <textarea
                   readOnly
                   type="text"
@@ -184,10 +194,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
-  addUtterText: (new_utter) => dispatch(addUtterText(new_utter)),
-  removeUtterText: (utter_position, text_position) => dispatch(removeUtterText(utter_position, text_position)),
+  addUtterContent: (new_utter) => dispatch(addUtterContent(new_utter)),
+  removeUtterContent: (utter_position, text_position) => dispatch(removeUtterContent(utter_position, text_position)),
   changeUtterForm: (have_alternatives, current_item) => dispatch(changeUtterForm(have_alternatives, current_item)),
-  setUtterText: (utter_position, text_position, text, current_item) => dispatch(setUtterText(utter_position, text_position, text, current_item))
+  setUtterContent: (utter_position, text_position, text, current_item) => dispatch(setUtterContent(utter_position, text_position, text, current_item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);
