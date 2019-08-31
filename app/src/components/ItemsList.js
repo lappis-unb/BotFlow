@@ -58,7 +58,7 @@ class ItemsList extends Component {
   }
 
   handleListItemClick(item, index) {
-    this.props.selectItem(item, index, this.props.items);
+    this.props.selectItem(item, index);
   }
 
   render() {
@@ -93,7 +93,7 @@ class ItemsList extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
+  selectItem: (item, item_index) => dispatch(selectItem(item, item_index))
 });
 
 export default connect(null, mapDispatchToProps)(ItemsList);

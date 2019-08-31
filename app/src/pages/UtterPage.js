@@ -3,15 +3,12 @@ import React, { Component } from "react";
 import { getItems } from "../actions/itemsAction";
 
 import ItemPage from "../pages/ItemPage"
-import {
-  Utter
-} from '../utils/utter.js'
+import { Utter } from '../utils/utter.js'
 
 
-//const BASE = "http://localhost:3030/";
-const BASE = "https://botflow.api.lappis.rocks/";
-const UTTER_URL_API_CREATE_GET = BASE + "project/utter/";
-const UTTER_URL_API_DELETE_UPDATE = BASE + "utter/";
+const BASE = "http://localhost:3000/";
+//const BASE = "https://botflow.api.lappis.rocks/";
+const UTTER_URL = BASE + "utters/";
 
 class UtterPage extends Component {
   constructor(props) {
@@ -19,23 +16,22 @@ class UtterPage extends Component {
     this.state = {
       open: false,
     }
-    this.props.getItems(UTTER_URL_API_CREATE_GET);
+    this.props.getItems(UTTER_URL);
   }
 
   render() {
     return (
       <ItemPage
         mode="Utter"
+        url={UTTER_URL}
         new_item={new Utter()}
         items={this.props.items}
         name_label="Nome da resposta"
-        old_item={this.props.old_utter}
+        old_item={this.props.old_item}
         button_text="Criar nova resposta"
         helper_text={this.props.helper_text}
         item_list_text="Respostas cadastradas"
-        current_item={this.props.current_utter}
-        create_get_url={UTTER_URL_API_CREATE_GET}
-        delete_update_url={UTTER_URL_API_DELETE_UPDATE}
+        current_item={this.props.current_item}
         notification_text={this.props.notification_text}
         selected_item_position={this.props.selected_item_position}
       />
