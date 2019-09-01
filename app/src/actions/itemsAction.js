@@ -29,11 +29,13 @@ export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = 
     }
 };
 
+//export const createData(name, data, have_alternatives){ }
+
 export const saveData = (url, mode = "Utter", item) => {
     return async (dispatch) => {
         if ((item.id === undefined)) {
             dispatch(createOrUpdateItem('post', url, item, mode + " criada com sucesso!"));
-        } else if (item.id !== undefined) {
+        } else {
             dispatch(createOrUpdateItem('put', url, item, mode + " atualizada com sucesso!"));
         }
     }
@@ -62,11 +64,10 @@ export const notifyAction = (text) => {
     };
 };
 
-export const selectItem = (item, index = -1) => {
+export const selectItem = (item) => {
     return {
         type: "SELECT_ITEM",
-        item: item,
-        selected_item_position: index
+        item: item
     };
 }
 

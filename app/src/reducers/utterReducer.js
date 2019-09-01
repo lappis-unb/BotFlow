@@ -2,10 +2,12 @@ import { Utter } from '../utils/DataFormat';
 
 const INITIAL_STATE = {
     items: [],
-    item_name: "",
-    old_utter_texts: [],
-    current_item: {},
     old_item: {},
+    current_item: {},
+    old_utter_texts: [],
+    item_name: "",
+    have_alternatives: false,
+    item_content: [],
     notification_text: "",
     selected_item_position: -1
 };
@@ -94,6 +96,7 @@ export default (state = INITIAL_STATE, action) => {
                 old_item: old_item,
                 current_item: selected_item,
                 item_name: selected_item.name,
+                have_alternatives: selected_item.have_alternatives,
                 selected_item_position: selected_item_position
             };
         }
@@ -112,9 +115,9 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
+                have_alternatives: action.have_alternatives,
                 current_item: {
                     ...new_current_item,
-                    have_alternatives: action.have_alternatives,
                     alternatives: createArrayCopyOf(action.alternatives)
                 }
             }
