@@ -77,8 +77,6 @@ class ItemPage extends Component {
   }
 
   render() {
-    const OLD_ITEM = this.props.old_item;
-    const CURRENT_ITEM = this.props.current_item;
 
     return (
       <Grid container>
@@ -94,15 +92,17 @@ class ItemPage extends Component {
 
         <Grid item xs={9}>
           <ToolbarName
-            old_item={OLD_ITEM}
             url={this.props.url}
             mode={this.props.mode}
             items={this.props.items}
-            current_item={CURRENT_ITEM}
+            id_item={this.props.id_item}
             new_item={this.props.new_item}
-            item_name={this.props.item_name}
+            name_item={this.props.name_item}
             name_label={this.props.name_label}
             helper_text={this.props.helper_text}
+            old_name_item={this.props.old_name_item}
+            item_contents={this.props.item_contents}
+            old_item_contents={this.props.old_item_contents}
           />
 
           <Divider />

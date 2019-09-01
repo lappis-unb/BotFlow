@@ -41,62 +41,61 @@ class ToolbarName extends Component {
         }
     }
 
-    checkEmptyFields(items) {
-        let no_empty_fields = true;
-        if (items.alternatives !== undefined) {
-            items.alternatives.forEach(alternative => {
+    checkEmptyFields(alternatives) {
+        if (alternatives !== undefined) {
+            alternatives.forEach(alternative => {
                 alternative.contents.forEach(text => {
                     if ((text.text).trim().length === 0) {
-                        no_empty_fields = false;
+                        return false;
                     }
                 })
             });
         }
-        return no_empty_fields;
+        return true;
     }
 
-    checkRepeatedName(items, item_name, old_id) {
+    checkRepeatedName(items, name_item) {
         return items.find((item) => (
-            (item.name === item_name) && (item.id !== old_id)
+            (item.name === name_item) && (item.id !== this.props.id_item)
         ));
     }
 
-    checkIsValidName(items, item_name, old_id) {
+    checkIsValidName(items, name_item) {
 
         let helper_text = "";
         let regex = /^[\w\d_]+$/;
 
-        if (!regex.test(item_name) && item_name.length > 0) {
+        if (!regex.test(name_item) && name_item.length > 0) {
             helper_text = "Use apenas letras sem acentos, números ou '_'";
-            item_name = item_name.substr(0, item_name.length - 1);
-        } else if (this.checkRepeatedName(items, item_name, old_id) !== undefined) {
+            name_item = name_item.substr(0, name_item.length - 1);
+        } else if (this.checkRepeatedName(items, name_item) !== undefined) {
             helper_text = "Por favor, insira um nome não repetido."
         }
 
         this.setState({ helper_text: helper_text });
-        this.props.setNameItem(item_name)
+        this.props.setNameItem(name_item)
     }
 
-    isButtonEnabled(current_item, old_item) {
+    isButtonEnabled(item_contents, old_item_content) {
         const no_errors = this.state.helper_text === '';
-        const no_empty_fields = this.checkEmptyFields(current_item);
-        const name_changed = this.props.item_name !== old_item.name;
-        const contents_changed = JSON.stringify(current_item) !== JSON.stringify(old_item);
+        const no_empty_fields = this.checkEmptyFields(item_contents);
+        const name_changed = (this.props.name_item !== this.props.old_name_item);
+        const contents_changed = JSON.stringify(item_contents) !== JSON.stringify(old_item_content);
         const have_changes = (contents_changed || name_changed);
         const no_empty_name = (
-            (this.props.item_name !== undefined) &&
-            (this.props.item_name).length !== 0
+            (this.props.name_item !== undefined) &&
+            (this.props.name_item).length !== 0
         );
 
 
-        //console.log("============================")
-        //console.log("have_changes", have_changes);
-        //console.log("contents", contents_changed );
-        //console.log("name", name_changed );
-        //console.log("no_empty_fields", no_empty_fields);
-        //console.log("no_errors", no_errors);
-        //console.log("no_empty_name", no_empty_name);
-        //console.log("============================")
+        console.log("============================")
+        console.log("have_changes", have_changes);
+        console.log("contents", contents_changed );
+        console.log("name", name_changed );
+        console.log("no_empty_fields", no_empty_fields);
+        console.log("no_errors", no_errors);
+        console.log("no_empty_name", no_empty_name);
+        console.log("============================")
 
         return (
             have_changes &&
@@ -125,9 +124,7 @@ class ToolbarName extends Component {
 
     render() {
         const ITEMS = this.props.items;
-        const OLD_ITEM = this.props.old_item;
         const NAME_ITEM_LABEL = "Nome da resposta";
-        const CURRENT_ITEM = this.props.current_item;
 
         return (
             <Toolbar style={style.toolbar}>
@@ -138,10 +135,10 @@ class ToolbarName extends Component {
                         error={this.state.helper_text !== ""}
                         type="text"
                         id={NAME_ITEM_LABEL}
-                        value={this.props.item_name}
+                        value={this.props.name_item}
                         label={NAME_ITEM_LABEL}
                         helperText={this.state.helper_text}
-                        onChange={(e) => this.checkIsValidName(ITEMS, e.target.value, OLD_ITEM.id)}
+                        onChange={(e) => this.checkIsValidName(ITEMS, e.target.value)}
                     />
                 </Grid>
                 <Grid item xs={1} />
@@ -151,7 +148,7 @@ class ToolbarName extends Component {
                             size="small"
                             variant="contained"
                             color="secondary"
-                            disabled={!this.isButtonEnabled(CURRENT_ITEM, OLD_ITEM)}
+                            disabled={!this.isButtonEnabled(this.props.item_contents, this.props.old_item_contents)}
                             onClick={() => this.handleClick(false)}>
                             <SaveButtonCheck>
                                 <Done />
@@ -167,7 +164,7 @@ class ToolbarName extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setNameItem: (item_name) => dispatch(setNameItem(item_name)),
+    setNameItem: (name_item) => dispatch(setNameItem(name_item)),
     saveData: (url, mode, item) => (dispatch(saveData(url, mode, item))),
     deleteItem: (url, delete_item_id, mode, item) => dispatch(deleteItem(url, delete_item_id, mode, item))
 });
