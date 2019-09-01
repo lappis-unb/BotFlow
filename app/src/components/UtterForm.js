@@ -124,14 +124,13 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    if((event.target.value !== this.props.current_item.have_alternatives)){
+    if((event.target.value !== this.props.have_alternatives)){
       this.props.changeUtterForm(this.props.current_item, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
   getSelectedOption() {
-    const items = this.props.current_item;
-    return (items !== undefined && items.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
+    return (this.props.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
   }
 
   render() {
@@ -181,7 +180,8 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
-          <h3>{this.props.item_name}</h3>
+          <h3>Name: {this.props.item_name}</h3>
+          <h3>have_alternatives: {this.props.have_alternatives ? "true" : "false"}</h3>
           <pre>{JSON.stringify(this.props.current_item, null, 2)}</pre>
         </Grid>
       </Grid>
