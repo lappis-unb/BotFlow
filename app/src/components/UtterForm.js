@@ -181,6 +181,7 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
+          <h3>{this.props.item_name}</h3>
           <pre>{JSON.stringify(this.props.current_item, null, 2)}</pre>
         </Grid>
       </Grid>

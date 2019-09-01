@@ -2,16 +2,15 @@ import { Utter } from '../utils/DataFormat';
 
 const INITIAL_STATE = {
     items: [],
-    helper_text: "",
+    item_name: "",
     old_utter_texts: [],
-    current_item: new Utter(),
-    old_item: new Utter(),
+    current_item: {},
+    old_item: {},
     notification_text: "",
     selected_item_position: -1
 };
 
 export default (state = INITIAL_STATE, action) => {
-
     function createObjectCopyOf(item) {
         if (item !== undefined) {
             return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
@@ -42,14 +41,84 @@ export default (state = INITIAL_STATE, action) => {
                 selected_item_position: action.selected_item_position
             }
 
-        case "SET_ITEM_NAME":
+        case "SET_NAME_ITEM":
+            return {
+                ...state,
+                item_name: action.item_name
+            };
+
+        case "SUCESS_ACTION_UTTER": {
+            let old_item = createObjectCopyOf(state.current_item)
+
+            return {
+                ...state,
+                old_item: old_item,
+                notification_text: action.text
+            };
+        }
+
+        case "GET_ITEMS":
+            return {
+                ...state,
+                items: action.items,
+            };
+
+        case "SELECT_ITEM": {
+            let selected_item_position = 0;
+
+            let selected_item = state.items.find((item, index) => {
+                selected_item_position = index;
+                return (item.id === action.item.id || item.name === action.item.name);
+            });
+
+            let new_item = [];
+
+            if (selected_item !== undefined) {
+                new_item = createObjectCopyOf(selected_item).alternatives;
+            } else {
+                selected_item_position = 0;
+            }
+
+            selected_item = (selected_item !== undefined) ? createObjectCopyOf(selected_item) : createObjectCopyOf(state.current_item);
+
+            let old_item = {}
+            if (new_item.length !== 0) {
+                old_item = { ...(createObjectCopyOf(selected_item)), alternatives: new_item }
+            } else {
+                old_item = createObjectCopyOf(selected_item);
+            }
+
+
+            return {
+                ...state,
+                old_item: old_item,
+                current_item: selected_item,
+                item_name: selected_item.name,
+                selected_item_position: selected_item_position
+            };
+        }
+
+        case "SAVE_DATA": {
+            return {
+                ...state,
+                current_item: createObjectCopyOf(state.current_item)
+            }
+        }
+
+        // UTTER 
+
+        case "CHANGE_UTTER_FORM": {
+            let new_current_item = createObjectCopyOf(state.current_item);
+
             return {
                 ...state,
                 current_item: {
-                    ...(createObjectCopyOf(state.current_item)),
-                    name: action.item_name
+                    ...new_current_item,
+                    have_alternatives: action.have_alternatives,
+                    alternatives: createArrayCopyOf(action.alternatives)
                 }
-            };
+            }
+        }
 
         case "SET_UTTER_CONTENT":
             let new_current_item = createObjectCopyOf(state.current_item);
@@ -98,84 +167,6 @@ export default (state = INITIAL_STATE, action) => {
                     alternatives: createArrayCopyOf(state.old_utter_texts)
                 }
             }
-
-        case "SUCESS_ACTION_UTTER": {
-            let old_item = createObjectCopyOf(state.current_item)
-
-            return {
-                ...state,
-                old_item: old_item,
-                notification_text: action.text
-            };
-        }
-
-        case "GET_ITEMS":
-            return {
-                ...state,
-                items: action.items,
-            };
-
-        case "SELECT_ITEM": {
-            let selected_item_position = 0;
-
-            let selected_item = state.items.find((item, index) => {
-                selected_item_position = index;
-                return (item.id === action.item.id || item.name === action.item.name);
-            });
-
-            let new_item = [];
-
-            if (selected_item !== undefined) {
-                new_item = createObjectCopyOf(selected_item).alternatives;
-            } else {
-                selected_item_position = 0;
-            }
-
-            selected_item = (selected_item !== undefined) ? createObjectCopyOf(selected_item) : createObjectCopyOf(state.current_item);
-
-            let old_item = {}
-            if (new_item.length !== 0) {
-                old_item = { ...(createObjectCopyOf(selected_item)), alternatives: new_item }
-            } else {
-                old_item = createObjectCopyOf(selected_item);
-            }
-
-
-            return {
-                ...state,
-                helper_text: "",
-                old_item: old_item,
-                current_item: selected_item,
-                selected_item_position: selected_item_position
-            };
-        }
-
-        case "SAVE_DATA":{
-            return {
-                ...state,
-                current_item: createObjectCopyOf(state.current_item)
-            }
-        }
-
-        case "CHANGE_UTTER_FORM": {
-            let new_current_item = createObjectCopyOf(state.current_item);
-        
-            return {
-                ...state,
-                current_item: {
-                    ...new_current_item,
-                    have_alternatives: action.have_alternatives,
-                    alternatives: createArrayCopyOf(action.alternatives)
-                }
-            }
-        }
-
-        case "SET_HELPER_TEXT": {
-            return {
-                ...state,
-                helper_text: action.helper_text
-            }
-        }
 
         default:
             return state;

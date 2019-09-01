@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { getItems } from "../actions/itemsAction";
+import { getItems, createNewItem } from "../actions/itemsAction";
 
 import ItemPage from "../pages/ItemPage"
 import { Utter } from '../utils/DataFormat'
@@ -8,6 +8,7 @@ import { Utter } from '../utils/DataFormat'
 
 const BASE = "http://localhost:3000/";
 //const BASE = "https://botflow.api.lappis.rocks/";
+
 const UTTER_URL = BASE + "utters/";
 
 class UtterPage extends Component {
@@ -17,6 +18,7 @@ class UtterPage extends Component {
       open: false,
     }
     this.props.getItems(UTTER_URL);
+    //this.props.createNewItem(new Utter());
   }
 
   render() {
@@ -28,6 +30,7 @@ class UtterPage extends Component {
         items={this.props.items}
         name_label="Nome da resposta"
         old_item={this.props.old_item}
+        item_name={this.props.item_name}
         button_text="Criar nova resposta"
         helper_text={this.props.helper_text}
         item_list_text="Respostas cadastradas"
@@ -42,7 +45,8 @@ class UtterPage extends Component {
 const mapStateToProps = state => { return { ...state.utterReducer } };
 
 const mapDispatchToProps = dispatch => ({
-  getItems: (url) => dispatch(getItems(url))
+  getItems: (url) => dispatch(getItems(url)),
+  createNewItem: (new_item) => dispatch(createNewItem(new_item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);
