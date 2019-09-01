@@ -70,9 +70,9 @@ export const selectItem = (item, index = -1) => {
     };
 }
 
-export const setItemName = (item_name = "") => {
+export const setNameItem = (item_name = "") => {
     return {
-        type: "SET_ITEM_NAME",
+        type: "SET_NAME_ITEM",
         item_name: item_name
     };
 }
@@ -83,11 +83,4 @@ export const createNewItem = (item) => {
         new_item: item,
         selected_item_position: -1
     };
-}
-
-export const setHelperText = (helper_text) => {
-    return {
-        type: "SET_HELPER_TEXT",
-        helper_text: helper_text
-    }
 }

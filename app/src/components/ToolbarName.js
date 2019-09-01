@@ -8,9 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {
     saveData,
-    setItemName,
-    deleteItem,
-    setHelperText
+    setNameItem,
+    deleteItem
 } from "../actions/itemsAction";
 
 import { SaveButtonCheck, Done } from '../styles/button';
@@ -35,6 +34,13 @@ const style = {
 
 
 class ToolbarName extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            helper_text: ""
+        }
+    }
+
     checkEmptyFields(items) {
         let no_empty_fields = true;
         if (items.alternatives !== undefined) {
@@ -67,23 +73,26 @@ class ToolbarName extends Component {
             helper_text = "Por favor, insira um nome não repetido."
         }
 
-        this.props.setHelperText(helper_text);
-        this.props.setItemName(item_name, items);
+        this.setState({ helper_text: helper_text });
+        this.props.setNameItem(item_name)
     }
 
     isButtonEnabled(current_item, old_item) {
-        const no_errors = this.props.helper_text === '';
+        const no_errors = this.state.helper_text === '';
         const no_empty_fields = this.checkEmptyFields(current_item);
-        const have_changes = JSON.stringify(current_item) !== JSON.stringify(old_item);
-
-        // TODO update json format
+        const name_changed = this.props.item_name !== old_item.name;
+        const contents_changed = JSON.stringify(current_item) !== JSON.stringify(old_item);
+        const have_changes = (contents_changed || name_changed);
         const no_empty_name = (
-            (current_item.name !== undefined) &&
-            ((current_item.name).length !== 0)
+            (this.props.item_name !== undefined) &&
+            (this.props.item_name).length !== 0
         );
+
 
         //console.log("============================")
         //console.log("have_changes", have_changes);
+        //console.log("contents", contents_changed );
+        //console.log("name", name_changed );
         //console.log("no_empty_fields", no_empty_fields);
         //console.log("no_errors", no_errors);
         //console.log("no_empty_name", no_empty_name);
@@ -114,14 +123,11 @@ class ToolbarName extends Component {
         }
     }
 
-    // TODO update json format
     render() {
         const ITEMS = this.props.items;
         const OLD_ITEM = this.props.old_item;
         const NAME_ITEM_LABEL = "Nome da resposta";
-        const HELPER_TEXT = this.props.helper_text;
         const CURRENT_ITEM = this.props.current_item;
-        const ITEM_NAME = (this.props.current_item !== undefined) ? this.props.current_item.name : "";
 
         return (
             <Toolbar style={style.toolbar}>
@@ -129,12 +135,12 @@ class ToolbarName extends Component {
                 <Grid item xs={7}>
                     <TextField
                         fullWidth
-                        error={HELPER_TEXT !== ""}
+                        error={this.state.helper_text !== ""}
                         type="text"
                         id={NAME_ITEM_LABEL}
-                        value={ITEM_NAME}
+                        value={this.props.item_name}
                         label={NAME_ITEM_LABEL}
-                        helperText={HELPER_TEXT}
+                        helperText={this.state.helper_text}
                         onChange={(e) => this.checkIsValidName(ITEMS, e.target.value, OLD_ITEM.id)}
                     />
                 </Grid>
@@ -161,8 +167,7 @@ class ToolbarName extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setItemName: (item_name) => dispatch(setItemName(item_name)),
-    setHelperText: (helper_text) => dispatch(setHelperText(helper_text)),
+    setNameItem: (item_name) => dispatch(setNameItem(item_name)),
     saveData: (url, mode, item) => (dispatch(saveData(url, mode, item))),
     deleteItem: (url, delete_item_id, mode, item) => dispatch(deleteItem(url, delete_item_id, mode, item))
 });

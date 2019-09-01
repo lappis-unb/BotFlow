@@ -100,6 +100,7 @@ class ItemPage extends Component {
             items={this.props.items}
             current_item={CURRENT_ITEM}
             new_item={this.props.new_item}
+            item_name={this.props.item_name}
             name_label={this.props.name_label}
             helper_text={this.props.helper_text}
           />
