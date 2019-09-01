@@ -2,12 +2,14 @@ import { Utter } from '../utils/DataFormat';
 
 const INITIAL_STATE = {
     items: [],
+    id_item: "",
     old_item: {},
     current_item: {},
-    old_utter_texts: [],
-    item_name: "",
+    item_contents: [],
+    old_item_contents: [],
+    name_item: "",
+    old_name_item: "",
     have_alternatives: false,
-    item_content: [],
     notification_text: "",
     selected_item_position: -1
 };
@@ -35,19 +37,26 @@ export default (state = INITIAL_STATE, action) => {
     }
 
     switch (action.type) {
-        case "CREATE_NEW_ITEM":
+        case "CREATE_NEW_ITEM": {
+            console.log(action.new_item)
             return {
                 ...state,
-                current_item: createObjectCopyOf(action.new_item),
-                old_item: createObjectCopyOf(action.new_item),
+                id_item: "",
+                name_item: action.new_item.name,
+                item_contents: action.new_item.alternatives,
+                old_name_item: action.new_item.name,
+                old_item_contents: action.new_item.alternatives,
+                have_alternatives: action.new_item.have_alternatives,
                 selected_item_position: action.selected_item_position
             }
+        }
 
-        case "SET_NAME_ITEM":
+        case "SET_NAME_ITEM": {
             return {
                 ...state,
-                item_name: action.item_name
+                name_item: action.name_item
             };
+        }
 
         case "SUCESS_ACTION_UTTER": {
             let old_item = createObjectCopyOf(state.current_item)
@@ -59,11 +68,12 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "GET_ITEMS":
+        case "GET_ITEMS": {
             return {
                 ...state,
                 items: action.items,
             };
+        }
 
         case "SELECT_ITEM": {
             let selected_item_position = 0;
@@ -73,31 +83,18 @@ export default (state = INITIAL_STATE, action) => {
                 return (item.id === action.item.id || item.name === action.item.name);
             });
 
-            let new_item = [];
-
-            if (selected_item !== undefined) {
-                new_item = createObjectCopyOf(selected_item).alternatives;
-            } else {
-                selected_item_position = 0;
-            }
-
-            selected_item = (selected_item !== undefined) ? createObjectCopyOf(selected_item) : createObjectCopyOf(state.current_item);
-
-            let old_item = {}
-            if (new_item.length !== 0) {
-                old_item = { ...(createObjectCopyOf(selected_item)), alternatives: new_item }
-            } else {
-                old_item = createObjectCopyOf(selected_item);
-            }
-
+            let new_item_contents = createArrayCopyOf(selected_item.alternatives);
+            let old_item_contents = createArrayCopyOf(selected_item.alternatives);
 
             return {
                 ...state,
-                old_item: old_item,
-                current_item: selected_item,
-                item_name: selected_item.name,
-                have_alternatives: selected_item.have_alternatives,
-                selected_item_position: selected_item_position
+                name_item: selected_item.name,
+                id_item: selected_item.id,
+                item_contents: new_item_contents,
+                old_name_item: selected_item.name,
+                old_item_contents: old_item_contents,
+                selected_item_position: selected_item_position,
+                have_alternatives: selected_item.have_alternatives
             };
         }
 
@@ -111,65 +108,61 @@ export default (state = INITIAL_STATE, action) => {
         // UTTER 
 
         case "CHANGE_UTTER_FORM": {
-            let new_current_item = createObjectCopyOf(state.current_item);
-
             return {
                 ...state,
                 have_alternatives: action.have_alternatives,
-                current_item: {
-                    ...new_current_item,
-                    alternatives: createArrayCopyOf(action.alternatives)
-                }
+                item_contents: createArrayCopyOf(action.item_contents)
             }
         }
 
-        case "SET_UTTER_CONTENT":
-            let new_current_item = createObjectCopyOf(state.current_item);
-            new_current_item.alternatives[action.utter_position].contents[action.text_position].text = action.text
+        case "SET_UTTER_CONTENT": {
+            let item_contents = createArrayCopyOf(state.item_contents);
+            item_contents[action.utter_position].contents[action.text_position].text = action.text
 
             return {
                 ...state,
-                current_item: new_current_item
+                item_contents: item_contents
             };
+        }
 
-        case "ADD_UTTER_CONTENT":
-            let new_utter = createObjectCopyOf(state.current_item);
+        case "ADD_UTTER_CONTENT": {
+            let new_utter = createArrayCopyOf(state.item_contents);
 
-            if (new_utter.have_alternatives) {
-                new_utter.alternatives.push(action.text);
+            if (state.have_alternatives) {
+                new_utter.push(action.text);
             } else {
-                new_utter.alternatives[0].contents.push(action.text.contents[0]);
+                new_utter[0].contents.push(action.text.contents[0]);
             }
 
             return {
                 ...state,
-                current_item: new_utter
+                item_contents: new_utter
             };
+        }
 
-        case "REMOVE_UTTER_CONTENT":
-            let current_item = createObjectCopyOf(state.current_item)
-            let old_item_history = createObjectCopyOf(state.current_item)
+        case "REMOVE_UTTER_CONTENT": {
+            let current_item_contents = createArrayCopyOf(state.item_contents)
+            let old_item_history = createArrayCopyOf(state.item_contents)
 
-            if (current_item.have_alternatives) {
-                current_item.alternatives.splice(action.utter_position, 1);
-            } else if (current_item.alternatives[0].contents.length > 1) {
-                current_item.alternatives[0].contents.splice(action.text_position, 1);
+            if (state.have_alternatives) {
+                current_item_contents.splice(action.item_position, 1);
+            } else if (current_item_contents[0].contents.length > 1) {
+                current_item_contents[0].contents.splice(action.text_position, 1);
             }
 
             return {
                 ...state,
-                current_item: current_item,
-                old_utter_texts: old_item_history.alternatives
+                item_contents: current_item_contents,
+                old_item_contents: old_item_history
             };
+        }
 
-        case 'UNDO_UTTER_CONTENT_REMOVAL':
+        case 'UNDO_UTTER_CONTENT_REMOVAL': {
             return {
                 ...state,
-                current_item: {
-                    ...state.current_item,
-                    alternatives: createArrayCopyOf(state.old_utter_texts)
-                }
+                item_contents: createArrayCopyOf(state.old_item_contents)
             }
+        }
 
         default:
             return state;

@@ -26,28 +26,26 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
-      value: (this.props.current_item !== undefined && this.props.current_item.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT,
+      value: (this.props.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT,
       undoDelete: false
     }
   }
 
-  
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setUtterContent(utter_index, text_index, e.target.value, this.props.current_item)
+    this.props.setUtterContent(utter_index, text_index, e.target.value, this.props.item_contents)
   }
 
   handleDelete(utter_index, text_index) {
-    const utters = this.props.current_item.alternatives;
-    const utters_length = utters.length;
-    const utters_text_length = utters[0].contents.length;
+    const utters_length = this.props.item_contents.length;
+    const utters_text_length = this.props.item_contents[0].contents.length;
 
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undoDelete: true });
     }
 
-    this.props.removeUtterContent(utter_index, text_index, this.props.current_item.alternatives);
+    this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
   }
 
   handleUndo() {
@@ -92,16 +90,16 @@ class UtterForm extends Component {
   setUtterContents() {
     let utters_texts = [];
 
-    if (this.props.current_item.alternatives !== undefined) {
-      utters_texts = this.props.current_item.alternatives.map((utter_text_list, utter_index) => {
-        return utter_text_list.contents.map((utter_text, text_index) => {
+    if (this.props.item_contents !== undefined) {
+      utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
+        return alternative.contents.map((alternative_content, content_index) => {
           return (
-            <li key={"utter_text" + utter_index + text_index}>
+            <li key={"alternative_content" + alternative_index + content_index}>
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={11}>
                   <DialogBox className="dialog_box">
-                    <textarea type="text" value={utter_text.text}
-                      onChange={(e) => this.changeTextarea(utter_index, text_index, e)}
+                    <textarea type="text" value={alternative_content.text}
+                      onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
                   </DialogBox>
                 </Grid>
@@ -109,7 +107,7 @@ class UtterForm extends Component {
                   <DeleteIcon
                     style={{ color: "#4b3953", opacity: 0.5 }}
                     type="button"
-                    onClick={() => this.handleDelete(utter_index, text_index)}>
+                    onClick={() => this.handleDelete(alternative_index, content_index)}>
                   </DeleteIcon>
                 </Grid>
               </Grid>
@@ -125,7 +123,7 @@ class UtterForm extends Component {
   handleChange(event) {
     this.setState({ value: event.target.value });
     if((event.target.value !== this.props.have_alternatives)){
-      this.props.changeUtterForm(this.props.current_item, (event.target.value === ALTERNATIVES_TEXT))
+      this.props.changeUtterForm(this.props.item_contents, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
@@ -180,8 +178,10 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
-          <h3>Name: {this.props.item_name}</h3>
+          <h3>Name: {this.props.name_item}</h3>
           <h3>have_alternatives: {this.props.have_alternatives ? "true" : "false"}</h3>
+          <h3>id_item: {this.props.id_item}</h3>
+          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
           <pre>{JSON.stringify(this.props.current_item, null, 2)}</pre>
         </Grid>
       </Grid>

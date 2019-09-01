@@ -18,7 +18,7 @@ class UtterPage extends Component {
       open: false,
     }
     this.props.getItems(UTTER_URL);
-    //this.props.createNewItem(new Utter());
+    this.props.createNewItem(new Utter());
   }
 
   render() {
@@ -28,13 +28,15 @@ class UtterPage extends Component {
         url={UTTER_URL}
         new_item={new Utter()}
         items={this.props.items}
+        id_item={this.props.id_item}
         name_label="Nome da resposta"
-        old_item={this.props.old_item}
-        item_name={this.props.item_name}
         button_text="Criar nova resposta"
         helper_text={this.props.helper_text}
         item_list_text="Respostas cadastradas"
-        current_item={this.props.current_item}
+        name_item={this.props.name_item}
+        old_name_item={this.props.old_name_item}
+        item_contents={this.props.item_contents}
+        old_item_contents={this.props.item_contents}
         notification_text={this.props.notification_text}
         selected_item_position={this.props.selected_item_position}
       />

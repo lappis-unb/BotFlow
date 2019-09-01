@@ -71,10 +71,10 @@ export const selectItem = (item) => {
     };
 }
 
-export const setNameItem = (item_name = "") => {
+export const setNameItem = (name_item = "") => {
     return {
         type: "SET_NAME_ITEM",
-        item_name: item_name
+        name_item: name_item
     };
 }
 
