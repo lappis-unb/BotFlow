@@ -26,7 +26,7 @@ class UtterForm extends Component {
     super(props);
     this.state = {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
-      value: (this.props.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT,
+      value: SEQUENCE_TEXT,
       undoDelete: false
     }
   }
@@ -155,7 +155,6 @@ class UtterForm extends Component {
           <ul>
             {this.setUtterContents()}
           </ul>
-
           <Grid container spacing={2} alignItems="flex-end" >
             {this.deleteSnack()}
             <Grid item xs={11}>
@@ -178,11 +177,10 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
-          <h3>Name: {this.props.name_item}</h3>
-          <h3>have_alternatives: {this.props.have_alternatives ? "true" : "false"}</h3>
-          <h3>id_item: {this.props.id_item}</h3>
+          <p>Name: {this.props.name_item}</p>
+          <p>id_item: {this.props.id_item}</p>
+          <p>have_alternatives: {this.props.have_alternatives ? "true" : "false"}</p>
           <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
-          <pre>{JSON.stringify(this.props.current_item, null, 2)}</pre>
         </Grid>
       </Grid>
     );

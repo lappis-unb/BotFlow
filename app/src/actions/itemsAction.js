@@ -4,7 +4,7 @@ export const getItems = (url) => {
     return async (dispatch) => {
         try {
             const response = await axios.get(url);
-            await dispatch({ type: "GET_ITEMS", items:  response.data });
+            await dispatch({ type: "GET_ITEMS", items: response.data });
         } catch (error) {
             throw (error);
         }
@@ -14,8 +14,8 @@ export const getItems = (url) => {
 export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = "") => {
     return async (dispatch) => {
         try {
-            const mode_url = (mode==='post') ? url : url + new_item.id;
-            
+            const mode_url = (mode === 'post') ? url : url + new_item.id;
+
             await axios[mode](mode_url, new_item);
             await dispatch(getItems(url));
             dispatch(notifyAction(message));
@@ -29,11 +29,9 @@ export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = 
     }
 };
 
-//export const createData(name, data, have_alternatives){ }
-
 export const saveData = (url, mode = "Utter", item) => {
     return async (dispatch) => {
-        if ((item.id === undefined)) {
+        if ((item.id === "" || item.id===undefined)) {
             dispatch(createOrUpdateItem('post', url, item, mode + " criada com sucesso!"));
         } else {
             dispatch(createOrUpdateItem('put', url, item, mode + " atualizada com sucesso!"));

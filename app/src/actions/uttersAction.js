@@ -5,15 +5,6 @@ export const addUtterContent = (new_utter) => {
   };
 }
 
-const setContentsAction = (item_position, text_position, text) => {
-  return {
-    type: "SET_UTTER_CONTENT",
-    text: text,
-    text_position: text_position,
-    utter_position: item_position
-  };
-}
-
 export const removeUtterContent = (item_position, text_position) => {
   return {
     type: "REMOVE_UTTER_CONTENT",
@@ -26,10 +17,13 @@ export const undoTextRemotion = () => {
   return { type: "UNDO_UTTER_CONTENT_REMOVAL" };
 }
 
-export const setUtterContent = (item_position, text_position, text, current_utter) => {
-  return async (dispatch) => {
-    dispatch(setContentsAction(item_position, text_position, text, current_utter));
-  }
+export const setUtterContent = (item_position, text_position, text) => {
+  return {
+    type: "SET_UTTER_CONTENT",
+    text: text,
+    text_position: text_position,
+    utter_position: item_position
+  };
 }
 
 export const changeUtterForm = (item_contents, have_alternatives) => {
@@ -37,7 +31,7 @@ export const changeUtterForm = (item_contents, have_alternatives) => {
   let new_alternatives = [];
 
   item_contents.forEach(i => {
-    i.contents.forEach(j => {
+    (i.contents).forEach(j => {
       texts.push(j.text);
     })
   })

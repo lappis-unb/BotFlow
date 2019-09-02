@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,8 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {
     saveData,
-    setNameItem,
-    deleteItem
+    deleteItem,
+    setNameItem
 } from "../actions/itemsAction";
 
 import { SaveButtonCheck, Done } from '../styles/button';
@@ -42,16 +41,17 @@ class ToolbarName extends Component {
     }
 
     checkEmptyFields(alternatives) {
+        let changed = true
         if (alternatives !== undefined) {
             alternatives.forEach(alternative => {
                 alternative.contents.forEach(text => {
                     if ((text.text).trim().length === 0) {
-                        return false;
+                        changed = false;
                     }
                 })
             });
         }
-        return true;
+        return changed;
     }
 
     checkRepeatedName(items, name_item) {
@@ -61,7 +61,6 @@ class ToolbarName extends Component {
     }
 
     checkIsValidName(items, name_item) {
-
         let helper_text = "";
         let regex = /^[\w\d_]+$/;
 
@@ -90,8 +89,8 @@ class ToolbarName extends Component {
 
         console.log("============================")
         console.log("have_changes", have_changes);
-        console.log("contents", contents_changed );
-        console.log("name", name_changed );
+        console.log("contents_changed", contents_changed );
+        console.log("name_changed", name_changed );
         console.log("no_empty_fields", no_empty_fields);
         console.log("no_errors", no_errors);
         console.log("no_empty_name", no_empty_name);
@@ -109,15 +108,26 @@ class ToolbarName extends Component {
         if (remove) {
             this.props.deleteItem(
                 this.props.url,
-                this.props.current_item.id,
+                this.props.id_item,
                 this.props.mode,
                 this.props.new_item
             )
         } else {
+
+            console.log("HAVE", this.props.have_alternatives)
+            const current_item = this.props.setDataFormat(
+                this.props.id_item,
+                this.props.name_item,
+                this.props.have_alternatives,
+                this.props.item_contents
+            );
+
+            console.log("Este é o current item", this.props.url)
+
             this.props.saveData(
                 this.props.url,
                 this.props.mode,
-                this.props.current_item
+                current_item
             )
         }
     }
@@ -165,7 +175,7 @@ class ToolbarName extends Component {
 
 const mapDispatchToProps = dispatch => ({
     setNameItem: (name_item) => dispatch(setNameItem(name_item)),
-    saveData: (url, mode, item) => (dispatch(saveData(url, mode, item))),
+    saveData: (url, mode, item) => dispatch(saveData(url, mode, item)),
     deleteItem: (url, delete_item_id, mode, item) => dispatch(deleteItem(url, delete_item_id, mode, item))
 });
 
