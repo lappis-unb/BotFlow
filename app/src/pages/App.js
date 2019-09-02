@@ -16,10 +16,7 @@ function App() {
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Logo
-              </Typography>
-          <List>
-            <Link to="/">Home</Link>
-          </List>
+          </Typography>
           <List>
             <Link to="/utters">Utters</Link>
           </List>

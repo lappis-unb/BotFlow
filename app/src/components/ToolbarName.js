@@ -50,17 +50,11 @@ class ToolbarName extends Component {
         }
     }
 
-    checkEmptyFields(alternatives) {
-        let changed = true
-        if (alternatives !== undefined) {
-            alternatives.forEach(alternative => {
-                if (this.props.mode === "Utter") {
-                    alternative.contents.forEach(text => {
-                        if ((text.text).trim().length === 0) {
-                            changed = false;
-                        }
-                    })
-                } else if ((alternative.text).trim().length === 0) {
+    checkEmptyFieldsIntent(questions) {
+        let changed = true;
+        if (questions !== undefined) {
+            questions.forEach(question => {
+                if ((question.text).trim().length === 0) {
                     changed = false;
                 }
             });
@@ -68,9 +62,24 @@ class ToolbarName extends Component {
         return changed;
     }
 
+    checkEmptyFieldsUtter(alternatives) {
+        let changed = true;
+        if (alternatives !== undefined) {
+            alternatives.forEach(alternative => {
+                alternative.contents.forEach(text => {
+                    if ((text.text).trim().length === 0) {
+                        changed = false;
+                    }
+                })
+            });
+        }
+        return changed;
+    }
+
     checkRepeatedName(items, name_item) {
         return items.find((item) => (
-            (item.name === name_item) && (item.id !== this.props.id_item)
+            (item.name === name_item) &&
+            (item.id !== this.props.id_item)
         ));
     }
 
@@ -91,7 +100,14 @@ class ToolbarName extends Component {
 
     isButtonEnabled(item_contents, old_item_content) {
         const no_errors = this.state.helper_text === '';
-        const no_empty_fields = this.checkEmptyFields(item_contents);
+        let no_empty_fields = true;
+
+        if (this.props.mode === "Utter") {
+            no_empty_fields = this.checkEmptyFieldsUtter(item_contents);
+        } else {
+            no_empty_fields = this.checkEmptyFieldsIntent(item_contents);
+        }
+
         const name_changed = (this.props.name_item !== this.props.old_name_item);
         const contents_changed = JSON.stringify(item_contents) !== JSON.stringify(old_item_content);
         const have_changes = (contents_changed || name_changed);
@@ -119,12 +135,17 @@ class ToolbarName extends Component {
     }
 
     handleMenuClick(event, is_open) {
-        if(is_open) {
-            this.setState({anchorEl: event.currentTarget});
-        }else {
-            this.setState({anchorEl: null});
+        if (is_open) {
+            this.setState({
+                anchorEl: event.currentTarget,
+                open: is_open
+            });
+        } else {
+            this.setState({
+                anchorEl: null,
+                open: is_open
+            });
         }
-        this.setState({open : is_open});
     }
 
     handleClick(remove) {
@@ -135,7 +156,7 @@ class ToolbarName extends Component {
                 this.props.mode,
                 this.props.new_item
             )
-            this.setState({open: false});
+            this.setState({ open: false });
         } else {
             let current_item = {}
 
@@ -208,7 +229,7 @@ class ToolbarName extends Component {
                             anchorEl={this.state.anchorEl}
                             keepMounted
                             open={this.state.open}
-                            onClose={e =>this.handleMenuClick(e, false)}
+                            onClose={e => this.handleMenuClick(e, false)}
                             PaperProps={{
                                 style: {
                                     width: 150,
@@ -216,9 +237,9 @@ class ToolbarName extends Component {
                             }}
                         >
                             {options.map(option => (
-                            <MenuItem key={option} selected={option === 'Deletar'} onClick={() => this.handleClick(true)}>
-                                {option}
-                            </MenuItem>
+                                <MenuItem key={option} selected={option === 'Deletar'} onClick={() => this.handleClick(true)}>
+                                    {option}
+                                </MenuItem>
                             ))}
                         </Menu>
                     </Typography>

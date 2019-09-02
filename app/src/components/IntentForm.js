@@ -7,6 +7,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+
 import {
   setIntentText,
   addIntentText,
@@ -15,18 +19,12 @@ import {
 } from "../actions/intentsAction";
 
 class IntentForm extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
       undoDelete: false
     }
-  }
-
-  changeTextarea = (intent_index, e) => {
-    this.multilineTextarea.style.height = 'auto';
-    this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setIntentText(intent_index, e.target.value)
   }
 
   handleDelete(intent_index) {
@@ -83,27 +81,35 @@ class IntentForm extends Component {
 
     if (this.props.item_contents !== undefined) {
       questions = this.props.item_contents.map((question, question_index) => {
-          return (
-            <li key={"question_content" + question_index}>
-              <Grid container spacing={2} alignItems="flex-end" >
-                <Grid item xs={11}>
-                  <DialogBox className="dialog_box">
-                    <textarea type="text" value={question.text}
-                      onChange={(e) => this.changeTextarea(question_index, e)}
-                      ref={ref => this.multilineTextarea = ref} />
-                  </DialogBox>
-                </Grid>
-                <Grid item xs={1}>
-                  <DeleteIcon
-                    style={{ color: "#4b3953", opacity: 0.5 }}
-                    type="button"
-                    onClick={() => this.handleDelete(question_index)}>
-                  </DeleteIcon>
-                </Grid>
+        return (
+          <li key={"question_content" + question_index}>
+            <Grid container spacing={2} alignItems="flex-end" >
+              <Grid item xs={11}>
+                <TextField
+                  id="outlined-multiline-flexible"
+                  multiline
+                  fullWidth
+                  rowsMax="4"
+                  margin="normal"
+                  variant="outlined"
+                  value={question.text}
+                  onChange={(e) => this.props.setIntentText(question_index, e.target.value)}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
+                  }}
+                />
               </Grid>
-            </li>
-          )
-        })
+              <Grid item xs={1}>
+                <DeleteIcon
+                  style={{ color: "#4b3953", opacity: 0.5, top: "0px", marginBottom: "20px" }}
+                  type="button"
+                  onClick={() => this.handleDelete(question_index)}>
+                </DeleteIcon>
+              </Grid>
+            </Grid>
+          </li>
+        )
+      })
     }
 
     return questions;
@@ -120,18 +126,23 @@ class IntentForm extends Component {
           <Grid container spacing={2} alignItems="flex-end" >
             {this.deleteSnack()}
             <Grid item xs={11}>
-              <DialogBox
-                style={{
-                  opacity: "0.6",
-                  filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
-                }}
-                onClick={() => this.props.addIntentText()} >
-                <textarea
-                  readOnly
-                  type="text"
-                  style={{ cursor: "pointer" }}
-                  placeholder="Novo balão de resposta" />
-              </DialogBox>
+              <TextField
+                  id="outlined-multiline-flexible"
+                  style={{
+                    opacity: "0.6",
+                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))",
+                    cursor: "pointer"
+                  }}
+                  fullWidth
+                  disabled
+                  margin="normal"
+                  variant="outlined"
+                  value={"Nova pergunta"}
+                  onClick={() => this.props.addIntentText()} 
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
+                  }}
+                />
             </Grid>
             <Grid item xs={1} />
           </Grid>
