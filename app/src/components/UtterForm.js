@@ -21,7 +21,7 @@ const ALTERNATIVES_TEXT = "como alternativas";
 const SEQUENCE_TEXT = "em sequência";
 
 class UtterForm extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -94,21 +94,21 @@ class UtterForm extends Component {
       utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
         return alternative.contents.map((alternative_content, content_index) => {
           return (
-            <li key={"alternative_content" + alternative_index + content_index}>
+            <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
               <Grid container spacing={2} alignItems="flex-end" >
-                <Grid item xs={11}>
-                  <DialogBox className="dialog_box">
+                <Grid item xs={10}>
+                  <DialogBox>
                     <textarea type="text" value={alternative_content.text}
+                      rows="1"
                       onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
                   </DialogBox>
                 </Grid>
-                <Grid item xs={1}>
-                  <DeleteIcon
-                    style={{ color: "#4b3953", opacity: 0.5 }}
-                    type="button"
+                <Grid item xs={2}>
+                  <IconButton color="primary" m={0}
                     onClick={() => this.handleDelete(alternative_index, content_index)}>
-                  </DeleteIcon>
+                    <DeleteIcon style={{ opacity: 0.5 }} />
+                  </IconButton>
                 </Grid>
               </Grid>
             </li>
@@ -122,7 +122,7 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    if((event.target.value !== this.props.have_alternatives)){
+    if ((event.target.value !== this.props.have_alternatives)) {
       this.props.changeUtterForm(this.props.item_contents, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
@@ -134,48 +134,54 @@ class UtterForm extends Component {
   render() {
     return (
       <Grid container>
-        <Grid item xs={1} />
-        <Grid item xs={7}>
-          <TextField
-            fullWidth
-            select
-            margin="normal"
-            variant="outlined"
-            value={this.getSelectedOption()}
-            id="outlined-select-currency"
-            label="Balões aparecem:"
-            onChange={(e) => this.handleChange(e)}>
-            {(this.state.values).map((option, index) => (
-              <MenuItem key={"menu" + index} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-
+        <Grid item xs={2} />
+        <Grid item xs={5}>
+          <Grid container spacing={2} style={{ marginTop: 12, marginBottom: 12, textAlign: "right" }}>
+            <Grid item xs={10}>
+              <TextField
+                fullWidth
+                select
+                margin="normal"
+                variant="outlined"
+                value={this.getSelectedOption()}
+                id="outlined-select-currency"
+                style={{ width: 200 }}
+                label="Balões aparecem:"
+                onChange={(e) => this.handleChange(e)}>
+                {(this.state.values).map((option, index) => (
+                  <MenuItem key={"menu" + index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={2} />
+          </Grid>
           <ul>
             {this.setUtterContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
             {this.deleteSnack()}
-            <Grid item xs={11}>
+            <Grid item xs={10}>
               <DialogBox
                 style={{
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
                 }}
-                onClick={() => this.props.addUtterContent(this.props.new_utter)} >
+                onClick={() => { this.props.addUtterContent(this.props.new_utter) }} >
                 <textarea
                   readOnly
                   type="text"
+                  rows="1"
                   style={{ cursor: "pointer" }}
                   placeholder="Novo balão de resposta" />
               </DialogBox>
             </Grid>
-            <Grid item xs={1} />
+            <Grid item xs={2} />
           </Grid>
 
         </Grid>
-        <Grid item xs={1} />
+        <Grid item xs={2} />
         <Grid item xs={3}>
           <p>Name: {this.props.name_item}</p>
           <p>id_item: {this.props.id_item}</p>

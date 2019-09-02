@@ -4,7 +4,7 @@ import { getItems, createNewItem } from "../actions/itemsAction";
 
 import ItemPage from "../pages/ItemPage"
 import { Utter } from '../utils/DataFormat'
-
+import UtterIcon from '../icons/UtterIcon';
 
 const BASE = "http://localhost:3000/";
 //const BASE = "https://botflow.api.lappis.rocks/";
@@ -36,6 +36,7 @@ class UtterPage extends Component {
         name_item={this.props.name_item}
         button_text="Criar nova resposta"
         new_item={new Utter()}
+        icon={<UtterIcon />}
         setDataFormat={this.setDataFormat}
         helper_text={this.props.helper_text}
         item_list_text="Respostas cadastradas"

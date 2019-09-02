@@ -1,31 +1,24 @@
 import React from 'react';
-import './style.js';
-import { List } from './style.js';
+import "./App.css"
+import {AppBar, Toolbar} from '@material-ui/core';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import MainNav from "../components/MainNav"
+
 import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import "./App.css"
+import AppIcon from '../icons/AppIcon';
 
 function App() {
   return (
     <Router>
-      <AppBar id="app-bar-menu" color="primary">
+      <AppBar id="app-bar-menu">
         <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Logo
-          </Typography>
-          <List>
-            <Link to="/utters">Utters</Link>
-          </List>
-          <List>
-            <Link to="/intents">Intents</Link>
-          </List>
+          <AppIcon />          
+          <MainNav />
         </Toolbar>
       </AppBar>
-      <div style={{ paddingTop: "64px" }}>
+      <div style={{ paddingTop: "72px" }}>
         <Route exact path="/utters" component={UtterPage} />
         <Route exact path="/intents" component={IntentPage} />
       </div>
