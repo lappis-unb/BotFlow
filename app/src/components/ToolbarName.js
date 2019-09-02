@@ -35,9 +35,7 @@ const style = {
     }
 }
 
-const options = [
-    'Deletar',
-]
+const options = ['Apagar']
 
 class ToolbarName extends Component {
     constructor(props) {
