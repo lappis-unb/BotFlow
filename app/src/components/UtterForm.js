@@ -27,7 +27,8 @@ class UtterForm extends Component {
     this.state = {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
       value: SEQUENCE_TEXT,
-      undoDelete: false
+      undo_delete: false,
+      have_auto_focus: false
     }
   }
 
@@ -42,7 +43,7 @@ class UtterForm extends Component {
     const utters_text_length = this.props.item_contents[0].contents.length;
 
     if (utters_length > 1 || utters_text_length > 1) {
-      this.setState({ undoDelete: true });
+      this.setState({ undo_delete: true });
     }
 
     this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
@@ -50,7 +51,7 @@ class UtterForm extends Component {
 
   handleUndo() {
     this.props.undoTextRemotion();
-    this.setState({ undoDelete: false });
+    this.setState({ undo_delete: false });
   }
 
   deleteSnack() {
@@ -60,7 +61,7 @@ class UtterForm extends Component {
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        open={this.state.undoDelete}
+        open={this.state.undo_delete}
         autoHideDuration={3000}
         ContentProps={{
           'aria-describedby': 'message-id',
@@ -78,7 +79,7 @@ class UtterForm extends Component {
             key="close"
             aria-label="Close"
             color="inherit"
-            onClick={() => this.setState({ undoDelete: false })}
+            onClick={() => this.setState({ undo_delete: false })}
           >
             <CloseIcon />
           </IconButton>
@@ -98,7 +99,7 @@ class UtterForm extends Component {
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={10}>
                   <DialogBox>
-                    <textarea type="text" value={alternative_content.text}
+                    <textarea type="text" autoFocus={this.state.have_auto_focus} value={alternative_content.text}
                       rows="1"
                       onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
@@ -129,6 +130,11 @@ class UtterForm extends Component {
 
   getSelectedOption() {
     return (this.props.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
+  }
+
+  handleClick(){
+    this.props.addUtterContent(this.props.new_utter);
+    this.setState({have_auto_focus: true});
   }
 
   render() {
@@ -168,7 +174,7 @@ class UtterForm extends Component {
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
                 }}
-                onClick={() => { this.props.addUtterContent(this.props.new_utter) }} >
+                onClick={() => { this.handleClick()}}>
                 <textarea
                   readOnly
                   type="text"
