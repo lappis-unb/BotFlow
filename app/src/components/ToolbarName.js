@@ -54,11 +54,15 @@ class ToolbarName extends Component {
         let changed = true
         if (alternatives !== undefined) {
             alternatives.forEach(alternative => {
-                alternative.contents.forEach(text => {
-                    if ((text.text).trim().length === 0) {
-                        changed = false;
-                    }
-                })
+                if (this.props.mode === "Utter") {
+                    alternative.contents.forEach(text => {
+                        if ((text.text).trim().length === 0) {
+                            changed = false;
+                        }
+                    })
+                } else if ((alternative.text).trim().length === 0) {
+                    changed = false;
+                }
             });
         }
         return changed;
@@ -97,14 +101,14 @@ class ToolbarName extends Component {
         );
 
 
-        console.log("============================")
-        console.log("have_changes", have_changes);
-        console.log("contents_changed", contents_changed );
-        console.log("name_changed", name_changed );
-        console.log("no_empty_fields", no_empty_fields);
-        console.log("no_errors", no_errors);
-        console.log("no_empty_name", no_empty_name);
-        console.log("============================")
+        //console.log("============================")
+        //console.log("have_changes", have_changes);
+        //console.log("contents_changed", contents_changed );
+        //console.log("name_changed", name_changed );
+        //console.log("no_empty_fields", no_empty_fields);
+        //console.log("no_errors", no_errors);
+        //console.log("no_empty_name", no_empty_name);
+        //console.log("============================")
 
         return (
             have_changes &&
@@ -133,16 +137,22 @@ class ToolbarName extends Component {
             )
             this.setState({open: false});
         } else {
+            let current_item = {}
 
-            console.log("HAVE", this.props.have_alternatives)
-            const current_item = this.props.setDataFormat(
-                this.props.id_item,
-                this.props.name_item,
-                this.props.have_alternatives,
-                this.props.item_contents
-            );
-
-            console.log("Este é o current item", this.props.url)
+            if (this.props.mode === "Utter") {
+                current_item = this.props.setDataFormat(
+                    this.props.id_item,
+                    this.props.name_item,
+                    this.props.have_alternatives,
+                    this.props.item_contents
+                );
+            } else {
+                current_item = this.props.setDataFormat(
+                    this.props.id_item,
+                    this.props.name_item,
+                    this.props.item_contents
+                );
+            }
 
             this.props.saveData(
                 this.props.url,

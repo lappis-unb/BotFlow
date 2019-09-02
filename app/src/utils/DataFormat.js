@@ -27,7 +27,7 @@ class Text {
 }
 
 export class Intent {
-    constructor(id = "", name = "", project_name = "project", questions = [new Text()]) {
+    constructor(id = "", name = "", questions = [new Text()], project_name = "project") {
         this.id = id;
         this.name = name;
         this.questions = questions
