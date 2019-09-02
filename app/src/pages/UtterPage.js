@@ -21,23 +21,29 @@ class UtterPage extends Component {
     this.props.createNewItem(new Utter());
   }
 
+  setDataFormat(id = undefined, name = "", have_alternatives = false, content = []){
+    return new Utter(id, name, have_alternatives, content)
+  }
+
   render() {
     return (
       <ItemPage
         mode="Utter"
         url={UTTER_URL}
-        new_item={new Utter()}
         items={this.props.items}
         id_item={this.props.id_item}
         name_label="Nome da resposta"
+        name_item={this.props.name_item}
         button_text="Criar nova resposta"
+        new_item={new Utter()}
+        setDataFormat={this.setDataFormat}
         helper_text={this.props.helper_text}
         item_list_text="Respostas cadastradas"
-        name_item={this.props.name_item}
         old_name_item={this.props.old_name_item}
         item_contents={this.props.item_contents}
-        old_item_contents={this.props.item_contents}
+        old_item_contents={this.props.old_item_contents}
         notification_text={this.props.notification_text}
+        have_alternatives={this.props.have_alternatives}
         selected_item_position={this.props.selected_item_position}
       />
     )

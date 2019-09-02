@@ -1,5 +1,3 @@
-import { Utter } from '../utils/DataFormat';
-
 const INITIAL_STATE = {
     items: [],
     id_item: "",
@@ -15,12 +13,13 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-    function createObjectCopyOf(item) {
-        if (item !== undefined) {
-            return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
-        }
-        return { ...item }
-    }
+    
+    //function createObjectCopyOf(item) {
+    //    if (item !== undefined) {
+    //        return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
+    //    }
+    //    return { ...item }
+    //}
 
     function createArrayCopyOf(items) {
         if (items !== undefined) {
@@ -38,13 +37,12 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
         case "CREATE_NEW_ITEM": {
-            console.log(action.new_item)
             return {
                 ...state,
                 id_item: "",
                 name_item: action.new_item.name,
-                item_contents: action.new_item.alternatives,
                 old_name_item: action.new_item.name,
+                item_contents: action.new_item.alternatives,
                 old_item_contents: action.new_item.alternatives,
                 have_alternatives: action.new_item.have_alternatives,
                 selected_item_position: action.selected_item_position
@@ -59,11 +57,11 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case "SUCESS_ACTION_UTTER": {
-            let old_item = createObjectCopyOf(state.current_item)
+            let item_contents = createArrayCopyOf(state.item_contents);
 
             return {
                 ...state,
-                old_item: old_item,
+                old_item: item_contents,
                 notification_text: action.text
             };
         }
@@ -83,26 +81,16 @@ export default (state = INITIAL_STATE, action) => {
                 return (item.id === action.item.id || item.name === action.item.name);
             });
 
-            let new_item_contents = createArrayCopyOf(selected_item.alternatives);
-            let old_item_contents = createArrayCopyOf(selected_item.alternatives);
-
             return {
                 ...state,
                 name_item: selected_item.name,
                 id_item: selected_item.id,
-                item_contents: new_item_contents,
                 old_name_item: selected_item.name,
-                old_item_contents: old_item_contents,
                 selected_item_position: selected_item_position,
-                have_alternatives: selected_item.have_alternatives
+                have_alternatives: selected_item.have_alternatives,
+                item_contents: createArrayCopyOf(selected_item.alternatives),
+                old_item_contents: createArrayCopyOf(selected_item.alternatives)
             };
-        }
-
-        case "SAVE_DATA": {
-            return {
-                ...state,
-                current_item: createObjectCopyOf(state.current_item)
-            }
         }
 
         // UTTER 
@@ -127,7 +115,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case "ADD_UTTER_CONTENT": {
             let new_utter = createArrayCopyOf(state.item_contents);
-
+            
             if (state.have_alternatives) {
                 new_utter.push(action.text);
             } else {
@@ -136,7 +124,8 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                item_contents: new_utter
+                item_contents: new_utter,
+                old_item_contents: createArrayCopyOf(new_utter)
             };
         }
 
