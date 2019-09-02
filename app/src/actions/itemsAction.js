@@ -57,7 +57,7 @@ export const deleteItem = (url = "", delete_item_id, mode, item) => {
 
 export const notifyAction = (text) => {
     return {
-        type: "SUCESS_ACTION_UTTER",
+        type: "SUCESS_ACTION_ITEM",
         text: text
     };
 };

@@ -5,6 +5,7 @@ import { Divider } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import ItemsList from "../components/ItemsList";
 import UtterForm from "../components/UtterForm";
+import IntentForm from "../components/IntentForm";
 import Snackbar from '@material-ui/core/Snackbar';
 import ToolbarName from '../components/ToolbarName'
 import MessageIcon from '@material-ui/icons/Message';
@@ -73,7 +74,7 @@ class ItemPage extends Component {
   }
 
   getForm() {
-    return (this.props.mode === "Utter") ? <UtterForm new_utter={this.props.new_item} /> : "Outro form";
+    return (this.props.mode === "Utter") ? <UtterForm new_utter={this.props.new_item} /> : <IntentForm new_utter={this.props.new_item} />;
   }
 
   render() {

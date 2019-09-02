@@ -56,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case "SUCESS_ACTION_UTTER": {
+        case "SUCESS_ACTION_ITEM": {
             let item_contents = createArrayCopyOf(state.item_contents);
 
             return {
