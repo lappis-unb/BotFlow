@@ -5,6 +5,11 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import {
     saveData,
     deleteItem,
@@ -31,12 +36,17 @@ const style = {
     }
 }
 
+const options = [
+    'Deletar',
+]
 
 class ToolbarName extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            helper_text: ""
+            helper_text: "",
+            anchorEl: null,
+            open: false,
         }
     }
 
@@ -104,6 +114,15 @@ class ToolbarName extends Component {
         );
     }
 
+    handleMenuClick(event, is_open) {
+        if(is_open) {
+            this.setState({anchorEl: event.currentTarget});
+        }else {
+            this.setState({anchorEl: null});
+        }
+        this.setState({open : is_open});
+    }
+
     handleClick(remove) {
         if (remove) {
             this.props.deleteItem(
@@ -112,6 +131,7 @@ class ToolbarName extends Component {
                 this.props.mode,
                 this.props.new_item
             )
+            this.setState({open: false});
         } else {
 
             console.log("HAVE", this.props.have_alternatives)
@@ -165,7 +185,32 @@ class ToolbarName extends Component {
                                 <label>Gravar</label>
                             </SaveButtonCheck>
                         </Button>
-                        <Button onClick={() => this.handleClick(true)}>DELETAR</Button>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={e => this.handleMenuClick(e, true)}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={this.state.anchorEl}
+                            keepMounted
+                            open={this.state.open}
+                            onClose={e =>this.handleMenuClick(e, false)}
+                            PaperProps={{
+                                style: {
+                                    width: 150,
+                                },
+                            }}
+                        >
+                            {options.map(option => (
+                            <MenuItem key={option} selected={option === 'Deletar'} onClick={() => this.handleClick(true)}>
+                                {option}
+                            </MenuItem>
+                            ))}
+                        </Menu>
                     </Typography>
                 </Grid>
             </Toolbar>
