@@ -26,11 +26,11 @@ export const setUtterContent = (item_position, text_position, text) => {
   };
 }
 
-export const changeUtterForm = (item_contents, have_alternatives) => {
+export const changeUtterForm = (utter_form_data, have_alternatives) => {
   let texts = [];
   let new_alternatives = [];
 
-  item_contents.forEach(i => {
+  utter_form_data.forEach(i => {
     (i.contents).forEach(j => {
       texts.push(j.text);
     })
@@ -46,12 +46,5 @@ export const changeUtterForm = (item_contents, have_alternatives) => {
     type: "CHANGE_UTTER_FORM",
     item_contents: new_alternatives,
     have_alternatives: have_alternatives
-  }
-}
-
-export const setHelperText = (helper_text) => {
-  return {
-    type: "SET_HELPER_CONTENT",
-    helper_text: helper_text
   }
 }
