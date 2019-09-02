@@ -8,17 +8,13 @@ import UtterForm from "../components/UtterForm";
 import IntentForm from "../components/IntentForm";
 import Snackbar from '@material-ui/core/Snackbar';
 import ToolbarName from '../components/ToolbarName'
-import MessageIcon from '@material-ui/icons/Message';
 import { createNewItem, notifyAction } from "../actions/itemsAction";
-import { Add, CreateNewUtter } from '../styles/button';
+import { Add } from '../styles/button';
 import SnackbarContent from "../components/CustomSnackbar"
 
 const style = {
   grid_item_list: {
     background: "#dae8ea"
-  },
-  create_button: {
-    margin: "16px 24px"
   },
   item_form: {
     height: "calc(100vh - 164px)",
@@ -41,15 +37,9 @@ class ItemPage extends Component {
 
   getCreateButton(text) {
     return (
-      <Button
-        color="secondary"
-        variant="contained"
-        style={style.create_button}
+      <Button color="primary" variant="contained" style={{ margin: "16px 24px" }}
         onClick={() => this.props.createNewItem(this.props.new_item)}>
-        <CreateNewUtter>
-          <Add />
-          <label>{text}</label>
-        </CreateNewUtter>
+        <Add />{text}
       </Button>
     )
   }
@@ -85,7 +75,7 @@ class ItemPage extends Component {
           {this.getCreateButton(this.props.button_text)}
 
           <ItemsList
-            icon={<MessageIcon />}
+            icon={this.props.icon}
             items={this.props.items}
             text={this.props.item_list_text}
             selected_item_position={this.props.selected_item_position} />

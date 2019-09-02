@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import ItemPage from "../pages/ItemPage"
 import React, { Component } from "react";
 import { getItems, createNewItem } from "../actions/itemsAction";
-
+import IntentIcon from '../icons/IntentIcon';
 import { Intent } from '../utils/DataFormat'
 
 //const BASE = "https://botflow.api.lappis.rocks/";
@@ -35,6 +35,7 @@ class IntentPage extends Component {
         items={this.props.items}
         id_item={this.props.id_item}
         name_label="Nome da pergunta"
+        icon={<IntentIcon />}
         name_item={this.props.name_item}
         button_text="Criar nova pergunta"
         setDataFormat={this.setDataFormat}

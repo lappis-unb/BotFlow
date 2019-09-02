@@ -1,5 +1,3 @@
-import { Intent } from '../utils/DataFormat';
-
 const INITIAL_STATE = {
     items: [],
     id_item: "",

@@ -1,14 +1,13 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import SearchIcon from '@material-ui/icons/Search';
-import { selectItem } from "../actions/itemsAction";
-import TextField from '@material-ui/core/TextField';
+import {selectItem} from "../actions/itemsAction";
+
 import Typography from '@material-ui/core/Typography';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
+import {List, ListItem, ListItemIcon, ListItemText, styled} from '@material-ui/core';
+
+import SearchIcon from '@material-ui/icons/Search';
 
 const style = {
   list_container: {
@@ -20,8 +19,34 @@ const style = {
   items_list: {
     height: "64.8vh",
     overflowY: "auto"
-  },
+  }
 }
+
+const StyledListItem = styled(ListItem)({
+  backgroundColor: "transparent",
+  borderRadius:"12px 0 0 12px",
+
+  "&:hover": {
+      backgroundColor: "rgba(246,249,249,0.6)", //primary.light $40%
+  },
+  "&.Mui-selected": {
+    color:"#f15035", //secondary
+    backgroundColor: "#f6f9f9", //primary.light
+    "&:hover": {
+        backgroundColor: "#f6f9f9" //primary.light
+    }
+  },
+  "& .MuiListItemIcon-root":{
+    fill:"#4b3953", //primary
+    "&.Mui-selected":{
+      fill: "#f15035", //secondary
+    }
+  },
+  "&.Mui-selected .MuiListItemIcon-root":{
+      fill: "#f15035", //secondary
+  }
+});
+
 
 class ItemsList extends Component {
   constructor(props) {
@@ -31,51 +56,48 @@ class ItemsList extends Component {
 
   itemsList() {
     const items = (this.state.filtered_items.length !== 0) ? this.state.filtered_items : this.props.items;
+
     if (items !== undefined) {
       return items.map((item, index) => (
-        <ListItem
+        <StyledListItem
+          button
           id={"items_list_" + index}
-          button key={"items_list" + index}
+          key={"items_list" + index}
           selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-            <ListItemIcon>
-              {this.props.icon}
-            </ListItemIcon>
-            <ListItemText>
-              <Typography noWrap>
-                {item.name}
-              </Typography>
-            </ListItemText>
-        </ListItem>
+          <ListItemIcon>{this.props.icon}</ListItemIcon>
+          <ListItemText>
+            <Typography noWrap>
+              {item.name}
+            </Typography>
+          </ListItemText>
+        </StyledListItem>
       ));
     }
   }
 
-  filterItems(wanted_name) {
+  filterItems(value) {
     this.setState({
-      filtered_items: this.props.items.filter((item) => item.name.includes(wanted_name))
+      filtered_items: this.props.items.filter((item) => item.name.includes(value))
     });
   }
 
   handleListItemClick(item, index) {
-    this.props.selectItem(item, index);
+    this.props.selectItem(item, index, this.props.items);
   }
 
   render() {
     return (
       <div>
         <div style={style.list_container}>
-          <Typography variant="h6" color="primary">
+          <Typography variant="body2" color="primary">
             {this.props.text}
           </Typography>
-
-          <List style={style.items_list}>
+          <List dense={true} style={style.items_list}>
             {this.itemsList()}
           </List>
         </div>
-        
         <Divider />
-
         <div style={style.filter_items_container}>
           <TextField
             fullWidth
@@ -93,7 +115,7 @@ class ItemsList extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  selectItem: (item, item_index) => dispatch(selectItem(item, item_index))
+  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
 });
 
 export default connect(null, mapDispatchToProps)(ItemsList);

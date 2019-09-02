@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Done } from '../styles/button';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import {
@@ -15,8 +16,6 @@ import {
     deleteItem,
     setNameItem
 } from "../actions/itemsAction";
-
-import { SaveButtonCheck, Done } from '../styles/button';
 
 const style = {
     toolbar: {
@@ -189,8 +188,8 @@ class ToolbarName extends Component {
 
         return (
             <Toolbar style={style.toolbar}>
-                <Grid item xs={1} />
-                <Grid item xs={7}>
+                <Grid item xs={2} />
+                <Grid item xs={5}>
                     <TextField
                         fullWidth
                         error={this.state.helper_text !== ""}
@@ -202,19 +201,13 @@ class ToolbarName extends Component {
                         onChange={(e) => this.checkIsValidName(ITEMS, e.target.value)}
                     />
                 </Grid>
-                <Grid item xs={1} />
+                <Grid item xs={2} />
                 <Grid item xs={3}>
                     <Typography variant="h6" color="inherit">
-                        <Button
-                            size="small"
-                            variant="contained"
-                            color="secondary"
+                        <Button variant="contained" color="secondary"
                             disabled={!this.isButtonEnabled(this.props.item_contents, this.props.old_item_contents)}
                             onClick={() => this.handleClick(false)}>
-                            <SaveButtonCheck>
-                                <Done />
-                                <label>Gravar</label>
-                            </SaveButtonCheck>
+                            <Done />Gravar
                         </Button>
                         <IconButton
                             aria-label="more"
