@@ -4,7 +4,7 @@ export const addIntentText = () => {
   const intent = new Intent();
   return {
     type: "ADD_INTENT_TEXT",
-    text: { ...intent.samples[0] }
+    text: intent.samples[0]
   };
 }
 

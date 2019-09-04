@@ -91,7 +91,6 @@ class UtterForm extends Component {
 
   setUtterContents() {
     let utters_texts = [];
-    console.log(this.props.item_contents)
     if (this.props.item_contents !== undefined) {
       utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
         return alternative.map((alternative_content, content_index) => {
@@ -190,10 +189,6 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={3}>
-          <p>Name: {this.props.name_item}</p>
-          <p>id_item: {this.props.id_item}</p>
-          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
         </Grid>
       </Grid>
     );
