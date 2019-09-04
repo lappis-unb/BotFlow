@@ -56,7 +56,7 @@ class ItemsList extends Component {
 
   itemsList() {
     const items = (this.state.filtered_items.length !== 0) ? this.state.filtered_items : this.props.items;
-
+    console.log("ITEMS", items)
     if (items !== undefined) {
       return items.map((item, index) => (
         <StyledListItem

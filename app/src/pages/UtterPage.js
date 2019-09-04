@@ -6,7 +6,8 @@ import ItemPage from "../pages/ItemPage"
 import { Utter } from '../utils/DataFormat'
 import UtterIcon from '../icons/UtterIcon';
 
-const BASE = "http://localhost:3000/";
+//const BASE = "http://localhost:3000/";
+const BASE = "http://192.168.100.87:8000/api/v1/projects/1/";
 //const BASE = "https://botflow.api.lappis.rocks/";
 
 const UTTER_URL = BASE + "utters/";
@@ -21,8 +22,8 @@ class UtterPage extends Component {
     this.props.createNewItem(new Utter());
   }
 
-  setDataFormat(id = undefined, name = "", have_alternatives = false, content = []){
-    return new Utter(id, name, have_alternatives, content)
+  setDataFormat(id = undefined, name = "", multiple_alternatives = false, content = []){
+    return new Utter(id, name, multiple_alternatives, content)
   }
 
   render() {
@@ -44,7 +45,7 @@ class UtterPage extends Component {
         item_contents={this.props.item_contents}
         old_item_contents={this.props.old_item_contents}
         notification_text={this.props.notification_text}
-        have_alternatives={this.props.have_alternatives}
+        multiple_alternatives={this.props.multiple_alternatives}
         selected_item_position={this.props.selected_item_position}
       />
     )

@@ -19,13 +19,11 @@ export default (state = INITIAL_STATE, action) => {
     //    return { ...item }
     //}
 
-    function createArrayCopyOf(questions = []) {
-        if (questions.length !== 0) {
-            return questions.map(question_text => {
-                return { ...question_text }
-            })
+    function createArrayCopyOf(samples = [""]) {
+        if (samples.length !== 0) {
+            return samples.map(text => text);
         }
-        return questions;
+        return samples;
     }
 
     switch (action.type) {
@@ -35,8 +33,8 @@ export default (state = INITIAL_STATE, action) => {
                 id_item: "",
                 name_item: action.new_item.name,
                 old_name_item: action.new_item.name,
-                item_contents: action.new_item.questions,
-                old_item_contents: action.new_item.questions,
+                item_contents: action.new_item.samples,
+                old_item_contents: action.new_item.samples,
                 selected_item_position: action.selected_item_position
             }
         }
@@ -79,8 +77,8 @@ export default (state = INITIAL_STATE, action) => {
                 id_item: selected_item.id,
                 old_name_item: selected_item.name,
                 selected_item_position: selected_item_position,
-                item_contents: createArrayCopyOf(selected_item.questions),
-                old_item_contents: createArrayCopyOf(selected_item.questions)
+                item_contents: createArrayCopyOf(selected_item.samples),
+                old_item_contents: createArrayCopyOf(selected_item.samples)
             };
         }
 
@@ -88,7 +86,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case "SET_INTENT_TEXT": {
             let item_contents = createArrayCopyOf(state.item_contents);
-            item_contents[action.intent_position].text = action.text
+            item_contents[action.intent_position] = action.text
 
             return {
                 ...state,

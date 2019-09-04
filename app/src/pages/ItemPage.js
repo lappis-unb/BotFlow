@@ -94,7 +94,7 @@ class ItemPage extends Component {
             old_name_item={this.props.old_name_item}
             item_contents={this.props.item_contents}
             setDataFormat={this.props.setDataFormat}
-            have_alternatives={this.props.have_alternatives}
+            multiple_alternatives={this.props.multiple_alternatives}
             old_item_contents={this.props.old_item_contents}
           />
 

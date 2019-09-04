@@ -47,11 +47,11 @@ class ToolbarName extends Component {
         }
     }
 
-    checkEmptyFieldsIntent(questions) {
+    checkEmptyFieldsIntent(samples) {
         let changed = true;
-        if (questions !== undefined) {
-            questions.forEach(question => {
-                if ((question.text).trim().length === 0) {
+        if (samples !== undefined) {
+            samples.forEach(sample => {
+                if (sample.trim().length === 0) {
                     changed = false;
                 }
             });
@@ -63,8 +63,8 @@ class ToolbarName extends Component {
         let changed = true;
         if (alternatives !== undefined) {
             alternatives.forEach(alternative => {
-                alternative.contents.forEach(text => {
-                    if ((text.text).trim().length === 0) {
+                alternative.forEach(text => {
+                    if (text.trim().length === 0) {
                         changed = false;
                     }
                 })
@@ -161,9 +161,10 @@ class ToolbarName extends Component {
                 current_item = this.props.setDataFormat(
                     this.props.id_item,
                     this.props.name_item,
-                    this.props.have_alternatives,
+                    this.props.multiple_alternatives,
                     this.props.item_contents
                 );
+                console.log("Current", current_item)
             } else {
                 current_item = this.props.setDataFormat(
                     this.props.id_item,
@@ -171,7 +172,7 @@ class ToolbarName extends Component {
                     this.props.item_contents
                 );
             }
-
+            console.log("Current fora", current_item)
             this.props.saveData(
                 this.props.url,
                 this.props.mode,
