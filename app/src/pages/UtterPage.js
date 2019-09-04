@@ -6,11 +6,7 @@ import ItemPage from "../pages/ItemPage"
 import { Utter } from '../utils/DataFormat'
 import UtterIcon from '../icons/UtterIcon';
 
-//const BASE = "http://localhost:3000/";
-const BASE = "http://192.168.100.87:8000/api/v1/projects/1/";
-//const BASE = "https://botflow.api.lappis.rocks/";
-
-const UTTER_URL = BASE + "utters/";
+import { UTTER_URL } from '../utils/url_routes.js'
 
 class UtterPage extends Component {
   constructor(props) {
