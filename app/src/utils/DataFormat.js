@@ -2,35 +2,20 @@ export class Utter {
     constructor(
         id = "",
         name = "",
-        have_alternatives = false,
-        alternatives = [new Content()],
-        project_name = "project"
+        multiple_alternatives = false,
+        alternatives = [[""]]
     ) {
         this.id = id;
         this.name = name;
         this.alternatives = alternatives;
-        this.project_name = project_name;
-        this.have_alternatives = have_alternatives;
+        this.multiple_alternatives = multiple_alternatives;
     }
 };
 
-class Content {
-    constructor() {
-        this.contents = [new Text()]
-    }
-}
-
-class Text {
-    constructor() {
-        this.text = "";
-    }
-}
-
 export class Intent {
-    constructor(id = "", name = "", questions = [new Text()], project_name = "project") {
+    constructor(id = "", name = "", samples = [""]) {
         this.id = id;
         this.name = name;
-        this.questions = questions
-        this.project_name = project_name;
+        this.samples = samples;
     }
 };

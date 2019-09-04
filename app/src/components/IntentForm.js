@@ -22,7 +22,7 @@ class IntentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      undoDelete: false
+      undo_delete: false
     }
   }
 
@@ -30,7 +30,7 @@ class IntentForm extends Component {
     const intents_length = this.props.item_contents.length;
 
     if (intents_length > 1) {
-      this.setState({ undoDelete: true });
+      this.setState({ undo_delete: true });
     }
 
     this.props.deleteIntentText(intent_index);
@@ -38,7 +38,7 @@ class IntentForm extends Component {
 
   handleUndo() {
     this.props.undoDeleteText();
-    this.setState({ undoDelete: false });
+    this.setState({ undo_delete: false });
   }
 
   deleteSnack() {
@@ -48,7 +48,8 @@ class IntentForm extends Component {
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        open={this.state.undoDelete}
+        open={this.state.undo_delete}
+        onClose={()=>this.setState({undo_delete: false})}
         autoHideDuration={3000}
         ContentProps={{
           'aria-describedby': 'message-id',
@@ -66,7 +67,7 @@ class IntentForm extends Component {
             key="close"
             aria-label="Close"
             color="inherit"
-            onClick={() => this.setState({ undoDelete: false })}
+            onClick={() => this.setState({ undo_delete: false })}
           >
             <CloseIcon />
           </IconButton>
@@ -76,12 +77,12 @@ class IntentForm extends Component {
   }
 
   setIntentContents() {
-    let questions = [];
+    let samples = [];
 
     if (this.props.item_contents !== undefined) {
-      questions = this.props.item_contents.map((question, question_index) => {
+      samples = this.props.item_contents.map((sample, sample_index) => {
         return (
-          <li key={"question_content" + question_index}>
+          <li key={"sample_content" + sample_index}>
             <Grid container spacing={2} alignItems="flex-end" >
               <Grid item xs={11}>
                 <TextField
@@ -91,8 +92,8 @@ class IntentForm extends Component {
                   rowsMax="4"
                   margin="normal"
                   variant="outlined"
-                  value={question.text}
-                  onChange={(e) => this.props.setIntentText(question_index, e.target.value)}
+                  value={sample}
+                  onChange={(e) => this.props.setIntentText(sample_index, e.target.value)}
                   InputProps={{
                     endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
                   }}
@@ -102,7 +103,7 @@ class IntentForm extends Component {
                 <DeleteIcon
                   style={{ color: "#4b3953", opacity: 0.5, top: "0px", marginBottom: "20px" }}
                   type="button"
-                  onClick={() => this.handleDelete(question_index)}>
+                  onClick={() => this.handleDelete(sample_index)}>
                 </DeleteIcon>
               </Grid>
             </Grid>
@@ -111,7 +112,7 @@ class IntentForm extends Component {
       })
     }
 
-    return questions;
+    return samples;
   }
 
   render() {

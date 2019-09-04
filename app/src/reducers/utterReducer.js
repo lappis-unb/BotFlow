@@ -7,13 +7,13 @@ const INITIAL_STATE = {
     old_item_contents: [],
     name_item: "",
     old_name_item: "",
-    have_alternatives: false,
+    multiple_alternatives: false,
     notification_text: "",
     selected_item_position: -1
 };
 
 export default (state = INITIAL_STATE, action) => {
-    
+
     //function createObjectCopyOf(item) {
     //    if (item !== undefined) {
     //        return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
@@ -23,14 +23,7 @@ export default (state = INITIAL_STATE, action) => {
 
     function createArrayCopyOf(items) {
         if (items !== undefined) {
-            return items.map((utter) => {
-                return {
-                    ...utter,
-                    contents: utter.contents.map((utter_text) => {
-                        return { ...utter_text }
-                    })
-                }
-            })
+            return items.map((utter) => utter.map((text) => text))
         }
         return items;
     }
@@ -44,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
                 old_name_item: action.new_item.name,
                 item_contents: action.new_item.alternatives,
                 old_item_contents: action.new_item.alternatives,
-                have_alternatives: action.new_item.have_alternatives,
+                multiple_alternatives: action.new_item.multiple_alternatives,
                 selected_item_position: action.selected_item_position
             }
         }
@@ -87,7 +80,7 @@ export default (state = INITIAL_STATE, action) => {
                 id_item: selected_item.id,
                 old_name_item: selected_item.name,
                 selected_item_position: selected_item_position,
-                have_alternatives: selected_item.have_alternatives,
+                multiple_alternatives: selected_item.multiple_alternatives,
                 item_contents: createArrayCopyOf(selected_item.alternatives),
                 old_item_contents: createArrayCopyOf(selected_item.alternatives)
             };
@@ -98,14 +91,14 @@ export default (state = INITIAL_STATE, action) => {
         case "CHANGE_UTTER_FORM": {
             return {
                 ...state,
-                have_alternatives: action.have_alternatives,
+                multiple_alternatives: action.multiple_alternatives,
                 item_contents: createArrayCopyOf(action.item_contents)
             }
         }
 
         case "SET_UTTER_CONTENT": {
             let item_contents = createArrayCopyOf(state.item_contents);
-            item_contents[action.utter_position].contents[action.text_position].text = action.text
+            item_contents[action.utter_position][action.text_position] = action.text
 
             return {
                 ...state,
@@ -115,11 +108,11 @@ export default (state = INITIAL_STATE, action) => {
 
         case "ADD_UTTER_CONTENT": {
             let new_utter = createArrayCopyOf(state.item_contents);
-            
-            if (state.have_alternatives) {
+
+            if (state.multiple_alternatives) {
                 new_utter.push(action.text);
             } else {
-                new_utter[0].contents.push(action.text.contents[0]);
+                new_utter[0].push(action.text[0]);
             }
 
             return {
@@ -133,10 +126,10 @@ export default (state = INITIAL_STATE, action) => {
             let current_item_contents = createArrayCopyOf(state.item_contents)
             let old_item_history = createArrayCopyOf(state.item_contents)
 
-            if (state.have_alternatives) {
+            if (state.multiple_alternatives) {
                 current_item_contents.splice(action.item_position, 1);
-            } else if (current_item_contents[0].contents.length > 1) {
-                current_item_contents[0].contents.splice(action.text_position, 1);
+            } else if (current_item_contents[0].length > 1) {
+                current_item_contents[0].splice(action.text_position, 1);
             }
 
             return {

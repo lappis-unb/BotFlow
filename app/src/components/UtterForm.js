@@ -40,7 +40,7 @@ class UtterForm extends Component {
 
   handleDelete(utter_index, text_index) {
     const utters_length = this.props.item_contents.length;
-    const utters_text_length = this.props.item_contents[0].contents.length;
+    const utters_text_length = this.props.item_contents[0].length;
 
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undo_delete: true });
@@ -63,6 +63,7 @@ class UtterForm extends Component {
         }}
         open={this.state.undo_delete}
         autoHideDuration={3000}
+        onClose={() => this.setState({ undo_delete: false })}
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
@@ -90,16 +91,16 @@ class UtterForm extends Component {
 
   setUtterContents() {
     let utters_texts = [];
-
+    console.log(this.props.item_contents)
     if (this.props.item_contents !== undefined) {
       utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
-        return alternative.contents.map((alternative_content, content_index) => {
+        return alternative.map((alternative_content, content_index) => {
           return (
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={10}>
                   <DialogBox>
-                    <textarea type="text" autoFocus={this.state.have_auto_focus} value={alternative_content.text}
+                    <textarea type="text" autoFocus={this.state.have_auto_focus} value={alternative_content}
                       rows="1"
                       onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
@@ -123,18 +124,18 @@ class UtterForm extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
-    if ((event.target.value !== this.props.have_alternatives)) {
+    if ((event.target.value !== this.props.multiple_alternatives)) {
       this.props.changeUtterForm(this.props.item_contents, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
   getSelectedOption() {
-    return (this.props.have_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
+    return (this.props.multiple_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
   }
 
-  handleClick(){
+  handleClick() {
     this.props.addUtterContent(this.props.new_utter);
-    this.setState({have_auto_focus: true});
+    this.setState({ have_auto_focus: true });
   }
 
   render() {
@@ -174,7 +175,7 @@ class UtterForm extends Component {
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
                 }}
-                onClick={() => { this.handleClick()}}>
+                onClick={() => { this.handleClick() }}>
                 <textarea
                   readOnly
                   type="text"
@@ -191,7 +192,7 @@ class UtterForm extends Component {
         <Grid item xs={3}>
           <p>Name: {this.props.name_item}</p>
           <p>id_item: {this.props.id_item}</p>
-          <p>have_alternatives: {this.props.have_alternatives ? "true" : "false"}</p>
+          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
           <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
         </Grid>
       </Grid>
@@ -207,7 +208,7 @@ const mapDispatchToProps = dispatch => ({
   undoTextRemotion: () => dispatch(undoTextRemotion()),
   addUtterContent: (new_utter) => dispatch(addUtterContent(new_utter)),
   removeUtterContent: (utter_position, text_position) => dispatch(removeUtterContent(utter_position, text_position)),
-  changeUtterForm: (have_alternatives, current_item) => dispatch(changeUtterForm(have_alternatives, current_item)),
+  changeUtterForm: (multiple_alternatives, current_item) => dispatch(changeUtterForm(multiple_alternatives, current_item)),
   setUtterContent: (utter_position, text_position, text, current_item) => dispatch(setUtterContent(utter_position, text_position, text, current_item))
 });
 

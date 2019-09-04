@@ -6,7 +6,8 @@ import IntentIcon from '../icons/IntentIcon';
 import { Intent } from '../utils/DataFormat'
 
 //const BASE = "https://botflow.api.lappis.rocks/";
-const BASE = "http://localhost:3000/";
+//const BASE = "http://localhost:3000/";
+const BASE = "http://192.168.100.87:8000/api/v1/projects/1/";
 
 const INTENT_URL = BASE + "intents/";
 
@@ -21,8 +22,7 @@ class IntentPage extends Component {
     this.props.createNewItem(new Intent());
   }
 
-  setDataFormat(id = undefined, name = "", content = []) {
-    console.log("SET DATA FORMAT", content)
+  setDataFormat(id = undefined, name = "", content = [""]) {
     return new Intent(id, name, content)
   }
 
