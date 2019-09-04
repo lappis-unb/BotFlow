@@ -91,7 +91,6 @@ class UtterForm extends Component {
 
   setUtterContents() {
     let utters_texts = [];
-    console.log(this.props.item_contents)
     if (this.props.item_contents !== undefined) {
       utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
         return alternative.map((alternative_content, content_index) => {
