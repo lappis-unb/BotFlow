@@ -182,9 +182,6 @@ class ToolbarName extends Component {
     }
 
     render() {
-        const ITEMS = this.props.items;
-        const NAME_ITEM_LABEL = "Nome da resposta";
-
         return (
             <Toolbar style={style.toolbar}>
                 <Grid item xs={2} />
@@ -193,11 +190,11 @@ class ToolbarName extends Component {
                         fullWidth
                         error={this.state.helper_text !== ""}
                         type="text"
-                        id={NAME_ITEM_LABEL}
+                        id={this.props.name_label}
                         value={this.props.name_item}
-                        label={NAME_ITEM_LABEL}
+                        label={this.props.name_label}
                         helperText={this.state.helper_text}
-                        onChange={(e) => this.checkIsValidName(ITEMS, e.target.value)}
+                        onChange={(e) => this.checkIsValidName(this.props.items, e.target.value)}
                     />
                 </Grid>
                 <Grid item xs={2} />
