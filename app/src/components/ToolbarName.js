@@ -164,7 +164,6 @@ class ToolbarName extends Component {
                     this.props.multiple_alternatives,
                     this.props.item_contents
                 );
-                console.log("Current", current_item)
             } else {
                 current_item = this.props.setDataFormat(
                     this.props.id_item,
@@ -172,7 +171,7 @@ class ToolbarName extends Component {
                     this.props.item_contents
                 );
             }
-            console.log("Current fora", current_item)
+
             this.props.saveData(
                 this.props.url,
                 this.props.mode,
