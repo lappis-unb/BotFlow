@@ -1,7 +1,6 @@
 export const addUtterContent = (new_utter) => {
   return {
-    type: "ADD_UTTER_CONTENT",
-    text: { ...new_utter.alternatives[0] }
+    type: "ADD_UTTER_CONTENT"
   };
 }
 

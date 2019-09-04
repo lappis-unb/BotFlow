@@ -113,7 +113,6 @@ class ToolbarName extends Component {
             (this.props.name_item).length !== 0
         );
 
-
         //console.log("============================")
         //console.log("have_changes", have_changes);
         //console.log("contents_changed", contents_changed );

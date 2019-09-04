@@ -31,7 +31,7 @@ export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = 
 
 export const saveData = (url, mode = "Utter", item) => {
     return async (dispatch) => {
-        if ((item.id === "" || item.id===undefined)) {
+        if ((item.id === "" || item.id === undefined)) {
             dispatch(createOrUpdateItem('post', url, item, mode + " criada com sucesso!"));
         } else {
             dispatch(createOrUpdateItem('put', url, item, mode + " atualizada com sucesso!"));

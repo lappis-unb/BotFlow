@@ -41,12 +41,12 @@ class UtterForm extends Component {
   handleDelete(utter_index, text_index) {
     const utters_length = this.props.item_contents.length;
     const utters_text_length = this.props.item_contents[0].length;
-
+    
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undo_delete: true });
+      this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
     }
 
-    this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
   }
 
   handleUndo() {
@@ -189,10 +189,10 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={3}>
-          <p>Name: {this.props.name_item}</p>
+          {/* <p>Name: {this.props.name_item}</p>
           <p>id_item: {this.props.id_item}</p>
           <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
+          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre> */}
         </Grid>
       </Grid>
     );

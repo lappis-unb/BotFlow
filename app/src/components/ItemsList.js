@@ -60,7 +60,7 @@ class ItemsList extends Component {
 
   itemsList() {
     let filtered_items = this.filterItems();
-    
+
     if (filtered_items.length !== 0) {
       return filtered_items.map((item, index) => (
         <StyledListItem
@@ -79,7 +79,7 @@ class ItemsList extends Component {
       ));
     } else {
       return (
-        <Typography style={{marginTop: "15px"}} noWrap>
+        <Typography style={{ marginTop: "15px" }} noWrap>
           Nenhum resultado encontrado!
         </Typography>
       )
@@ -126,7 +126,7 @@ class ItemsList extends Component {
   }
 
   render() {
-    const filtered_items = this.filterItems();
+    // const filtered_items = this.filterItems();
     return (
       <div>
         <div style={style.list_container}>
@@ -144,7 +144,7 @@ class ItemsList extends Component {
             type="text"
             label="Filtrar"
             variant="outlined"
-            error={filtered_items.length === 0}
+            // error={filtered_items.length === 0}
             value={this.state.value}
             style={style.field_form}
             InputProps={{ endAdornment: this.getFilterIcon() }}

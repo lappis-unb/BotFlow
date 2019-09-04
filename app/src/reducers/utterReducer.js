@@ -14,16 +14,10 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 
-    //function createObjectCopyOf(item) {
-    //    if (item !== undefined) {
-    //        return { ...item, alternatives: createArrayCopyOf(item.alternatives) }
-    //    }
-    //    return { ...item }
-    //}
-
     function createArrayCopyOf(items) {
+        console.log("Items", items)
         if (items !== undefined) {
-            return items.map((utter) => utter.map((text) => text))
+            return items.map(utter => utter.map(text => text));
         }
         return items;
     }
@@ -62,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
         case "GET_ITEMS": {
             return {
                 ...state,
-                items: action.items,
+                items: action.items
             };
         }
 
@@ -110,9 +104,9 @@ export default (state = INITIAL_STATE, action) => {
             let new_utter = createArrayCopyOf(state.item_contents);
 
             if (state.multiple_alternatives) {
-                new_utter.push(action.text);
+                new_utter.push(['']);
             } else {
-                new_utter[0].push(action.text[0]);
+                new_utter[0].push('');
             }
 
             return {
@@ -126,12 +120,11 @@ export default (state = INITIAL_STATE, action) => {
             let current_item_contents = createArrayCopyOf(state.item_contents)
             let old_item_history = createArrayCopyOf(state.item_contents)
 
-            if (state.multiple_alternatives) {
+            current_item_contents[action.item_position].splice(action.text_position, 1);
+            if (current_item_contents[action.item_position].length === 0) {
                 current_item_contents.splice(action.item_position, 1);
-            } else if (current_item_contents[0].length > 1) {
-                current_item_contents[0].splice(action.text_position, 1);
             }
-
+           
             return {
                 ...state,
                 item_contents: current_item_contents,

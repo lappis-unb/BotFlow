@@ -27,13 +27,10 @@ class IntentForm extends Component {
   }
 
   handleDelete(intent_index) {
-    const intents_length = this.props.item_contents.length;
-
-    if (intents_length > 1) {
+    if (this.props.item_contents.length > 1) {
       this.setState({ undo_delete: true });
+      this.props.deleteIntentText(intent_index);
     }
-
-    this.props.deleteIntentText(intent_index);
   }
 
   handleUndo() {
