@@ -28,7 +28,7 @@ class UtterForm extends Component {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
       value: SEQUENCE_TEXT,
       undo_delete: false,
-      have_auto_focus: false
+      there_is_auto_focus: false
     }
   }
 
@@ -99,7 +99,7 @@ class UtterForm extends Component {
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={10}>
                   <DialogBox>
-                    <textarea type="text" autoFocus={this.state.have_auto_focus} value={alternative_content}
+                    <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
                       rows="1"
                       onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
@@ -134,7 +134,7 @@ class UtterForm extends Component {
 
   handleClick() {
     this.props.addUtterContent(this.props.new_utter);
-    this.setState({ have_auto_focus: true });
+    this.setState({ there_is_auto_focus: true });
   }
 
   render() {
@@ -189,6 +189,10 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={3}>
+          <p>Name: {this.props.name_item}</p>
+          <p>id_item: {this.props.id_item}</p>
+          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
+          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre>
         </Grid>
       </Grid>
     );
