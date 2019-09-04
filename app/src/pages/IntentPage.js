@@ -5,12 +5,7 @@ import { getItems, createNewItem } from "../actions/itemsAction";
 import IntentIcon from '../icons/IntentIcon';
 import { Intent } from '../utils/DataFormat'
 
-//const BASE = "https://botflow.api.lappis.rocks/";
-//const BASE = "http://localhost:3000/";
-const BASE = "http://192.168.100.87:8000/api/v1/projects/1/";
-
-const INTENT_URL = BASE + "intents/";
-
+import { INTENT_URL } from '../utils/url_routes.js'
 
 class IntentPage extends Component {
   constructor(props) {
