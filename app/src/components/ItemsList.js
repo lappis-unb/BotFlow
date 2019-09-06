@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
+import IntentIcon from '../icons/IntentIcon';
+import UtterIcon from '../icons/UtterIcon';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
@@ -59,7 +61,19 @@ class ItemsList extends Component {
     };
   }
 
-  itemsList(arr) {
+  getIcon(isIntent){
+    if(this.props.story){
+      if(isIntent){
+        return <IntentIcon/>
+      }else{
+        return <UtterIcon />
+      }
+    }else{
+      return this.props.icon
+    }
+  }
+
+  itemsList(arr, isIntent) {
     let filtered_items = this.filterItems(arr);
     
     if (filtered_items.length !== 0) {
@@ -70,7 +84,7 @@ class ItemsList extends Component {
           key={"items_list" + index}
           selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>{this.props.icon}</ListItemIcon>
+          <ListItemIcon>{this.getIcon(isIntent)}</ListItemIcon>
           <ListItemText>
             <Typography noWrap>
               {this.setHighlight(item.name)}
@@ -128,7 +142,7 @@ class ItemsList extends Component {
     }
   }
 
-renderList(arr, text){
+renderList(arr, text, isIntent){
   return(
     <div>
       <div style={style.list_container}>
@@ -136,7 +150,7 @@ renderList(arr, text){
           {text}
         </Typography>
         <List dense={true} style={style.items_list}>
-          {this.itemsList(arr)}
+          {this.itemsList(arr, isIntent)}
         </List>
       </div>
       <Divider />
@@ -165,10 +179,10 @@ renderList(arr, text){
 
         <Grid container direction='row'>
           <Grid item xs={3} sm={6} style={style.grid_item_list}>
-            {this.renderList(this.props.items.intents, 'Perguntas cadastradas')}
+            {this.renderList(this.props.items.intents, 'Perguntas cadastradas', true)}
           </Grid>
           <Grid item xs={3} sm={6} style={style.grid_item_list}>
-            {this.renderList(this.props.items.utters, 'Respostas cadastradas')}
+            {this.renderList(this.props.items.utters, 'Respostas cadastradas', false)}
           </Grid>
         </Grid>
           <div style={style.filter_items_container}>
@@ -193,7 +207,7 @@ renderList(arr, text){
       {this.props.story?
       this.render_story()
         :
-      this.renderList(this.props.items, this.props.text)
+      this.renderList(this.props.items, this.props.text, null)
       }
       </div>
     )
