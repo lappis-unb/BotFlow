@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { selectItem } from "../actions/itemsAction";
+import Grid from '@material-ui/core/Grid';
 
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -58,8 +59,8 @@ class ItemsList extends Component {
     };
   }
 
-  itemsList() {
-    let filtered_items = this.filterItems();
+  itemsList(arr) {
+    let filtered_items = this.filterItems(arr);
     
     if (filtered_items.length !== 0) {
       return filtered_items.map((item, index) => (
@@ -94,9 +95,13 @@ class ItemsList extends Component {
     ));
   }
 
-  filterItems() {
-    return this.props.items.filter(item => (item.name).includes(this.state.value));
+  filterItems(arr) {
+    console.log('==>',arr);
+    console.log('==>',typeof(arr));
+    
+    return arr.filter(item => (item.name).includes(this.state.value));
   }
+
 
   handleListItemClick(item, index) {
     this.props.selectItem(item, index, this.props.items);
@@ -104,12 +109,10 @@ class ItemsList extends Component {
 
   handleFilterClick() {
     this.setState({ value: "" });
-    this.filterItems("");
   }
 
   handleFilterInput(e) {
     this.setState({ value: e.target.value });
-    this.filterItems(e.target.value);
   }
 
   getFilterIcon() {
@@ -125,32 +128,73 @@ class ItemsList extends Component {
     }
   }
 
-  render() {
-    const filtered_items = this.filterItems();
-    return (
-      <div>
-        <div style={style.list_container}>
-          <Typography variant="body2" color="primary">
-            {this.props.text}
-          </Typography>
-          <List dense={true} style={style.items_list}>
-            {this.itemsList()}
-          </List>
-        </div>
-        <Divider />
+renderList(arr, text){
+  return(
+    <div>
+      <div style={style.list_container}>
+        <Typography variant="body2" color="primary">
+          {text}
+        </Typography>
+        <List dense={true} style={style.items_list}>
+          {this.itemsList(arr)}
+        </List>
+      </div>
+      <Divider />
+      {
+        !this.props.story?
         <div style={style.filter_items_container}>
           <TextField
             fullWidth
             type="text"
             label="Filtrar"
             variant="outlined"
-            error={filtered_items.length === 0}
             value={this.state.value}
             style={style.field_form}
-            InputProps={{ endAdornment: this.getFilterIcon() }}
-            onChange={(e) => this.handleFilterInput(e)}
+            InputProps={{ endAdornment: this.getFilterIcon(arr) }}
+            onChange={(e) => this.handleFilterInput(e, arr)}
           />
-        </div>
+      </div>
+          :null
+      }
+    </div>
+  )
+}
+  render_story() {
+    return (
+        <Grid container direction='column'>
+
+        <Grid container direction='row'>
+          <Grid item xs={3} sm={6} style={style.grid_item_list}>
+            {this.renderList(this.props.items.intents, 'Perguntas cadastradas')}
+          </Grid>
+          <Grid item xs={3} sm={6} style={style.grid_item_list}>
+            {this.renderList(this.props.items.utters, 'Respostas cadastradas')}
+          </Grid>
+        </Grid>
+          <div style={style.filter_items_container}>
+            <TextField
+              fullWidth
+              type="text"
+              label="Filtrar"
+              variant="outlined"
+              value={this.state.value}
+              style={style.field_form}
+              InputProps={{ endAdornment: this.getFilterIcon() }}
+              onChange={(e) => this.handleFilterInput(e)}
+              />
+          </div>
+              </Grid>
+    )
+  }
+
+  render() {
+    return (
+      <div>
+      {this.props.story?
+      this.render_story()
+        :
+      this.renderList(this.props.items, this.props.text)
+      }
       </div>
     )
   }
