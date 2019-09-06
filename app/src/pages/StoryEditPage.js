@@ -10,7 +10,8 @@ import ItemsList from "../components/ItemsList";
 
 const style = {
     grid_item_list: {
-        background: "#dae8ea"
+        background: "#dae8ea",
+        paddingTop: '15px'
     }
 }
 
@@ -33,10 +34,7 @@ class StoryEditPage extends Component {
             <Grid container>
                 <Grid item xs={6} style={style.grid_item_list}>
                     <ItemsList
-                        icon={<IntentIcon />}
                         items={{ intents: this.props.items, utters: [{ name: 'a' }, { name: 'b' }]}}
-                        text={"e ae?"}
-                        selected_item_position={0}
                         story
                         />
                 </Grid>
