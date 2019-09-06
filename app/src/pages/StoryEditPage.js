@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getItems, createNewItem } from "../actions/itemsAction";
-import { Intent } from '../utils/DataFormat'
+import { getIntents, getUtters } from "../actions/storysAction";
 import Grid from '@material-ui/core/Grid';
-import IntentIcon from '../icons/IntentIcon';
-
-import { INTENT_URL } from '../utils/url_routes.js'
 import ItemsList from "../components/ItemsList";
 
 const style = {
@@ -18,23 +14,16 @@ const style = {
 class StoryEditPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-        }
-        this.props.getItems(INTENT_URL);
-        this.props.createNewItem(new Intent());
+        this.props.getIntents()
+        this.props.getUtters()
     }
 
-    setDataFormat(id = undefined, name = "", content = [""]) {
-        return new Intent(id, name, content)
-    }
-
-    render() {
+    render() {        
         return (
             <Grid container>
                 <Grid item xs={6} style={style.grid_item_list}>
                     <ItemsList
-                        items={{ intents: this.props.items, utters: [{ name: 'a' }, { name: 'b' }]}}
+                        items={{ intents: this.props.intents, utters: this.props.utters}}
                         story
                         />
                 </Grid>
@@ -43,11 +32,11 @@ class StoryEditPage extends Component {
     }
 }
 
-const mapStateToProps = state => { return { ...state.intentReducer } };
+const mapStateToProps = state => { return { ...state.storyReducer } };
 
 const mapDispatchToProps = dispatch => ({
-    getItems: (url) => dispatch(getItems(url)),
-    createNewItem: (new_item) => dispatch(createNewItem(new_item))
+    getIntents: () => dispatch(getIntents()),
+    getUtters: () => dispatch(getUtters()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryEditPage);

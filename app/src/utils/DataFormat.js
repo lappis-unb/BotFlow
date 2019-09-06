@@ -19,3 +19,11 @@ export class Intent {
         this.samples = samples;
     }
 };
+
+export class Story {
+    constructor(id = "", name = "", content = []){
+        this.id = id;
+        this.name = name;
+        this.content = content;
+    }
+};
