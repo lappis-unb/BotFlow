@@ -22,6 +22,8 @@ class IntentPage extends Component {
   }
 
   render() {
+    console.log(this.props);
+    
     return (
       <ItemPage
         mode="Intent"
