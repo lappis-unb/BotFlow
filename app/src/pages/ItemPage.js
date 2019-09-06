@@ -70,7 +70,6 @@ class ItemPage extends Component {
   }
 
   render() {
-
     return (
       <Grid container>
         <Grid item xs={3} style={style.grid_item_list}>
