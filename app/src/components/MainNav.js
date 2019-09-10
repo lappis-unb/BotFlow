@@ -62,11 +62,6 @@ export default function MainNav() {
       }
     }
   }
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> New edit story (#104)
   return (
     <Tabs className={classes.root}
       value={value}
