@@ -24,6 +24,22 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
+        this.state = {
+            current_item: {
+                "id": 1,
+                "name": "story_basica",
+                "formatted_content": [
+                    {
+                        "id": 1,
+                        "type": "intent"
+                    },
+                    {
+                        "id": 2,
+                        "type": "utter"
+                    }
+                ]
+            }
+        }
     }
 
 
@@ -61,7 +77,7 @@ class StoryEditPage extends Component {
                 borderRadius: '4px',
                 borderColor: '#4b3953'
             }}>
-                <IntentIcon />
+                <UtterIcon />
                 <div>Olá</div>
             </div >
         )
@@ -95,6 +111,15 @@ class StoryEditPage extends Component {
                     />
                     <Grid style={{ display: 'flex' }}>
                         <Grid item xs={6}>
+                                {
+                                    this.state.current_item.formatted_content.map(item => {
+                                        if (item.type == "intent") {
+                                            return this.intentLabel()
+                                        } else {
+                                            return this.utterLabel()
+                                        }
+                                    })
+                                }
                         </Grid>
                         <Grid item xs={6}>
                         </Grid>
