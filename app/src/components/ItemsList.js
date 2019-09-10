@@ -110,8 +110,6 @@ class ItemsList extends Component {
   }
 
   filterItems(arr) {
-    console.log('==>',arr);
-    console.log('==>',typeof(arr));
     
     return arr.filter(item => (item.name).includes(this.state.value));
   }
