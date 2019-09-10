@@ -7,6 +7,7 @@ import MainNav from "../components/MainNav"
 
 import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
+import StoryPage from './StoryPage';
 import AppIcon from '../icons/AppIcon';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <div style={{ paddingTop: "72px" }}>
         <Route exact path="/utters" component={UtterPage} />
         <Route exact path="/intents" component={IntentPage} />
+        <Route exact path="/stories" component={StoryPage} />
       </div>
       <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
     </Router>
