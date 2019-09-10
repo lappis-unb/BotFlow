@@ -9,9 +9,6 @@ import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 
 
-
-
-
 const style = {
     grid_item_list: {
         background: "#dae8ea",
@@ -87,13 +84,13 @@ class StoryEditPage extends Component {
         console.log(this.props.utters, "props")
         return (
             <Grid container xs={12}>
-                <Grid item xs={6} style={style.grid_item_list}>
+                <Grid item xs={4} style={style.grid_item_list}>
                     <ItemsList
                         items={{ intents: this.props.intents, utters: this.props.utters }}
                         story
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={8}>
                     <ToolbarName
                         url={this.props.url}
                         mode={this.props.mode}

@@ -177,10 +177,10 @@ renderList(arr, text, isIntent){
 
         <Grid container direction='row'>
           <Grid item xs={3} sm={6} style={style.grid_item_list}>
-            {this.renderList(this.props.items.intents, 'Perguntas cadastradas', true)}
+            {this.renderList(this.props.items.intents, 'Perguntas', true)}
           </Grid>
           <Grid item xs={3} sm={6} style={style.grid_item_list}>
-            {this.renderList(this.props.items.utters, 'Respostas cadastradas', false)}
+            {this.renderList(this.props.items.utters, 'Respostas', false)}
           </Grid>
         </Grid>
           <div style={style.filter_items_container}>
