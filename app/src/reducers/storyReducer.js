@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     items: [
         {
             "id": 1,
-            "name": "story_basica",
+            "name": "story_basoioiica",
             "formatted_content": [
                 {
                     "id": 1,
@@ -26,20 +26,31 @@ const INITIAL_STATE = {
     current_item: {
         "id": 1,
         "name": "story_basica",
-            "formatted_content": [
-                {
-                    "id": 1,
-                    "type": "intent",
-                    "name": "cumprimentar"
-                },
-                {
-                    "id": 2,
-                    "type": "utter",
-                    "name": "utter_cumprimentar"
-                }
-            ]
+        "formatted_content": [
+            {
+                "id": 1,
+                "type": "intent",
+                "name": "cumprimentar"
+            },
+            {
+                "id": 2,
+                "type": "utter",
+                "name": "utter_cumprimentar"
+            }
+        ]
     },
-    item_contents: [],
+    item_contents: [
+        {
+            "id": 1,
+            "type": "intent",
+            "name": "cumprimentar"
+        },
+        {
+            "id": 2,
+            "type": "utter",
+            "name": "utter_cumprimentar"
+        }
+    ],
     old_item_contents: [],
     name_item: "",
     old_name_item: "",
@@ -55,7 +66,12 @@ export default (state = INITIAL_STATE, action) => {
         }
         return samples;
     }
-
+    function createArrayObjCopyOf(samples = [""]) {
+        if (samples.length !== 0) {
+            return samples.map(text => { return { ...text } });
+        }
+        return samples;
+    }
 
     switch (action.type) {
 
@@ -97,7 +113,34 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        default:
+        case "REORDER": {
+            return {
+                ...state,
+                item_contents: createArrayObjCopyOf(action.items)
+            }
+        }
+
+        case "ADD_TO_STORY": {
+            let new_item_contents = createArrayObjCopyOf(state.item_contents);
+            new_item_contents.push(action.item);
+            return {
+                ...state,
+                item_contents: new_item_contents
+            }
+        }
+
+        case "REMOVE_ITEM": {
+            let new_item_contents = createArrayObjCopyOf(state.item_contents);
+            new_item_contents.splice(action.item_position, 1);
+
+            return {
+                ...state,
+                item_contents: new_item_contents
+            }
+        }
+
+        default: {
             return state;
+        }
     }
 };

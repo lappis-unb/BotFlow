@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { connect } from "react-redux";
+import { reorderList, removeItem } from "../actions/storiesAction";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -44,14 +45,15 @@ class StoryList extends Component {
         }
 
         const items = reorder(
-            this.props.items,
+            this.props.item_contents,
             result.source.index,
             result.destination.index
-        );        
-        this.props.reorder(items)
+        );
+
+        this.props.reorderList(items)
     }
 
-    render() {        
+    render() {
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
@@ -61,19 +63,24 @@ class StoryList extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {this.props.items.map((item, index) => (
-                                <Draggable key={item.id} draggableId={'item' + item.id} index={index}>
+                            {this.props.item_contents.map((item, item_position) => (
+                                <Draggable key={'list_' + item_position} draggableId={'item' + item_position} index={item_position}>
                                     {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}
-                                        >
-                                            {item.name}
+                                        <div>
+                                            <div key={"card_" + item.id}
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                style={
+                                                    getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )
+                                                }
+                                            >
+                                                {item.name} - {item.id}
+                                            <button onClick={()=>this.props.removeItem(item_position)}>APAGAR</button>
+                                            </div>
                                         </div>
                                     )}
                                 </Draggable>
@@ -86,5 +93,11 @@ class StoryList extends Component {
         );
     }
 }
+const mapStateToProps = state => { return { ...state.storyReducer } };
 
-export default StoryList;
+const mapDispatchToProps = dispatch => ({
+    reorderList: (arr) => dispatch(reorderList(arr)),
+    removeItem: (item_position) => dispatch(removeItem(item_position))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryList);

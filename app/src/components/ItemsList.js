@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { selectItem } from "../actions/itemsAction";
+import { addToStory } from "../actions/storiesAction";
+
 import Grid from '@material-ui/core/Grid';
 
 import Typography from '@material-ui/core/Typography';
@@ -116,7 +118,12 @@ class ItemsList extends Component {
 
 
   handleListItemClick(item, index) {
-    this.props.selectItem(item, index, this.props.items);
+    if(this.props.story){
+      this.props.addToStory(item);
+    }else {
+      this.props.selectItem(item, index, this.props.items);
+    }
+      
   }
 
   handleFilterClick() {
@@ -213,7 +220,9 @@ renderList(arr, text, isIntent){
 }
 
 const mapDispatchToProps = dispatch => ({
-  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
+  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items)),
+  addToStory: (item) => dispatch(addToStory(item))
+
 });
 
 export default connect(null, mapDispatchToProps)(ItemsList);
