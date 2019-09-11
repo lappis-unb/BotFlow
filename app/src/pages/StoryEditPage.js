@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getIntents, getUtters } from "../actions/storysAction";
+import { getIntents, getUtters, saveData } from "../actions/storiesAction";
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 import ToolbarName from '../components/ToolbarName'
@@ -8,7 +8,8 @@ import { selectItem } from "../actions/itemsAction";
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 import StoryList from '../components/StoryList';
-
+import { Story } from '../utils/DataFormat.js'
+import { STORIES_URL } from "../utils/url_routes";
 
 const style = {
     grid_item_list: {
@@ -25,12 +26,12 @@ class StoryEditPage extends Component {
         this.state = {
             current_item: {
                 "id": 1,
-                "name": "story_basica",
+                "name": "stordsasadssica",
                 "formatted_content": [
                     {
                         "id": 1,
                         "type": "intent",
-                        "name":"lalal"
+                        "name": "lalal"
                     },
                     {
                         "id": 2,
@@ -54,7 +55,6 @@ class StoryEditPage extends Component {
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
                 border: 'solid 1px',
-                borderRadius: '4px',
                 borderColor: '#4b3953'
             }}>
                 <IntentIcon />
@@ -74,13 +74,18 @@ class StoryEditPage extends Component {
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
                 border: 'solid 1px',
-                borderRadius: '4px',
                 borderColor: '#4b3953'
             }}>
                 <UtterIcon />
                 <div>Olá</div>
             </div >
         )
+    }
+
+    saveData() {
+        let data = new Story(this.props.id_item, this.props.name_item, this.props.item_contents);
+        console.log(STORIES_URL, data)
+        this.props.saveData(STORIES_URL, data);
     }
 
     render() {
@@ -94,7 +99,8 @@ class StoryEditPage extends Component {
                     />
                 </Grid>
                 <Grid item xs={8}>
-                    <ToolbarName
+                    <button onClick={() => this.saveData()}>SALVAR</button>
+                    {/*                     <ToolbarName
                         url={this.props.url}
                         mode={this.props.mode}
                         items={this.props.items}
@@ -108,13 +114,10 @@ class StoryEditPage extends Component {
                         setDataFormat={this.props.setDataFormat}
                         multiple_alternatives={this.props.multiple_alternatives}
                         old_item_contents={this.props.old_item_contents}
-                    />
+                    /> */}
                     <Grid style={{ display: 'flex' }}>
                         <Grid item xs={6}>
-                            <StoryList
-                            items={this.state.current_item["formatted_content"]}
-                            reorder={(a) => console.log('bla',a)}
-                            />
+                            <StoryList />
                         </Grid>
                         <Grid item xs={6}>
                         </Grid>
@@ -130,7 +133,8 @@ const mapStateToProps = state => { return { ...state.storyReducer } };
 const mapDispatchToProps = dispatch => ({
     getIntents: () => dispatch(getIntents()),
     getUtters: () => dispatch(getUtters()),
-    selectItem: (item) => dispatch(selectItem(item))
+    selectItem: (item) => dispatch(selectItem(item)),
+    saveData: (url, item) => dispatch(saveData(url, item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryEditPage);

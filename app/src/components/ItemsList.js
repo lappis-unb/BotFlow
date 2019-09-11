@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
-import IntentIcon from '../icons/IntentIcon';
-import UtterIcon from '../icons/UtterIcon';
 
 const style = {
   list_container: {
