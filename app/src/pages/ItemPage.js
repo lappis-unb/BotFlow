@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import { Divider } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
-import ItemsList from "../components/ItemsList";
+import ItemsList from "../components/ListFilter";
 import UtterForm from "../components/UtterForm";
 import IntentForm from "../components/IntentForm";
 import Snackbar from '@material-ui/core/Snackbar';
@@ -11,6 +11,8 @@ import ToolbarName from '../components/ToolbarName'
 import { createNewItem, notifyAction } from "../actions/itemsAction";
 import { Add } from '../styles/button';
 import SnackbarContent from "../components/CustomSnackbar"
+import { selectItem } from "../actions/itemsAction";
+
 
 const style = {
   grid_item_list: {
@@ -76,6 +78,7 @@ class ItemPage extends Component {
 
           <ItemsList
             icon={this.props.icon}
+            actionOnClick={this.props.selectItem}
             items={this.props.items}
             text={this.props.item_list_text}
             selected_item_position={this.props.selected_item_position} />
@@ -113,7 +116,8 @@ class ItemPage extends Component {
 
 const mapDispatchToProps = dispatch => ({
   createNewItem: (new_item) => dispatch(createNewItem(new_item)),
-  notifyAction: (text) => dispatch(notifyAction(text))
+  notifyAction: (text) => dispatch(notifyAction(text)),
+  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
 });
 
 export default connect(null, mapDispatchToProps)(ItemPage);
