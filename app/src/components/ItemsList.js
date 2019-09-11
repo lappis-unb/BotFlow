@@ -1,21 +1,11 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
-import { selectItem } from "../actions/itemsAction";
 
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
-
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
 
 const style = {
   list_container: {
     paddingLeft: "24px"
-  },
-  filter_items_container: {
-    padding: "12px 8px"
   },
   items_list: {
     height: "64.8vh",
@@ -49,17 +39,9 @@ const StyledListItem = styled(ListItem)({
 });
 
 
-class ItemsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filtered_items: this.props.items,
-      value: ""
-    };
-  }
-
+export default class Items extends Component {
   itemsList() {
-    let filtered_items = this.filterItems();
+    let filtered_items = this.props.items;
 
     if (filtered_items.length !== 0) {
       return filtered_items.map((item, index) => (
@@ -87,48 +69,20 @@ class ItemsList extends Component {
   }
 
   setHighlight(name) {
-    let texts = name.replace(this.state.value, " " + this.state.value + " ").split(" ");
+    let texts = name.replace(this.props.value, " " + this.props.value + " ").split(" ");
 
     return texts.map((text, index) => (
-      (text === this.state.value) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
+      (text === this.props.value) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
     ));
   }
 
-  filterItems() {
-    return this.props.items.filter(item => (item.name).includes(this.state.value));
-  }
-
   handleListItemClick(item, index) {
-    this.props.selectItem(item, index, this.props.items);
-  }
-
-  handleFilterClick() {
-    this.setState({ value: "" });
-    this.filterItems("");
-  }
-
-  handleFilterInput(e) {
-    this.setState({ value: e.target.value });
-    this.filterItems(e.target.value);
-  }
-
-  getFilterIcon() {
-    if ((this.state.value).trim().length === 0) {
-      return <SearchIcon />
-    } else {
-      return (
-        <CloseIcon
-          onClick={() => this.handleFilterClick()}
-          style={{ cursor: "pointer" }}
-        />
-      )
-    }
+    this.props.actionOnClick(item, index, this.props.items);
   }
 
   render() {
-    // const filtered_items = this.filterItems();
     return (
-      <div>
+      <List dense={true} style={style.items_list}>
         <div style={style.list_container}>
           <Typography variant="body2" color="primary">
             {this.props.text}
@@ -137,27 +91,7 @@ class ItemsList extends Component {
             {this.itemsList()}
           </List>
         </div>
-        <Divider />
-        <div style={style.filter_items_container}>
-          <TextField
-            fullWidth
-            type="text"
-            label="Filtrar"
-            variant="outlined"
-            // error={filtered_items.length === 0}
-            value={this.state.value}
-            style={style.field_form}
-            InputProps={{ endAdornment: this.getFilterIcon() }}
-            onChange={(e) => this.handleFilterInput(e)}
-          />
-        </div>
-      </div>
+      </List>
     )
   }
 }
-
-const mapDispatchToProps = dispatch => ({
-  selectItem: (item, item_index, items) => dispatch(selectItem(item, item_index, items))
-});
-
-export default connect(null, mapDispatchToProps)(ItemsList);
