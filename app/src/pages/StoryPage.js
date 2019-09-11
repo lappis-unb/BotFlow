@@ -12,6 +12,11 @@ import { STORY_URL } from '../utils/url_routes.js'
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 
+import { makeStyles } from '@material-ui/core/styles';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import { StoryBox } from '../styles/story';
+
 const style = {
   toolbar: {
       background: "#f6f9f9",
@@ -29,6 +34,8 @@ const style = {
     width: "300px",
   }
 }
+
+const dialogitems = ['teste1muitosmuitosmuitostextos', 'teste2', 'teste3', 'teste4', 'teste5' , 'teste6', 'teste7', 'teste8']
 
 const options = ['Apagar']
 
@@ -86,11 +93,32 @@ class StoryPage extends Component {
     )
   }
 
+  getGridList(){
+    return(
+      <GridList cellWidth={200} cols={6} spacing={20}>
+          {dialogitems.map(item =>(
+            <GridListTile >
+              <StoryBox>
+                <textarea type="text"
+                  placeholder={item}
+                  rows="1" />
+              </StoryBox>
+            </GridListTile>
+          ))} 
+      </GridList>
+    )
+  }
+
   render() {
     return (
+    <div style={{backgroundColor:"#dae8ea", minHeight:"100vh"}}>
       <Toolbar style={style.toolbar}>
         {this.getToolbarContent()}
       </Toolbar>
+      <div style={{padding:"1em"}}>
+        {this.getGridList()}
+        </div>
+    </div>
     )
   }
 }
