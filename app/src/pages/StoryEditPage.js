@@ -7,6 +7,7 @@ import ToolbarName from '../components/ToolbarName'
 import { selectItem } from "../actions/itemsAction";
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
+import StoryList from '../components/StoryList';
 
 
 const style = {
@@ -28,11 +29,13 @@ class StoryEditPage extends Component {
                 "formatted_content": [
                     {
                         "id": 1,
-                        "type": "intent"
+                        "type": "intent",
+                        "name":"lalal"
                     },
                     {
                         "id": 2,
-                        "type": "utter"
+                        "type": "utter",
+                        "name": "lelele"
                     }
                 ]
             }
@@ -108,15 +111,10 @@ class StoryEditPage extends Component {
                     />
                     <Grid style={{ display: 'flex' }}>
                         <Grid item xs={6}>
-                                {
-                                    this.state.current_item.formatted_content.map(item => {
-                                        if (item.type == "intent") {
-                                            return this.intentLabel()
-                                        } else {
-                                            return this.utterLabel()
-                                        }
-                                    })
-                                }
+                            <StoryList
+                            items={this.state.current_item["formatted_content"]}
+                            reorder={(a) => console.log('bla',a)}
+                            />
                         </Grid>
                         <Grid item xs={6}>
                         </Grid>

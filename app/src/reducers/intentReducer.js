@@ -64,6 +64,8 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case "SELECT_ITEM": {
+            console.log('em intents');
+
             let selected_item_position = 0;
 
             let selected_item = state.items.find((item, index) => {

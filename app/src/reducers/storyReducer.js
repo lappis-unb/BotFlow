@@ -12,11 +12,13 @@ const INITIAL_STATE = {
             "formatted_content": [
                 {
                     "id": 1,
-                    "type": "intent"
+                    "type": "intent",
+                    "name": "cumprimentar"
                 },
                 {
                     "id": 2,
-                    "type": "utter"
+                    "type": "utter",
+                    "name": "utter_cumprimentar"
                 }
             ]
         }
@@ -24,16 +26,18 @@ const INITIAL_STATE = {
     current_item: {
         "id": 1,
         "name": "story_basica",
-        "formatted_content": [
-            {
-                "id": 1,
-                "type": "intent"
-            },
-            {
-                "id": 2,
-                "type": "utter"
-            }
-        ]
+            "formatted_content": [
+                {
+                    "id": 1,
+                    "type": "intent",
+                    "name": "cumprimentar"
+                },
+                {
+                    "id": 2,
+                    "type": "utter",
+                    "name": "utter_cumprimentar"
+                }
+            ]
     },
     item_contents: [],
     old_item_contents: [],
@@ -88,22 +92,8 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case "SELECT_ITEM": {
-            let selected_item_position = 0;
-
-            let selected_item = state.items.find((item, index) => {
-                selected_item_position = index;
-                return (item.id === action.intents.id || item.name === action.intents.name);
-            });
-
             return {
-                ...state,
-                name_item: selected_item.name,
-                id_item: selected_item.id,
-                old_name_item: selected_item.name,
-                selected_item_position: selected_item_position,
-                multiple_alternatives: selected_item.multiple_alternatives,
-                item_contents: createArrayCopyOf(selected_item.alternatives),
-                old_item_contents: createArrayCopyOf(selected_item.alternatives)
+                ...state
             };
         }
 
