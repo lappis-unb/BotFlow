@@ -24,3 +24,13 @@ export const getUtters = () => {
         }
     }
 };
+
+export const reorder = (arr) =>{
+    console.log(arr);
+
+    return {
+        type: "REORDER",
+        items: arr
+    }
+    
+}

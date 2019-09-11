@@ -63,6 +63,8 @@ export const notifyAction = (text) => {
 };
 
 export const selectItem = (item) => {
+    console.log('em items action');
+    
     return {
         type: "SELECT_ITEM",
         item: item
