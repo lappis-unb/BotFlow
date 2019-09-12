@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
+import IntentIcon from '../icons/IntentIcon';
+import UtterIcon from '../icons/UtterIcon';
 
 const style = {
   list_container: {
@@ -51,7 +53,7 @@ export default class Items extends Component {
           key={"items_list" + index}
           selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>{this.props.icon}</ListItemIcon>
+          <ListItemIcon>{this.getIcon(isIntent)}</ListItemIcon>
           <ListItemText>
             <Typography noWrap>
               {this.setHighlight(item.name)}
