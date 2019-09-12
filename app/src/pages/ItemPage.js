@@ -77,9 +77,9 @@ class ItemPage extends Component {
 
           <ItemsList
             icon={this.props.icon}
-            actionOnClick={this.props.selectItem}
             items={this.props.items}
             text={this.props.item_list_text}
+            actionOnClick={this.props.selectItem}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 

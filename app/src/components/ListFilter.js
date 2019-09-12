@@ -70,6 +70,7 @@ export default class ListFilter extends Component {
             actionOnClick={this.props.actionOnClick}
             selected_item_position={this.props.selected_item_position} />
         </div>
+        
         <Divider />
 
         <div style={style.filter_items_container}>

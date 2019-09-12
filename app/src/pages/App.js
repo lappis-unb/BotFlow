@@ -22,7 +22,7 @@ function App() {
       <div style={{ paddingTop: "72px" }}>
         <Route exact path="/utters" component={UtterPage} />
         <Route exact path="/intents" component={IntentPage} />
-        <Route exact path="/story-edit" component={StoryEditPage} />
+        <Route exact path="/story/edit" component={StoryEditPage} />
       </div>
       <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
     </Router>

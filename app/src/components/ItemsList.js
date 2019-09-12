@@ -51,7 +51,7 @@ export default class Items extends Component {
           key={"items_list" + index}
           selected={(this.props.selected_item_position) === index}
           onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>{this.getIcon(isIntent)}</ListItemIcon>
+          <ListItemIcon>{this.props.icon}</ListItemIcon>
           <ListItemText>
             <Typography noWrap>
               {this.setHighlight(item.name)}

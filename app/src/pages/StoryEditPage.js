@@ -1,20 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getIntents, getUtters, saveData } from "../actions/storiesAction";
+import { getIntents, getUtters, saveData, addToStory } from "../actions/storiesAction";
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
-import ToolbarName from '../components/ToolbarName'
-import { selectItem } from "../actions/itemsAction";
+//import ToolbarName from '../components/ToolbarName'
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js'
 import { STORIES_URL } from "../utils/url_routes";
+import TextField from '@material-ui/core/TextField';
+
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const style = {
     grid_item_list: {
         background: "#dae8ea",
         paddingTop: '15px'
+    },
+    list_container: {
+        paddingLeft: "24px"
+    },
+    filter_items_container: {
+        padding: "12px 8px"
     }
 }
 
@@ -24,81 +34,81 @@ class StoryEditPage extends Component {
         this.props.getIntents()
         this.props.getUtters()
         this.state = {
-            current_item: {
-                "id": 1,
-                "name": "stordsasadssica",
-                "formatted_content": [
-                    {
-                        "id": 1,
-                        "type": "intent",
-                        "name": "lalal"
-                    },
-                    {
-                        "id": 2,
-                        "type": "utter",
-                        "name": "lelele"
-                    }
-                ]
-            }
+            value: ""
+        };
+    }
+
+    filterItems(items = []) {
+        return items.filter(item => (item.name).includes(this.state.value));
+    }
+
+    handleFilterClick() {
+        this.setState({ value: "" });
+        this.filterItems();
+    }
+
+    handleFilterInput(e) {
+        this.setState({ value: e.target.value });
+        this.filterItems();
+    }
+
+    getFilterIcon() {
+        if ((this.state.value).trim().length === 0) {
+            return <SearchIcon />
+        } else {
+            return (
+                <CloseIcon
+                    onClick={() => this.handleFilterClick()}
+                    style={{ cursor: "pointer" }}
+                />
+            )
         }
     }
-
-
-    intentLabel = (name) => {
-        return (
-            <div style={{
-                width: '242px',
-                height: '48px',
-                borderRadius: '4px',
-                margin: '50px 100px',
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                border: 'solid 1px',
-                borderColor: '#4b3953'
-            }}>
-                <IntentIcon />
-                <div>Olá</div>
-            </div >
-        )
-    }
-
-    utterLabel = (name) => {
-        return (
-            <div style={{
-                width: '242px',
-                height: '48px',
-                borderRadius: '4px',
-                margin: '50px 100px',
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                border: 'solid 1px',
-                borderColor: '#4b3953'
-            }}>
-                <UtterIcon />
-                <div>Olá</div>
-            </div >
-        )
-    }
-
     saveData() {
         let data = new Story(this.props.id_item, this.props.name_item, this.props.item_contents);
-        console.log(STORIES_URL, data)
         this.props.saveData(STORIES_URL, data);
     }
 
     render() {
-        console.log(this.props.utters, "props")
         return (
             <Grid container xs={12}>
-                <Grid item xs={4} style={style.grid_item_list}>
-                    <ItemsList
-                        items={{ intents: this.props.intents, utters: this.props.utters }}
-                        story
-                    />
+                <Grid container xs={5} direction='column'>
+                    <Grid container direction='row' style={style.grid_item_list}>
+                        <Grid item xs={3} sm={6}>
+                            <ItemsList
+                                icon={<IntentIcon />}
+                                text={"Perguntas"}
+                                value={this.state.value}
+                                actionOnClick={this.props.addToStory}
+                                items={this.filterItems(this.props.intents)}
+                                selected_item_position={this.props.selected_item_position}
+                            />
+                        </Grid>
+                        <Grid item xs={3} sm={6}>
+                            <ItemsList
+                                icon={<UtterIcon />}
+                                text={"Resposta"}
+                                value={this.state.value}
+                                actionOnClick={this.props.addToStory}
+                                items={this.filterItems(this.props.utters)}
+                                selected_item_position={this.props.selected_item_position}
+                            />
+                        </Grid>
+                    </Grid>
+                    <div style={style.filter_items_container}>
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="Filtrar"
+                            variant="outlined"
+                            value={this.state.value}
+                            style={style.field_form}
+                            InputProps={{ endAdornment: this.getFilterIcon() }}
+                            onChange={(e) => this.handleFilterInput(e)}
+                        />
+                    </div>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                     <button onClick={() => this.saveData()}>SALVAR</button>
                     {/*                     <ToolbarName
                         url={this.props.url}
@@ -133,7 +143,7 @@ const mapStateToProps = state => { return { ...state.storyReducer } };
 const mapDispatchToProps = dispatch => ({
     getIntents: () => dispatch(getIntents()),
     getUtters: () => dispatch(getUtters()),
-    selectItem: (item) => dispatch(selectItem(item)),
+    addToStory: (item) => dispatch(addToStory(item)),
     saveData: (url, item) => dispatch(saveData(url, item))
 });
 

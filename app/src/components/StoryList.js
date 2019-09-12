@@ -3,7 +3,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { reorderList, removeItem } from "../actions/storiesAction";
 
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -15,15 +14,12 @@ const reorder = (list, startIndex, endIndex) => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
     userSelect: "none",
     padding: grid * 2,
     margin: `0 0 ${grid}px 0`,
 
-    // change background colour if dragging
     background: isDragging ? "lightgreen" : "grey",
 
-    // styles we need to apply on draggables
     ...draggableStyle
 });
 
@@ -79,7 +75,7 @@ class StoryList extends Component {
                                                 }
                                             >
                                                 {item.name} - {item.id}
-                                            <button onClick={()=>this.props.removeItem(item_position)}>APAGAR</button>
+                                                <button onClick={() => this.props.removeItem(item_position)}>APAGAR</button>
                                             </div>
                                         </div>
                                     )}
