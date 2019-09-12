@@ -1,8 +1,7 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import Grid from '@material-ui/core/Grid';
 import NameField from './NameField.js'
 import { Done } from '../styles/button';
+import React, { Component } from "react";
+import Grid from '@material-ui/core/Grid';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -54,7 +53,7 @@ export default class ToolbarName extends Component {
                         <MenuItem
                             key={option}
                             selected={option === 'Apagar'}
-                            onClick={() => this.handleClick(true)}
+                            onClick={() => this.handleDelete()}
                         >
                             {option}
                         </MenuItem>
@@ -78,8 +77,13 @@ export default class ToolbarName extends Component {
         }
     }
 
-    handleClick(is_delete) {
-        is_delete ? this.props.delete() : this.props.saveData();
+    handleClick() {
+        this.props.saveData(this.props.item);
+    }
+
+    handleDelete() {
+        this.props.deleteItem(this.props.item_id);
+        this.setState({ open: false });
     }
 
     render() {
@@ -88,9 +92,12 @@ export default class ToolbarName extends Component {
                 <Grid item xs={2} />
                 <Grid item xs={5}>
                     <NameField
+                        name={this.props.name}
                         items={this.props.items}
-                        name={this.props.item_name}
+                        item_id={this.props.item_id}
                         label={this.props.name_label}
+                        setItemName={this.props.setItemName}
+                        helper_text={this.props.helper_text}
                     />
                 </Grid>
                 <Grid item xs={2} />
@@ -99,7 +106,7 @@ export default class ToolbarName extends Component {
                         color="secondary"
                         variant="contained"
                         disabled={!this.props.is_enabled}
-                        onClick={() => this.handleClick(false)}
+                        onClick={() => this.handleClick()}
                     >
                         <Done />Gravar
                     </Button>

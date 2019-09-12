@@ -23,7 +23,10 @@ export default class ListFilter extends Component {
   }
 
   filterItems(items) {
-    return items.filter(item => (item.name).includes(this.state.value));
+    if (items !== undefined) {
+      return items.filter(item => (item.name).includes(this.state.value));
+    }
+    return [];
   }
 
   handleListItemClick(item, index) {
@@ -37,14 +40,13 @@ export default class ListFilter extends Component {
   getFilterIcon() {
     if ((this.state.value).trim().length === 0) {
       return <SearchIcon />
-    } else {
-      return (
-        <CloseIcon
-          onClick={() => this.cleanFilter()}
-          style={{ cursor: "pointer" }}
-        />
-      )
     }
+    return (
+      <CloseIcon
+        onClick={() => this.cleanFilter()}
+        style={{ cursor: "pointer" }}
+      />
+    )
   }
 
   cleanFilter() {

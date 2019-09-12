@@ -1,26 +1,16 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
-import { setNameItem } from "../actions/itemsAction";
-
 
 class NameField extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            helper_text: "",
-            name: ""
-        };
-    }
-
     isRepeatedName(items, name) {
-        let founded = items.find((item) => (
-            (item.name === name) &&
-            (item.id !== this.props.id_item)
-        ));
+        if (items !== undefined) {
+            let founded = items.find((item) => (
+                (item.name === name) &&
+                (item.id !== this.props.item_id)
+            ));
 
-        let helper_text = (founded !== undefined ? "Por favor, insira um nome não repetido." : "");
-        this.setState({ helper_text: helper_text });
+            return (founded !== undefined ? "Por favor, insira um nome não repetido." : "");
+        }
     }
 
     hasSpecialCharacteres(name) {
@@ -30,21 +20,19 @@ class NameField extends Component {
         if (!regex.test(name) && name.length > 0) {
             helper_text = "Use apenas letras sem acentos, números ou '_'";
         }
-
-        this.setState({ helper_text: helper_text });
-
-        return helper_text.length !== 0;
+        
+        return helper_text;
     }
 
     setName(items, name) {
-        if (this.hasSpecialCharacteres(name)) {
+        let helper_text = this.hasSpecialCharacteres(name);
+        if (helper_text.length!==0) {
             name = name.substr(0, name.length - 1);
         } else {
-            this.isRepeatedName(items, name);
+            helper_text = this.isRepeatedName(items, name);
         }
-        
-        //this.props.setNameItem(name);
-        this.setState({name: name});
+
+        this.props.setItemName(name, helper_text);
     }
 
     render() {
@@ -53,18 +41,14 @@ class NameField extends Component {
                 fullWidth
                 type="text"
                 id={this.props.label}
-                value={this.state.name}
+                value={this.props.name}
                 label={this.props.label}
-                helperText={this.state.helper_text}
-                error={this.state.helper_text !== ""}
+                helperText={this.props.helper_text}
+                error={this.props.helper_text !== ""}
                 onChange={(e) => this.setName(this.props.items, e.target.value)}
             />
         )
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    setNameItem: (name) => dispatch(setNameItem(name))
-});
-
-export default connect(null, mapDispatchToProps)(NameField);
+export default NameField;

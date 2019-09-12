@@ -21,7 +21,7 @@ export const createOrUpdateItem = (mode = 'post', url = "", new_item, message = 
             dispatch(notifyAction(message));
 
             if (new_item !== undefined) {
-                dispatch(selectItem(new_item, 0));
+            //    dispatch(selectItem(new_item, 0));
             }
         } catch (error) {
             throw (error);
@@ -47,7 +47,7 @@ export const deleteItem = (url = "", delete_item_id, mode, item) => {
             dispatch(notifyAction(mode + "  removida com sucesso!"));
 
             if (item !== undefined) {
-                await dispatch(createNewItem(item))
+//                await dispatch(createNewItem(item))
             }
         } catch (error) {
             throw (error);
@@ -62,28 +62,3 @@ export const notifyAction = (text) => {
     };
 };
 
-export const selectItem = (url, item_id) => {
-    return async (dispatch) => {
-        try {
-            const response = await axios.get(url + item_id);
-            await dispatch({ type: "SELECT_ITEM", item: response.data });
-        } catch (error) {
-            throw (error);
-        }
-    }
-}
-
-export const setNameItem = (name_item = "") => {
-    return {
-        type: "SET_NAME_ITEM",
-        name_item: name_item
-    };
-}
-
-export const createNewItem = (item) => {
-    return {
-        type: "CREATE_NEW_ITEM",
-        new_item: item,
-        selected_item_position: -1
-    };
-}

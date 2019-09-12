@@ -8,10 +8,9 @@ import UtterForm from "../components/UtterForm";
 import IntentForm from "../components/IntentForm";
 import Snackbar from '@material-ui/core/Snackbar';
 import ToolbarName from '../components/ToolbarName'
-import { createNewItem, notifyAction } from "../actions/itemsAction";
 import { Add } from '../styles/button';
 import SnackbarContent from "../components/CustomSnackbar"
-import { selectItem } from "../actions/itemsAction";
+import { notifyAction } from "../actions/itemsAction";
 
 
 const style = {
@@ -82,7 +81,9 @@ class ItemPage extends Component {
     return changed;
   }
 
-  isButtonEnabled(item_contents, old_item_content) {
+  isButtonEnabled() {
+    const item_contents = this.props.item_contents;
+    const old_item_content = this.props.old_item_contents;
     let no_empty_fields = true;
 
     if (this.props.mode === "Utter") {
@@ -90,15 +91,19 @@ class ItemPage extends Component {
     } else {
       no_empty_fields = this.checkEmptyFieldsIntent(item_contents);
     }
-
+    
     const name_changed = (this.props.name_item !== this.props.old_name_item);
+    console.log("NEW", this.props.name_item, "OLD", this.props.old_name_item)
     const contents_changed = JSON.stringify(item_contents) !== JSON.stringify(old_item_content);
     const have_changes = (contents_changed || name_changed);
 
+    const no_errors = this.props.helper_text.length === 0;
+    const no_empty_name = this.props.name_item.length !== 0;
+
     //console.log("============================")
     //console.log("have_changes", have_changes);
-    //console.log("contents_changed", contents_changed );
-    //console.log("name_changed", name_changed );
+    //console.log("contents_changed", contents_changed);
+    //console.log("name_changed", name_changed);
     //console.log("no_empty_fields", no_empty_fields);
     //console.log("no_errors", no_errors);
     //console.log("no_empty_name", no_empty_name);
@@ -106,45 +111,47 @@ class ItemPage extends Component {
 
     return (
       have_changes &&
-      no_empty_fields
+      no_empty_fields &&
+      no_errors &&
+      no_empty_name
     );
   }
 
 
   handleClick(remove) {
     if (remove) {
-        this.props.deleteItem(
-            this.props.url,
-            this.props.id_item,
-            this.props.mode,
-            this.props.new_item
-        )
-        this.setState({ open: false });
+      this.props.deleteItem(
+        this.props.url,
+        this.props.id_item,
+        this.props.mode,
+        this.props.new_item
+      )
+      this.setState({ open: false });
+
     } else {
-        let current_item = {}
+      let current_item = {}
+      if (this.props.mode === "Utter") {
+        current_item = this.props.setDataFormat(
+          this.props.id_item,
+          this.props.name_item,
+          this.props.multiple_alternatives,
+          this.props.item_contents
+        );
+      } else {
+        current_item = this.props.setDataFormat(
+          this.props.id_item,
+          this.props.name_item,
+          this.props.item_contents
+        );
+      }
 
-        if (this.props.mode === "Utter") {
-            current_item = this.props.setDataFormat(
-                this.props.id_item,
-                this.props.name_item,
-                this.props.multiple_alternatives,
-                this.props.item_contents
-            );
-        } else {
-            current_item = this.props.setDataFormat(
-                this.props.id_item,
-                this.props.name_item,
-                this.props.item_contents
-            );
-        }
-
-        this.props.saveData(
-            this.props.url,
-            this.props.mode,
-            current_item
-        )
+      this.props.saveData(
+        this.props.url,
+        this.props.mode,
+        current_item
+      )
     }
-}
+  }
 
 
   render() {
@@ -161,19 +168,26 @@ class ItemPage extends Component {
           </Button>
 
           <ListFilter
+            url={this.props.url}
             icon={this.props.icon}
             items={this.props.items}
             text={this.props.item_list_text}
-            actionOnClick={this.props.selectItem}
+            actionOnClick={this.props.actionOnClick}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 
         <Grid item xs={9}>
+
+
           <ToolbarName
-            is_enabled={false}
+            is_enabled={this.isButtonEnabled()}
+            helper_text={this.props.helper_text}
+            item_id={this.props.item_id}
             items={this.props.items}
             saveData={this.saveData}
-            remove_action={this.delete}
+            name={this.props.name_item}
+            setNameItem={this.props.setNameItem}
+            actionClick={this.handleClick}
           />
 
           <Divider />
@@ -181,7 +195,6 @@ class ItemPage extends Component {
           <div style={style.item_form}>
             {this.getForm()}
           </div>
-
           {this.getSnackbar(this.props.notification_text)}
         </Grid>
       </Grid >
@@ -190,9 +203,7 @@ class ItemPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createNewItem: (new_item) => dispatch(createNewItem(new_item)),
   notifyAction: (text) => dispatch(notifyAction(text)),
-  selectItem: (url, item_id, index) => dispatch(selectItem(url, item_id, index))
 });
 
 export default connect(null, mapDispatchToProps)(ItemPage);

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { getItems, createNewItem } from "../actions/itemsAction";
+import { getItems } from "../actions/itemsAction";
 
 import ItemPage from "../pages/ItemPage"
 import { Utter } from '../utils/DataFormat'
@@ -15,7 +15,7 @@ class UtterPage extends Component {
       open: false,
     }
     this.props.getItems(UTTER_URL);
-    this.props.createNewItem(new Utter());
+    //this.props.createNewItem(new Utter());
   }
 
   setDataFormat(id = undefined, name = "", multiple_alternatives = false, content = []){
@@ -48,11 +48,11 @@ class UtterPage extends Component {
   }
 }
 
-const mapStateToProps = state => { return { ...state.utterReducer } };
+const mapStateToProps = state => { return { ...state.utter } };
 
 const mapDispatchToProps = dispatch => ({
   getItems: (url) => dispatch(getItems(url)),
-  createNewItem: (new_item) => dispatch(createNewItem(new_item))
+  //createNewItem: (new_item) => dispatch(createNewItem(new_item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);

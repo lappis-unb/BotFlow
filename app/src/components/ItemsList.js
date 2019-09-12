@@ -36,52 +36,53 @@ const StyledListItem = styled(ListItem)({
   }
 });
 
-const getItemsList = (items, icon, highlighted_text, selected_item_position) => {
-  const new_items = items.map((item, index) => (
-    <StyledListItem
-      button
-      id={"items_list_" + index}
-      key={"items_list" + index}
-      selected={(selected_item_position) === index}
-      onClick={() => handleListItemClick(item.id, index)}
-    >
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText>
-        <Typography noWrap>
-          {setHighlight(item.name, highlighted_text)}
-        </Typography>
-      </ListItemText>
-    </StyledListItem>
-  ));
+export default class ItemList extends Component {
 
-  return new_items;
+  getItemsList(items, icon, highlighted_text, selected_item_position) {
+    const new_items = items.map((item, index) => (
+      <StyledListItem
+        button
+        id={"items_list_" + index}
+        key={"items_list" + index}
+        selected={(selected_item_position) === index}
+        onClick={() => this.handleListItemClick(item.id, index)}
+      >
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>
+          <Typography noWrap>
+            {this.setHighlight(item.name, highlighted_text)}
+          </Typography>
+        </ListItemText>
+      </StyledListItem>
+    ));
+
+    return new_items;
+  }
+
+  // TODO improve this
+  setHighlight(name, highlighted_text) {
+    let texts = name.replace(highlighted_text, " " + highlighted_text + " ").split(" ");
+
+    return texts.map((text, index) => (
+      (text === highlighted_text) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
+    ));
+  }
+
+  handleListItemClick(item_id, index) {
+    this.props.actionOnClick(item_id, index);
+  }
+
+  getErrorMessage() {
+    return (
+      <Typography>Nenhum resultado encontrado!</Typography>
+    );
+  }
+
+  render() {
+    return (
+      <List style={style.list_container}>
+        {(this.props.items.length !== 0 ? this.getItemsList(this.props.items, this.props.icon, this.props.highlighted_text, this.props.selected_item_position) : this.getErrorMessage())}
+      </List>
+    );
+  }
 }
-
-// TODO improve this
-const setHighlight = (name, highlighted_text) => {
-  let texts = name.replace(highlighted_text, " " + highlighted_text + " ").split(" ");
-
-  return texts.map((text, index) => (
-    (text === highlighted_text) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
-  ));
-}
-
-const handleListItemClick = (item_id, index) => {
-  this.props.actionOnClick(item_id, index);
-}
-
-const getErrorMessage = () => {
-  return (
-    <Typography>Nenhum resultado encontrado!</Typography>
-  );
-}
-
-const itemsList = ({ items, icon, highlighted_text, selected_item_position }) => {
-  return (
-    <List style={style.list_container}>
-      {(items.length !== 0 ? getItemsList(items, icon, highlighted_text, selected_item_position) : getErrorMessage())}
-    </List>
-  );
-}
-
-export default itemsList;

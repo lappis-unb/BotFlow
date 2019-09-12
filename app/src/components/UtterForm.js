@@ -200,7 +200,7 @@ class UtterForm extends Component {
 }
 
 const mapStateToProps = state => {
-  return { ...state.utterReducer }
+  return { ...state.utter }
 };
 
 const mapDispatchToProps = dispatch => ({
