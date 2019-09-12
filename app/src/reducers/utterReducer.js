@@ -62,20 +62,21 @@ export default (state = INITIAL_STATE, action) => {
 
         case "SELECT_ITEM": {
             console.log('em utter');
-
+            let selected_item = action.item;
+/*
             let selected_item_position = 0;
 
             let selected_item = state.items.find((item, index) => {
                 selected_item_position = index;
                 return (item.id === action.item.id || item.name === action.item.name);
             });
-
+*/
             return {
                 ...state,
                 name_item: selected_item.name,
                 id_item: selected_item.id,
                 old_name_item: selected_item.name,
-                selected_item_position: selected_item_position,
+                //selected_item_position: selected_item_position,
                 multiple_alternatives: selected_item.multiple_alternatives,
                 item_contents: createArrayCopyOf(selected_item.alternatives),
                 old_item_contents: createArrayCopyOf(selected_item.alternatives)

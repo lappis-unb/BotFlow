@@ -62,13 +62,15 @@ export const notifyAction = (text) => {
     };
 };
 
-export const selectItem = (item) => {
-    console.log('em items action');
-    
-    return {
-        type: "SELECT_ITEM",
-        item: item
-    };
+export const selectItem = (url, item_id) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(url + item_id);
+            await dispatch({ type: "SELECT_ITEM", item: response.data });
+        } catch (error) {
+            throw (error);
+        }
+    }
 }
 
 export const setNameItem = (name_item = "") => {

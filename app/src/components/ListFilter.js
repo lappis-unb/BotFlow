@@ -19,27 +19,19 @@ const style = {
 export default class ListFilter extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: ""
-    };
+    this.state = { value: "" };
   }
 
-  filterItems() {
-    return this.props.items.filter(item => (item.name).includes(this.state.value));
+  filterItems(items) {
+    return items.filter(item => (item.name).includes(this.state.value));
   }
 
   handleListItemClick(item, index) {
     this.props.selectItem(item, index, this.props.items);
   }
 
-  handleFilterClick() {
-    this.setState({ value: "" });
-    this.filterItems();
-  }
-
   handleFilterInput(e) {
     this.setState({ value: e.target.value });
-    this.filterItems();
   }
 
   getFilterIcon() {
@@ -48,11 +40,15 @@ export default class ListFilter extends Component {
     } else {
       return (
         <CloseIcon
-          onClick={() => this.handleFilterClick()}
+          onClick={() => this.cleanFilter()}
           style={{ cursor: "pointer" }}
         />
       )
     }
+  }
+
+  cleanFilter() {
+    this.setState({ value: "" });
   }
 
   render() {
@@ -65,12 +61,13 @@ export default class ListFilter extends Component {
 
           <ItemsList
             icon={this.props.icon}
-            value={this.state.value}
-            items={this.filterItems()}
+            highlighted_text={this.state.value}
             actionOnClick={this.props.actionOnClick}
-            selected_item_position={this.props.selected_item_position} />
+            items={this.filterItems(this.props.items)}
+            selected_item_position={this.props.selected_item_position}
+          />
         </div>
-        
+
         <Divider />
 
         <div style={style.filter_items_container}>

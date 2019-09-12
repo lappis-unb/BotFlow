@@ -1,7 +1,5 @@
-export const addUtterContent = (new_utter) => {
-  return {
-    type: "ADD_UTTER_CONTENT"
-  };
+export const addUtterContent = () => {
+  return { type: "ADD_UTTER_CONTENT" };
 }
 
 export const removeUtterContent = (item_position, text_position) => {
