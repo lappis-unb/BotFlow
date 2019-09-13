@@ -27,12 +27,12 @@ const INITIAL_STATE = {
     notification_text: "",
     selected_item_position: -1,
     story_example: [
-        { text: "example", type: "utter" },
         { text: "example", type: "intent" },
         { text: "example", type: "utter" },
         { text: "example", type: "intent" },
         { text: "example", type: "utter" },
         { text: "example", type: "intent" },
+        { text: "example", type: "utter" },
         { text: "example", type: "utter" }
     ]
 };

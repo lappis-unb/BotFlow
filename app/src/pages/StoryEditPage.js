@@ -30,7 +30,7 @@ const style = {
     },
     list: {
         marginTop: '15px',
-    }
+    },
 }
 
 class StoryEditPage extends Component {
