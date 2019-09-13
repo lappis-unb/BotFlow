@@ -8,31 +8,24 @@ const INITIAL_STATE = {
     name_intent: "",
     helper_text: "",
     old_name_intent: "",
-    intent_contents: [""],
     notification_text: "",
+    intent_contents: [""],
     old_intent_contents: [""],
 };
 
-function createArrayCopyOf(samples = []) {
-    if (samples.length !== 0) {
-        return samples.map(text => text);
-    }
-    return samples;
-}
-
 export const addIntent = (state = INITIAL_STATE) => {
-    let new_intent = createArrayCopyOf(state.intent_contents);
+    let new_intent = [...state.intent_contents];
     new_intent.push('')
 
     return {
         ...state,
         intent_contents: new_intent,
-        old_intent_contents: createArrayCopyOf(new_intent)
+        old_intent_contents: [...new_intent]
     };
 }
 
 export const setIntentContent = (state = INITIAL_STATE, action) => {
-    let intent_contents = createArrayCopyOf(state.intent_contents);
+    let intent_contents = [...state.intent_contents];
     intent_contents[action.intent_position] = action.text
 
     return {
@@ -42,14 +35,14 @@ export const setIntentContent = (state = INITIAL_STATE, action) => {
 }
 
 export const deleteIntentContent = (state = INITIAL_STATE, action) => {
-    let current_intent_contents = createArrayCopyOf(state.intent_contents)
-    let old_item_history = createArrayCopyOf(state.intent_contents)
+    let intent_contents = [...state.intent_contents]
+    let old_item_history = [...state.intent_contents]
 
-    current_intent_contents.splice(action.intent_position, 1);
+    intent_contents.splice(action.intent_position, 1);
 
     return {
         ...state,
-        intent_contents: current_intent_contents,
+        intent_contents: intent_contents,
         old_intent_contents: old_item_history
     };
 }
@@ -57,14 +50,14 @@ export const deleteIntentContent = (state = INITIAL_STATE, action) => {
 export const undoDeleteIntentContent = (state = INITIAL_STATE) => {
     return {
         ...state,
-        intent_contents: createArrayCopyOf(state.old_intent_contents)
+        intent_contents: [...state.old_intent_contents]
     }
 }
 
 export const selectIntent = (state = INITIAL_STATE, action) => {
     let selected_item = action.item;
     let selected_item_position = action.item_position;
-    
+
     if (selected_item_position < 0) {
         state.intents.find((item, index) => {
             selected_item_position = index;
@@ -74,12 +67,12 @@ export const selectIntent = (state = INITIAL_STATE, action) => {
 
     return {
         ...state,
-        item_id: selected_item.id,
+        intent_id: selected_item.id,
         name_intent: selected_item.name,
         old_name_intent: selected_item.name,
         selected_item_position: selected_item_position,
-        intent_contents: createArrayCopyOf(selected_item.samples),
-        old_intent_contents: createArrayCopyOf(selected_item.samples),
+        intent_contents: [...selected_item.samples],
+        old_intent_contents: [...selected_item.samples],
         helper_text: ""
     };
 }
@@ -89,12 +82,12 @@ export const createNewIntent = (state = INITIAL_STATE) => {
 
     return {
         ...state,
-        item_id: new_intent.id,
+        intent_id: new_intent.id,
         selected_item_position: -1,
         name_intent: new_intent.name,
         old_name_intent: new_intent.name,
-        intent_contents: createArrayCopyOf(new_intent.samples),
-        old_intent_contents: createArrayCopyOf(new_intent.samples)
+        intent_contents: [...new_intent.samples],
+        old_intent_contents: [...new_intent.samples]
     };
 }
 
@@ -124,13 +117,16 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     return async (dispatch) => {
         try {
             const mode_url = (mode === 'post') ? INTENT_URL : INTENT_URL + new_item.id;
-            await axios[mode](mode_url, new_item);
+            let intent;
+            await axios[mode](mode_url, new_item)
+                .then((resp) => {
+                    intent = resp.data;
+                })
+
             await dispatch(Creators.getIntents());
+            await dispatch(Creators.selectIntent(intent.id, -1));
 
             dispatch(Creators.notifyAction(message));
-
-            dispatch({ type: Types.SELECT_INTENT, item: new_item, item_position: -1 });
-
         } catch (error) {
             throw (error);
         }
@@ -141,15 +137,15 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
 export const { Types, Creators } = createActions({
     addIntent: [],
     notifyAction: ['text'],
-    createNewIntent: ['item'],
+    createNewIntent: [],
     undoDeleteIntentContent: [],
     deleteIntentContent: ['intent_position'],
     setIntentName: ['name_intent', 'helper_text'],
     setIntentContent: ['intent_position', 'text'],
-    selectIntent: (item_id = "", item_position = "") => {
+    selectIntent: (intent_id = "", item_position = "") => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(INTENT_URL + item_id);
+                const response = await axios.get(INTENT_URL + intent_id);
 
                 await dispatch({ type: Types.SELECT_INTENT, item: response.data, item_position: item_position });
             } catch (error) {
@@ -176,14 +172,14 @@ export const { Types, Creators } = createActions({
             }
         }
     },
-    deleteIntent: (delete_item_id) => {
+    deleteIntent: (delete_intent_id) => {
         return async (dispatch) => {
             try {
-                await axios.delete(INTENT_URL + delete_item_id);
+                await axios.delete(INTENT_URL + delete_intent_id);
                 await dispatch(Creators.getIntents());
-                dispatch(Creators.notifyAction("Intent removida com sucesso!"));
-                
+                await dispatch(Creators.notifyAction("Intent removida com sucesso!"));
                 await dispatch(Creators.createNewIntent())
+
             } catch (error) {
                 throw (error);
             }

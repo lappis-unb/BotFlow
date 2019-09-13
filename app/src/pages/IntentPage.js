@@ -1,14 +1,12 @@
 import { connect } from 'react-redux';
-import { INTENT_URL } from '../utils/url_routes.js'
 import React, { Component } from 'react';
-import { Intent } from '../utils/DataFormat'
-import IntentIcon from '../icons/IntentIcon';
-import { Creators as IntentAction } from '../ducks/intents';
 import { bindActionCreators } from 'redux';
-
+import { Intent } from '../utils/DataFormat'
+import { Creators as IntentAction } from '../ducks/intents';
 
 import Grid from '@material-ui/core/Grid';
 import { Divider } from '@material-ui/core';
+import IntentIcon from '../icons/IntentIcon';
 import Button from '@material-ui/core/Button';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
@@ -16,7 +14,6 @@ import ToolbarName from '../components/ToolbarName'
 import SucessSnackbar from '../components/SucessSnackbar'
 
 import { Add } from '../styles/button';
-
 
 const style = {
   grid_item_list: {
@@ -29,18 +26,6 @@ const style = {
   },
   create_button: { margin: "16px 24px" }
 }
-
-/*
-  render() {
-    return (
-      <ItemPage
-        new_item={new Intent()}
-        items={this.props.intents}
-        item_id={this.props.item_id}
-      />
-    )
-  }
-*/
 
 class IntentPage extends Component {
 
@@ -84,10 +69,10 @@ class IntentPage extends Component {
     //console.log("============================")
 
     return (
-      have_changes &&
-      no_empty_fields &&
       no_errors &&
-      no_empty_name
+      have_changes &&
+      no_empty_name &&
+      no_empty_fields
     );
   }
 
@@ -105,7 +90,6 @@ class IntentPage extends Component {
           </Button>
 
           <ListFilter
-            url={INTENT_URL}
             icon={<IntentIcon />}
             items={this.props.intents}
             text="Perguntas cadastradas"
@@ -116,7 +100,7 @@ class IntentPage extends Component {
         <Grid item xs={9}>
           <ToolbarName
             name_label="Nome da pergunta"
-            item_id={this.props.item_id}
+            item_id={this.props.intent_id}
             items={this.props.intents}
             saveData={this.props.saveData}
             deleteItem={this.props.deleteIntent}
@@ -125,10 +109,9 @@ class IntentPage extends Component {
             actionClick={this.handleClick}
             helper_text={this.props.helper_text}
             is_enabled={this.isButtonEnabled()}
-            new_item={new Intent()}
             item={
               new Intent(
-                this.props.item_id,
+                this.props.intent_id,
                 this.props.name_intent,
                 this.props.intent_contents
               )
