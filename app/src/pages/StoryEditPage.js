@@ -10,9 +10,11 @@ import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js'
 import { STORIES_URL } from "../utils/url_routes";
 import TextField from '@material-ui/core/TextField';
+import ToolbarName from '../components/ToolbarName';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import ExampleStory from "../components/ExampleStory";
 
 
 const style = {
@@ -25,6 +27,9 @@ const style = {
     },
     filter_items_container: {
         padding: "12px 8px"
+    },
+    list: {
+        marginTop: '15px',
     }
 }
 
@@ -73,7 +78,7 @@ class StoryEditPage extends Component {
         console.log("PROBLEMA TA NOS PARAMETROS DO ADD TO STORY")
         return (
             <Grid container item xs={12}>
-                <Grid container item xs={5} direction='column'>
+                <Grid container item xs={4} direction='column'>
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={3} sm={6}>
                             <ItemsList
@@ -108,28 +113,27 @@ class StoryEditPage extends Component {
                         />
                     </div>
                 </Grid>
-                <Grid item xs={7}>
-                    <button onClick={() => this.saveData()}>SALVAR</button>
-                    {/*                     <ToolbarName
-                        url={this.props.url}
-                        mode={this.props.mode}
-                        items={this.props.items}
-                        id_item={this.props.id_item}
-                        new_item={this.props.new_item}
-                        name_item={this.props.current_item.name}
-                        name_label={"Nome da conversa"}
-                        helper_text={this.props.helper_text}
-                        old_name_item={this.props.old_name_item}
-                        item_contents={this.props.item_contents}
-                        setDataFormat={this.props.setDataFormat}
-                        multiple_alternatives={this.props.multiple_alternatives}
-                        old_item_contents={this.props.old_item_contents}
-                    /> */}
-                    <Grid style={{ display: 'flex' }}>
-                        <Grid item xs={6}>
+                <Grid item xs={8}
+                >
+                    <ToolbarName
+                        story
+                        handleClick={() => this.saveData()}
+                    />
+                    {/* <button onClick={() => this.saveData()}>SALVAR</button> */}
+                    <Grid container item xs={12}
+                        direction="row"
+                    >
+                        <Grid
+                            container
+                            item xs={6}
+                            justify="center"
+                            alignItems="flex-start"
+                            style={style.list}
+                        >
                             <StoryList />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid container item xs={6}>
+                            <ExampleStory />
                         </Grid>
                     </Grid>
                 </Grid>

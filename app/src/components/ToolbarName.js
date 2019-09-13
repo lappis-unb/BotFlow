@@ -91,14 +91,16 @@ export default class ToolbarName extends Component {
             <Toolbar style={style.toolbar}>
                 <Grid item xs={2} />
                 <Grid item xs={5}>
-                    <NameField
-                        name={this.props.name}
-                        items={this.props.items}
-                        item_id={this.props.item_id}
-                        label={this.props.name_label}
-                        setItemName={this.props.setItemName}
-                        helper_text={this.props.helper_text}
-                    />
+                    {this.props.story ? null : (
+                        <NameField
+                            name={this.props.name}
+                            items={this.props.items}
+                            item_id={this.props.item_id}
+                            label={this.props.name_label}
+                            setItemName={this.props.setItemName}
+                            helper_text={this.props.helper_text}
+                        />
+                    )}
                 </Grid>
                 <Grid item xs={2} />
                 <Grid item xs={3}>

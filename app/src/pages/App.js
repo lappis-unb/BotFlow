@@ -1,6 +1,6 @@
 import React from 'react';
 import "./App.css"
-import {AppBar, Toolbar} from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import MainNav from "../components/MainNav"
@@ -9,13 +9,14 @@ import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
 import AppIcon from '../icons/AppIcon';
 import StoryEditPage from './StoryEditPage';
+import ExampleStory from '../components/ExampleStory';
 
 function App() {
   return (
     <Router>
       <AppBar id="app-bar-menu">
         <Toolbar>
-          <AppIcon />          
+          <AppIcon />
           <MainNav />
         </Toolbar>
       </AppBar>
