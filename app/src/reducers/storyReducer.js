@@ -11,7 +11,16 @@ const INITIAL_STATE = {
     id_item: "",
     old_item: {},
     items: [],
-    item_contents: [],
+    item_contents: [
+        {
+            "name": "intent",
+            "type": "intent"
+        },
+        {
+            "name": "utter",
+            "type": "utter"
+        }
+    ],
     old_item_contents: [],
     name_item: "",
     old_name_item: "",
