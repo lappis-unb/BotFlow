@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import { reorderList, removeItem } from "../actions/storiesAction";
+import { reorderList, removeItem } from "../reducers/storyReducer";
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -50,6 +50,7 @@ class StoryList extends Component {
     }
 
     render() {
+        console.log(this.props.item_contents)
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
@@ -89,7 +90,7 @@ class StoryList extends Component {
         );
     }
 }
-const mapStateToProps = state => { return { ...state.storyReducer } };
+const mapStateToProps = state => { return { ...state.story } };
 
 const mapDispatchToProps = dispatch => ({
     reorderList: (arr) => dispatch(reorderList(arr)),

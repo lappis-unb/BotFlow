@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getIntents, getUtters, saveData, addToStory } from "../actions/storiesAction";
+import { getIntents, getUtters, saveData, addToStory } from "../reducers/storyReducer";
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 //import ToolbarName from '../components/ToolbarName'
@@ -70,15 +70,15 @@ class StoryEditPage extends Component {
     }
 
     render() {
+        console.log("PROBLEMA TA NOS PARAMETROS DO ADD TO STORY")
         return (
-            <Grid container xs={12}>
-                <Grid container xs={5} direction='column'>
+            <Grid container item xs={12}>
+                <Grid container item xs={5} direction='column'>
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={3} sm={6}>
                             <ItemsList
                                 icon={<IntentIcon />}
                                 text={"Perguntas"}
-                                value={this.state.value}
                                 actionOnClick={this.props.addToStory}
                                 items={this.filterItems(this.props.intents)}
                                 selected_item_position={this.props.selected_item_position}
@@ -138,7 +138,7 @@ class StoryEditPage extends Component {
     }
 }
 
-const mapStateToProps = state => { return { ...state.storyReducer } };
+const mapStateToProps = state => { return { ...state.story } };
 
 const mapDispatchToProps = dispatch => ({
     getIntents: () => dispatch(getIntents()),

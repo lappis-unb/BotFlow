@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 import utterReducer from './utters'
 import intentReducer from './intents'
-import storyReducer from '../reducers/storyReducer.js'
+import storyReducer from '../reducers/storyReducer'
 
 function configureStore() {
   return createStore(
