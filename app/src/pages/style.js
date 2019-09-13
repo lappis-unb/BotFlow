@@ -10,3 +10,16 @@ a {
     padding: 4px 20px;
 }
 `
+
+export const style = {
+    grid_item_list: {
+      background: "#dae8ea"
+    },
+    item_form: {
+      height: "calc(100vh - 164px)",
+      overflowY: "auto",
+      overflowX: "hidden"
+    },
+    create_button: { margin: "16px 24px" }
+  }
+  

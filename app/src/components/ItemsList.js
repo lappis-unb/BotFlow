@@ -5,7 +5,6 @@ import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui
 
 const style = {
   list_container: {
-    paddingLeft: "24px",
     height: "64.8vh",
     overflowY: "auto"
   }

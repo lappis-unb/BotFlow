@@ -12,20 +12,9 @@ import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
 import SucessSnackbar from '../components/SucessSnackbar'
+import { style } from './style'
 
 import { Add } from '../styles/button';
-
-const style = {
-  grid_item_list: {
-    background: "#dae8ea"
-  },
-  item_form: {
-    height: "calc(100vh - 164px)",
-    overflowY: "auto",
-    overflowX: "hidden"
-  },
-  create_button: { margin: "16px 24px" }
-}
 
 class IntentPage extends Component {
 
@@ -121,7 +110,7 @@ class IntentPage extends Component {
           <Divider />
 
           <div style={style.item_form}>
-            <IntentForm new_utter={new Intent()} />
+            <IntentForm />
           </div>
 
           <SucessSnackbar
