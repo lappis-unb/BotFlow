@@ -53,7 +53,6 @@ class UtterPage extends Component {
     const no_errors = this.props.helper_text.length === 0;
     const no_empty_name = this.props.name.length !== 0;
 
-    console.log("Problema esta no toolbar")
     //console.log("============================")
     //console.log("have_changes", have_changes);
     //console.log("contents_changed", contents_changed);

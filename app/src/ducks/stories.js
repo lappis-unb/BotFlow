@@ -52,7 +52,6 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
 }
 
 export const notifyAction = (state = INITIAL_STATE, action) => {
-    console.log("ENTROU AQUI", action.text)
     return {
         ...state,
         notification_text: action.text
