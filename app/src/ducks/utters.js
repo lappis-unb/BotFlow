@@ -184,10 +184,10 @@ export const { Types, Creators } = createActions({
     setUtterName: ['name', 'helper_text'],
     setUtterContent: ['text', 'utter_position', 'text_position'],
     changeUtterForm: ['utter_contents', 'multiple_alternatives'],
-    selectUtter: (id = "", item_position = "") => {
+    selectUtter: (utter = "", item_position = "") => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(UTTER_URL + id);
+                const response = await axios.get(UTTER_URL + utter.id);
 
                 await dispatch({ type: Types.SELECT_UTTER, item: response.data, item_position: item_position });
             } catch (error) {

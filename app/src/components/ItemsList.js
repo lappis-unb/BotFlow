@@ -44,7 +44,7 @@ export default class ItemList extends Component {
         id={"items_list_" + index}
         key={"items_list" + index}
         selected={(selected_item_position) === index}
-        onClick={() => this.handleListItemClick(item.id, index)}
+        onClick={() => this.handleListItemClick(item, index)}
       >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText>
@@ -67,8 +67,8 @@ export default class ItemList extends Component {
     ));
   }
 
-  handleListItemClick(item_id, index) {
-    this.props.actionOnClick(item_id, index);
+  handleListItemClick(item, index) {
+    this.props.actionOnClick(item, index);
   }
 
   getErrorMessage() {

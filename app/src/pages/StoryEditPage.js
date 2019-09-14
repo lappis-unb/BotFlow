@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getIntents, getUtters, saveData, addToStory } from "../reducers/storyReducer";
+import { bindActionCreators } from 'redux';
+import { Creators as StoryAction } from "../ducks/stories";
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
-//import ToolbarName from '../components/ToolbarName'
+import Typography from '@material-ui/core/Typography';
+
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js'
-import { STORIES_URL } from "../utils/url_routes";
+import { STORY_URL } from "../utils/url_routes";
 import TextField from '@material-ui/core/TextField';
 import ToolbarName from '../components/ToolbarName';
 
@@ -69,32 +71,39 @@ class StoryEditPage extends Component {
             )
         }
     }
-    saveData() {
-        let data = new Story(this.props.id_item, this.props.name_item, this.props.item_contents);
-        this.props.saveData(STORIES_URL, data);
-    }
 
     render() {
-        console.log("PROBLEMA TA NOS PARAMETROS DO ADD TO STORY")
+        console.log("FALTANDO")
+        console.log("GRAVAR: Soltar a mensagem que deu certo ")
+        console.log("DELETE")
+        console.log("AO add um utter ou intent deixar eles marcados")
+        console.log("Melhorar texto em cima das listas")
+        console.log("Fazer o tamanho da pag ficar dinamico")
+        
         return (
             <Grid container item xs={12}>
                 <Grid container item xs={4} direction='column'>
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={3} sm={6}>
+                            <Typography variant="body2" color="primary">
+                                Perguntas
+                            </Typography>
                             <ItemsList
                                 icon={<IntentIcon />}
-                                text={"Perguntas"}
-                                actionOnClick={this.props.addToStory}
+                                highlighted_text={this.state.value}
+                                actionOnClick={this.props.addIntent}
                                 items={this.filterItems(this.props.intents)}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
                         <Grid item xs={3} sm={6}>
+                            <Typography variant="body2" color="primary">
+                                Respostas
+                            </Typography>
                             <ItemsList
                                 icon={<UtterIcon />}
-                                text={"Resposta"}
-                                value={this.state.value}
-                                actionOnClick={this.props.addToStory}
+                                highlighted_text={this.state.value}
+                                actionOnClick={this.props.addUtter}
                                 items={this.filterItems(this.props.utters)}
                                 selected_item_position={this.props.selected_item_position}
                             />
@@ -117,9 +126,10 @@ class StoryEditPage extends Component {
                 >
                     <ToolbarName
                         story
-                        handleClick={() => this.saveData()}
+                        is_enabled={true}
+                        saveData={this.props.saveData}
+                        item={new Story(this.props.story_id, this.props.content)}
                     />
-                    {/* <button onClick={() => this.saveData()}>SALVAR</button> */}
                     <Grid container item xs={12}
                         direction="row"
                     >
@@ -142,13 +152,9 @@ class StoryEditPage extends Component {
     }
 }
 
+
 const mapStateToProps = state => { return { ...state.story } };
 
-const mapDispatchToProps = dispatch => ({
-    getIntents: () => dispatch(getIntents()),
-    getUtters: () => dispatch(getUtters()),
-    addToStory: (item) => dispatch(addToStory(item)),
-    saveData: (url, item) => dispatch(saveData(url, item))
-});
+const mapDispatchToProps = dispatch => bindActionCreators(StoryAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryEditPage);

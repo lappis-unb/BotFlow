@@ -32,21 +32,18 @@ const styles = {
 }
 
 class ExampleStory extends Component {
-
-
-    exampleUtter(text) {
+    exampleUtter(item, index) {
         return (
-            <div style={{ ...styles.utter, ...styles.box }}>
-                {text.text}
+            <div key={'example_' + index} style={{ ...styles.utter, ...styles.box }}>
+                {item.example}
             </div>
         );
     }
 
-
-    exampleIntent(text) {
+    exampleIntent(item, index) {
         return (
-            <div style={{ ...styles.intent, ...styles.box }}>
-                {text.text}
+            <div key={'example_' + index} style={{ ...styles.intent, ...styles.box }}>
+                {item.example}
             </div>
         );
     }
@@ -54,10 +51,12 @@ class ExampleStory extends Component {
     render() {
         return (
             <div style={styles.container}>
-                <Typography variant="body2" style={styles.title}>Exemplo</Typography>
+                <Typography variant="body2" style={styles.title}>
+                    {this.props.content.length !== 0 ? "Exemplo:" : "Não há exemplos"}
+                </Typography>
                 {
-                    this.props.story_example.map((item, index) => {
-                        return item.type === "intent" ? this.exampleIntent(item) : this.exampleUtter(item);
+                    this.props.content.map((item, index) => {
+                        return item.type === "intent" ? this.exampleIntent(item, index) : this.exampleUtter(item, index);
                     })
                 }
             </div>
