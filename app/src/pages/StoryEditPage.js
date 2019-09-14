@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
-import { Creators as StoryAction } from "../ducks/stories";
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 import Typography from '@material-ui/core/Typography';
+import SucessSnackbar from '../components/SucessSnackbar';
+import { Creators as StoryAction } from "../ducks/stories";
 
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js'
-import { STORY_URL } from "../utils/url_routes";
 import TextField from '@material-ui/core/TextField';
 import ToolbarName from '../components/ToolbarName';
 
@@ -72,14 +72,12 @@ class StoryEditPage extends Component {
         }
     }
 
+    isSelected(item, content){
+        const founded = content.find(item_story => (item_story.id === item.id && item_story.name === item.name));
+        return founded !== undefined;
+      }
+
     render() {
-        console.log("FALTANDO")
-        console.log("GRAVAR: Soltar a mensagem que deu certo ")
-        console.log("DELETE")
-        console.log("AO add um utter ou intent deixar eles marcados")
-        console.log("Melhorar texto em cima das listas")
-        console.log("Fazer o tamanho da pag ficar dinamico")
-        
         return (
             <Grid container item xs={12}>
                 <Grid container item xs={4} direction='column'>
@@ -89,10 +87,13 @@ class StoryEditPage extends Component {
                                 Perguntas
                             </Typography>
                             <ItemsList
+                                story={true}
                                 icon={<IntentIcon />}
                                 highlighted_text={this.state.value}
+                                isSelected={this.isSelected}
                                 actionOnClick={this.props.addIntent}
                                 items={this.filterItems(this.props.intents)}
+                                content={this.props.content}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
@@ -101,7 +102,10 @@ class StoryEditPage extends Component {
                                 Respostas
                             </Typography>
                             <ItemsList
+                                story={true}
                                 icon={<UtterIcon />}
+                                isSelected={this.isSelected}
+                                content={this.props.content}
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addUtter}
                                 items={this.filterItems(this.props.utters)}
@@ -128,6 +132,7 @@ class StoryEditPage extends Component {
                         story
                         is_enabled={true}
                         saveData={this.props.saveData}
+                        deleteItem={this.props.deleteStory}
                         item={new Story(this.props.story_id, this.props.content)}
                     />
                     <Grid container item xs={12}
@@ -147,6 +152,10 @@ class StoryEditPage extends Component {
                         </Grid>
                     </Grid>
                 </Grid>
+                <SucessSnackbar
+                    handleClose={() => this.props.notifyAction("")}
+                    notification_text={this.props.notification_text}
+                />
             </Grid>
         )
     }

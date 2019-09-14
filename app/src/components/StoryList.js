@@ -115,7 +115,7 @@ class StoryList extends Component {
                                         <DeleteIcon
                                             style={styles.icon_delete}
                                             type="button"
-                                            onClick={() => this.props.removeContent(content_position)}>
+                                            onClick={() => this.props.deleteContent(content_position)}>
                                         </DeleteIcon>
                                     </Grid>
                                 </Grid>

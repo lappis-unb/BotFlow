@@ -41,7 +41,7 @@ export const reorderContent = (state = INITIAL_STATE, action) => {
     }
 }
 
-export const removeContent = (state = INITIAL_STATE, action) => {
+export const deleteContent = (state = INITIAL_STATE, action) => {
     let new_content = createArrayObjCopyOf(state.content);
     new_content.splice(action.content_position, 1);
 
@@ -52,6 +52,7 @@ export const removeContent = (state = INITIAL_STATE, action) => {
 }
 
 export const notifyAction = (state = INITIAL_STATE, action) => {
+    console.log("ENTROU AQUI", action.text)
     return {
         ...state,
         notification_text: action.text
@@ -71,7 +72,7 @@ export const addToStory = (state = INITIAL_STATE, action) => {
 export const { Types, Creators } = createActions({
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
-    removeContent: ['content_position'],
+    deleteContent: ['content_position'],
     reorderContent: ['start_index', 'end_index'],
     addIntent: (intent) => {
         return async (dispatch) => {
@@ -107,7 +108,6 @@ export const { Types, Creators } = createActions({
         return async (dispatch) => {
             try {
                 const response = await axios.get(UTTER_URL);
-
                 await dispatch({ type: Types.GET_UTTERS, utters: response.data });
             } catch (error) {
                 throw (error);
@@ -122,6 +122,19 @@ export const { Types, Creators } = createActions({
                 dispatch(createOrUpdateItem('put', item, "Story atualizada com sucesso!"));
             }
         }
+    },
+    deleteStory: (story_id) => {
+        return async (dispatch) => {
+            try {
+                await axios.delete(STORY_URL + story_id);
+                await dispatch(Creators.getIntents());
+                await dispatch(Creators.notifyAction("Story removida com sucesso!"));
+                await dispatch(Creators.createNewIntent())
+
+            } catch (error) {
+                throw (error);
+            }
+        }
     }
 
 });
@@ -130,7 +143,6 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     return async (dispatch) => {
         try {
             const mode_url = (mode === 'post') ? STORY_URL : STORY_URL + new_item.id;
-            console.log("Entrou aqui", new_item.content)
             await axios[mode](mode_url, new_item);
             dispatch(Creators.notifyAction(message));
 
@@ -144,7 +156,7 @@ export default createReducer(INITIAL_STATE, {
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
-    [Types.REMOVE_CONTENT]: removeContent,
+    [Types.DELETE_CONTENT]: deleteContent,
     [Types.NOTIFY_ACTION]: notifyAction,
     [Types.REORDER_CONTENT]: reorderContent,
 });

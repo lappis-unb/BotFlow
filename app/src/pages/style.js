@@ -16,7 +16,7 @@ export const style = {
       background: "#dae8ea"
     },
     item_form: {
-      height: "calc(100vh - 164px)",
+      height: "calc(100vh - 64px - 81px)",
       overflowY: "auto",
       overflowX: "hidden"
     },

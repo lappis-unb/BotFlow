@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const style = {
   list_container: {
@@ -37,23 +38,36 @@ const StyledListItem = styled(ListItem)({
 
 export default class ItemList extends Component {
 
+
   getItemsList(items, icon, highlighted_text, selected_item_position) {
-    const new_items = items.map((item, index) => (
-      <StyledListItem
-        button
-        id={"items_list_" + index}
-        key={"items_list" + index}
-        selected={this.props.story !== true ? (selected_item_position) === index : this.props.isSelected(item, this.props.content)}
-        onClick={() => this.handleListItemClick(item, index)}
-      >
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText>
-          <Typography noWrap>
-            {this.setHighlight(item.name, highlighted_text)}
-          </Typography>
-        </ListItemText>
-      </StyledListItem>
-    ));
+    const new_items = items.map((item, index) => {
+      const labelId = `checkbox-list-label-${item.name}`;
+      return (
+        <StyledListItem
+          button
+          id={"items_list_" + index}
+          key={"items_list" + index}
+          selected={this.isSelected(item)}
+          onClick={() => this.handleListItemClick(item, index)}
+        >
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText>
+            <Typography noWrap>
+              {this.setHighlight(item.name, highlighted_text)}
+            </Typography>
+          </ListItemText>
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={true}
+              tabIndex={-1}
+              disableRipple
+              inputProps={{ 'aria-labelledby': labelId }}
+            />
+          </ListItemIcon>
+        </StyledListItem>
+      )
+    });
 
     return new_items;
   }

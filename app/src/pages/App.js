@@ -9,7 +9,6 @@ import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
 import AppIcon from '../icons/AppIcon';
 import StoryEditPage from './StoryEditPage';
-import ExampleStory from '../components/ExampleStory';
 
 function App() {
   return (

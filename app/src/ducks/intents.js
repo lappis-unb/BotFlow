@@ -124,7 +124,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
                 })
 
             await dispatch(Creators.getIntents());
-            await dispatch(Creators.selectIntent(intent.id, -1));
+            await dispatch(Creators.selectIntent(intent, -1));
 
             dispatch(Creators.notifyAction(message));
         } catch (error) {
