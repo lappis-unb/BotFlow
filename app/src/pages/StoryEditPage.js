@@ -6,6 +6,7 @@ import ItemsList from "../components/ItemsList";
 import Typography from '@material-ui/core/Typography';
 import SucessSnackbar from '../components/SucessSnackbar';
 import { Creators as StoryAction } from "../ducks/stories";
+import Divider from '@material-ui/core/Divider';
 
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
@@ -22,13 +23,18 @@ import ExampleStory from "../components/ExampleStory";
 const style = {
     grid_item_list: {
         background: "#dae8ea",
-        paddingTop: '15px'
+        paddingTop: '15px',
+        height: "calc(100vh - 74px - 64px - 15px)",
+        paddingLeft: "24px",
+        overflowY: "auto"
     },
     list_container: {
-        paddingLeft: "24px"
+        paddingLeft: "24px",
     },
     filter_items_container: {
-        padding: "12px 8px"
+        padding: "12px 8px",
+        background: "#dae8ea",
+        width:"96.5%"
     },
     list: {
         marginTop: '15px',
@@ -72,10 +78,10 @@ class StoryEditPage extends Component {
         }
     }
 
-    isSelected(item, content){
+    isSelected(item, content) {
         const founded = content.find(item_story => (item_story.id === item.id && item_story.name === item.name));
         return founded !== undefined;
-      }
+    }
 
     render() {
         return (
@@ -113,6 +119,7 @@ class StoryEditPage extends Component {
                             />
                         </Grid>
                     </Grid>
+                    <Divider />
                     <div style={style.filter_items_container}>
                         <TextField
                             fullWidth
@@ -120,14 +127,12 @@ class StoryEditPage extends Component {
                             label="Filtrar"
                             variant="outlined"
                             value={this.state.value}
-                            style={style.field_form}
                             InputProps={{ endAdornment: this.getFilterIcon() }}
                             onChange={(e) => this.handleFilterInput(e)}
                         />
                     </div>
                 </Grid>
-                <Grid item xs={8}
-                >
+                <Grid item xs={8}>
                     <ToolbarName
                         story
                         is_enabled={true}
@@ -135,9 +140,7 @@ class StoryEditPage extends Component {
                         deleteItem={this.props.deleteStory}
                         item={new Story(this.props.story_id, this.props.content)}
                     />
-                    <Grid container item xs={12}
-                        direction="row"
-                    >
+                    <Grid container item xs={12} direction="row">
                         <Grid
                             container
                             item xs={6}
