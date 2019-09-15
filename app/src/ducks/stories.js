@@ -35,9 +35,16 @@ export const reorderContent = (state = INITIAL_STATE, action) => {
     const [removed] = result.splice(action.start_index, 1);
     result.splice(action.end_index, 0, removed);
 
-    return {
-        ...state,
-        content: result
+    if (result[0].type === 'intent') {
+        return {
+            ...state,
+            content: result
+        }
+    } else {
+        return {
+            ...state,
+            notification_text: "O primeiro elemento deve ser uma pergunta!"
+        }
     }
 }
 
@@ -59,12 +66,19 @@ export const notifyAction = (state = INITIAL_STATE, action) => {
 }
 
 export const addToStory = (state = INITIAL_STATE, action) => {
-    let new_content = createArrayObjCopyOf(state.content);
-    new_content.push({ ...action.item, type: action.mode });
-
-    return {
-        ...state,
-        content: new_content
+    if (state.content.length === 0 && action.mode !== 'intent') {
+        return {
+            ...state,
+            notification_text: "O primeiro elemento deve ser uma pergunta!"
+        }
+    }
+    else {
+        let new_content = createArrayObjCopyOf(state.content);
+        new_content.push({ ...action.item, type: action.mode });
+        return {
+            ...state,
+            content: new_content
+        }
     }
 }
 

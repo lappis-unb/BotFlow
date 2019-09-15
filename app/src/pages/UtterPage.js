@@ -12,7 +12,7 @@ import ToolbarName from '../components/ToolbarName';
 import { Utter } from "../utils/DataFormat";
 import { bindActionCreators } from 'redux';
 import { Creators as UtterAction } from '../ducks/utters';
-import SucessSnackbar from '../components/SucessSnackbar';
+import Snackbar from '../components/Snackbar';
 import { style } from './style'
 
 class UtterPage extends Component {
@@ -75,13 +75,12 @@ class UtterPage extends Component {
       <Grid container>
         <Grid item xs={3} style={style.grid_item_list}>
           <div style={style.create_button}>
-
             <Button
               color="primary"
               variant="contained"
               onClick={() => this.props.createNewUtter()}
             >
-              <Add />{"Criar nova resposta"}
+              <Add />{"Criar Nova resposta"}
             </Button>
           </div>
           <ListFilter
@@ -119,7 +118,7 @@ class UtterPage extends Component {
             <UtterForm />
           </div>
 
-          <SucessSnackbar
+          <Snackbar
             handleClose={() => this.props.notifyAction("")}
             notification_text={this.props.notification_text}
           />

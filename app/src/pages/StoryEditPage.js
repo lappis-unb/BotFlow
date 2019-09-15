@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 import Typography from '@material-ui/core/Typography';
-import SucessSnackbar from '../components/SucessSnackbar';
+import Snackbar from '../components/Snackbar';
 import { Creators as StoryAction } from "../ducks/stories";
 import Divider from '@material-ui/core/Divider';
 
@@ -83,6 +83,10 @@ class StoryEditPage extends Component {
         return founded !== undefined;
     }
 
+    isButtonEnabled(){
+        return (this.props.content.length!==0 && this.props.content[0].type!=='utter');
+    }
+
     render() {
         return (
             <Grid container item xs={12}>
@@ -135,7 +139,7 @@ class StoryEditPage extends Component {
                 <Grid item xs={8}>
                     <ToolbarName
                         story
-                        is_enabled={true}
+                        is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
                         deleteItem={this.props.deleteStory}
                         item={new Story(this.props.story_id, this.props.content)}
@@ -155,7 +159,8 @@ class StoryEditPage extends Component {
                         </Grid>
                     </Grid>
                 </Grid>
-                <SucessSnackbar
+                <Snackbar
+                    variant='error'
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}
                 />

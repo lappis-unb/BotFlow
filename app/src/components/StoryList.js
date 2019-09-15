@@ -131,12 +131,15 @@ class StoryList extends Component {
     getContent() {
         if (this.props.content.length !== 0) {
             return (
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable droppableId="droppable">
-                        {(provided, snapshot) => this.getDrag(provided, snapshot)}
-                    </Droppable>
-                </DragDropContext>
+                <div>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided, snapshot) => this.getDrag(provided, snapshot)}
+                        </Droppable>
+                    </DragDropContext>
+                </div>
             )
+
         } else {
             return <div>Não há diálogos!</div>
         }

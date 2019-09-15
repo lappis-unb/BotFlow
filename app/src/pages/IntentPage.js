@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
-import SucessSnackbar from '../components/SucessSnackbar'
+import Snackbar from '../components/Snackbar'
 import { style } from './style'
 
 import { Add } from '../styles/button';
@@ -113,7 +113,7 @@ class IntentPage extends Component {
             <IntentForm />
           </div>
 
-          <SucessSnackbar
+          <Snackbar
             handleClose={() => this.props.notifyAction("")}
             notification_text={this.props.notification_text}
           />

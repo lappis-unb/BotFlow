@@ -3,22 +3,22 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "./CustomSnackbar"
 import React from "react";
 
-const SucessSnackbar = ({notification_text ,handleClose}) => {
+const MessageSnackbar = ({ notification_text, handleClose, variant = "success" }) => {
     return (
         <Snackbar
             anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
             }}
-            autoHideDuration={6000}
+            autoHideDuration={2000}
             open={notification_text !== ''}
             onClose={() => handleClose()}>
-            <SnackbarContent
-                variant="success"
+            <SnackbarContent    
+                variant={variant}
                 message={notification_text}
                 onClose={() => handleClose()}
             />
         </Snackbar>
     )
 }
-export default SucessSnackbar;
+export default MessageSnackbar;
