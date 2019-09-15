@@ -74,15 +74,16 @@ class UtterPage extends Component {
     return (
       <Grid container>
         <Grid item xs={3} style={style.grid_item_list}>
-          <Button
-            color="primary"
-            variant="contained"
-            style={style.create_button}
-            onClick={() => this.props.createNewUtter()}
-          >
-            <Add />{"Criar nova resposta"}
-          </Button>
+          <div style={style.create_button}>
 
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => this.props.createNewUtter()}
+            >
+              <Add />{"Criar nova resposta"}
+            </Button>
+          </div>
           <ListFilter
             icon={<UtterIcon />}
             items={this.props.utters}

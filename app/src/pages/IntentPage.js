@@ -69,15 +69,15 @@ class IntentPage extends Component {
     return (
       <Grid container>
         <Grid item xs={3} style={style.grid_item_list}>
-          <Button
-            color="primary"
-            variant="contained"
-            style={style.create_button}
-            onClick={() => this.props.createNewIntent()}
-          >
-            <Add />{"Criar nova pergunta"}
-          </Button>
-
+          <div style={style.create_button}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => this.props.createNewIntent()}
+            >
+              <Add />{"Criar nova pergunta"}
+            </Button>
+          </div>
           <ListFilter
             icon={<IntentIcon />}
             items={this.props.intents}

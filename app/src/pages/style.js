@@ -20,6 +20,6 @@ export const style = {
       overflowY: "auto",
       overflowX: "hidden"
     },
-    create_button: { margin: "16px 24px" }
+    create_button: { padding: "18px 24px" }
   }
   

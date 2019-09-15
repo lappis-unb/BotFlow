@@ -14,17 +14,6 @@ const style = {
         background: "#f6f9f9",
         padding: "4px"
     },
-    grid_item_list: {
-        background: "#dae8ea"
-    },
-    create_button: {
-        margin: "16px 24px"
-    },
-    item_form: {
-        height: "calc(100vh - 164px)",
-        overflowY: "auto",
-        overflowX: "hidden"
-    }
 }
 
 const options = ['Apagar']

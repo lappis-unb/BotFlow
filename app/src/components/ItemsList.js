@@ -3,13 +3,6 @@ import React, { Component } from "react";
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
 
-const style = {
-  list_container: {
-    height: "64.8vh",
-    overflowY: "auto"
-  }
-}
-
 const StyledListItem = styled(ListItem)({
   backgroundColor: "transparent",
   borderRadius: "12px 0 0 12px",
@@ -79,7 +72,7 @@ export default class ItemList extends Component {
 
   render() {
     return (
-      <List style={style.list_container}>
+      <List>
         {(this.props.items.length !== 0 ? this.getItemsList(this.props.items, this.props.icon, this.props.highlighted_text, this.props.selected_item_position) : this.getErrorMessage())}
       </List>
     );

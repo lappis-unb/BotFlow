@@ -8,11 +8,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 
 const style = {
-  list_container: {
-    paddingLeft: "24px"
-  },
   filter_items_container: {
-    padding: "12px 8px"
+    padding: "12px 8px",
+    //position: "relative",
+    //background: "yellow",
+    //bottom: 0
+  },
+  list_container: {
+    height: "calc(100vh - 74px - 64px - 80px - 10px)",
+    paddingLeft: "24px",
+    overflowY: "auto"
   }
 }
 
@@ -69,9 +74,7 @@ export default class ListFilter extends Component {
             selected_item_position={this.props.selected_item_position}
           />
         </div>
-
         <Divider />
-
         <div style={style.filter_items_container}>
           <TextField
             fullWidth
