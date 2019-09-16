@@ -34,7 +34,6 @@ const style = {
     filter_items_container: {
         padding: "12px 8px",
         background: "#dae8ea",
-        width:"96.5%"
     },
     list: {
         marginTop: '15px',
@@ -160,7 +159,7 @@ class StoryEditPage extends Component {
                     </Grid>
                 </Grid>
                 <Snackbar
-                    variant='error'
+                    variant={this.props.notification_text[0] === 'O' ? 'error' : 'success'}
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}
                 />
