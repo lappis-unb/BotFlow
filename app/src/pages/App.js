@@ -9,6 +9,7 @@ import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
 import AppIcon from '../icons/AppIcon';
 import StoryEditPage from './StoryEditPage';
+import StoriesPage from './StoriesPage';
 
 function App() {
   return (
@@ -20,9 +21,10 @@ function App() {
         </Toolbar>
       </AppBar>
       <div style={{ paddingTop: "72px" }}>
+        <Route exact path="/" component={StoriesPage} />
         <Route exact path="/utters" component={UtterPage} />
         <Route exact path="/intents" component={IntentPage} />
-        <Route exact path="/story/edit" component={StoryEditPage} />
+        <Route exact path="/stories/:id" component={StoryEditPage} />
       </div>
       <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
     </Router>

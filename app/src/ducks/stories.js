@@ -4,9 +4,11 @@ import { createActions, createReducer } from 'reduxsauce'
 import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 
 const INITIAL_STATE = {
-    intents: [],
     utters: [],
+    intents: [],
+    stories: [],
     content: [],
+    old_content: [],
     story_id: "",
     notification_text: ""
 };
@@ -30,21 +32,53 @@ export const getUtters = (state = INITIAL_STATE, action) => {
     };
 }
 
+export const getStories = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        stories: action.stories
+    };
+}
+
+
+export const getStory = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        story_id: action.story.id,
+        content: action.story.content,
+        old_content: action.story.content
+    };
+}
+
+export const validationContent = (content) => {
+    let intent_intent = true;
+
+    for (let i = 1, size = content.length; i < size; i++) {
+        if (content[i - 1].type === 'intent' && content[i].type === 'intent') {
+            intent_intent = false;
+        }
+    }
+
+    if (!intent_intent) {
+        return "Não pode haver duas perguntas seguidas!";
+    } else if (content[0].type !== 'intent') {
+        return "O primeiro elemento deve ser uma pergunta!";
+    }
+
+    return "";
+
+}
+
 export const reorderContent = (state = INITIAL_STATE, action) => {
     const result = createArrayObjCopyOf(state.content);
     const [removed] = result.splice(action.start_index, 1);
     result.splice(action.end_index, 0, removed);
 
-    if (result[0].type === 'intent') {
-        return {
-            ...state,
-            content: result
-        }
-    } else {
-        return {
-            ...state,
-            notification_text: "O primeiro elemento deve ser uma pergunta!"
-        }
+    const text = validationContent(result);
+
+    return {
+        ...state,
+        content: result,
+        notification_text: text
     }
 }
 
@@ -66,19 +100,14 @@ export const notifyAction = (state = INITIAL_STATE, action) => {
 }
 
 export const addToStory = (state = INITIAL_STATE, action) => {
-    if (state.content.length === 0 && action.mode !== 'intent') {
-        return {
-            ...state,
-            notification_text: "O primeiro elemento deve ser uma pergunta!"
-        }
-    }
-    else {
-        let new_content = createArrayObjCopyOf(state.content);
-        new_content.push({ ...action.item, type: action.mode });
-        return {
-            ...state,
-            content: new_content
-        }
+    let new_content = createArrayObjCopyOf(state.content);
+    new_content.push({ ...action.item, type: action.mode });
+    const text = validationContent(new_content);
+
+    return {
+        ...state,
+        content: new_content,
+        notification_text: text
     }
 }
 
@@ -136,6 +165,26 @@ export const { Types, Creators } = createActions({
             }
         }
     },
+    getStories: () => {
+        return async (dispatch) => {
+            try {
+                const response = await axios.get(STORY_URL);
+                await dispatch({ type: Types.GET_STORIES, stories: response.data });
+            } catch (error) {
+                throw (error);
+            }
+        }
+    },
+    getStory: (id) => {
+        return async (dispatch) => {
+            try {
+                const response = await axios.get(STORY_URL + id);
+                await dispatch({ type: Types.GET_STORY, story: response.data });
+            } catch (error) {
+                throw (error);
+            }
+        }
+    },
     deleteStory: (story_id) => {
         return async (dispatch) => {
             try {
@@ -167,6 +216,8 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
 
 export default createReducer(INITIAL_STATE, {
     [Types.GET_UTTERS]: getUtters,
+    [Types.GET_STORIES]: getStories,
+    [Types.GET_STORY]: getStory,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
     [Types.DELETE_CONTENT]: deleteContent,

@@ -49,15 +49,15 @@ export default function MainNav() {
   const [value, setValue] = React.useState(handleChange());
 
   function handleChange(event, newValue) {
-    const x = window.location.pathname;
+    const url = window.location.pathname;
     if (newValue !== undefined) {
       setValue(newValue)
     } else {
-      if (x === '/story/edit') {
+      if (url === '/' || url.includes('/stories/')) {
         return 0;
-      } else if (x === '/utters') {
+      } else if (url === '/utters') {
         return 1;
-      } else if (x === '/intents') {
+      } else if (url === '/intents') {
         return 2;
       }
     }
@@ -68,7 +68,7 @@ export default function MainNav() {
       value={value}
       onChange={handleChange}
       centered>
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/story/edit" component={Link} />
+      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents" component={Link} />
     </Tabs>

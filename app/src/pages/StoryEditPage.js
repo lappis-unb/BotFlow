@@ -45,6 +45,7 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
+        this.props.getStory(window.location.pathname.split('/').pop())
         this.state = {
             value: ""
         };
@@ -78,7 +79,16 @@ class StoryEditPage extends Component {
     }
 
     isButtonEnabled() {
-        return (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
+        const first_element_is_intent = (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
+        const contents_changed = JSON.stringify(this.props.content) !== JSON.stringify(this.props.old_content);
+        let is_enabled = true;
+        const content = this.props.content;
+        for (let i = 1, size = content.length; i < size; i++) {
+            if (content[i - 1].type === 'intent' && content[i].type === 'intent') {
+                is_enabled = false;
+            }
+        }
+        return first_element_is_intent && contents_changed && is_enabled;
     }
 
     render() {
@@ -147,6 +157,7 @@ class StoryEditPage extends Component {
                         overflowY: "auto",
                         overflowX: "hidden"
                     }}>
+                        {this.props.notification_text}
                         <Grid container item xs={12} direction="row">
                             <Grid
                                 container
@@ -169,7 +180,6 @@ class StoryEditPage extends Component {
                     </div>
                 </Grid>
                 <Snackbar
-                    variant={this.props.notification_text[0] === 'O' ? 'error' : 'success'}
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}
                 />

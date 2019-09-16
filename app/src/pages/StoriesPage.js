@@ -1,24 +1,33 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-//import { Creators as IntentAction } from '../ducks/intents';
+import { Creators as StoryAction } from '../ducks/stories';
+import { Link } from 'react-router-dom'
 
 import GridList from '@material-ui/core/GridList';
 
-import { Creators as StoryAction } from "../ducks/stories";
 import GridListTile from '@material-ui/core/GridListTile';
 
 class StoriesPage extends Component {
+  constructor(props) {
+    super(props);
+    this.props.getStories();
+  }
+
+  getStoriesList() {
+    if (this.props.stories !== undefined)
+      return this.props.stories.map((story, index) => (
+        <GridListTile key={'stories_' + index}>
+          <Link to={'/stories/' + story.id}>{story.name}</Link>
+        </GridListTile>
+      ))
+  }
 
   render() {
     return (
-      <div >
-        <GridList cellHeight={160} cols={3}>
-          {[1,2,3,4].map((tile, index) => (
-            <GridListTile key={'stories_' + index} cols={1}>
-              <div>texto</div>
-            </GridListTile>
-          ))}
+      <div>
+        <GridList cols={6}>
+          {this.getStoriesList()}
         </GridList>
       </div>
     )
