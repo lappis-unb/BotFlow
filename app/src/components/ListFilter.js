@@ -8,51 +8,54 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 
 const style = {
-  list_container: {
-    paddingLeft: "24px"
-  },
   filter_items_container: {
-    padding: "12px 8px"
+    padding: "12px 8px",
+    //position: "relative",
+    //background: "yellow",
+    //bottom: 0
+  },
+  list_container: {
+    height: "calc(100vh - 74px - 64px - 80px - 10px)",
+    paddingLeft: "24px",
+    overflowY: "auto"
   }
 }
 
 export default class ListFilter extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: ""
-    };
+    this.state = { value: "" };
   }
 
-  filterItems() {
-    return this.props.items.filter(item => (item.name).includes(this.state.value));
+  filterItems(items) {
+    if (items !== undefined) {
+      return items.filter(item => (item.name).includes(this.state.value));
+    }
+    return [];
   }
 
   handleListItemClick(item, index) {
     this.props.selectItem(item, index, this.props.items);
   }
 
-  handleFilterClick() {
-    this.setState({ value: "" });
-    this.filterItems();
-  }
-
   handleFilterInput(e) {
     this.setState({ value: e.target.value });
-    this.filterItems();
   }
 
   getFilterIcon() {
     if ((this.state.value).trim().length === 0) {
       return <SearchIcon />
-    } else {
-      return (
-        <CloseIcon
-          onClick={() => this.handleFilterClick()}
-          style={{ cursor: "pointer" }}
-        />
-      )
     }
+    return (
+      <CloseIcon
+        onClick={() => this.cleanFilter()}
+        style={{ cursor: "pointer" }}
+      />
+    )
+  }
+
+  cleanFilter() {
+    this.setState({ value: "" });
   }
 
   render() {
@@ -65,13 +68,13 @@ export default class ListFilter extends Component {
 
           <ItemsList
             icon={this.props.icon}
-            value={this.state.value}
-            items={this.filterItems()}
+            highlighted_text={this.state.value}
             actionOnClick={this.props.actionOnClick}
-            selected_item_position={this.props.selected_item_position} />
+            items={this.filterItems(this.props.items)}
+            selected_item_position={this.props.selected_item_position}
+          />
         </div>
         <Divider />
-
         <div style={style.filter_items_container}>
           <TextField
             fullWidth

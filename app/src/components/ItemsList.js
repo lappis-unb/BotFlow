@@ -3,16 +3,6 @@ import React, { Component } from "react";
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
 
-const style = {
-  list_container: {
-    paddingLeft: "24px"
-  },
-  items_list: {
-    height: "64.8vh",
-    overflowY: "auto"
-  }
-}
-
 const StyledListItem = styled(ListItem)({
   backgroundColor: "transparent",
   borderRadius: "12px 0 0 12px",
@@ -38,60 +28,53 @@ const StyledListItem = styled(ListItem)({
   }
 });
 
+export default class ItemList extends Component {
 
-export default class Items extends Component {
-  itemsList() {
-    let filtered_items = this.props.items;
+  getItemsList(items, icon, highlighted_text, selected_item_position) {
+    const new_items = items.map((item, index) => (
+      <StyledListItem
+        button
+        id={"items_list_" + index}
+        key={"items_list" + index}
+        selected={this.props.story !== true ? (selected_item_position) === index : this.props.isSelected(item, this.props.content)}
+        onClick={() => this.handleListItemClick(item, index)}
+      >
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>
+          <Typography noWrap>
+            {this.setHighlight(item.name, highlighted_text)}
+          </Typography>
+        </ListItemText>
+      </StyledListItem>
+    ));
 
-    if (filtered_items.length !== 0) {
-      return filtered_items.map((item, index) => (
-        <StyledListItem
-          button
-          id={"items_list_" + index}
-          key={"items_list" + index}
-          selected={(this.props.selected_item_position) === index}
-          onClick={() => this.handleListItemClick(item, index)}>
-          <ListItemIcon>{this.props.icon}</ListItemIcon>
-          <ListItemText>
-            <Typography noWrap>
-              {this.setHighlight(item.name)}
-            </Typography>
-          </ListItemText>
-        </StyledListItem>
-      ));
-    } else {
-      return (
-        <Typography style={{ marginTop: "15px" }} noWrap>
-          Nenhum resultado encontrado!
-        </Typography>
-      )
-    }
+    return new_items;
   }
 
-  setHighlight(name) {
-    let texts = name.replace(this.props.value, " " + this.props.value + " ").split(" ");
+  // TODO improve this
+  setHighlight(name, highlighted_text) {
+    let texts = name.replace(highlighted_text, " " + highlighted_text + " ").split(" ");
 
     return texts.map((text, index) => (
-      (text === this.props.value) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
+      (text === highlighted_text) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
     ));
   }
 
   handleListItemClick(item, index) {
-    this.props.actionOnClick(item, index, this.props.items);
+    this.props.actionOnClick(item, index);
+  }
+
+  getErrorMessage() {
+    return (
+      <Typography>Nenhum resultado encontrado!</Typography>
+    );
   }
 
   render() {
     return (
-      <List dense={true} style={style.items_list}>
-        <div style={style.list_container}>
-          <Typography variant="body2" color="primary">
-            {this.props.text}
-          </Typography>
-          <List dense={true} style={style.items_list}>
-            {this.itemsList()}
-          </List>
-        </div>
+      <List>
+        {(this.props.items.length !== 0 ? this.getItemsList(this.props.items, this.props.icon, this.props.highlighted_text, this.props.selected_item_position) : this.getErrorMessage())}
       </List>
-    )
+    );
   }
 }

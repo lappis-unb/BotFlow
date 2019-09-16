@@ -3,7 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 import { Tab, Tabs } from '@material-ui/core';
-//import StoryIcon from '../icons/StoryIcon';
+import StoryIcon from '../icons/StoryIcon';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
 
@@ -46,18 +46,29 @@ const StyledTab = withStyles(theme => ({
 
 export default function MainNav() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(handleChange());
 
   function handleChange(event, newValue) {
-    setValue(newValue);
+    const x = window.location.pathname;
+    if (newValue !== undefined) {
+      setValue(newValue)
+    } else {
+      if (x === '/story/edit') {
+        return 0;
+      } else if (x === '/utters') {
+        return 1;
+      } else if (x === '/intents') {
+        return 2;
+      }
+    }
   }
 
-  //<StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />      
   return (
     <Tabs className={classes.root}
       value={value}
       onChange={handleChange}
       centered>
+      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/story/edit" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents" component={Link} />
     </Tabs>
