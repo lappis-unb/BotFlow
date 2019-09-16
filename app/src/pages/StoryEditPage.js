@@ -150,7 +150,7 @@ class StoryEditPage extends Component {
                         is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
                         deleteItem={this.props.deleteStory}
-                        item={new Story(this.props.story_id, this.props.content)}
+                        item={new Story(this.props.story_id, this.props.content, this.props.name)}
                     />
                     <div style={{
                         height: "calc(100vh - 74px - 72px)",

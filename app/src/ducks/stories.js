@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     intents: [],
     stories: [],
     content: [],
+    name: "",
     old_content: [],
     story_id: "",
     notification_text: ""
@@ -35,14 +36,16 @@ export const getUtters = (state = INITIAL_STATE, action) => {
 export const getStories = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        stories: action.stories
+        stories: action.stories,
     };
 }
 
 
 export const getStory = (state = INITIAL_STATE, action) => {
+    console.log(action.story)
     return {
         ...state,
+        name: action.story.name,
         story_id: action.story.id,
         content: action.story.content,
         old_content: action.story.content
