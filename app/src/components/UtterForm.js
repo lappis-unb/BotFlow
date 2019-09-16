@@ -9,13 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  setUtterContent,
-  addUtterContent,
-  undoTextRemotion,
-  removeUtterContent,
-  changeUtterForm
-} from "../actions/uttersAction";
+import { bindActionCreators } from 'redux';
+import { Creators as UtterAction } from '../ducks/utters';
 
 const ALTERNATIVES_TEXT = "como alternativas";
 const SEQUENCE_TEXT = "em sequência";
@@ -35,22 +30,22 @@ class UtterForm extends Component {
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setUtterContent(utter_index, text_index, e.target.value, this.props.item_contents)
+    this.props.setUtterContent(e.target.value, utter_index, text_index)
   }
 
   handleDelete(utter_index, text_index) {
-    const utters_length = this.props.item_contents.length;
-    const utters_text_length = this.props.item_contents[0].length;
-    
+    const utters_length = this.props.utter_contents.length;
+    const utters_text_length = this.props.utter_contents[0].length;
+
     if (utters_length > 1 || utters_text_length > 1) {
       this.setState({ undo_delete: true });
-      this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
+      this.props.deleteUtterContent(utter_index, text_index);
     }
 
   }
 
   handleUndo() {
-    this.props.undoTextRemotion();
+    this.props.undoDeleteUtterContent();
     this.setState({ undo_delete: false });
   }
 
@@ -91,8 +86,8 @@ class UtterForm extends Component {
 
   setUtterContents() {
     let utters_texts = [];
-    if (this.props.item_contents !== undefined) {
-      utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
+    if (this.props.utter_contents !== undefined) {
+      utters_texts = this.props.utter_contents.map((alternative, alternative_index) => {
         return alternative.map((alternative_content, content_index) => {
           return (
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
@@ -124,7 +119,7 @@ class UtterForm extends Component {
   handleChange(event) {
     this.setState({ value: event.target.value });
     if ((event.target.value !== this.props.multiple_alternatives)) {
-      this.props.changeUtterForm(this.props.item_contents, (event.target.value === ALTERNATIVES_TEXT))
+      this.props.changeUtterForm(this.props.utter_contents, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
@@ -133,7 +128,7 @@ class UtterForm extends Component {
   }
 
   handleClick() {
-    this.props.addUtterContent(this.props.new_utter);
+    this.props.addUtterContent();
     this.setState({ there_is_auto_focus: true });
   }
 
@@ -189,26 +184,19 @@ class UtterForm extends Component {
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={3}>
-          {/* <p>Name: {this.props.name_item}</p>
-          <p>id_item: {this.props.id_item}</p>
+          {/* <p>Name: {this.props.name}</p>
+          <p>id_utter: {this.props.id}</p>
           <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-          <pre>{JSON.stringify(this.props.item_contents, null, 2)}</pre> */}
+          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre> */}
         </Grid>
       </Grid>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return { ...state.utterReducer }
-};
 
-const mapDispatchToProps = dispatch => ({
-  undoTextRemotion: () => dispatch(undoTextRemotion()),
-  addUtterContent: (new_utter) => dispatch(addUtterContent(new_utter)),
-  removeUtterContent: (utter_position, text_position) => dispatch(removeUtterContent(utter_position, text_position)),
-  changeUtterForm: (multiple_alternatives, current_item) => dispatch(changeUtterForm(multiple_alternatives, current_item)),
-  setUtterContent: (utter_position, text_position, text, current_item) => dispatch(setUtterContent(utter_position, text_position, text, current_item))
-});
+const mapStateToProps = state => { return { ...state.utter } };
+
+const mapDispatchToProps = dispatch => bindActionCreators(UtterAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

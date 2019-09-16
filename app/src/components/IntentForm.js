@@ -1,4 +1,6 @@
 import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
@@ -9,16 +11,19 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
+import { Creators as IntentAction } from "../ducks/intents";
 
-import {
-  setIntentText,
-  addIntentText,
-  undoDeleteText,
-  deleteIntentText
-} from "../actions/intentsAction";
+
+const style = {
+  icon_delete: {
+    color: "#4b3953",
+    opacity: 0.5,
+    top: "0px",
+    marginBottom: "20px"
+  }
+}
 
 class IntentForm extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -27,14 +32,14 @@ class IntentForm extends Component {
   }
 
   handleDelete(intent_index) {
-    if (this.props.item_contents.length > 1) {
+    if (this.props.intent_contents.length > 1) {
       this.setState({ undo_delete: true });
-      this.props.deleteIntentText(intent_index);
+      this.props.deleteIntentContent(intent_index);
     }
   }
 
   handleUndo() {
-    this.props.undoDeleteText();
+    this.props.undoDeleteIntentContent();
     this.setState({ undo_delete: false });
   }
 
@@ -46,7 +51,7 @@ class IntentForm extends Component {
           horizontal: 'left',
         }}
         open={this.state.undo_delete}
-        onClose={()=>this.setState({undo_delete: false})}
+        onClose={() => this.setState({ undo_delete: false })}
         autoHideDuration={3000}
         ContentProps={{
           'aria-describedby': 'message-id',
@@ -75,9 +80,8 @@ class IntentForm extends Component {
 
   setIntentContents() {
     let samples = [];
-
-    if (this.props.item_contents !== undefined) {
-      samples = this.props.item_contents.map((sample, sample_index) => {
+    if (this.props.intent_contents !== undefined) {
+      samples = (this.props.intent_contents).map((sample, sample_index) => {
         return (
           <li key={"sample_content" + sample_index}>
             <Grid container spacing={2} alignItems="flex-end" >
@@ -90,7 +94,7 @@ class IntentForm extends Component {
                   margin="normal"
                   variant="outlined"
                   value={sample}
-                  onChange={(e) => this.props.setIntentText(sample_index, e.target.value)}
+                  onChange={(e) => this.props.setIntentContent(sample_index, e.target.value)}
                   InputProps={{
                     endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
                   }}
@@ -98,7 +102,7 @@ class IntentForm extends Component {
               </Grid>
               <Grid item xs={1}>
                 <DeleteIcon
-                  style={{ color: "#4b3953", opacity: 0.5, top: "0px", marginBottom: "20px" }}
+                  style={style.icon_delete}
                   type="button"
                   onClick={() => this.handleDelete(sample_index)}>
                 </DeleteIcon>
@@ -124,26 +128,25 @@ class IntentForm extends Component {
             {this.deleteSnack()}
             <Grid item xs={11}>
               <TextField
-                  id="outlined-multiline-flexible"
-                  style={{
-                    opacity: "0.6",
-                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))",
-                    cursor: "pointer"
-                  }}
-                  fullWidth
-                  disabled
-                  margin="normal"
-                  variant="outlined"
-                  value={"Nova pergunta"}
-                  onClick={() => this.props.addIntentText()} 
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
-                  }}
-                />
+                id="outlined-multiline-flexible"
+                style={{
+                  opacity: "0.6",
+                  filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))",
+                  cursor: "pointer"
+                }}
+                fullWidth
+                disabled
+                margin="normal"
+                variant="outlined"
+                value={"Nova pergunta"}
+                onClick={() => this.props.addIntent()}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
+                }}
+              />
             </Grid>
             <Grid item xs={1} />
           </Grid>
-
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={3}>
@@ -153,15 +156,8 @@ class IntentForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { ...state.intentReducer }
-};
+const mapStateToProps = state => { return { ...state.intent } };
 
-const mapDispatchToProps = dispatch => ({
-  addIntentText: () => dispatch(addIntentText()),
-  undoDeleteText: () => dispatch(undoDeleteText()),
-  deleteIntentText: (intent_position) => dispatch(deleteIntentText(intent_position)),
-  setIntentText: (intent_position, text) => dispatch(setIntentText(intent_position, text))
-});
+const mapDispatchToProps = dispatch => bindActionCreators(IntentAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntentForm);

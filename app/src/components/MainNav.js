@@ -46,17 +46,33 @@ const StyledTab = withStyles(theme => ({
 
 export default function MainNav() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(handleChange());
 
   function handleChange(event, newValue) {
-    setValue(newValue);
+    const x = window.location.pathname;
+    if (newValue !== undefined) {
+      setValue(newValue)
+    } else {
+      if (x === '/story/edit') {
+        return 0;
+      } else if (x === '/utters') {
+        return 1;
+      } else if (x === '/intents') {
+        return 2;
+      }
+    }
   }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> New edit story (#104)
   return (
     <Tabs className={classes.root}
       value={value}
       onChange={handleChange}
       centered>
+      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/story/edit" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents" component={Link} />
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/stories" component={Link} />
