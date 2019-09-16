@@ -75,7 +75,7 @@ class IntentPage extends Component {
               variant="contained"
               onClick={() => this.props.createNewIntent()}
             >
-              <Add />{"Criar nova pergunta"}
+              <Add />{"Criar pergunta"}
             </Button>
           </div>
           <ListFilter
