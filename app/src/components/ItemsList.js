@@ -36,7 +36,7 @@ export default class ItemList extends Component {
         button
         id={"items_list_" + index}
         key={"items_list" + index}
-        selected={this.props.story !== true ? (selected_item_position) === index : this.props.isSelected(item, this.props.content)}
+        selected={(selected_item_position) === index}
         onClick={() => this.handleListItemClick(item, index)}
       >
         <ListItemIcon>{icon}</ListItemIcon>

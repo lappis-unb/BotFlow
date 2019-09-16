@@ -1,0 +1,63 @@
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: botflow-staging-ingress
+  namespace: botflow-staging
+  labels:
+    app: botflow-staging
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" # turn off ssl redirect for external.
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: botflow.dev.lappis.rocks
+    http:
+      paths:
+      - backend:
+          serviceName: botflow-staging-svc
+          servicePort: 80
+  tls:
+  - hosts:
+    - botflow.dev.lappis.rocks
+    secretName: botflow-staging-letsencrypt-prod-crt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: botflow-staging-svc
+  namespace: botflow-staging
+  labels:
+    app: botflow-staging
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: botflow-staging
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: botflow-staging
+  namespace: botflow-staging
+  labels:
+    app: botflow-staging
+spec:
+  selector:
+    matchLabels:
+      app: botflow-staging
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: botflow-staging
+    spec:
+      containers:
+      - name: botflow-staging
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 3000
+          protocol: TCP

@@ -1,0 +1,22 @@
+﻿stages:
+- name: Publish image
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: botflow:${CICD_EXECUTION_SEQUENCE}
+- name: Deploy staging
+  when:
+    branch: devel
+  steps:
+  - applyYamlConfig:
+      path: ./deploy/deployment-staging.yaml
+- name: Deploy production
+  when:
+    branch: master
+  steps:
+  - applyYamlConfig:
+      path: ./deploy/deployment-production.yaml
+branch:
+  include: [master, devel]
+timeout: 60

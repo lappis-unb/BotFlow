@@ -77,13 +77,8 @@ class StoryEditPage extends Component {
         }
     }
 
-    isSelected(item, content) {
-        const founded = content.find(item_story => (item_story.id === item.id && item_story.name === item.name));
-        return founded !== undefined;
-    }
-
-    isButtonEnabled(){
-        return (this.props.content.length!==0 && this.props.content[0].type!=='utter');
+    isButtonEnabled() {
+        return (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
     }
 
     render() {
@@ -91,7 +86,7 @@ class StoryEditPage extends Component {
             <Grid container item xs={12}>
                 <Grid container item xs={4} direction='column'>
                     <Grid container direction='row' style={style.grid_item_list}>
-                        <Grid item xs={3} sm={6}>
+                        <Grid item xs={2} sm={6}>
                             <Typography variant="body2" color="primary">
                                 Perguntas
                             </Typography>
@@ -99,14 +94,16 @@ class StoryEditPage extends Component {
                                 story={true}
                                 icon={<IntentIcon />}
                                 highlighted_text={this.state.value}
-                                isSelected={this.isSelected}
                                 actionOnClick={this.props.addIntent}
                                 items={this.filterItems(this.props.intents)}
                                 content={this.props.content}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
-                        <Grid item xs={3} sm={6}>
+                        <Grid item xs={1} sm={1}>
+                            <Divider orientation='vertical' />
+                        </Grid>
+                        <Grid item xs={2} sm={5}>
                             <Typography variant="body2" color="primary">
                                 Respostas
                             </Typography>
@@ -135,6 +132,8 @@ class StoryEditPage extends Component {
                         />
                     </div>
                 </Grid>
+
+
                 <Grid item xs={8}>
                     <ToolbarName
                         story
@@ -143,20 +142,31 @@ class StoryEditPage extends Component {
                         deleteItem={this.props.deleteStory}
                         item={new Story(this.props.story_id, this.props.content)}
                     />
-                    <Grid container item xs={12} direction="row">
-                        <Grid
-                            container
-                            item xs={6}
-                            justify="center"
-                            alignItems="flex-start"
-                            style={style.list}
-                        >
-                            <StoryList />
+                    <div style={{
+                        height: "calc(100vh - 74px - 72px)",
+                        overflowY: "auto",
+                        overflowX: "hidden"
+                    }}>
+                        <Grid container item xs={12} direction="row">
+                            <Grid
+                                container
+                                item xs={8}
+                                justify="center"
+                                alignItems="flex-start"
+                                style={style.list}
+                            >
+                                <StoryList />
+                            </Grid>
+                            <Grid container item xs={4}>
+                                <Grid item xs={1}>
+                                    <Divider orientation='vertical' style={{ minHeight: "calc(100vh - 74px - 72px)" }} />
+                                </Grid>
+                                <Grid item xs={11}>
+                                    <ExampleStory />
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid container item xs={6}>
-                            <ExampleStory />
-                        </Grid>
-                    </Grid>
+                    </div>
                 </Grid>
                 <Snackbar
                     variant={this.props.notification_text[0] === 'O' ? 'error' : 'success'}
