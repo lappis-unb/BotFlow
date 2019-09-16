@@ -7,32 +7,32 @@ import { bindActionCreators } from 'redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+
+
 
 
 const styles = {
-    icon_delete: {
-        color: "#4b3953",
-        opacity: 0.5,
-        top: "0px",
-        marginBottom: "20px"
-    },
     intent_icon: {
         fill: '#4b3953',
-        marginRight: '10px'
     },
     utter_icon: {
         fill: '#f26a53',
-        marginRight: '10px'
     },
     card_intent: {
         border: '1px solid #4b3953',
-        color: '#4b3953'
+        color: '#4b3953',
+        boxShadow: 'none',
+        padding:"12px 12px 6px",
+
     },
     card_utter: {
         border: '1px solid #f26a53',
         color: '#f26a53',
-        marginLeft: '24px'
-
+        marginLeft: '24px',
+        boxShadow: 'none',
+        padding:"12px 12px 6px",
     }
 }
 
@@ -63,7 +63,8 @@ const getIntentStyle = (isDragging, draggableStyle) => ({
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "#f6f9f9" : "white",
     padding: grid,
-    minWidth: "370px"
+    width:"420px",
+    
 });
 
 class StoryList extends Component {
@@ -98,7 +99,7 @@ class StoryList extends Component {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                             >
-                                <Grid container spacing={2} alignItems="flex-end">
+                                <Grid container spacing={2}>
                                     <Grid item xs={11}>
                                         <Card style={item.type === "intent" ?
                                             getIntentStyle(
@@ -107,16 +108,21 @@ class StoryList extends Component {
                                                 provided.draggableProps.style,
                                             )}
                                         >
-                                            {this.getIcon(item.type)}
-                                            {item.name}
+                                          <Grid container>
+                                            <Grid item xs={1}>
+                                              {this.getIcon(item.type)}
+                                            </Grid>
+                                            <Grid item xs={11}>
+                                              <Typography varant="body1" noWrap>{item.name}</Typography>
+                                            </Grid>
+                                          </Grid>
                                         </Card>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <DeleteIcon
-                                            style={styles.icon_delete}
-                                            type="button"
+                                        <IconButton color="primary" m={0}
                                             onClick={() => this.props.deleteContent(content_position)}>
-                                        </DeleteIcon>
+                                            <DeleteIcon style={{ opacity: 0.5 }} />
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -141,7 +147,7 @@ class StoryList extends Component {
             )
 
         } else {
-            return <div>Não há diálogos!</div>
+            return <Typography variant="body1">Não há diálogos!</Typography>
         }
     }
 
