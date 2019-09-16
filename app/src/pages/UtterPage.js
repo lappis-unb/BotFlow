@@ -80,7 +80,7 @@ class UtterPage extends Component {
               variant="contained"
               onClick={() => this.props.createNewUtter()}
             >
-              <Add />{"Criar Nova resposta"}
+              <Add />{"Criar resposta"}
             </Button>
           </div>
           <ListFilter
