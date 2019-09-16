@@ -5,6 +5,8 @@
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: botflow:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: registry.lappis.rocks
 - name: Deploy staging
   when:
     branch: devel
