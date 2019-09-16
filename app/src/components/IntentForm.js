@@ -10,16 +10,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Typography from '@material-ui/core/Typography';
+
 
 import { Creators as IntentAction } from "../ducks/intents";
 
 
 const style = {
-  icon_delete: {
-    color: "#4b3953",
-    opacity: 0.5,
-    top: "0px",
-    marginBottom: "20px"
+  new_question: {
+      opacity: "0.2",
+      position:"relative",
+      cursor: "pointer",
+      border: "solid 1px #000",
+      borderRadius: "4px",
+      padding: "10px 0 10px 14px",
   }
 }
 
@@ -27,7 +31,8 @@ class IntentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      undo_delete: false
+      undo_delete: false,
+      there_is_auto_focus: false
     }
   }
 
@@ -77,6 +82,11 @@ class IntentForm extends Component {
       />
     )
   }
+  
+  handleClick() {
+    this.props.addIntent()
+    this.setState({ there_is_auto_focus: true });
+  }
 
   setIntentContents() {
     let samples = [];
@@ -88,12 +98,11 @@ class IntentForm extends Component {
               <Grid item xs={11}>
                 <TextField
                   id="outlined-multiline-flexible"
-                  multiline
                   fullWidth
-                  rowsMax="4"
-                  margin="normal"
+                  margin="dense"
                   variant="outlined"
                   value={sample}
+                  autoFocus={this.state.there_is_auto_focus} 
                   onChange={(e) => this.props.setIntentContent(sample_index, e.target.value)}
                   InputProps={{
                     endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
@@ -101,11 +110,9 @@ class IntentForm extends Component {
                 />
               </Grid>
               <Grid item xs={1}>
-                <DeleteIcon
-                  style={style.icon_delete}
-                  type="button"
-                  onClick={() => this.handleDelete(sample_index)}>
-                </DeleteIcon>
+                <IconButton color="primary" m={0} onClick={() => this.handleDelete(sample_index)}>
+                    <DeleteIcon style={{ opacity: 0.5 }} />
+                </IconButton>              
               </Grid>
             </Grid>
           </li>
@@ -121,36 +128,22 @@ class IntentForm extends Component {
       <Grid container>
         <Grid item xs={1} />
         <Grid item xs={7}>
-          <ul>
+          <ul style={{marginTop:24}}>
             {this.setIntentContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
             {this.deleteSnack()}
             <Grid item xs={11}>
-              <TextField
-                id="outlined-multiline-flexible"
-                style={{
-                  opacity: "0.6",
-                  filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))",
-                  cursor: "pointer"
-                }}
-                fullWidth
-                disabled
-                margin="normal"
-                variant="outlined"
-                value={"Nova pergunta"}
-                onClick={() => this.props.addIntent()}
-                InputProps={{
-                  endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
-                }}
-              />
+              <div style={style.new_question} 
+                onClick={() => { this.handleClick() }}>
+                  <Typography variant="body2">Nova pergunta</Typography>
+                </div>
             </Grid>
             <Grid item xs={1} />
           </Grid>
         </Grid>
         <Grid item xs={1} />
-        <Grid item xs={3}>
-        </Grid>
+        <Grid item xs={3} />
       </Grid>
     );
   }
