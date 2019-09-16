@@ -2,6 +2,8 @@ version: "3.4"
 services:
   botflow:
     image: lappis/bot-flow:devel 
+    environment:
+        REACT_APP_URL_API: http://localhost:8000/
     ports:
       - 3000:3000
     volumes:
