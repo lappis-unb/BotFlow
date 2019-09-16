@@ -25,11 +25,14 @@ const style = {
         background: "#dae8ea",
         paddingTop: '15px',
         height: "calc(100vh - 74px - 64px - 15px)",
-        paddingLeft: "24px",
         overflowY: "auto"
     },
-    list_container: {
-        paddingLeft: "24px",
+    list_container_utter: {
+        paddingLeft: "16px",
+    },
+    list_container_intent: {
+        paddingLeft: "16px",
+        borderRight:"solid 1px #CCC",
     },
     filter_items_container: {
         padding: "12px 8px",
@@ -96,7 +99,7 @@ class StoryEditPage extends Component {
             <Grid container item xs={12}>
                 <Grid container item xs={4} direction='column'>
                     <Grid container direction='row' style={style.grid_item_list}>
-                        <Grid item xs={2} sm={6}>
+                        <Grid item xs={2} sm={6} style={style.list_container_intent}>
                             <Typography variant="body2" color="primary">
                                 Perguntas
                             </Typography>
@@ -110,10 +113,7 @@ class StoryEditPage extends Component {
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
-                        <Grid item xs={1} sm={1}>
-                            <Divider orientation='vertical' />
-                        </Grid>
-                        <Grid item xs={2} sm={5}>
+                        <Grid item xs={2} sm={6} style={style.list_container_utter}>
                             <Typography variant="body2" color="primary">
                                 Respostas
                             </Typography>
@@ -168,13 +168,9 @@ class StoryEditPage extends Component {
                             >
                                 <StoryList />
                             </Grid>
-                            <Grid container item xs={4}>
-                                <Grid item xs={1}>
-                                    <Divider orientation='vertical' style={{ minHeight: "calc(100vh - 74px - 72px)" }} />
-                                </Grid>
-                                <Grid item xs={11}>
+                            <Grid container item xs={4} >
+                                
                                     <ExampleStory />
-                                </Grid>
                             </Grid>
                         </Grid>
                     </div>

@@ -5,26 +5,26 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
     utter: {
         backgroundColor: '#fde9e6',
-        margin: '10px 50px 10px 10px',
+        margin: '8px 36px 8px 16px',
     },
     intent: {
         backgroundColor: '#dae8ea',
-        margin: '10px 10px 10px 50px',
+        margin: '8px 16px 8px 36px',
     },
     box: {
-        padding: '5px',
-        borderRadius: '5px',
+        padding: '8px 12px',
+        borderRadius: '8px',
         alignSelf: 'stretch'
     },
     title: {
         alignSelf: 'center',
         margin: '14px',
-        color: '#4b3953',
-        fontSize: '14px'
     },
     container: {
         display: 'flex',
         flexDirection: 'column',
+        minHeight: "calc(100vh - 74px - 72px)",
+        borderLeft:"solid 1px #ddd",
         alignItems: 'flex-start',
         width: '100%',
     }
@@ -34,7 +34,7 @@ class ExampleStory extends Component {
     exampleUtter(item, index) {
         return (
             <div key={'example_' + index} style={{ ...styles.utter, ...styles.box }}>
-                {item.example}
+                <Typography variant="body2">{item.example}</Typography>
             </div>
         );
     }
@@ -42,7 +42,7 @@ class ExampleStory extends Component {
     exampleIntent(item, index) {
         return (
             <div key={'example_' + index} style={{ ...styles.intent, ...styles.box }}>
-                {item.example}
+                <Typography variant="body2">{item.example}</Typography>
             </div>
         );
     }
@@ -50,7 +50,7 @@ class ExampleStory extends Component {
     render() {
         return (
             <div style={styles.container}>
-                <Typography variant="body2" style={styles.title}>
+                <Typography variant="body2" style={styles.title} color="primary">
                     {this.props.content.length !== 0 ? "Exemplo:" : "Não há exemplos"}
                 </Typography>
                 {
