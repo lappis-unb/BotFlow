@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Intent } from '../utils/DataFormat.js'
 import { createActions, createReducer } from 'reduxsauce'
 import { INTENT_URL } from '../utils/url_routes.js'
+import {message} from '../utils/messages';
 
 const INITIAL_STATE = {
     mode: 'Intent',
@@ -166,9 +167,9 @@ export const { Types, Creators } = createActions({
     saveData: (item) => {
         return async (dispatch) => {
             if (item.id === '' || item.id === undefined) {
-                dispatch(createOrUpdateItem('post', item, 'Intent criada com sucesso!'));
+                dispatch(createOrUpdateItem('post', item, message.intent.created));
             } else {
-                dispatch(createOrUpdateItem('put', item, 'Intent atualizada com sucesso!'));
+                dispatch(createOrUpdateItem('put', item, message.intent.updated));
             }
         }
     },
@@ -177,7 +178,7 @@ export const { Types, Creators } = createActions({
             try {
                 await axios.delete(INTENT_URL + delete_intent_id);
                 await dispatch(Creators.getIntents());
-                await dispatch(Creators.notifyAction('Intent removida com sucesso!'));
+                await dispatch(Creators.notifyAction(message.intent.deleted));
                 await dispatch(Creators.createNewIntent())
 
             } catch (error) {
