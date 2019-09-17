@@ -9,6 +9,7 @@ import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import { message } from "../utils/messages";
 
 
 
@@ -147,7 +148,7 @@ class StoryList extends Component {
             )
 
         } else {
-            return <Typography variant="body1">Não há diálogos!</Typography>
+            return <Typography variant="body1">{message.no_dialogs}</Typography>
         }
     }
 

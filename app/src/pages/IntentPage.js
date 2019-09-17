@@ -31,7 +31,6 @@ class IntentPage extends Component {
 
 
   handleSnackbarClick(value) {
-    console.log("ENTREOU", this.props.id)
     if (value === false) {
       this.props.deleteIntent(this.props.id)
     }
@@ -62,15 +61,6 @@ class IntentPage extends Component {
 
     const no_errors = this.props.helper_text.length === 0;
     const no_empty_name = this.props.name_intent.length !== 0;
-
-    //console.log("============================")
-    //console.log("have_changes", have_changes);
-    //console.log("contents_changed", contents_changed);
-    //console.log("name_changed", name_changed);
-    //console.log("no_empty_fields", no_empty_fields);
-    //console.log("no_errors", no_errors);
-    //console.log("no_empty_name", no_empty_name);
-    //console.log("============================")
 
     return (
       no_errors &&
