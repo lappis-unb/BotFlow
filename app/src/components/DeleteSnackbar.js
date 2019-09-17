@@ -1,10 +1,8 @@
 
-import Snackbar from '@material-ui/core/Snackbar';
-import { Button } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import React, { Component } from "react";
-import IconButton from '@material-ui/core/IconButton';
 import {message} from '../utils/messages';
+import { Button } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class DeleteSnackbar extends Component {
     handleUndoSnack() {

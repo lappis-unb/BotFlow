@@ -59,7 +59,7 @@ class IntentPage extends Component {
     const contents_changed = JSON.stringify(intent_contents) !== JSON.stringify(old_item_content);
     const have_changes = (contents_changed || name_changed);
 
-    const no_errors = this.props.helper_text.length === 0;
+    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
     const no_empty_name = this.props.name_intent.length !== 0;
 
     return (
