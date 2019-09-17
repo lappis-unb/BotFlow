@@ -8,9 +8,9 @@ const MessageSnackbar = ({ notification_text, handleClose, variant = "success" }
         <Snackbar
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right',
+                horizontal: 'center',
             }}
-            autoHideDuration={2000}
+            autoHideDuration={3000}
             open={notification_text !== ''}
             onClose={() => handleClose()}>
             <SnackbarContent    
