@@ -32,10 +32,10 @@ class UtterPage extends Component {
   }
 
   handleSnackbarClick(value) {
-    if(value===false){
+    if (value === false) {
       this.props.deleteUtter(this.props.id)
     }
-    value = (value===undefined ? false : value);
+    value = (value === undefined ? false : value);
     this.setState({ undo_delete: value });
   }
 
@@ -63,7 +63,7 @@ class UtterPage extends Component {
     const contents_changed = JSON.stringify(utter_contents) !== JSON.stringify(old_item_content);
     const have_changes = (contents_changed || name_changed);
 
-    const no_errors = this.props.helper_text.length === 0;
+    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
     const no_empty_name = this.props.name.length !== 0;
 
     return (

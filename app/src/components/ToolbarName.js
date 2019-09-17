@@ -102,7 +102,7 @@ export default class ToolbarName extends Component {
                             item_id={this.props.item.id}
                             label={this.props.name_label}
                             setItemName={this.props.setItemName}
-                            helper_text={this.props.helper_text}
+                            helper_text={this.props.helper_text !== undefined ? this.props.helper_text : ''}
                         />
                     )}
                 </Grid>
