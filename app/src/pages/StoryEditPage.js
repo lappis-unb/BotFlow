@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '../components/Snackbar';
+import Snackbar from '../components/StorySnackbar';
 import { Creators as StoryAction } from "../ducks/stories";
 import Divider from '@material-ui/core/Divider';
 

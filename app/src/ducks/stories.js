@@ -56,15 +56,19 @@ export const validationContent = (content) => {
     let intent_intent = true;
 
     for (let i = 1, size = content.length; i < size; i++) {
-        if (content[i - 1].type === 'intent' && content[i].type === 'intent') {
+        if (content[i - 1].type === 'intent' && (content[i].type === 'intent')) {
+            intent_intent = false;
+        }else if(content[size - 1].type === 'intent'){
             intent_intent = false;
         }
     }
 
     if (!intent_intent) {
-        return "Não pode haver duas perguntas seguidas!";
-    } else if (content[0].type !== 'intent') {
-        return "O primeiro elemento deve ser uma pergunta!";
+        return "Adicione uma resposta depois de cada pergunta";
+    } 
+    
+    if (content[0].type !== 'intent') {
+        return "Comece o diálogo com uma pergunta";
     }
 
     return "";
