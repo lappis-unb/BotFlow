@@ -152,16 +152,16 @@ class UtterForm extends Component {
           />
         </Grid>
         <Grid item xs={2} />
-        <Grid item xs={3}>
-          <p>Name: {this.props.name}</p>
-          <p>id_utter: {this.props.id}</p>
-          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre>
-        </Grid>
+        <Grid item xs={3} />
       </Grid>
     );
   }
 }
+
+//<p>Name: {this.props.name}</p>
+//          <p>id_utter: {this.props.id}</p>
+//          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
+//          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre>
 
 
 const mapStateToProps = state => { return { ...state.utter } };
