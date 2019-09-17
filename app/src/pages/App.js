@@ -7,7 +7,7 @@ import MainNav from "../components/MainNav"
 
 import UtterPage from "./UtterPage"
 import IntentPage from './IntentPage';
-import StoryPage from './StoryPage';
+import StoriesPage from './StoriesPage';
 import AppIcon from '../icons/AppIcon';
 import StoryEditPage from './StoryEditPage';
 
@@ -25,7 +25,6 @@ function App() {
         <Route exact path="/intents" component={IntentPage} />
         <Route exact path="/stories" component={StoriesPage} />
         <Route exact path="/story/edit" component={StoryEditPage} />
-        <Route exact path="/stories" component={StoryPage} />
       </div>
       <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js" > </ script >
     </Router>

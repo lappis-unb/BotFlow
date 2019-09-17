@@ -6,6 +6,7 @@ import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 const INITIAL_STATE = {
     intents: [],
     utters: [],
+    stories: [],
     content: [],
     story_id: "",
     notification_text: ""
@@ -27,6 +28,13 @@ export const getUtters = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         utters: action.utters
+    };
+}
+
+export const getStories = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        stories: action.stories
     };
 }
 
@@ -127,6 +135,16 @@ export const { Types, Creators } = createActions({
             }
         }
     },
+    getStories: () => {
+        return async (dispatch) => {
+            try {
+                const response = await axios.get(STORY_URL);
+                await dispatch({ type: Types.GET_STORIES, stories: response.data });
+            } catch (error) {
+                throw (error);
+            }
+        }
+    },
     saveData: (item) => {
         return async (dispatch) => {
             if ((item.id === "" || item.id === undefined)) {
@@ -166,6 +184,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
 };
 
 export default createReducer(INITIAL_STATE, {
+    [Types.GET_STORIES]: getStories,
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
