@@ -1,16 +1,14 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
 import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CloseIcon from '@material-ui/icons/Close';
 import MenuItem from '@material-ui/core/MenuItem';
-import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import { bindActionCreators } from 'redux';
 import { Creators as UtterAction } from '../ducks/utters';
+import SnackbarDelete from './DeleteSnackbar'
 
 const ALTERNATIVES_TEXT = "como alternativas";
 const SEQUENCE_TEXT = "em sequência";
@@ -22,9 +20,11 @@ class UtterForm extends Component {
     this.state = {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
       value: SEQUENCE_TEXT,
-      undo_delete: false,
-      there_is_auto_focus: false
+      there_is_auto_focus: false,
+      undo_delete: false
     }
+
+    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
   }
 
   changeTextarea = (utter_index, text_index, e) => {
@@ -38,50 +38,13 @@ class UtterForm extends Component {
     const utters_text_length = this.props.utter_contents[0].length;
 
     if (utters_length > 1 || utters_text_length > 1) {
-      this.setState({ undo_delete: true });
+      this.handleSnackbarClick(true);
       this.props.deleteUtterContent(utter_index, text_index);
     }
-
   }
 
-  handleUndo() {
-    this.props.undoDeleteUtterContent();
-    this.setState({ undo_delete: false });
-  }
-
-  deleteSnack() {
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={this.state.undo_delete}
-        autoHideDuration={3000}
-        onClose={() => this.setState({ undo_delete: false })}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">Deletado com sucesso!</span>}
-        action={[
-          <Button
-            key="undo"
-            color="secondary"
-            size="small"
-            onClick={() => this.handleUndo()}>
-            Desfazer
-        </Button>,
-          <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            onClick={() => this.setState({ undo_delete: false })}
-          >
-            <CloseIcon />
-          </IconButton>
-        ]}
-      />
-    )
+  handleSnackbarClick(value){
+    this.setState({ undo_delete: value });
   }
 
   setUtterContents() {
@@ -162,7 +125,13 @@ class UtterForm extends Component {
             {this.setUtterContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
-            {this.deleteSnack()}
+
+            <SnackbarDelete
+              handleSnackbarClick={this.handleSnackbarClick}
+              handleUndo={this.props.undoDeleteUtterContent}
+              undo={this.state.undo_delete}
+            />
+            
             <Grid item xs={10}>
               <DialogBox
                 style={{

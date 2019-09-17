@@ -71,7 +71,7 @@ export default class ToolbarName extends Component {
     }
 
     handleDelete() {
-        this.props.deleteItem(this.props.item_id);
+        this.props.deleteItem(this.props.item.id);
         this.setState({ open: false });
     }
 
@@ -84,7 +84,7 @@ export default class ToolbarName extends Component {
                         <NameField
                             name={this.props.name}
                             items={this.props.items}
-                            item_id={this.props.item_id}
+                            item_id={this.props.item.id}
                             label={this.props.name_label}
                             setItemName={this.props.setItemName}
                             helper_text={this.props.helper_text}

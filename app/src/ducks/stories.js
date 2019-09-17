@@ -194,7 +194,10 @@ export const { Types, Creators } = createActions({
                 await axios.delete(STORY_URL + story_id);
                 await dispatch(Creators.getIntents());
                 await dispatch(Creators.notifyAction("Story removida com sucesso!"));
-                await dispatch(Creators.createNewIntent())
+                
+                // Create new_story
+
+                //await dispatch(Creators.createNewStory())
 
             } catch (error) {
                 throw (error);

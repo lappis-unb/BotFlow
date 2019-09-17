@@ -3,15 +3,12 @@ import { bindActionCreators } from 'redux';
 
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import Snackbar from '@material-ui/core/Snackbar';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
-
+import SnackbarDelete from './DeleteSnackbar'
 
 import { Creators as IntentAction } from "../ducks/intents";
 
@@ -34,58 +31,28 @@ class IntentForm extends Component {
       undo_delete: false,
       there_is_auto_focus: false
     }
+
+    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
   }
 
   handleDelete(intent_index) {
     if (this.props.intent_contents.length > 1) {
-      this.setState({ undo_delete: true });
       this.props.deleteIntentContent(intent_index);
+      this.handleSnackbarClick(true);
     }
   }
 
   handleUndo() {
     this.props.undoDeleteIntentContent();
-    this.setState({ undo_delete: false });
-  }
-
-  deleteSnack() {
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={this.state.undo_delete}
-        onClose={() => this.setState({ undo_delete: false })}
-        autoHideDuration={3000}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">Deletado com sucesso!</span>}
-        action={[
-          <Button
-            key="undo"
-            color="secondary"
-            size="small"
-            onClick={() => this.handleUndo()}>
-            Desfazer
-        </Button>,
-          <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            onClick={() => this.setState({ undo_delete: false })}
-          >
-            <CloseIcon />
-          </IconButton>
-        ]}
-      />
-    )
   }
   
   handleClick() {
     this.props.addIntent()
     this.setState({ there_is_auto_focus: true });
+  }
+
+  handleSnackbarClick(value){
+    this.setState({ undo_delete: value });
   }
 
   setIntentContents() {
@@ -132,7 +99,11 @@ class IntentForm extends Component {
             {this.setIntentContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
-            {this.deleteSnack()}
+            <SnackbarDelete
+              handleSnackbarClick={this.handleSnackbarClick}
+              handleUndo={this.props.undoDeleteIntentContent}
+              undo={this.state.undo_delete}
+            />
             <Grid item xs={11}>
               <div style={style.new_question} 
                 onClick={() => { this.handleClick() }}>
