@@ -32,7 +32,7 @@ const style = {
     },
     list_container_intent: {
         paddingLeft: "16px",
-        borderRight:"solid 1px #CCC",
+        borderRight: "solid 1px #CCC",
     },
     filter_items_container: {
         padding: "12px 8px",
@@ -157,7 +157,6 @@ class StoryEditPage extends Component {
                         overflowY: "auto",
                         overflowX: "hidden"
                     }}>
-                        {this.props.notification_text}
                         <Grid container item xs={12} direction="row">
                             <Grid
                                 container
@@ -169,12 +168,17 @@ class StoryEditPage extends Component {
                                 <StoryList />
                             </Grid>
                             <Grid container item xs={4} >
-                                
-                                    <ExampleStory />
+
+                                <ExampleStory />
                             </Grid>
                         </Grid>
                     </div>
                 </Grid>
+                <Snackbar
+                    variant='error'
+                    handleClose={() => this.props.notifyContentTextValidation('')}
+                    notification_text={this.props.content_text_validation}
+                />
                 <Snackbar
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}

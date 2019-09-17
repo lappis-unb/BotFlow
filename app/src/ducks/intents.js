@@ -4,13 +4,13 @@ import { createActions, createReducer } from 'reduxsauce'
 import { INTENT_URL } from '../utils/url_routes.js'
 
 const INITIAL_STATE = {
-    mode: "Intent",
-    name_intent: "",
-    helper_text: "",
-    old_name_intent: "",
-    notification_text: "",
-    intent_contents: [""],
-    old_intent_contents: [""],
+    mode: 'Intent',
+    name_intent: '',
+    helper_text: '',
+    old_name_intent: '',
+    notification_text: '',
+    intent_contents: [''],
+    old_intent_contents: [''],
 };
 
 export const addIntent = (state = INITIAL_STATE) => {
@@ -67,13 +67,13 @@ export const selectIntent = (state = INITIAL_STATE, action) => {
 
     return {
         ...state,
-        intent_id: selected_item.id,
+        id: selected_item.id,
         name_intent: selected_item.name,
         old_name_intent: selected_item.name,
         selected_item_position: selected_item_position,
         intent_contents: [...selected_item.samples],
         old_intent_contents: [...selected_item.samples],
-        helper_text: ""
+        helper_text: ''
     };
 }
 
@@ -82,7 +82,7 @@ export const createNewIntent = (state = INITIAL_STATE) => {
 
     return {
         ...state,
-        intent_id: new_intent.id,
+        id: new_intent.id,
         selected_item_position: -1,
         name_intent: new_intent.name,
         old_name_intent: new_intent.name,
@@ -113,7 +113,7 @@ export const getIntents = (state = INITIAL_STATE, action) => {
     };
 }
 
-export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
+export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
     return async (dispatch) => {
         try {
             const mode_url = (mode === 'post') ? INTENT_URL : INTENT_URL + new_item.id;
@@ -142,7 +142,7 @@ export const { Types, Creators } = createActions({
     deleteIntentContent: ['intent_position'],
     setIntentName: ['name_intent', 'helper_text'],
     setIntentContent: ['intent_position', 'text'],
-    selectIntent: (intent = "", item_position = "") => {
+    selectIntent: (intent = '', item_position = '') => {
         return async (dispatch) => {
             try {
                 const response = await axios.get(INTENT_URL + intent.id);
@@ -165,10 +165,10 @@ export const { Types, Creators } = createActions({
     },
     saveData: (item) => {
         return async (dispatch) => {
-            if (item.id === "" || item.id === undefined) {
-                dispatch(createOrUpdateItem('post', item, "Intent criada com sucesso!"));
+            if (item.id === '' || item.id === undefined) {
+                dispatch(createOrUpdateItem('post', item, 'Intent criada com sucesso!'));
             } else {
-                dispatch(createOrUpdateItem('put', item, "Intent atualizada com sucesso!"));
+                dispatch(createOrUpdateItem('put', item, 'Intent atualizada com sucesso!'));
             }
         }
     },
@@ -177,7 +177,7 @@ export const { Types, Creators } = createActions({
             try {
                 await axios.delete(INTENT_URL + delete_intent_id);
                 await dispatch(Creators.getIntents());
-                await dispatch(Creators.notifyAction("Intent removida com sucesso!"));
+                await dispatch(Creators.notifyAction('Intent removida com sucesso!'));
                 await dispatch(Creators.createNewIntent())
 
             } catch (error) {

@@ -75,6 +75,21 @@ export default class ToolbarName extends Component {
         this.setState({ open: false });
     }
 
+    getDeleteOption() {
+        if (this.props.item.id !== '') {
+            return (
+                <IconButton
+                    aria-label="more"
+                    aria-haspopup="true"
+                    aria-controls="long-menu"
+                    onClick={e => this.handleMenuClick(e, true)}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+            )
+        }
+    }
+
     render() {
         return (
             <Toolbar style={style.toolbar}>
@@ -102,14 +117,7 @@ export default class ToolbarName extends Component {
                         <Done />Gravar
                     </Button>
 
-                    <IconButton
-                        aria-label="more"
-                        aria-haspopup="true"
-                        aria-controls="long-menu"
-                        onClick={e => this.handleMenuClick(e, true)}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
+                    {this.getDeleteOption()}
                     {this.getMoreOptions()}
                 </Grid>
             </Toolbar>

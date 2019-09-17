@@ -157,13 +157,14 @@ export const changeUtterForm = (state = INITIAL_STATE, action) => {
 export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     return async (dispatch) => {
         try {
+            console.log("UTE", new_item)
             const mode_url = (mode === 'post') ? UTTER_URL : UTTER_URL + new_item.id;
             let utter;
             await axios[mode](mode_url, new_item)
                 .then((resp) => {
                     utter = resp.data;
                 })
-
+            console.log("NEW", utter)
             await dispatch(Creators.getUtters());
             await dispatch(Creators.selectUtter(utter, -1));
 

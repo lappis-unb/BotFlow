@@ -11,7 +11,8 @@ const INITIAL_STATE = {
     name: "",
     old_content: [],
     story_id: "",
-    notification_text: ""
+    notification_text: "",
+    content_text_validation: ""
 };
 
 function createArrayObjCopyOf(samples = []) {
@@ -80,7 +81,7 @@ export const reorderContent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: result,
-        notification_text: text
+        content_text_validation: text
     }
 }
 
@@ -88,9 +89,12 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
     let new_content = createArrayObjCopyOf(state.content);
     new_content.splice(action.content_position, 1);
 
+    const text = validationContent(new_content);
+
     return {
         ...state,
-        content: new_content
+        content: new_content,
+        content_text_validation: text
     }
 }
 
@@ -98,6 +102,13 @@ export const notifyAction = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         notification_text: action.text
+    };
+}
+
+export const notifyContentTextValidation = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        content_text_validation: action.text
     };
 }
 
@@ -109,7 +120,7 @@ export const addToStory = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: new_content,
-        notification_text: text
+        content_text_validation: text
     }
 }
 
@@ -117,6 +128,7 @@ export const { Types, Creators } = createActions({
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
     deleteContent: ['content_position'],
+    notifyContentTextValidation: ['text'],
     reorderContent: ['start_index', 'end_index'],
     addIntent: (intent) => {
         return async (dispatch) => {
@@ -228,4 +240,5 @@ export default createReducer(INITIAL_STATE, {
     [Types.DELETE_CONTENT]: deleteContent,
     [Types.NOTIFY_ACTION]: notifyAction,
     [Types.REORDER_CONTENT]: reorderContent,
+    [Types.NOTIFY_CONTENT_TEXT_VALIDATION]: notifyContentTextValidation,
 });

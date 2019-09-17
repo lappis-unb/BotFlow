@@ -4,17 +4,18 @@ import { bindActionCreators } from 'redux';
 import { Intent } from '../utils/DataFormat'
 import { Creators as IntentAction } from '../ducks/intents';
 
+import { style } from './style';
+import { Add } from '../styles/button';
 import Grid from '@material-ui/core/Grid';
 import { Divider } from '@material-ui/core';
 import IntentIcon from '../icons/IntentIcon';
 import Button from '@material-ui/core/Button';
+import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
-import Snackbar from '../components/Snackbar'
-import { style } from './style'
+import SnackbarDelete from '../components/DeleteSnackbar';
 
-import { Add } from '../styles/button';
 
 class IntentPage extends Component {
 
@@ -22,6 +23,20 @@ class IntentPage extends Component {
     super(props);
     this.props.getIntents();
     this.props.createNewIntent();
+    this.state = {
+      undo_delete: false
+    }
+    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
+  }
+
+
+  handleSnackbarClick(value) {
+    console.log("ENTREOU", this.props.id)
+    if (value === false) {
+      this.props.deleteIntent(this.props.id)
+    }
+    value = (value === undefined ? false : value);
+    this.setState({ undo_delete: value });
   }
 
   checkEmptyFieldsIntent(samples) {
@@ -89,10 +104,10 @@ class IntentPage extends Component {
         <Grid item xs={9}>
           <ToolbarName
             name_label="Nome da pergunta"
-            item_id={this.props.intent_id}
+            item_id={this.props.id}
             items={this.props.intents}
             saveData={this.props.saveData}
-            deleteItem={this.props.deleteIntent}
+            deleteItem={() => this.handleSnackbarClick(true)}
             name={this.props.name_intent}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
@@ -100,7 +115,7 @@ class IntentPage extends Component {
             is_enabled={this.isButtonEnabled()}
             item={
               new Intent(
-                this.props.intent_id,
+                this.props.id,
                 this.props.name_intent,
                 this.props.intent_contents
               )
@@ -116,6 +131,12 @@ class IntentPage extends Component {
           <Snackbar
             handleClose={() => this.props.notifyAction("")}
             notification_text={this.props.notification_text}
+          />
+
+          <SnackbarDelete
+            handleSnackbarClick={this.handleSnackbarClick}
+            handleUndo={() => this.handleSnackbarClick}
+            undo={this.state.undo_delete}
           />
         </Grid>
       </Grid >

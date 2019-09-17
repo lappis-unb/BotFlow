@@ -8,6 +8,7 @@ import { Add } from '../styles/button';
 import UtterForm from "../components/UtterForm";
 import UtterIcon from '../icons/UtterIcon';
 import ToolbarName from '../components/ToolbarName';
+import SnackbarDelete from '../components/DeleteSnackbar'
 
 import { Utter } from "../utils/DataFormat";
 import { bindActionCreators } from 'redux';
@@ -20,10 +21,22 @@ class UtterPage extends Component {
     super(props);
     this.props.getUtters();
     this.props.createNewUtter();
+    this.state = {
+      undo_delete: false
+    }
+    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
   }
 
   handleClose() {
-    this.props.notifyAction("");
+    this.props.notifyAction('');
+  }
+
+  handleSnackbarClick(value) {
+    if(value===false){
+      this.props.deleteUtter(this.props.id)
+    }
+    value = (value===undefined ? false : value);
+    this.setState({ undo_delete: value });
   }
 
   checkEmptyFieldsUtter(alternatives) {
@@ -97,7 +110,7 @@ class UtterPage extends Component {
             item_id={this.props.id}
             items={this.props.utters}
             saveData={this.props.saveData}
-            deleteItem={this.props.deleteUtter}
+            deleteItem={() => this.handleSnackbarClick(true)}
             name={this.props.name}
             setItemName={this.props.setUtterName}
             actionClick={this.handleClick}
@@ -113,14 +126,19 @@ class UtterPage extends Component {
             }
           />
           <Divider />
-
           <div style={style.item_form}>
+            {this.state.undo_delete}
             <UtterForm />
           </div>
 
           <Snackbar
-            handleClose={() => this.props.notifyAction("")}
+            handleClose={() => this.props.notifyAction('')}
             notification_text={this.props.notification_text}
+          />
+          <SnackbarDelete
+            handleSnackbarClick={this.handleSnackbarClick}
+            handleUndo={() => this.handleSnackbarClick}
+            undo={this.state.undo_delete}
           />
         </Grid>
       </Grid >

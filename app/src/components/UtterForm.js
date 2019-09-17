@@ -43,7 +43,7 @@ class UtterForm extends Component {
     }
   }
 
-  handleSnackbarClick(value){
+  handleSnackbarClick(value) {
     this.setState({ undo_delete: value });
   }
 
@@ -126,12 +126,7 @@ class UtterForm extends Component {
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
 
-            <SnackbarDelete
-              handleSnackbarClick={this.handleSnackbarClick}
-              handleUndo={this.props.undoDeleteUtterContent}
-              undo={this.state.undo_delete}
-            />
-            
+
             <Grid item xs={10}>
               <DialogBox
                 style={{
@@ -150,13 +145,18 @@ class UtterForm extends Component {
             <Grid item xs={2} />
           </Grid>
 
+          <SnackbarDelete
+            handleSnackbarClick={this.handleSnackbarClick}
+            handleUndo={this.props.undoDeleteUtterContent}
+            undo={this.state.undo_delete}
+          />
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={3}>
-          {/* <p>Name: {this.props.name}</p>
+          <p>Name: {this.props.name}</p>
           <p>id_utter: {this.props.id}</p>
           <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre> */}
+          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre>
         </Grid>
       </Grid>
     );
