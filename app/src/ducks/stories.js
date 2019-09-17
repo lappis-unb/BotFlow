@@ -66,7 +66,7 @@ export const validationContent = (content) => {
 
     if (!intent_intent) {
         return message.story.two_intents;
-    } else if (content[0].type !== 'intent') {
+    } else if (content.length !== 0 && content[0].type !== 'intent') {
         return message.story.first_element;
     }
 
