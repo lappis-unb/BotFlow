@@ -2,6 +2,7 @@
 import axios from "axios";
 import { createActions, createReducer } from 'reduxsauce'
 import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
+import { message } from '../utils/messages';
 
 const INITIAL_STATE = {
     utters: [],
@@ -64,11 +65,9 @@ export const validationContent = (content) => {
     }
 
     if (!intent_intent) {
-        return "Adicione uma resposta depois de cada pergunta";
-    } 
-    
-    if (content[0].type !== 'intent') {
-        return "Comece o diálogo com uma pergunta";
+        return message.story.two_intents;
+    } else if (content[0].type !== 'intent') {
+        return message.story.first_element;
     }
 
     return "";
@@ -177,9 +176,9 @@ export const { Types, Creators } = createActions({
     saveData: (item) => {
         return async (dispatch) => {
             if ((item.id === "" || item.id === undefined)) {
-                dispatch(createOrUpdateItem('post', item, "Story criada com sucesso!"));
+                dispatch(createOrUpdateItem('post', item, message.story.created));
             } else {
-                dispatch(createOrUpdateItem('put', item, "Story atualizada com sucesso!"));
+                dispatch(createOrUpdateItem('put', item, message.story.updated));
             }
         }
     },
@@ -208,7 +207,7 @@ export const { Types, Creators } = createActions({
             try {
                 await axios.delete(STORY_URL + story_id);
                 await dispatch(Creators.getIntents());
-                await dispatch(Creators.notifyAction("Story removida com sucesso!"));
+                await dispatch(Creators.notifyAction(message.story.deleted));
                 
                 // Create new_story
 

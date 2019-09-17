@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
+import { message } from "../utils/messages";
 
 const StyledListItem = styled(ListItem)({
   backgroundColor: "transparent",
@@ -66,7 +67,7 @@ export default class ItemList extends Component {
 
   getErrorMessage() {
     return (
-      <Typography>Nenhum resultado encontrado!</Typography>
+      <Typography>{message.no_result}</Typography>
     );
   }
 

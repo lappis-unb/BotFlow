@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { Component } from "react";
 import IconButton from '@material-ui/core/IconButton';
+import {message} from '../utils/messages';
 
 class DeleteSnackbar extends Component {
     handleUndoSnack() {
@@ -24,7 +25,7 @@ class DeleteSnackbar extends Component {
                 ContentProps={{
                     'aria-describedby': 'message-id',
                 }}
-                message={<span class="success" id="message-id">Item apagado</span>}
+                message={<span class="success" id="message-id">{message.deleted}</span>}
                 action={[
                     <Button
                         key="undo"

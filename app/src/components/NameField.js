@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField';
+import { message } from "../utils/messages";
 
 class NameField extends Component {
     isRepeatedName(items, name) {
@@ -9,7 +10,7 @@ class NameField extends Component {
                 (item.id !== this.props.item_id)
             ));
 
-            return (founded !== undefined ? "Por favor, insira um nome não repetido." : "");
+            return (founded !== undefined ? message.repeated_name : "");
         }
     }
 
@@ -18,7 +19,7 @@ class NameField extends Component {
         let regex = /^[\w\d_]+$/;
 
         if (!regex.test(name) && name.length > 0) {
-            helper_text = "Use apenas letras sem acentos, números ou '_'";
+            helper_text = message.no_special_char;
         }
         
         return helper_text;

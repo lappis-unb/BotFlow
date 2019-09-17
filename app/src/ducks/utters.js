@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Utter } from '../utils/DataFormat.js'
 import { createActions, createReducer } from 'reduxsauce'
 import { UTTER_URL } from '../utils/url_routes.js'
+import { message } from '../utils/messages.js';
 
 const INITIAL_STATE = {
     mode: "Utter",
@@ -209,9 +210,9 @@ export const { Types, Creators } = createActions({
     saveData: (item) => {
         return async (dispatch) => {
             if (item.id === "" || item.id === undefined) {
-                dispatch(createOrUpdateItem('post', item, "Utter criada com sucesso!"));
+                dispatch(createOrUpdateItem('post', item, message.utter.created));
             } else {
-                dispatch(createOrUpdateItem('put', item, "Utter atualizada com sucesso!"));
+                dispatch(createOrUpdateItem('put', item, message.utter.updated));
             }
         }
     },
@@ -220,7 +221,7 @@ export const { Types, Creators } = createActions({
             try {
                 await axios.delete(UTTER_URL + delete_id);
                 await dispatch(Creators.getUtters());
-                await dispatch(Creators.notifyAction("Utter removida com sucesso!"));
+                await dispatch(Creators.notifyAction(message.utter.deleted));
                 await dispatch(Creators.createNewUtter())
 
             } catch (error) {
