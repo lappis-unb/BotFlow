@@ -1,21 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Typography from '@material-ui/core/Typography';
+import { IntentBalloon, UtterFirstBalloon, UtterBalloon } from '../styles/exampleBalloon';
+
 
 const styles = {
-    utter: {
-        backgroundColor: '#fde9e6',
-        margin: '8px 36px 8px 16px',
-    },
-    intent: {
-        backgroundColor: '#dae8ea',
-        margin: '8px 16px 8px 36px',
-    },
-    box: {
-        padding: '8px 12px',
-        borderRadius: '8px',
-        alignSelf: 'stretch'
-    },
     title: {
         alignSelf: 'center',
         margin: '14px',
@@ -33,17 +22,17 @@ const styles = {
 class ExampleStory extends Component {
     exampleUtter(item, index) {
         return (
-            <div key={'example_' + index} style={{ ...styles.utter, ...styles.box }}>
-                <Typography variant="body2">{item.example}</Typography>
-            </div>
+          <UtterFirstBalloon  key={'example_' + index}>
+            <Typography variant="body2">{item.example}</Typography>
+          </UtterFirstBalloon>
         );
     }
 
     exampleIntent(item, index) {
         return (
-            <div key={'example_' + index} style={{ ...styles.intent, ...styles.box }}>
-                <Typography variant="body2">{item.example}</Typography>
-            </div>
+            <IntentBalloon key={'example_' + index}>
+                <Typography variant="body2">{item.example}?</Typography>
+            </IntentBalloon>
         );
     }
 
