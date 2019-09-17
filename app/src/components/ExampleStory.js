@@ -24,7 +24,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         minHeight: "calc(100vh - 74px - 72px)",
-        borderLeft:"solid 1px #ddd",
+        borderLeft: "solid 1px #ddd",
         alignItems: 'flex-start',
         width: '100%',
     }
@@ -32,11 +32,12 @@ const styles = {
 
 class ExampleStory extends Component {
     exampleUtter(item, index) {
-        return (
-            <div key={'example_' + index} style={{ ...styles.utter, ...styles.box }}>
-                <Typography variant="body2">{item.example}</Typography>
+        const examples = item.example.map((example, ex_index) =>
+            <div key={'example_' + index + ex_index} style={{ ...styles.utter, ...styles.box }}>
+                <Typography variant="body2">{example}</Typography>
             </div>
-        );
+        )
+        return examples;
     }
 
     exampleIntent(item, index) {
@@ -47,6 +48,12 @@ class ExampleStory extends Component {
         );
     }
 
+    getExamples() {
+        return this.props.content.map((item, index) => {
+            return item.type === "intent" ? this.exampleIntent(item, index) : this.exampleUtter(item, index);
+        })
+    }
+
     render() {
         return (
             <div style={styles.container}>
@@ -54,9 +61,7 @@ class ExampleStory extends Component {
                     {this.props.content.length !== 0 ? "Exemplo:" : "Não há exemplos"}
                 </Typography>
                 {
-                    this.props.content.map((item, index) => {
-                        return item.type === "intent" ? this.exampleIntent(item, index) : this.exampleUtter(item, index);
-                    })
+                    this.getExamples()
                 }
             </div>
         );

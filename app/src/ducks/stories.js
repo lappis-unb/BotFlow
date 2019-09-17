@@ -42,7 +42,6 @@ export const getStories = (state = INITIAL_STATE, action) => {
 
 
 export const getStory = (state = INITIAL_STATE, action) => {
-    console.log(action.story)
     return {
         ...state,
         name: action.story.name,
