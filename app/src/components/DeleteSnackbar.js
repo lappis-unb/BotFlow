@@ -17,15 +17,15 @@ class DeleteSnackbar extends Component {
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'center',
                 }}
                 open={this.props.undo}
-                autoHideDuration={3000}
+                autoHideDuration={2000}
                 onClose={() => this.props.handleSnackbarClick(false)}
                 ContentProps={{
                     'aria-describedby': 'message-id',
                 }}
-                message={<span id="message-id">{message.deleted}</span>}
+                message={<span class="success" id="message-id">{message.deleted}</span>}
                 action={[
                     <Button
                         key="undo"
@@ -33,15 +33,7 @@ class DeleteSnackbar extends Component {
                         size="small"
                         onClick={() => this.handleUndoSnack()}>
                         Desfazer
-                    </Button>,
-                    <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        onClick={() => this.props.handleSnackbarClick(false)}
-                    >
-                        <CloseIcon />
-                    </IconButton>
+                    </Button>
                 ]}
             />
         )

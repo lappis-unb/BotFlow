@@ -57,7 +57,9 @@ export const validationContent = (content) => {
     let intent_intent = true;
 
     for (let i = 1, size = content.length; i < size; i++) {
-        if (content[i - 1].type === 'intent' && content[i].type === 'intent') {
+        if (content[i - 1].type === 'intent' && (content[i].type === 'intent')) {
+            intent_intent = false;
+        }else if(content[size - 1].type === 'intent'){
             intent_intent = false;
         }
     }

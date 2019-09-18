@@ -10,9 +10,9 @@ const MessageSnackbar = ({ notification_text, handleClose, variant = "success" }
                 vertical: 'bottom',
                 horizontal: 'center',
             }}
-            autoHideDuration={3000}
+            autoHideDuration={null}
             open={notification_text !== ''}
-            onClose={() => handleClose()}>
+            >
             <SnackbarContent    
                 variant={variant}
                 message={notification_text}
