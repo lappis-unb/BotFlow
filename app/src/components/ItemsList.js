@@ -67,7 +67,9 @@ export default class ItemList extends Component {
 
   getErrorMessage() {
     return (
-      <Typography>{message.no_result}</Typography>
+        <li style={{textAlign:'center', paddingTop:'10em'}}>
+            <Typography variant="caption" color="secondary">{message.no_result}</Typography>
+        </li>
     );
   }
 
