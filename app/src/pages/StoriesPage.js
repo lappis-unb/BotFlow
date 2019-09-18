@@ -16,9 +16,6 @@ const style = {
     background: "#f6f9f9",
     padding: "4px"
   },
-  grid_item_list: {
-    background: "#dae8ea"
-  },
   create_button: {
     margin: "24px 24px"
   },
@@ -28,10 +25,11 @@ const style = {
     width: "300px",
   },
   list_story: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    //columnCount: 6,
+    background: "#dae8ea",
+    padding:16,
+    height:'calc(100vh - 74px - 92px - 36px)',  
+    columnCount: 6,
+    columnGap: 0,
   }
 }
 
@@ -44,15 +42,14 @@ class StoriesPage extends Component {
 
   getToolbarContent() {
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={2}>
+      <Grid container>
+        <Grid item xs={6}>
           <Button color="primary" variant="contained" style={style.create_button}
             onClick={() => this.handleClick(false)}>
-            <Add />Criar novo diálogo
+            <Add />Criar diálogo
             </Button>
         </Grid>
-        < Grid item xs={7}></Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             type="text"

@@ -16,19 +16,37 @@ import { Link } from 'react-router-dom'
 
 
 const styles = {
+    intent: {
+        color: '#4b3953',
+        margin: '16px auto 6px',
+        fontWeight:'bold',
+    },
+    utter: {
+        color: '#f26a53',
+        marginLeft: 12,
+    },
     intent_icon: {
         fill: '#4b3953',
-        color: '#4b3953',
+        marginRight: 8,
+        verticalAlign: 'middle',
     },
     utter_icon: {
         fill: '#f26a53',
-        color: '#f26a53',
+        marginRight: 8,
+        verticalAlign: 'middle',
     },
     card: {
-        flexBasis: 'content',
-        width: '350px',
-        margin: '0 0 1em',
-        background: 'white'
+        background: 'white',
+        margin:'16px 8px',
+        padding:'0 12px 16px',
+        breakInside: 'avoid',
+        
+//        width: '14vw',
+//        minWidth: '96px',
+//        width:'100%',
+//        width:'100%',
+//        maxWidth: '16vw',
+
     },
 }
 
@@ -40,16 +58,16 @@ export default class StoryCard extends Component {
         let list = content.map((item, index) => {
             if (item.type === "intent") {
                 return (
-                    <Typography style={styles.intent_icon} varant="body1" noWrap>
-                        <IntentIcon />
+                    <Typography style={styles.intent} varant="body1" noWrap>
+                        <IntentIcon style={styles.intent_icon} />
                         {item.name}
                     </Typography>
                 )
             }
             else {
                 return (
-                    <Typography style={styles.utter_icon} varant="body1" noWrap>
-                        <UtterIcon />
+                    <Typography style={styles.utter} varant="body1" noWrap>
+                        <UtterIcon style={styles.utter_icon} />
                         {item.name}
                     </Typography>
                 )
