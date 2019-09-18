@@ -1,26 +1,26 @@
 export const message={
-    deleted: "Deletado com sucesso!",
-    no_examples: "Não há exemplos",
-    no_result: "Nenhum resultado encontrado!",
-    repeated_name: "Por favor, insira um nome não repetido.",
-    no_special_char: "Use apenas letras sem acentos, números ou '_'",
-    no_dialogs: "Não há diálogos!",
+    deleted: "Item apagado",
+    no_examples: "",
+    no_result: "Nenhum item encontrado",
+    repeated_name: "Tente um nome diferente, este já existe",
+    no_special_char: "Use apenas letras sem acentos, números ou _",
+    no_dialogs: "Adicione uma pergunta e uma resposta",
     intent:{
-        created: 'Intent criada com sucesso!',
-        updated: 'Intent atualizada com sucesso!',
-        deleted: 'Intent removida com sucesso!'
+        created: 'Pergunta criada',
+        updated: 'Pergunta atualizada',
+        deleted: 'Pergunta apagada'
     },
     story:{
-        two_intents: "Não pode haver duas perguntas seguidas!",
-        first_element: "O primeiro elemento deve ser uma pergunta!",
-        created: "Story criada com sucesso!",
-        updated: "Story atualizada com sucesso!",
-        deleted: "Story removida com sucesso!"
+        two_intents: "Adicione uma resposta depois de cada pergunta",
+        first_element: "O diálogo deve começar com uma pergunta",
+        created: "Diálogo criado",
+        updated: "Diálogo atualizado",
+        deleted: "Diálogo apagado"
     },
     utter:{
-        created: 'Utter criada com sucesso!',
-        updated: 'Utter atualizada com sucesso!',
-        deleted: 'Utter removida com sucesso!'
+        created: 'Resposta criada',
+        updated: 'Resposta atualizada',
+        deleted: 'Resposta apagada'
     }
 }
 
