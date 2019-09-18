@@ -12,6 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { Add } from '../styles/button';
 import TextField from '@material-ui/core/TextField'
 import { StoryBox } from '../styles/story';
+import StoryCard from '../components/StoryCard'
 
 
 const style = {
@@ -84,6 +85,8 @@ class StoriesPage extends Component {
         <GridListTile key={'stories_' + index}>
           <StoryBox>
             <Link to={'/stories/' + story.id}>{story.name}</Link>
+            <StoryCard
+              content={story.content}/>
           </StoryBox>
         </GridListTile>
       ))
