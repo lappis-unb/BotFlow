@@ -2,34 +2,36 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Creators as StoryAction } from '../ducks/stories';
-import { Link } from 'react-router-dom'
 
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import { Add } from '../styles/button';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Add } from '../styles/button';
-import TextField from '@material-ui/core/TextField'
-import { StoryBox } from '../styles/story';
-import StoryCard from '../components/StoryCard'
+import StoryCard from '../components/StoryCard';
+import TextField from '@material-ui/core/TextField';
 
 
 const style = {
   toolbar: {
-      background: "#f6f9f9",
-      padding: "4px"
+    background: "#f6f9f9",
+    padding: "4px"
   },
   grid_item_list: {
-      background: "#dae8ea"
+    background: "#dae8ea"
   },
   create_button: {
-      margin: "24px 24px"
+    margin: "24px 24px"
   },
   filter_field: {
     margin: "16px 16px",
-    height: "40px", 
+    height: "40px",
     width: "300px",
+  },
+  list_story: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    //columnCount: 6,
   }
 }
 
@@ -40,29 +42,29 @@ class StoriesPage extends Component {
   }
 
 
-  getToolbarContent(){
-    return(
+  getToolbarContent() {
+    return (
       <Grid container spacing={2}>
-          <Grid item xs={2}>
-            <Button color="primary" variant="contained" style={style.create_button}
-              onClick={() => this.handleClick(false)}>
-                <Add />Criar novo diálogo
-            </Button> 
-          </Grid>
-          < Grid item xs={7}></Grid>
-          <Grid item xs={3}>
-            <TextField
-              fullWidth
-              type="text"
-              label="Filtrar"
-              variant="outlined"
-              // value={this.state.value}
-              style={style.filter_field}
-              // InputProps={{ endAdornment: this.getFilterIcon() }}
-              // onChange={(e) => this.handleFilterInput(e)}
-            /> 
-          </Grid>
+        <Grid item xs={2}>
+          <Button color="primary" variant="contained" style={style.create_button}
+            onClick={() => this.handleClick(false)}>
+            <Add />Criar novo diálogo
+            </Button>
         </Grid>
+        < Grid item xs={7}></Grid>
+        <Grid item xs={3}>
+          <TextField
+            fullWidth
+            type="text"
+            label="Filtrar"
+            variant="outlined"
+            // value={this.state.value}
+            style={style.filter_field}
+          // InputProps={{ endAdornment: this.getFilterIcon() }}
+          // onChange={(e) => this.handleFilterInput(e)}
+          />
+        </Grid>
+      </Grid>
     )
   }
 
@@ -82,28 +84,20 @@ class StoriesPage extends Component {
   getStoriesList() {
     if (this.props.stories !== undefined)
       return this.props.stories.map((story, index) => (
-        <GridListTile key={'stories_' + index}>
-          <StoryBox>
-            <Link to={'/stories/' + story.id}>{story.name}</Link>
-            <StoryCard
-              content={story.content}/>
-          </StoryBox>
-        </GridListTile>
+        <StoryCard story={story} />
       ))
   }
 
   render() {
     return (
-      <div style={{backgroundColor:"#dae8ea", minHeight:"100vh"}}>
+      <span>
         <Toolbar style={style.toolbar}>
           {this.getToolbarContent()}
         </Toolbar>
-        <div style={{padding:"1em"}}>
-          <GridList cellWidth={200} cellHeight={"auto"} cols={6} spacing={20}>
-            {this.getStoriesList()}
-          </GridList>
+        <div style={style.list_story}>
+          {this.getStoriesList()}
         </div>
-      </div>
+      </span>
     )
   }
 }
