@@ -1,20 +1,20 @@
 import { connect } from "react-redux";
+import { Add } from '../styles/button';
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
+import UtterIcon from '../icons/UtterIcon';
 import { Divider } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
-import ListFilter from "../components/ListFilter";
-import { Add } from '../styles/button';
 import UtterForm from "../components/UtterForm";
-import UtterIcon from '../icons/UtterIcon';
+import ListFilter from "../components/ListFilter";
 import ToolbarName from '../components/ToolbarName';
-import SnackbarDelete from '../components/DeleteSnackbar'
+import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 
-import { Utter } from "../utils/DataFormat";
-import { bindActionCreators } from 'redux';
-import { Creators as UtterAction } from '../ducks/utters';
-import Snackbar from '../components/Snackbar';
 import { style } from '../styles/style'
+import { bindActionCreators } from 'redux';
+import { Utter } from "../utils/DataFormat";
+import Snackbar from '../components/Snackbar';
+import { Creators as UtterAction } from '../ducks/utters';
 
 class UtterPage extends Component {
   constructor(props) {
@@ -22,11 +22,21 @@ class UtterPage extends Component {
     this.props.getUtters();
     this.props.createNewUtter();
     this.state = {
-      undo_delete: false
+      dialog_status: false
     }
-    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+    this.deleteUtter = this.deleteUtter.bind(this)
   }
 
+
+  changeStatusDialog(value) {
+    this.setState({ dialog_status: value });
+  }
+
+  deleteUtter() {
+    this.props.deleteUtter(this.props.id)
+    this.setState({ dialog_status: false });
+  }
   handleClose() {
     this.props.notifyAction('');
   }
@@ -101,7 +111,7 @@ class UtterPage extends Component {
             item_id={this.props.id}
             items={this.props.utters}
             saveData={this.props.saveData}
-            deleteItem={() => this.handleSnackbarClick(true)}
+            deleteItem={() => this.changeStatusDialog(true)}
             name={this.props.name}
             setItemName={this.props.setUtterName}
             actionClick={this.handleClick}
@@ -126,10 +136,11 @@ class UtterPage extends Component {
             handleClose={() => this.props.notifyAction('')}
             notification_text={this.props.notification_text}
           />
-          <SnackbarDelete
-            handleSnackbarClick={this.handleSnackbarClick}
-            handleUndo={() => this.handleSnackbarClick}
-            undo={this.state.undo_delete}
+
+          <DeleteConfirmationDialog
+            handleClose={this.changeStatusDialog}
+            deleteItem={this.deleteUtter}
+            dialog_status={this.state.dialog_status}
           />
         </Grid>
       </Grid >

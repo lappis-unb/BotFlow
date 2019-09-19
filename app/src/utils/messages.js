@@ -5,6 +5,7 @@ export const message={
     repeated_name: "Tente um nome diferente, este já existe",
     no_special_char: "Use apenas letras sem acentos, números ou _",
     no_dialogs: "Adicione uma pergunta e uma resposta",
+    delete_confirmation: "Você tem certeza que deseja deletar este elemento?",
     intent:{
         created: 'Pergunta criada',
         updated: 'Pergunta atualizada',

@@ -14,7 +14,7 @@ import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
-import SnackbarDelete from '../components/DeleteSnackbar';
+import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 
 
 class IntentPage extends Component {
@@ -24,18 +24,20 @@ class IntentPage extends Component {
     this.props.getIntents();
     this.props.createNewIntent();
     this.state = {
-      undo_delete: false
+      dialog_status: false
     }
-    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+    this.deleteIntent = this.deleteIntent.bind(this)
   }
 
 
-  handleSnackbarClick(value) {
-    if (value === false) {
-      this.props.deleteIntent(this.props.id)
-    }
-    value = (value === undefined ? false : value);
-    this.setState({ undo_delete: value });
+  changeStatusDialog(value) {
+    this.setState({ dialog_status: value });
+  }
+
+  deleteIntent() {
+    this.props.deleteIntent(this.props.id)
+    this.setState({ dialog_status: false });
   }
 
   checkEmptyFieldsIntent(samples) {
@@ -97,7 +99,7 @@ class IntentPage extends Component {
             item_id={this.props.id}
             items={this.props.intents}
             saveData={this.props.saveData}
-            deleteItem={() => this.handleSnackbarClick(true)}
+            deleteIntent={() => this.changeStatusDialog(true)}
             name={this.props.name_intent}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
@@ -123,10 +125,10 @@ class IntentPage extends Component {
             notification_text={this.props.notification_text}
           />
 
-          <SnackbarDelete
-            handleSnackbarClick={this.handleSnackbarClick}
-            handleUndo={() => this.handleSnackbarClick}
-            undo={this.state.undo_delete}
+          <DeleteConfirmationDialog
+            handleClose={this.changeStatusDialog}
+            deleteItem={this.deleteIntent}
+            dialog_status={this.state.dialog_status}
           />
         </Grid>
       </Grid >

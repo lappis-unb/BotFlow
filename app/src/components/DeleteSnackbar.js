@@ -23,7 +23,7 @@ class DeleteSnackbar extends Component {
                 ContentProps={{
                     'aria-describedby': 'message-id',
                 }}
-                message={<span class="success" id="message-id">{message.deleted}</span>}
+                message={<span className="success" id="message-id">{message.deleted}</span>}
                 action={[
                     <Button
                         key="undo"
