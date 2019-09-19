@@ -24,7 +24,7 @@ function App() {
         <Route exact path="/" component={StoriesPage} />
         <Route exact path="/utters" component={UtterPage} />
         <Route exact path="/intents" component={IntentPage} />
-        <Route exact path="/stories/:id" component={StoryEditPage} />
+        <Route path="/stories/" component={StoryEditPage} />
       </div>
       <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></ script >
     </Router>

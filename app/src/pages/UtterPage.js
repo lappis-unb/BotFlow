@@ -14,7 +14,7 @@ import { Utter } from "../utils/DataFormat";
 import { bindActionCreators } from 'redux';
 import { Creators as UtterAction } from '../ducks/utters';
 import Snackbar from '../components/Snackbar';
-import { style } from './style'
+import { style } from '../styles/style'
 
 class UtterPage extends Component {
   constructor(props) {

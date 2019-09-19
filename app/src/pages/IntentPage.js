@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Intent } from '../utils/DataFormat'
 import { Creators as IntentAction } from '../ducks/intents';
 
-import { style } from './style';
+import { style } from '../styles/style';
 import { Add } from '../styles/button';
 import Grid from '@material-ui/core/Grid';
 import { Divider } from '@material-ui/core';

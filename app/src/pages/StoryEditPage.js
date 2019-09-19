@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import ItemsList from "../components/ItemsList";
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '../components/StorySnackbar';
+import Snackbar from '../components/Snackbar';
+import ErrorSnackbar from '../components/StorySnackbar';
 import { Creators as StoryAction } from "../ducks/stories";
 import Divider from '@material-ui/core/Divider';
 
@@ -24,7 +25,7 @@ const style = {
     grid_item_list: {
         background: "#dae8ea",
         paddingTop: '15px',
-        height: "calc(100vh - 74px - 64px - 15px)",
+        height: "calc(100vh - 74px - 64px - 17px)",
         overflowY: "auto"
     },
     list_container_utter: {
@@ -48,10 +49,20 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
-        this.props.getStory(window.location.pathname.split('/').pop())
+        this.getStory()
         this.state = {
             value: ""
         };
+
+    }
+
+    getStory() {
+        const story_id = window.location.pathname.split('/').pop();
+        if (story_id.length !== 0) {
+            this.props.getStory(story_id);
+        } else {
+            this.props.createNewStory();
+        }
     }
 
     filterItems(items = []) {
@@ -174,7 +185,7 @@ class StoryEditPage extends Component {
                         </Grid>
                     </div>
                 </Grid>
-                <Snackbar
+                <ErrorSnackbar
                     variant='error'
                     handleClose={() => this.props.notifyContentTextValidation('')}
                     notification_text={this.props.content_text_validation}

@@ -1,8 +1,9 @@
 
 import axios from "axios";
-import { createActions, createReducer } from 'reduxsauce'
-import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 import { message } from '../utils/messages';
+import { createActions, createReducer } from 'reduxsauce'
+import { Story } from '../utils/DataFormat'
+import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 
 const INITIAL_STATE = {
     utters: [],
@@ -59,7 +60,7 @@ export const validationContent = (content) => {
     for (let i = 1, size = content.length; i < size; i++) {
         if (content[i - 1].type === 'intent' && (content[i].type === 'intent')) {
             intent_intent = false;
-        }else if(content[size - 1].type === 'intent'){
+        } else if (content[size - 1].type === 'intent') {
             intent_intent = false;
         }
     }
@@ -127,7 +128,20 @@ export const addToStory = (state = INITIAL_STATE, action) => {
     }
 }
 
+export const createNewStory = (state = INITIAL_STATE, action) => {
+    const new_story = new Story();
+    return {
+        ...state,
+        name: new_story.name,
+        notification_text: '',
+        story_id: new_story.id,
+        content: createArrayObjCopyOf(new_story.content),
+        old_content: createArrayObjCopyOf(new_story.content)
+    };
+}
+
 export const { Types, Creators } = createActions({
+    createNewStory: [],
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
     deleteContent: ['content_position'],
@@ -195,22 +209,24 @@ export const { Types, Creators } = createActions({
     getStory: (id) => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(STORY_URL + id);
-                await dispatch({ type: Types.GET_STORY, story: response.data });
+                if (id !== '') {
+                    const response = await axios.get(STORY_URL + id);
+                    await dispatch({ type: Types.GET_STORY, story: response.data });
+                }
             } catch (error) {
                 throw (error);
             }
         }
     },
-    deleteStory: (story_id) => {
+    deleteStory: (id) => {
         return async (dispatch) => {
             try {
-                await axios.delete(STORY_URL + story_id);
-                await dispatch(Creators.getIntents());
-                await dispatch(Creators.notifyAction(message.story.deleted));
-                
+                if (id.length !== 0) {
+                    await axios.delete(STORY_URL + id);
+                    //await dispatch(Creators.getIntents());
+                    await dispatch(Creators.notifyAction(message.story.deleted));
+                }
                 // Create new_story
-
                 //await dispatch(Creators.createNewStory())
 
             } catch (error) {
@@ -234,6 +250,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     }
 };
 
+
 export default createReducer(INITIAL_STATE, {
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_STORIES]: getStories,
@@ -243,5 +260,6 @@ export default createReducer(INITIAL_STATE, {
     [Types.DELETE_CONTENT]: deleteContent,
     [Types.NOTIFY_ACTION]: notifyAction,
     [Types.REORDER_CONTENT]: reorderContent,
+    [Types.CREATE_NEW_STORY]: createNewStory,
     [Types.NOTIFY_CONTENT_TEXT_VALIDATION]: notifyContentTextValidation,
 });
