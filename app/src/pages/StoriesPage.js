@@ -81,7 +81,7 @@ class StoriesPage extends Component {
   getStoriesList() {
     if (this.props.stories !== undefined)
       return this.props.stories.map((story, index) => (
-        <StoryCard story={story} />
+        <StoryCard key={'story_card_' + index} story={story} />
       ))
   }
 

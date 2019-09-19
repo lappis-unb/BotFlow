@@ -147,7 +147,6 @@ export const { Types, Creators } = createActions({
         return async (dispatch) => {
             try {
                 const response = await axios.get(INTENT_URL + intent.id);
-
                 await dispatch({ type: Types.SELECT_INTENT, item: response.data, item_position: item_position });
             } catch (error) {
                 throw (error);
