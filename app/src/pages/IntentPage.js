@@ -14,7 +14,7 @@ import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
-import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 
 class IntentPage extends Component {
@@ -99,7 +99,7 @@ class IntentPage extends Component {
             item_id={this.props.id}
             items={this.props.intents}
             saveData={this.props.saveData}
-            deleteIntent={() => this.changeStatusDialog(true)}
+            deleteItem={() => this.changeStatusDialog(true)}
             name={this.props.name_intent}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
@@ -125,8 +125,8 @@ class IntentPage extends Component {
             notification_text={this.props.notification_text}
           />
 
-          <DeleteConfirmationDialog
-            handleClose={this.changeStatusDialog}
+          <DeletionConfirmationDialog
+            handleClose={() => this.changeStatusDialog(false)}
             deleteItem={this.deleteIntent}
             dialog_status={this.state.dialog_status}
           />

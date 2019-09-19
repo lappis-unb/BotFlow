@@ -19,6 +19,7 @@ import ToolbarName from '../components/ToolbarName';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import ExampleStory from "../components/ExampleStory";
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 
 const style = {
@@ -51,9 +52,23 @@ class StoryEditPage extends Component {
         this.props.getUtters()
         this.getStory()
         this.state = {
-            value: ""
+            value: "",
+            dialog_status: false
         };
+        this.changeStatusDialog = this.changeStatusDialog.bind(this)
+        this.deleteStory = this.deleteStory.bind(this)
+    }
 
+
+    changeStatusDialog(value) {
+        this.setState({ dialog_status: value });
+    }
+
+    deleteStory() {
+        this.props.deleteStory(this.props.story_id)
+        this.props.getStories()
+        this.props.history.push('/');
+        this.setState({ dialog_status: false });
     }
 
     getStory() {
@@ -160,7 +175,7 @@ class StoryEditPage extends Component {
                         story
                         is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
-                        deleteItem={this.props.deleteStory}
+                        deleteItem={() => this.changeStatusDialog(true)}
                         item={new Story(this.props.story_id, this.props.content, this.props.name)}
                     />
                     <div style={{
@@ -179,7 +194,6 @@ class StoryEditPage extends Component {
                                 <StoryList />
                             </Grid>
                             <Grid container item xs={4} >
-
                                 <ExampleStory />
                             </Grid>
                         </Grid>
@@ -193,6 +207,11 @@ class StoryEditPage extends Component {
                 <Snackbar
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}
+                />
+                <DeletionConfirmationDialog
+                    handleClose={() => this.changeStatusDialog(false)}
+                    deleteItem={this.deleteStory}
+                    dialog_status={this.state.dialog_status}
                 />
             </Grid>
         )
