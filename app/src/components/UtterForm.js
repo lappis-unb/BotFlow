@@ -1,21 +1,14 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
 import { DialogBox } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CloseIcon from '@material-ui/icons/Close';
 import MenuItem from '@material-ui/core/MenuItem';
-import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  setUtterContent,
-  addUtterContent,
-  undoTextRemotion,
-  removeUtterContent,
-  changeUtterForm
-} from "../actions/uttersAction";
+import { bindActionCreators } from 'redux';
+import { Creators as UtterAction } from '../ducks/utters';
+import SnackbarDelete from './DeleteSnackbar'
 
 const ALTERNATIVES_TEXT = "como alternativas";
 const SEQUENCE_TEXT = "em sequência";
@@ -27,79 +20,44 @@ class UtterForm extends Component {
     this.state = {
       values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
       value: SEQUENCE_TEXT,
-      undo_delete: false,
-      have_auto_focus: false
+      there_is_auto_focus: false,
+      undo_delete: false
     }
+
+    this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
   }
 
   changeTextarea = (utter_index, text_index, e) => {
     this.multilineTextarea.style.height = 'auto';
     this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
-    this.props.setUtterContent(utter_index, text_index, e.target.value, this.props.item_contents)
+    this.props.setUtterContent(e.target.value, utter_index, text_index)
   }
 
   handleDelete(utter_index, text_index) {
-    const utters_length = this.props.item_contents.length;
-    const utters_text_length = this.props.item_contents[0].length;
+    const utters_length = this.props.utter_contents.length;
+    const utters_text_length = this.props.utter_contents[0].length;
 
     if (utters_length > 1 || utters_text_length > 1) {
-      this.setState({ undo_delete: true });
+      this.handleSnackbarClick(true);
+      this.props.deleteUtterContent(utter_index, text_index);
     }
-
-    this.props.removeUtterContent(utter_index, text_index, this.props.item_contents);
   }
 
-  handleUndo() {
-    this.props.undoTextRemotion();
-    this.setState({ undo_delete: false });
-  }
-
-  deleteSnack() {
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={this.state.undo_delete}
-        autoHideDuration={3000}
-        onClose={() => this.setState({ undo_delete: false })}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">Deletado com sucesso!</span>}
-        action={[
-          <Button
-            key="undo"
-            color="secondary"
-            size="small"
-            onClick={() => this.handleUndo()}>
-            Desfazer
-        </Button>,
-          <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            onClick={() => this.setState({ undo_delete: false })}
-          >
-            <CloseIcon />
-          </IconButton>
-        ]}
-      />
-    )
+  handleSnackbarClick(value) {
+    this.setState({ undo_delete: value });
   }
 
   setUtterContents() {
     let utters_texts = [];
-    if (this.props.item_contents !== undefined) {
-      utters_texts = this.props.item_contents.map((alternative, alternative_index) => {
+    if (this.props.utter_contents !== undefined) {
+      utters_texts = this.props.utter_contents.map((alternative, alternative_index) => {
         return alternative.map((alternative_content, content_index) => {
           return (
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={10}>
                   <DialogBox>
-                    <textarea type="text" autoFocus={this.state.have_auto_focus} value={alternative_content}
+                    <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
                       rows="1"
                       onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                       ref={ref => this.multilineTextarea = ref} />
@@ -124,7 +82,7 @@ class UtterForm extends Component {
   handleChange(event) {
     this.setState({ value: event.target.value });
     if ((event.target.value !== this.props.multiple_alternatives)) {
-      this.props.changeUtterForm(this.props.item_contents, (event.target.value === ALTERNATIVES_TEXT))
+      this.props.changeUtterForm(this.props.utter_contents, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
@@ -133,8 +91,8 @@ class UtterForm extends Component {
   }
 
   handleClick() {
-    this.props.addUtterContent(this.props.new_utter);
-    this.setState({ have_auto_focus: true });
+    this.props.addUtterContent();
+    this.setState({ there_is_auto_focus: true });
   }
 
   render() {
@@ -167,7 +125,8 @@ class UtterForm extends Component {
             {this.setUtterContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
-            {this.deleteSnack()}
+
+
             <Grid item xs={10}>
               <DialogBox
                 style={{
@@ -186,25 +145,27 @@ class UtterForm extends Component {
             <Grid item xs={2} />
           </Grid>
 
+          <SnackbarDelete
+            handleSnackbarClick={this.handleSnackbarClick}
+            handleUndo={this.props.undoDeleteUtterContent}
+            undo={this.state.undo_delete}
+          />
         </Grid>
         <Grid item xs={2} />
-        <Grid item xs={3}>
-        </Grid>
+        <Grid item xs={3} />
       </Grid>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return { ...state.utterReducer }
-};
+//<p>Name: {this.props.name}</p>
+//          <p>id_utter: {this.props.id}</p>
+//          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
+//          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre>
 
-const mapDispatchToProps = dispatch => ({
-  undoTextRemotion: () => dispatch(undoTextRemotion()),
-  addUtterContent: (new_utter) => dispatch(addUtterContent(new_utter)),
-  removeUtterContent: (utter_position, text_position) => dispatch(removeUtterContent(utter_position, text_position)),
-  changeUtterForm: (multiple_alternatives, current_item) => dispatch(changeUtterForm(multiple_alternatives, current_item)),
-  setUtterContent: (utter_position, text_position, text, current_item) => dispatch(setUtterContent(utter_position, text_position, text, current_item))
-});
+
+const mapStateToProps = state => { return { ...state.utter } };
+
+const mapDispatchToProps = dispatch => bindActionCreators(UtterAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterForm);

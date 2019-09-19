@@ -1,58 +1,155 @@
 import { connect } from "react-redux";
+import { Add } from '../styles/button';
 import React, { Component } from "react";
-import { getItems, createNewItem } from "../actions/itemsAction";
-
-import ItemPage from "../pages/ItemPage"
-import { Utter } from '../utils/DataFormat'
+import Grid from '@material-ui/core/Grid';
 import UtterIcon from '../icons/UtterIcon';
+import { Divider } from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import UtterForm from "../components/UtterForm";
+import ListFilter from "../components/ListFilter";
+import ToolbarName from '../components/ToolbarName';
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
-import { UTTER_URL } from '../utils/url_routes.js'
+import { style } from '../styles/style'
+import { bindActionCreators } from 'redux';
+import { Utter } from "../utils/DataFormat";
+import Snackbar from '../components/Snackbar';
+import { Creators as UtterAction } from '../ducks/utters';
 
 class UtterPage extends Component {
   constructor(props) {
     super(props);
+    this.props.getUtters();
+    this.props.createNewUtter();
     this.state = {
-      open: false,
+      dialog_status: false
     }
-    this.props.getItems(UTTER_URL);
-    this.props.createNewItem(new Utter());
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+    this.deleteUtter = this.deleteUtter.bind(this)
   }
 
-  setDataFormat(id = undefined, name = "", multiple_alternatives = false, content = []){
-    return new Utter(id, name, multiple_alternatives, content)
+
+  changeStatusDialog(value) {
+    this.setState({ dialog_status: value });
+  }
+
+  deleteUtter() {
+    this.props.deleteUtter(this.props.id)
+    this.setState({ dialog_status: false });
+  }
+  handleClose() {
+    this.props.notifyAction('');
+  }
+
+  handleSnackbarClick(value) {
+    if (value === false) {
+      this.props.deleteUtter(this.props.id)
+    }
+    value = (value === undefined ? false : value);
+    this.setState({ undo_delete: value });
+  }
+
+  checkEmptyFieldsUtter(alternatives) {
+    let changed = true;
+    if (alternatives !== undefined) {
+      alternatives.forEach(alternative => {
+        alternative.forEach(text => {
+          if (text.trim().length === 0) {
+            changed = false;
+          }
+        })
+      });
+    }
+    return changed;
+  }
+
+  isButtonEnabled() {
+    const utter_contents = this.props.utter_contents;
+    const old_item_content = this.props.old_utter_contents;
+
+    const no_empty_fields = this.checkEmptyFieldsUtter(utter_contents);
+
+    const name_changed = (this.props.name !== this.props.old_name);
+    const contents_changed = JSON.stringify(utter_contents) !== JSON.stringify(old_item_content);
+    const have_changes = (contents_changed || name_changed);
+
+    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
+    const no_empty_name = this.props.name.length !== 0;
+
+    return (
+      no_errors &&
+      have_changes &&
+      no_empty_name &&
+      no_empty_fields
+    );
   }
 
   render() {
     return (
-      <ItemPage
-        mode="Utter"
-        url={UTTER_URL}
-        items={this.props.items}
-        id_item={this.props.id_item}
-        name_label="Nome da resposta"
-        name_item={this.props.name_item}
-        button_text="Criar nova resposta"
-        new_item={new Utter()}
-        icon={<UtterIcon />}
-        setDataFormat={this.setDataFormat}
-        helper_text={this.props.helper_text}
-        item_list_text="Respostas cadastradas"
-        old_name_item={this.props.old_name_item}
-        item_contents={this.props.item_contents}
-        old_item_contents={this.props.old_item_contents}
-        notification_text={this.props.notification_text}
-        multiple_alternatives={this.props.multiple_alternatives}
-        selected_item_position={this.props.selected_item_position}
-      />
+      <Grid container>
+        <Grid item xs={3} style={style.grid_item_list}>
+          <div style={style.create_button}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => this.props.createNewUtter()}
+            >
+              <Add />{"Criar resposta"}
+            </Button>
+          </div>
+          <ListFilter
+            icon={<UtterIcon />}
+            items={this.props.utters}
+            text="Respostas cadastradas"
+            actionOnClick={this.props.selectUtter}
+            selected_item_position={this.props.selected_item_position} />
+        </Grid>
+
+        <Grid item xs={9}>
+          <ToolbarName
+            name_label="Nome da resposta"
+            item_id={this.props.id}
+            items={this.props.utters}
+            saveData={this.props.saveData}
+            deleteItem={() => this.changeStatusDialog(true)}
+            name={this.props.name}
+            setItemName={this.props.setUtterName}
+            actionClick={this.handleClick}
+            helper_text={this.props.helper_text}
+            is_enabled={this.isButtonEnabled()}
+            item={
+              new Utter(
+                this.props.id,
+                this.props.name,
+                this.props.multiple_alternatives,
+                this.props.utter_contents
+              )
+            }
+          />
+          <Divider />
+          <div style={style.item_form}>
+            {this.state.undo_delete}
+            <UtterForm />
+          </div>
+
+          <Snackbar
+            handleClose={() => this.props.notifyAction('')}
+            notification_text={this.props.notification_text}
+          />
+
+          <DeletionConfirmationDialog
+            handleClose={() => this.changeStatusDialog(false)}
+            deleteItem={this.deleteUtter}
+            dialog_status={this.state.dialog_status}
+          />
+        </Grid>
+      </Grid >
     )
   }
 }
 
-const mapStateToProps = state => { return { ...state.utterReducer } };
+const mapStateToProps = state => { return { ...state.utter } };
 
-const mapDispatchToProps = dispatch => ({
-  getItems: (url) => dispatch(getItems(url)),
-  createNewItem: (new_item) => dispatch(createNewItem(new_item))
-});
+const mapDispatchToProps = dispatch => bindActionCreators(UtterAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);
