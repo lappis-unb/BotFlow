@@ -1,8 +1,8 @@
 
 import axios from "axios";
+import { Story } from '../utils/DataFormat';
 import { message } from '../utils/messages';
-import { createActions, createReducer } from 'reduxsauce'
-import { Story } from '../utils/DataFormat'
+import { createActions, createReducer } from 'reduxsauce';
 import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 
 const INITIAL_STATE = {
@@ -128,8 +128,9 @@ export const addToStory = (state = INITIAL_STATE, action) => {
     }
 }
 
-export const createNewStory = (state = INITIAL_STATE, action) => {
+export const createNewStory = (state = INITIAL_STATE) => {
     const new_story = new Story();
+    
     return {
         ...state,
         name: new_story.name,
@@ -139,6 +140,20 @@ export const createNewStory = (state = INITIAL_STATE, action) => {
         old_content: createArrayObjCopyOf(new_story.content)
     };
 }
+
+export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
+    return async (dispatch) => {
+        try {
+            const mode_url = (mode === 'post') ? STORY_URL : STORY_URL + new_item.id;
+            const response = await axios[mode](mode_url, new_item);
+            await dispatch(Creators.getStory(response.data.id));
+            await dispatch(Creators.notifyAction(message));
+        } catch (error) {
+            throw (error);
+        }
+    }
+};
+
 
 export const { Types, Creators } = createActions({
     createNewStory: [],
@@ -221,14 +236,10 @@ export const { Types, Creators } = createActions({
     deleteStory: (id) => {
         return async (dispatch) => {
             try {
-                if (id.length !== 0) {
+                if (id !== '') {
                     await axios.delete(STORY_URL + id);
-                    //await dispatch(Creators.getIntents());
                     await dispatch(Creators.notifyAction(message.story.deleted));
                 }
-                // Create new_story
-                //await dispatch(Creators.createNewStory())
-
             } catch (error) {
                 throw (error);
             }
@@ -237,28 +248,14 @@ export const { Types, Creators } = createActions({
 
 });
 
-export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
-    return async (dispatch) => {
-        try {
-            const mode_url = (mode === 'post') ? STORY_URL : STORY_URL + new_item.id;
-            await axios[mode](mode_url, new_item);
-            dispatch(Creators.notifyAction(message));
-
-        } catch (error) {
-            throw (error);
-        }
-    }
-};
-
-
 export default createReducer(INITIAL_STATE, {
+    [Types.GET_STORY]: getStory,
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_STORIES]: getStories,
-    [Types.GET_STORY]: getStory,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
-    [Types.DELETE_CONTENT]: deleteContent,
     [Types.NOTIFY_ACTION]: notifyAction,
+    [Types.DELETE_CONTENT]: deleteContent,
     [Types.REORDER_CONTENT]: reorderContent,
     [Types.CREATE_NEW_STORY]: createNewStory,
     [Types.NOTIFY_CONTENT_TEXT_VALIDATION]: notifyContentTextValidation,

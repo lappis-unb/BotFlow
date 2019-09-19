@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import UtterForm from "../components/UtterForm";
 import ListFilter from "../components/ListFilter";
 import ToolbarName from '../components/ToolbarName';
-import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 import { style } from '../styles/style'
 import { bindActionCreators } from 'redux';
@@ -137,8 +137,8 @@ class UtterPage extends Component {
             notification_text={this.props.notification_text}
           />
 
-          <DeleteConfirmationDialog
-            handleClose={this.changeStatusDialog}
+          <DeletionConfirmationDialog
+            handleClose={() => this.changeStatusDialog(false)}
             deleteItem={this.deleteUtter}
             dialog_status={this.state.dialog_status}
           />
