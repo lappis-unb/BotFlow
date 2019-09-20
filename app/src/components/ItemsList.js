@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Typography from '@material-ui/core/Typography';
 import { List, ListItem, ListItemIcon, ListItemText, styled } from '@material-ui/core';
 import { message } from "../utils/messages";
+import { setHighlight } from "../utils/utils";
 
 const StyledListItem = styled(ListItem)({
   backgroundColor: "transparent",
@@ -43,22 +44,13 @@ export default class ItemList extends Component {
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText>
           <Typography noWrap>
-            {this.setHighlight(item.name, highlighted_text)}
+            {setHighlight(item.name, highlighted_text)}
           </Typography>
         </ListItemText>
       </StyledListItem>
     ));
 
     return new_items;
-  }
-
-  // TODO improve this
-  setHighlight(name, highlighted_text) {
-    let texts = name.replace(highlighted_text, " " + highlighted_text + " ").split(" ");
-
-    return texts.map((text, index) => (
-      (text === highlighted_text) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
-    ));
   }
 
   handleListItemClick(item, index) {

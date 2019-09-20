@@ -22,7 +22,7 @@ class UtterPage extends Component {
     super(props);
     this.props.getUtters();
     const id = this.props.history.location.pathname.split('/').pop();
-    (id === 'new') ? this.props.createNewUtter() : this.props.selectUtter(id);
+    isNaN(id) ? this.props.createNewUtter() : this.props.selectUtter(id);
 
     this.state = {
       dialog_status: false
@@ -130,7 +130,7 @@ class UtterPage extends Component {
                 this.props.id,
                 this.props.name,
                 this.props.multiple_alternatives,
-                this.props.utter_contents
+                this.props.content
               )
             }
           />

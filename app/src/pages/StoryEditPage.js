@@ -49,7 +49,10 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
-        this.getStory()
+
+        const id = this.props.history.location.pathname.split('/').pop();
+        isNaN(id) ? this.props.createNewStory() : this.getStory(id);
+
         this.state = {
             value: "",
             dialog_status: false
@@ -166,7 +169,6 @@ class StoryEditPage extends Component {
                         />
                     </div>
                 </Grid>
-
 
                 <Grid item xs={8}>
                     <ToolbarName

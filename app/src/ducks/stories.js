@@ -22,7 +22,6 @@ function createArrayObjCopyOf(samples = []) {
 }
 
 export const getIntents = (state = INITIAL_STATE, action) => {
-
     return {
         ...state,
         intents: action.intents
@@ -42,7 +41,6 @@ export const getStories = (state = INITIAL_STATE, action) => {
         stories: action.stories,
     };
 }
-
 
 export const getStory = (state = INITIAL_STATE, action) => {
     return {
@@ -72,7 +70,6 @@ export const validationContent = (content) => {
     }
 
     return "";
-
 }
 
 export const reorderContent = (state = INITIAL_STATE, action) => {
@@ -130,7 +127,7 @@ export const addToStory = (state = INITIAL_STATE, action) => {
 
 export const createNewStory = (state = INITIAL_STATE) => {
     const new_story = new Story();
-    
+
     return {
         ...state,
         name: new_story.name,
@@ -153,7 +150,6 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
         }
     }
 };
-
 
 export const { Types, Creators } = createActions({
     createNewStory: [],
@@ -211,17 +207,17 @@ export const { Types, Creators } = createActions({
             }
         }
     },
-    getStories: () => {
+    getStories: (value = '') => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(STORY_URL);
+                const response = await axios.get(STORY_URL + '?filter=' + value);
                 await dispatch({ type: Types.GET_STORIES, stories: response.data });
             } catch (error) {
                 throw (error);
             }
         }
     },
-    getStory: (id) => {
+    getStory: (id = '') => {
         return async (dispatch) => {
             try {
                 if (id !== '') {

@@ -1,10 +1,11 @@
 import axios from 'axios';
-import {message} from '../utils/messages';
+import { message } from '../utils/messages';
 import { Intent } from '../utils/DataFormat.js';
 import { INTENT_URL } from '../utils/url_routes.js';
 import { createActions, createReducer } from 'reduxsauce';
 
 const INITIAL_STATE = {
+    intents: [],
     mode: 'Intent',
     name: '',
     helper_text: '',
@@ -58,7 +59,7 @@ export const undoDeleteIntentContent = (state = INITIAL_STATE) => {
 export const selectIntent = (state = INITIAL_STATE, action) => {
     let selected_item = action.item;
     let selected_item_position = action.item_position;
-
+    
     if (selected_item_position < 0) {
         state.intents.find((item, index) => {
             selected_item_position = index;
@@ -125,7 +126,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
                 })
 
             await dispatch(Creators.getIntents());
-            await dispatch(Creators.selectIntent(intent, -1));
+            await dispatch(Creators.selectIntent(intent.id, -1));
 
             dispatch(Creators.notifyAction(message));
         } catch (error) {
@@ -142,7 +143,7 @@ export const { Types, Creators } = createActions({
     setIntentName: ['name', 'helper_text'],
     deleteIntentContent: ['intent_position'],
     setIntentContent: ['intent_position', 'text'],
-    selectIntent: (id = '', item_position = '') => {
+    selectIntent: (id = '', item_position = -1) => {
         return async (dispatch) => {
             try {
                 const response = await axios.get(INTENT_URL + id);

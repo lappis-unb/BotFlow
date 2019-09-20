@@ -164,7 +164,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
                     utter = resp.data;
                 })
             await dispatch(Creators.getUtters());
-            await dispatch(Creators.selectUtter(utter, -1));
+            await dispatch(Creators.selectUtter(utter.id, -1));
 
             await dispatch(Creators.notifyAction(message));
         } catch (error) {

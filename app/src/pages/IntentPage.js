@@ -17,14 +17,13 @@ import ToolbarName from '../components/ToolbarName'
 import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
-
 class IntentPage extends Component {
 
   constructor(props) {
     super(props);
     this.props.getIntents();
     const id = this.props.history.location.pathname.split('/').pop();
-    (id === 'new') ? this.props.createNewIntent() : this.props.selectIntent(id);
+    isNaN(id) ? this.props.createNewIntent() : this.props.selectIntent(id);
 
     this.state = {
       dialog_status: false
