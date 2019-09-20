@@ -25,6 +25,7 @@ const style = {
     height: 'calc(100vh - 74px - 92px - 16px)',
     columnCount: 6,
     columnGap: 0,
+    columnFill: 'auto'
   }
 }
 

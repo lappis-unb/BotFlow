@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Utter } from '../utils/DataFormat.js'
-import { createActions, createReducer } from 'reduxsauce'
-import { UTTER_URL } from '../utils/url_routes.js'
+import { Utter } from '../utils/DataFormat.js';
 import { message } from '../utils/messages.js';
+import { UTTER_URL } from '../utils/url_routes.js';
+import { createActions, createReducer } from 'reduxsauce';
 
 const INITIAL_STATE = {
     mode: "Utter",
@@ -14,7 +14,6 @@ const INITIAL_STATE = {
     old_utter_contents: [[""]],
     multiple_alternatives: false,
 };
-
 
 function createArrayCopyOf(items) {
     if (items !== undefined) {
@@ -103,12 +102,12 @@ export const createNewUtter = (state = INITIAL_STATE) => {
         ...state,
         helper_text: "",
         id: new_utter.id,
-        selected_item_position: -1,
         name: new_utter.name,
         old_name: new_utter.name,
+        selected_item_position: -1,
+        multiple_alternatives: new_utter.multiple_alternatives,
         utter_contents: createArrayCopyOf(new_utter.alternatives),
         old_utter_contents: createArrayCopyOf(new_utter.alternatives),
-        multiple_alternatives: new_utter.multiple_alternatives,
     };
 }
 
@@ -174,21 +173,19 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     }
 };
 
-
 export const { Types, Creators } = createActions({
     createNewUtter: [],
     addUtterContent: [],
     notifyAction: ['text'],
     undoDeleteUtterContent: [],
-    deleteUtterContent: ['utter_position', 'text_position'],
     setUtterName: ['name', 'helper_text'],
+    deleteUtterContent: ['utter_position', 'text_position'],
     setUtterContent: ['text', 'utter_position', 'text_position'],
     changeUtterForm: ['utter_contents', 'multiple_alternatives'],
-    selectUtter: (utter = "", item_position = "") => {
+    selectUtter: (id = "", item_position = "") => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(UTTER_URL + utter.id);
-
+                const response = await axios.get(UTTER_URL + id);
                 await dispatch({ type: Types.SELECT_UTTER, item: response.data, item_position: item_position });
             } catch (error) {
                 throw (error);
@@ -230,7 +227,6 @@ export const { Types, Creators } = createActions({
 })
 
 export default createReducer(INITIAL_STATE, {
-    [Types.ADD_UTTER_CONTENT]: addUtterContent,
     [Types.GET_UTTERS]: getUtters,
     [Types.SELECT_UTTER]: selectUtter,
     [Types.NOTIFY_ACTION]: notifyAction,
@@ -238,9 +234,7 @@ export default createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_UTTER]: createNewUtter,
     [Types.SET_UTTER_CONTENT]: setUtterContent,
     [Types.CHANGE_UTTER_FORM]: changeUtterForm,
+    [Types.ADD_UTTER_CONTENT]: addUtterContent,
     [Types.DELETE_UTTER_CONTENT]: deleteUtterContent,
     [Types.UNDO_DELETE_UTTER_CONTENT]: undoDeleteUtterContent,
 });
-
-
-

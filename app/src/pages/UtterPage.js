@@ -20,12 +20,16 @@ class UtterPage extends Component {
   constructor(props) {
     super(props);
     this.props.getUtters();
-    this.props.createNewUtter();
+    const id = this.props.history.location.pathname.split('/').pop();
+    (id==='new') ? this.props.createNewUtter() : this.props.selectUtter(id); 
+
     this.state = {
       dialog_status: false
     }
-    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+
+    this.selectUtter = this.selectUtter.bind(this)
     this.deleteUtter = this.deleteUtter.bind(this)
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
   }
 
 
@@ -37,6 +41,7 @@ class UtterPage extends Component {
     this.props.deleteUtter(this.props.id)
     this.setState({ dialog_status: false });
   }
+
   handleClose() {
     this.props.notifyAction('');
   }
@@ -84,6 +89,16 @@ class UtterPage extends Component {
     );
   }
 
+  selectUtter(data, utter_position) {
+    this.props.history.push('/utters/' + data.id);
+    this.props.selectUtter(data.id, utter_position);
+  }
+
+  createUtter(){
+    this.props.createNewUtter();
+    this.props.history.push('/utters/new');
+  }
+
   render() {
     return (
       <Grid container>
@@ -92,7 +107,7 @@ class UtterPage extends Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => this.props.createNewUtter()}
+              onClick={() => this.createUtter()}
             >
               <Add />{"Criar resposta"}
             </Button>
@@ -101,7 +116,7 @@ class UtterPage extends Component {
             icon={<UtterIcon />}
             items={this.props.utters}
             text="Respostas cadastradas"
-            actionOnClick={this.props.selectUtter}
+            actionOnClick={this.selectUtter}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 

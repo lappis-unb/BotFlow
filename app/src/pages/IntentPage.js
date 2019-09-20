@@ -22,14 +22,17 @@ class IntentPage extends Component {
   constructor(props) {
     super(props);
     this.props.getIntents();
-    this.props.createNewIntent();
+    const id = this.props.history.location.pathname.split('/').pop();
+    (id==='new') ? this.props.createNewIntent() : this.props.selectIntent(id);
+    
     this.state = {
       dialog_status: false
     }
-    this.changeStatusDialog = this.changeStatusDialog.bind(this)
-    this.deleteIntent = this.deleteIntent.bind(this)
-  }
 
+    this.selectIntent = this.selectIntent.bind(this)
+    this.deleteIntent = this.deleteIntent.bind(this)
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+  }
 
   changeStatusDialog(value) {
     this.setState({ dialog_status: value });
@@ -72,6 +75,16 @@ class IntentPage extends Component {
     );
   }
 
+  selectIntent(data, intent_position) {
+    this.props.history.push('/intents/' + data.id);
+    this.props.selectIntent(data.id, intent_position);
+  }
+
+  createIntent() {
+    this.props.createNewIntent();
+    this.props.history.push('/intents/new');
+  }
+
   render() {
     return (
       <Grid container>
@@ -80,7 +93,7 @@ class IntentPage extends Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => this.props.createNewIntent()}
+              onClick={() => this.createIntent()}
             >
               <Add />{"Criar pergunta"}
             </Button>
@@ -89,7 +102,7 @@ class IntentPage extends Component {
             icon={<IntentIcon />}
             items={this.props.intents}
             text="Perguntas cadastradas"
-            actionOnClick={this.props.selectIntent}
+            actionOnClick={this.selectIntent}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 

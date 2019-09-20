@@ -28,7 +28,7 @@ const styles = {
     card: {
         background: 'white',
         margin: '0 8px 16px 8px',
-        breakInside: 'avoid',
+        breakInside: 'avoid-column',
         padding: '16px'
     },
 }

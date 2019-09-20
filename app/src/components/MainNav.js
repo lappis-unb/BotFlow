@@ -55,9 +55,9 @@ export default function MainNav() {
     } else {
       if (url === '/' || url.includes('/stories/')) {
         return 0;
-      } else if (url === '/intents') {
+      } else if (url.includes('/intents/')) {
         return 1;
-      } else if (url === '/utters') {
+      } else if (url.includes('/utters/')) {
         return 2;
       }
     }
@@ -69,8 +69,8 @@ export default function MainNav() {
       onChange={handleChange}
       centered>
       <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents" component={Link} />
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters" component={Link} />
+      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents/new" component={Link} />
+      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters/new" component={Link} />
     </Tabs>
   );
 }

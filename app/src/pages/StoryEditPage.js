@@ -21,7 +21,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import ExampleStory from "../components/ExampleStory";
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
-
 const style = {
     grid_item_list: {
         background: "#dae8ea",
@@ -58,7 +57,6 @@ class StoryEditPage extends Component {
         this.changeStatusDialog = this.changeStatusDialog.bind(this)
         this.deleteStory = this.deleteStory.bind(this)
     }
-
 
     changeStatusDialog(value) {
         this.setState({ dialog_status: value });

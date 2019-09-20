@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Intent } from '../utils/DataFormat.js'
-import { createActions, createReducer } from 'reduxsauce'
-import { INTENT_URL } from '../utils/url_routes.js'
 import {message} from '../utils/messages';
+import { Intent } from '../utils/DataFormat.js';
+import { INTENT_URL } from '../utils/url_routes.js';
+import { createActions, createReducer } from 'reduxsauce';
 
 const INITIAL_STATE = {
     mode: 'Intent',
@@ -134,19 +134,18 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
     }
 };
 
-
 export const { Types, Creators } = createActions({
     addIntent: [],
-    notifyAction: ['text'],
     createNewIntent: [],
+    notifyAction: ['text'],
     undoDeleteIntentContent: [],
     deleteIntentContent: ['intent_position'],
     setIntentName: ['name_intent', 'helper_text'],
     setIntentContent: ['intent_position', 'text'],
-    selectIntent: (intent = '', item_position = '') => {
+    selectIntent: (id = '', item_position = '') => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(INTENT_URL + intent.id);
+                const response = await axios.get(INTENT_URL + id);
                 await dispatch({ type: Types.SELECT_INTENT, item: response.data, item_position: item_position });
             } catch (error) {
                 throw (error);
