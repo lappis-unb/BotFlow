@@ -63,4 +63,4 @@ spec:
           protocol: TCP
         env:
         - name: REACT_APP_URL_API
-          value: https://botflow.api.lappis.rocks/
+          value: https://botflow-api.lappis.rocks/
