@@ -12,7 +12,6 @@ import SnackbarDelete from './DeleteSnackbar'
 
 import { Creators as IntentAction } from "../ducks/intents";
 
-
 const style = {
   new_question: {
       opacity: "0.2",
@@ -36,7 +35,7 @@ class IntentForm extends Component {
   }
 
   handleDelete(intent_index) {
-    if (this.props.intent_contents.length > 1) {
+    if (this.props.content.length > 1) {
       this.props.deleteIntentContent(intent_index);
       this.handleSnackbarClick(true);
     }
@@ -57,8 +56,8 @@ class IntentForm extends Component {
 
   setIntentContents() {
     let samples = [];
-    if (this.props.intent_contents !== undefined) {
-      samples = (this.props.intent_contents).map((sample, sample_index) => {
+    if (this.props.content !== undefined) {
+      samples = (this.props.content).map((sample, sample_index) => {
         return (
           <li key={"sample_content" + sample_index}>
             <Grid container spacing={2} alignItems="flex-end" >

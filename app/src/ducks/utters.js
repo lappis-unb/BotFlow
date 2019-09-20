@@ -10,8 +10,8 @@ const INITIAL_STATE = {
     helper_text: "",
     old_name: "",
     notification_text: "",
-    utter_contents: [[""]],
-    old_utter_contents: [[""]],
+    content: [[""]],
+    old_content: [[""]],
     multiple_alternatives: false,
 };
 
@@ -23,7 +23,7 @@ function createArrayCopyOf(items) {
 }
 
 export const addUtterContent = (state = INITIAL_STATE) => {
-    let new_utter = createArrayCopyOf(state.utter_contents);
+    let new_utter = createArrayCopyOf(state.content);
 
     if (state.multiple_alternatives) {
         new_utter.push(['']);
@@ -33,41 +33,41 @@ export const addUtterContent = (state = INITIAL_STATE) => {
 
     return {
         ...state,
-        utter_contents: new_utter,
-        old_utter_contents: createArrayCopyOf(new_utter)
+        content: new_utter,
+        old_content: createArrayCopyOf(new_utter)
     };
 }
 
 export const setUtterContent = (state = INITIAL_STATE, action) => {
-    let utter_contents = createArrayCopyOf(state.utter_contents);
-    utter_contents[action.utter_position][action.text_position] = action.text
+    let content = createArrayCopyOf(state.content);
+    content[action.utter_position][action.text_position] = action.text
 
     return {
         ...state,
-        utter_contents: utter_contents
+        content: content
     };
 }
 
 export const deleteUtterContent = (state = INITIAL_STATE, action) => {
-    let utter_contents = createArrayCopyOf(state.utter_contents)
-    let old_utter_history = createArrayCopyOf(state.utter_contents)
+    let content = createArrayCopyOf(state.content)
+    let old_utter_history = createArrayCopyOf(state.content)
 
-    utter_contents[action.utter_position].splice(action.text_position, 1);
-    if (utter_contents[action.utter_position].length === 0) {
-        utter_contents.splice(action.utter_position, 1);
+    content[action.utter_position].splice(action.text_position, 1);
+    if (content[action.utter_position].length === 0) {
+        content.splice(action.utter_position, 1);
     }
 
     return {
         ...state,
-        utter_contents: utter_contents,
-        old_utter_contents: old_utter_history
+        content: content,
+        old_content: old_utter_history
     };
 }
 
 export const undoDeleteUtterContent = (state = INITIAL_STATE) => {
     return {
         ...state,
-        utter_contents: createArrayCopyOf(state.old_utter_contents)
+        content: createArrayCopyOf(state.old_content)
     }
 }
 
@@ -89,8 +89,8 @@ export const selectUtter = (state = INITIAL_STATE, action) => {
         name: selected_item.name,
         old_name: selected_item.name,
         selected_item_position: selected_item_position,
-        utter_contents: createArrayCopyOf(selected_item.alternatives),
-        old_utter_contents: createArrayCopyOf(selected_item.alternatives),
+        content: createArrayCopyOf(selected_item.alternatives),
+        old_content: createArrayCopyOf(selected_item.alternatives),
         multiple_alternatives: selected_item.multiple_alternatives,
     };
 }
@@ -106,8 +106,8 @@ export const createNewUtter = (state = INITIAL_STATE) => {
         old_name: new_utter.name,
         selected_item_position: -1,
         multiple_alternatives: new_utter.multiple_alternatives,
-        utter_contents: createArrayCopyOf(new_utter.alternatives),
-        old_utter_contents: createArrayCopyOf(new_utter.alternatives),
+        content: createArrayCopyOf(new_utter.alternatives),
+        old_content: createArrayCopyOf(new_utter.alternatives),
     };
 }
 
@@ -137,7 +137,7 @@ export const changeUtterForm = (state = INITIAL_STATE, action) => {
     let texts = [];
     let new_alternatives = [];
 
-    action.utter_contents.forEach(i => {
+    action.content.forEach(i => {
         i.forEach(j => texts.push(j))
     })
 
@@ -149,7 +149,7 @@ export const changeUtterForm = (state = INITIAL_STATE, action) => {
 
     return {
         ...state,
-        utter_contents: new_alternatives,
+        content: new_alternatives,
         multiple_alternatives: action.multiple_alternatives
     }
 }
@@ -181,7 +181,7 @@ export const { Types, Creators } = createActions({
     setUtterName: ['name', 'helper_text'],
     deleteUtterContent: ['utter_position', 'text_position'],
     setUtterContent: ['text', 'utter_position', 'text_position'],
-    changeUtterForm: ['utter_contents', 'multiple_alternatives'],
+    changeUtterForm: ['content', 'multiple_alternatives'],
     selectUtter: (id = "", item_position = "") => {
         return async (dispatch) => {
             try {

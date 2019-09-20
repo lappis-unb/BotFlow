@@ -34,8 +34,8 @@ class UtterForm extends Component {
   }
 
   handleDelete(utter_index, text_index) {
-    const utters_length = this.props.utter_contents.length;
-    const utters_text_length = this.props.utter_contents[0].length;
+    const utters_length = this.props.content.length;
+    const utters_text_length = this.props.content[0].length;
 
     if (utters_length > 1 || utters_text_length > 1) {
       this.handleSnackbarClick(true);
@@ -49,8 +49,8 @@ class UtterForm extends Component {
 
   setUtterContents() {
     let utters_texts = [];
-    if (this.props.utter_contents !== undefined) {
-      utters_texts = this.props.utter_contents.map((alternative, alternative_index) => {
+    if (this.props.content !== undefined) {
+      utters_texts = this.props.content.map((alternative, alternative_index) => {
         return alternative.map((alternative_content, content_index) => {
           return (
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
@@ -82,7 +82,7 @@ class UtterForm extends Component {
   handleChange(event) {
     this.setState({ value: event.target.value });
     if ((event.target.value !== this.props.multiple_alternatives)) {
-      this.props.changeUtterForm(this.props.utter_contents, (event.target.value === ALTERNATIVES_TEXT))
+      this.props.changeUtterForm(this.props.content, (event.target.value === ALTERNATIVES_TEXT))
     }
   }
 
@@ -157,12 +157,6 @@ class UtterForm extends Component {
     );
   }
 }
-
-//<p>Name: {this.props.name}</p>
-//          <p>id_utter: {this.props.id}</p>
-//          <p>multiple_alternatives: {this.props.multiple_alternatives ? "true" : "false"}</p>
-//          <pre>{JSON.stringify(this.props.utter_contents, null, 2)}</pre>
-
 
 const mapStateToProps = state => { return { ...state.utter } };
 

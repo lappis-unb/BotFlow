@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import UtterForm from "../components/UtterForm";
 import ListFilter from "../components/ListFilter";
 import ToolbarName from '../components/ToolbarName';
+import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 import { style } from '../styles/style'
@@ -21,7 +22,7 @@ class UtterPage extends Component {
     super(props);
     this.props.getUtters();
     const id = this.props.history.location.pathname.split('/').pop();
-    (id==='new') ? this.props.createNewUtter() : this.props.selectUtter(id); 
+    (id === 'new') ? this.props.createNewUtter() : this.props.selectUtter(id);
 
     this.state = {
       dialog_status: false
@@ -69,22 +70,14 @@ class UtterPage extends Component {
   }
 
   isButtonEnabled() {
-    const utter_contents = this.props.utter_contents;
-    const old_item_content = this.props.old_utter_contents;
+    const no_empty_fields = this.checkEmptyFieldsUtter(this.props.content);
 
-    const no_empty_fields = this.checkEmptyFieldsUtter(utter_contents);
-
-    const name_changed = (this.props.name !== this.props.old_name);
-    const contents_changed = JSON.stringify(utter_contents) !== JSON.stringify(old_item_content);
-    const have_changes = (contents_changed || name_changed);
-
-    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
-    const no_empty_name = this.props.name.length !== 0;
-
-    return (
-      no_errors &&
-      have_changes &&
-      no_empty_name &&
+    return isButtonEnabled(
+      this.props.content,
+      this.props.old_content,
+      this.props.name,
+      this.props.old_name,
+      this.props.helper_text,
       no_empty_fields
     );
   }
@@ -94,7 +87,7 @@ class UtterPage extends Component {
     this.props.selectUtter(data.id, utter_position);
   }
 
-  createUtter(){
+  createUtter() {
     this.props.createNewUtter();
     this.props.history.push('/utters/new');
   }

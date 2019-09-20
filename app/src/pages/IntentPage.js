@@ -14,6 +14,7 @@ import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
+import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 
@@ -23,8 +24,8 @@ class IntentPage extends Component {
     super(props);
     this.props.getIntents();
     const id = this.props.history.location.pathname.split('/').pop();
-    (id==='new') ? this.props.createNewIntent() : this.props.selectIntent(id);
-    
+    (id === 'new') ? this.props.createNewIntent() : this.props.selectIntent(id);
+
     this.state = {
       dialog_status: false
     }
@@ -56,21 +57,14 @@ class IntentPage extends Component {
   }
 
   isButtonEnabled() {
-    const intent_contents = this.props.intent_contents;
-    const old_item_content = this.props.old_intent_contents;
-    const no_empty_fields = this.checkEmptyFieldsIntent(intent_contents);
+    const no_empty_fields = this.checkEmptyFieldsIntent(this.props.content);
 
-    const name_changed = (this.props.name_intent !== this.props.old_name_intent);
-    const contents_changed = JSON.stringify(intent_contents) !== JSON.stringify(old_item_content);
-    const have_changes = (contents_changed || name_changed);
-
-    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
-    const no_empty_name = this.props.name_intent.length !== 0;
-
-    return (
-      no_errors &&
-      have_changes &&
-      no_empty_name &&
+    return isButtonEnabled(
+      this.props.content,
+      this.props.old_content,
+      this.props.name,
+      this.props.old_name,
+      this.props.helper_text,
       no_empty_fields
     );
   }
@@ -113,7 +107,7 @@ class IntentPage extends Component {
             items={this.props.intents}
             saveData={this.props.saveData}
             deleteItem={() => this.changeStatusDialog(true)}
-            name={this.props.name_intent}
+            name={this.props.name}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
             helper_text={this.props.helper_text}
@@ -121,8 +115,8 @@ class IntentPage extends Component {
             item={
               new Intent(
                 this.props.id,
-                this.props.name_intent,
-                this.props.intent_contents
+                this.props.name,
+                this.props.content
               )
             }
           />
