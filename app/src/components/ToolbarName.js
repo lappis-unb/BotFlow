@@ -97,6 +97,7 @@ export default class ToolbarName extends Component {
                 <Grid item xs={5}>
                     {this.props.story ? null : (
                         <NameField
+                            tabIndex="2"
                             name={this.props.name}
                             items={this.props.items}
                             item_id={this.props.item.id}
@@ -109,12 +110,13 @@ export default class ToolbarName extends Component {
                 <Grid item xs={2} />
                 <Grid item xs={3}>
                     <Button
+                        id="save" tabIndex="0"
                         color="secondary"
                         variant="contained"
                         disabled={!this.props.is_enabled}
-                        onClick={() => this.handleClick()}
+                        onSelect={() => this.handleClick()}
                     >
-                        <Done />Gravar
+                        <Done/>Gravar
                     </Button>
 
                     {this.getDeleteOption()}

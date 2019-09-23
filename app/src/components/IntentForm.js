@@ -77,7 +77,7 @@ class IntentForm extends Component {
                 />
               </Grid>
               <Grid item xs={1}>
-                <IconButton color="primary" m={0} onClick={() => this.handleDelete(sample_index)}>
+                <IconButton tabIndex="-1" color="primary" m={0} onClick={() => this.handleDelete(sample_index)}>
                     <DeleteIcon style={{ opacity: 0.5 }} />
                 </IconButton>              
               </Grid>
@@ -105,8 +105,9 @@ class IntentForm extends Component {
               undo={this.state.undo_delete}
             />
             <Grid item xs={11}>
-              <div style={style.new_question} 
-                onClick={() => { this.handleClick() }}>
+              <div style={style.new_question} tabIndex="0"
+                onKeyPress={() => { this.handleClick()}}
+                >
                   <Typography variant="body2">Nova pergunta</Typography>
                 </div>
             </Grid>
