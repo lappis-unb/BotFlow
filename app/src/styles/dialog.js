@@ -57,19 +57,7 @@ export const DialogBoxSecondary = styled.div`
     padding: 8px 0;
     filter: drop-shadow(0 8px 6px rgba(78, 78, 78, 0.16));
     overflow: none;
-
-  :after {
-    content: "";
-    position: absolute;               
-    left: 0px;
-    top: -19px;     
-    width: 40px;
-    height: 32px;
-    border: inherit;
-    border-radius: inherit;
-/*     background: #FDE9E6; */
-    clip-path: polygon(22% 0, 25% 2%, 27% 4%, 100% 69%, 0 99%, 0 0);
-  }
+  
 
 
 

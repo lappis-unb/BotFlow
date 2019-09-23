@@ -136,19 +136,34 @@ class UtterForm extends Component {
 
 
             <Grid item xs={10}>
-              <DialogBoxPrimary
-                style={{
-                  opacity: "0.6",
-                  filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
-                }}
-                onClick={() => { this.handleClick() }}>
-                <textarea
-                  readOnly
-                  type="text"
-                  rows="1"
-                  style={{ cursor: "pointer" }}
-                  placeholder="Novo balão de resposta" />
-              </DialogBoxPrimary>
+              {this.props.multiple_alternatives ?
+                <DialogBoxPrimary
+                  style={{
+                    opacity: "0.6",
+                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
+                  }}
+                  onClick={() => { this.handleClick() }}>
+                  <textarea
+                    readOnly
+                    type="text"
+                    rows="1"
+                    style={{ cursor: "pointer" }}
+                    placeholder="Novo balão de resposta" />
+                </DialogBoxPrimary> :
+                <DialogBoxSecondary
+                  style={{
+                    opacity: "0.6",
+                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
+                  }}
+                  onClick={() => { this.handleClick() }}>
+                  <textarea
+                    readOnly
+                    type="text"
+                    rows="1"
+                    style={{ cursor: "pointer" }}
+                    placeholder="Novo balão de resposta" />
+                </DialogBoxSecondary>}
+
             </Grid>
             <Grid item xs={2} />
           </Grid>
