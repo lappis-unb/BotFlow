@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import { DialogBox } from '../styles/dialog';
+import { DialogBoxPrimary, DialogBoxSecondary } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -56,12 +56,20 @@ class UtterForm extends Component {
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
               <Grid container spacing={2} alignItems="flex-end" >
                 <Grid item xs={10}>
-                  <DialogBox>
-                    <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
-                      rows="1"
-                      onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
-                      ref={ref => this.multilineTextarea = ref} />
-                  </DialogBox>
+                  {content_index === 0 ?
+                    <DialogBoxPrimary>
+                      <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                        rows="1"
+                        onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
+                        ref={ref => this.multilineTextarea = ref} />
+                    </DialogBoxPrimary>
+                    :
+                    <DialogBoxSecondary>
+                      <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                        rows="1"
+                        onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
+                        ref={ref => this.multilineTextarea = ref} />
+                    </DialogBoxSecondary>}
                 </Grid>
                 <Grid item xs={2}>
                   <IconButton color="primary" m={0}
@@ -128,7 +136,7 @@ class UtterForm extends Component {
 
 
             <Grid item xs={10}>
-              <DialogBox
+              <DialogBoxPrimary
                 style={{
                   opacity: "0.6",
                   filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
@@ -140,7 +148,7 @@ class UtterForm extends Component {
                   rows="1"
                   style={{ cursor: "pointer" }}
                   placeholder="Novo balão de resposta" />
-              </DialogBox>
+              </DialogBoxPrimary>
             </Grid>
             <Grid item xs={2} />
           </Grid>
