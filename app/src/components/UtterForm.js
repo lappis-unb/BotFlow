@@ -54,7 +54,7 @@ class UtterForm extends Component {
         return alternative.map((alternative_content, content_index) => {
           return (
             <li key={"alternative_content" + alternative_index + content_index} style={{ marginBottom: 24 }}>
-              <Grid container spacing={2} alignItems="flex-end" >
+              <Grid container spacing={1} alignItems="flex-end" >
                 <Grid item xs={10}>
                   {content_index === 0 ?
                     <DialogBoxPrimary>
