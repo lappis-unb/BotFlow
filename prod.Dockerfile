@@ -6,6 +6,11 @@ COPY ./app .
 
 RUN npm install
 
+<<<<<<< HEAD
+=======
+ENV REACT_APP_URL_API https://botflow-api.dev.lappis.rocks/
+
+>>>>>>> Add export data button and improve production dockerfile
 ARG configuration=production
 
 RUN npm run build
