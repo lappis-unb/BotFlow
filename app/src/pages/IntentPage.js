@@ -8,6 +8,7 @@ import { style } from '../styles/style';
 import { Add } from '../styles/button';
 import Grid from '@material-ui/core/Grid';
 import { Divider } from '@material-ui/core';
+import { message } from '../utils/messages';
 import IntentIcon from '../icons/IntentIcon';
 import Button from '@material-ui/core/Button';
 import Snackbar from '../components/Snackbar';
@@ -17,13 +18,15 @@ import ToolbarName from '../components/ToolbarName'
 import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
+
 class IntentPage extends Component {
 
   constructor(props) {
     super(props);
     this.props.getIntents();
     const id = this.props.history.location.pathname.split('/').pop();
-    isNaN(id) ? this.props.createNewIntent() : this.props.selectIntent(id);
+    //isNaN(id) ? this.props.createNewIntent() : this.props.selectIntent(id);
+    if (isNaN(id)) this.props.selectIntent(id);
 
     this.state = {
       dialog_status: false
@@ -88,20 +91,20 @@ class IntentPage extends Component {
               variant="contained"
               onClick={() => this.createIntent()}
             >
-              <Add />{"Criar pergunta"}
+              <Add />{message.intent.create_button}
             </Button>
           </div>
           <ListFilter
             icon={<IntentIcon />}
             items={this.props.intents}
-            text="Perguntas cadastradas"
+            text={message.intent.list_filter}
             actionOnClick={this.selectIntent}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 
         <Grid item xs={9}>
           <ToolbarName
-            name_label="Nome da pergunta"
+            name_label={message.intent.toolbar_name}
             item_id={this.props.id}
             items={this.props.intents}
             saveData={this.props.saveData}
@@ -127,7 +130,7 @@ class IntentPage extends Component {
           </div>
 
           <Snackbar
-            handleClose={() => this.props.notifyAction("")}
+            handleClose={() => this.props.notifyAction('')}
             notification_text={this.props.notification_text}
           />
 

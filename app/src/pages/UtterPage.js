@@ -6,9 +6,9 @@ import UtterIcon from '../icons/UtterIcon';
 import { Divider } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import UtterForm from "../components/UtterForm";
+import { isButtonEnabled } from '../utils/utils';
 import ListFilter from "../components/ListFilter";
 import ToolbarName from '../components/ToolbarName';
-import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 import { style } from '../styles/style'
@@ -16,13 +16,15 @@ import { bindActionCreators } from 'redux';
 import { Utter } from "../utils/DataFormat";
 import Snackbar from '../components/Snackbar';
 import { Creators as UtterAction } from '../ducks/utters';
+import { message } from '../utils/messages';
 
 class UtterPage extends Component {
   constructor(props) {
     super(props);
     this.props.getUtters();
     const id = this.props.history.location.pathname.split('/').pop();
-    isNaN(id) ? this.props.createNewUtter() : this.props.selectUtter(id);
+    //isNaN(id) ? this.props.createNewUtter() : this.props.selectUtter(id);
+    if(isNaN(id)) this.props.selectUtter(id);
 
     this.state = {
       dialog_status: false
@@ -102,20 +104,20 @@ class UtterPage extends Component {
               variant="contained"
               onClick={() => this.createUtter()}
             >
-              <Add />{"Criar resposta"}
+              <Add />{message.utter.create_button}
             </Button>
           </div>
           <ListFilter
             icon={<UtterIcon />}
             items={this.props.utters}
-            text="Respostas cadastradas"
+            text={message.utter.list_filter}
             actionOnClick={this.selectUtter}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 
         <Grid item xs={9}>
           <ToolbarName
-            name_label="Nome da resposta"
+            name_label={message.utter.toolbar_name}
             item_id={this.props.id}
             items={this.props.utters}
             saveData={this.props.saveData}
