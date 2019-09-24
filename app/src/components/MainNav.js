@@ -7,7 +7,6 @@ import StoryIcon from '../icons/StoryIcon';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -18,7 +17,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-around",
   },
 }));
-
 
 const StyledTab = withStyles(theme => ({
   root: {
@@ -37,7 +35,6 @@ const StyledTab = withStyles(theme => ({
         fill: theme.palette.primary.light,
       },
     },
-
   },
   selected: {},
   wrapper: {},

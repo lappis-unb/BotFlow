@@ -3,7 +3,9 @@ import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import { DialogBoxPrimary, DialogBoxSecondary } from '../styles/dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { message } from '../utils/messages';
 import MenuItem from '@material-ui/core/MenuItem';
+import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import { bindActionCreators } from 'redux';
@@ -118,7 +120,7 @@ class UtterForm extends Component {
                 value={this.getSelectedOption()}
                 id="outlined-select-currency"
                 style={{ width: 200 }}
-                label="Balões aparecem:"
+                label={message.utter.selection}
                 onChange={(e) => this.handleChange(e)}>
                 {(this.state.values).map((option, index) => (
                   <MenuItem key={"menu" + index} value={option}>
@@ -133,8 +135,6 @@ class UtterForm extends Component {
             {this.setUtterContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
-
-
             <Grid item xs={10}>
               {this.props.multiple_alternatives ?
                 <DialogBoxPrimary
@@ -161,9 +161,8 @@ class UtterForm extends Component {
                     type="text"
                     rows="1"
                     style={{ cursor: "pointer" }}
-                    placeholder="Novo balão de resposta" />
+                    placeholder="Novo exemplo de balão de resposta" />
                 </DialogBoxSecondary>}
-
             </Grid>
             <Grid item xs={2} />
           </Grid>

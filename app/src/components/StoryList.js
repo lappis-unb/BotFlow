@@ -11,9 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { message } from "../utils/messages";
 
-
-
-
 const styles = {
     intent_icon: {
         fill: '#4b3953',
@@ -58,7 +55,6 @@ const getIntentStyle = (isDragging, draggableStyle) => ({
     ...getItemStyle(isDragging, draggableStyle),
     ...styles.card_intent
 })
-
 
 
 const getListStyle = isDraggingOver => ({
