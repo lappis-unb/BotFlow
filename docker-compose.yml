@@ -1,22 +1,13 @@
 version: "3.4"
 services:
-  botflow:
-    image: lappis/bot-flow:devel 
+  botflow_front:
+    build:
+      context: .
+      dockerfile: ./prod.Dockerfile
     environment:
-        REACT_APP_URL_API: http://localhost:8000/
+        REACT_APP_URL_API: https://botflow-api.dev.lappis.rocks/ # IP
     ports:
-      - 3000:3000
+      - 80:80
     volumes:
-      - ./app:/botFlow/
+      - ./app:/botflow/
       - /app/node_modules
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
-
-  watchtower:
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30
-    labels:
-      - "com.centurylinklabs.watchtower.enable=false"

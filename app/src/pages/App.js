@@ -10,6 +10,9 @@ import IntentPage from './IntentPage';
 import AppIcon from '../icons/AppIcon';
 import StoryEditPage from './StoryEditPage';
 import StoriesPage from './StoriesPage';
+import Button from '@material-ui/core/Button';
+import { message } from '../utils/messages.js';
+import { DOWNLOAD_URL} from '../utils/url_routes.js';
 
 function App() {
   return (
@@ -18,6 +21,12 @@ function App() {
         <Toolbar>
           <AppIcon />
           <MainNav />
+          <Button
+            color="secondary"
+            variant="contained"
+            href={DOWNLOAD_URL}>
+            {message.download} 
+          </Button>
         </Toolbar>
       </AppBar>
       <div style={{ paddingTop: "74px" }}>
