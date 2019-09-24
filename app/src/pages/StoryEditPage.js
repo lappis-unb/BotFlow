@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '../components/Snackbar';
 import ErrorSnackbar from '../components/StorySnackbar';
 import { Creators as StoryAction } from "../ducks/stories";
-import Divider from '@material-ui/core/Divider';
 
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
