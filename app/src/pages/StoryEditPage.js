@@ -26,7 +26,7 @@ const style = {
         background: "#dae8ea",
         paddingTop: '15px',
         height: "calc(100vh - 74px - 64px - 17px)",
-        overflowY: "auto"
+        overflowY: "auto",
     },
     list_container_utter: {
         paddingLeft: "16px",
@@ -38,6 +38,7 @@ const style = {
     filter_items_container: {
         padding: "12px 8px",
         background: "#dae8ea",
+        width: "100%",
     },
     list: {
         marginTop: '15px',
@@ -156,18 +157,19 @@ class StoryEditPage extends Component {
                             />
                         </Grid>
                     </Grid>
-                    <Divider />
-                    <div style={style.filter_items_container}>
-                        <TextField
-                            fullWidth
-                            type="text"
-                            label="Filtrar"
-                            variant="outlined"
-                            value={this.state.value}
-                            InputProps={{ endAdornment: this.getFilterIcon() }}
-                            onChange={(e) => this.handleFilterInput(e)}
-                        />
-                    </div>
+                    <Grid container>
+                        <div style={style.filter_items_container}>
+                            <TextField
+                                fullWidth
+                                type="text"
+                                label="Filtrar"
+                                variant="outlined"
+                                value={this.state.value}
+                                InputProps={{ endAdornment: this.getFilterIcon() }}
+                                onChange={(e) => this.handleFilterInput(e)}
+                            />
+                        </div>
+                    </Grid>
                 </Grid>
 
                 <Grid item xs={8}>
