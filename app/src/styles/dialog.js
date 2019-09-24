@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 
-export const DialogBox = styled.div`
+export const DialogBoxPrimary = styled.div`
   position:relative;
-    margin-top: 12px
+    margin-top: 24px;
     background: #FDE9E6;
     border-radius: 8px;
     padding: 8px 0;
-    filter: drop-shadow(0 8px 6px rgba(78, 78, 78, 0.16));
+    filter: drop-shadow(0 4px 4px rgba(78, 78, 78, 0.2));
     overflow: none;
 
   :after {
@@ -43,8 +43,40 @@ export const DialogBox = styled.div`
 
   textarea:focus {
       outline: none;
-      border-style: none;
-      border-color: transparent;
+      border: none;
+      overflow: auto;
+  }
+`
+
+export const DialogBoxSecondary = styled.div`
+    position:relative;
+    margin-top:-12px;
+    background: #FDE9E6;
+    border-radius: 8px;
+    padding: 8px 0;
+    filter: drop-shadow(0 4px 4px rgba(78, 78, 78, 0.2));
+    overflow: none;
+  
+
+  textarea {
+    background: inherit;
+    width: calc(100% - 28px);
+    border: none;
+    margin: 6px;
+    padding: 4px;
+    resize: none;
+    overflow: auto;
+    display: block;
+    //Typography body2Dark
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.2rem
+    color: #000;  
+  }
+
+  textarea:focus {
+      outline: none;
+      border: none;
       overflow: auto;
   }
 `
