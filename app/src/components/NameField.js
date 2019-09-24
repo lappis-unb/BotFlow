@@ -42,6 +42,7 @@ class NameField extends Component {
                 fullWidth
                 type="text"
                 id={this.props.label}
+                autoFocus={true}
                 value={this.props.name}
                 label={this.props.label}
                 helperText={this.props.helper_text}

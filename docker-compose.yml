@@ -3,11 +3,9 @@ services:
   botflow_front:
     build:
       context: .
-      dockerfile: ./prod.Dockerfile
-    environment:
-        REACT_APP_URL_API: https://botflow-api.dev.lappis.rocks/ # IP
+      dockerfile: ./Dockerfile
     ports:
-      - 80:80
+      - 3000:3000
     volumes:
       - ./app:/botflow/
       - /app/node_modules
