@@ -8,8 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+
 import { Creators as UtterAction } from '../ducks/utters';
-import { DialogBoxPrimary, DialogBoxSecondary } from '../styles/dialog';
+import { DialogBoxPrimary, DialogBoxSecondary, NewPrimaryDialog, NewSecondaryDialog } from '../styles/dialog';
 
 class UtterForm extends Component {
 
@@ -26,8 +28,6 @@ class UtterForm extends Component {
   }
 
   changeTextarea = (utter_index, text_index, e) => {
-    this.multilineTextarea.style.height = 'auto';
-    this.multilineTextarea.style.height = this.multilineTextarea.scrollHeight + 'px';
     this.props.setUtterContent(e.target.value, utter_index, text_index)
   }
 
@@ -55,17 +55,34 @@ class UtterForm extends Component {
               <Grid container spacing={1} alignItems="flex-end" >
                 <Grid item xs={10}>
                   {content_index === 0 ?
-                    <DialogBoxPrimary>
-                      <textarea type="text" onKeyPress={(event) => { this.handleClick(event.key) }} autoFocus={this.state.there_is_auto_focus} value={alternative_content}
-                        onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
-                        ref={ref => this.multilineTextarea = ref} />
+                    <DialogBoxPrimary>  
+                        <TextField
+                            fullWidth
+                            margin="dense"
+                            multiline
+                            value={alternative_content}
+                            onKeyUp={(event) => { this.handleClick(event.key) }}
+                            autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                            onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
+                            InputProps={{
+                               disableUnderline: true
+                            }}
+                            />
                     </DialogBoxPrimary>
                     :
                     <DialogBoxSecondary>
-                      <textarea type="text" onKeyPress={(event) => { this.handleClick(event.key) }} autoFocus={this.state.there_is_auto_focus} value={alternative_content}
-                        
-                        onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
-                        ref={ref => this.multilineTextarea = ref} />
+                        <TextField
+                            fullWidth
+                            margin="dense"
+                            multiline
+                            value={alternative_content}
+                            onKeyUp={(event) => { this.handleClick(event.key) }}
+                            autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                            onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
+                            InputProps={{
+                               disableUnderline: true
+                            }}
+                            />
                     </DialogBoxSecondary>}
                 </Grid>
                 <Grid item xs={2}>
@@ -134,30 +151,13 @@ class UtterForm extends Component {
           <Grid container spacing={2} alignItems="flex-end" >
             <Grid item xs={10}>
               {this.props.multiple_alternatives ?
-                <DialogBoxPrimary
-                  style={{
-                    opacity: "0.6",
-                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
-                  }}
-                  onClick={() => { this.handleClick() }}>
-                  <textarea
-                    readOnly
-                    type="text"
-                    style={{ cursor: "pointer" }}
-                    placeholder="Novo balão de resposta" />
-                </DialogBoxPrimary> :
-                <DialogBoxSecondary
-                  style={{
-                    opacity: "0.6",
-                    filter: "drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3))"
-                  }}
-                  onClick={() => { this.handleClick() }}>
-                  <textarea
-                    readOnly
-                    type="text"
-                    style={{ cursor: "pointer" }}
-                    placeholder="Novo exemplo de balão de resposta" />
-                </DialogBoxSecondary>}
+                <NewPrimaryDialog onClick={() => { this.handleClick() }}>
+                    <Typography variant="body1">Novo balão de resposta</Typography>
+                </NewPrimaryDialog> :
+                <NewSecondaryDialog onClick={() => { this.handleClick() }}>
+                    <Typography variant="body1">Novo balão de resposta</Typography>
+                </NewSecondaryDialog>
+              }
             </Grid>
             <Grid item xs={2} />
           </Grid>
