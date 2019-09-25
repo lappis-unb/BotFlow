@@ -14,6 +14,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import StoryCard from '../components/StoryCard';
 import TextField from '@material-ui/core/TextField';
 import SnackbarDelete from '../components/DeleteSnackbar';
+import Typography from '@material-ui/core/Typography';
+
 
 const style = {
   toolbar: {
@@ -57,7 +59,7 @@ class StoriesPage extends Component {
         <Grid item xs={9}>
           <Link to='/stories/new' style={{ textDecoration: 'none' }}>
             <Button color="primary" variant="contained" style={style.create_button}>
-              <Add />Criar diálogo
+              <Add />Criar novo diálogo
             </Button>
           </Link>
         </Grid>
@@ -100,7 +102,7 @@ class StoriesPage extends Component {
         <StoryCard key={'story_card_' + index} highlighted_text={this.state.value} story={story} />
       ));
     } else {
-      return <h1>{message.no_result}</h1>;
+      return <div style={{position:'absolute', width:'97%', textAlign:'center'}}><Typography variant="h5" color="secondary">{message.no_result}</Typography></div>;
     }
   }
 

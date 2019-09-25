@@ -4,7 +4,7 @@ export const message = {
     no_result: "Nenhum item encontrado",
     repeated_name: "Tente um nome diferente, este já existe",
     no_special_char: "Use apenas letras sem acentos, números ou _",
-    no_dialogs: "Clique para adicionar exemplos de interação (perguntas e respostas) esperados do usuário com bot",
+    no_dialogs: "Clique nas perguntas e respostas para montar um diálogo com exemplos de interação esperados",
     delete_confirmation: "Apagar item?",
     download: "Exportar conteúdo",
     story: {
@@ -23,7 +23,7 @@ export const message = {
         list_filter: "Perguntas cadastradas",
         create_button: "Criar nova pergunta",
         placeholder: "Ex: Geral_Cumprimentar, Servico_Como_Cadastrar",
-        name_good_pratice: "Identificador da Perguntas. Boa prática: Contexto + Tipo de pergunta (separado por '_' ).",
+        name_good_pratice: "Para identificar as perguntas claramente, indique o assunto principal e depois o tipo de pergunta, separado por '_'",
     },
     utter: {
         created: "Resposta criada",
@@ -35,7 +35,7 @@ export const message = {
         create_button: "Criar nova resposta",
         list_filter: "Respostas cadastradas",
         alternatives_text: "como alternativas",
-        placeholder: "Ex: Utter_ Geral_Cumprimentar, Utter_ Servico_Como_Cadastrar",
-        name_good_pratice: "Identificador das Respostas. Boa prática: Inicie com 'Utter'+ Título da Pergunta Correspondente (se existe).",
+        placeholder: "Ex: Resp_Geral_Cumprimentar, Resp_Servico_Como_Cadastrar",
+        name_good_pratice: "Para identificar as respostas claramente, use 'Resp_' e o título da pergunta correspondente, se existir",
     }
 }
