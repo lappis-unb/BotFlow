@@ -148,7 +148,7 @@ class StoryList extends Component {
             )
 
         } else {
-            return <Typography variant="body1">{message.no_dialogs}</Typography>
+            return <div style={{padding:'24px'}}><Typography variant="body1">{message.no_dialogs}</Typography></div>
         }
     }
     handleSnackbarClick(value) {
