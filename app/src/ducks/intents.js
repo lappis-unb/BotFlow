@@ -1,64 +1,65 @@
 import axios from 'axios';
-import { Intent } from '../utils/DataFormat.js'
-import { createActions, createReducer } from 'reduxsauce'
-import { INTENT_URL } from '../utils/url_routes.js'
-import {message} from '../utils/messages';
+import { message } from '../utils/messages';
+import { Intent } from '../utils/DataFormat.js';
+import { INTENT_URL } from '../utils/url_routes.js';
+import { createActions, createReducer } from 'reduxsauce';
 
 const INITIAL_STATE = {
+    intents: [],
     mode: 'Intent',
-    name_intent: '',
+    name: '',
     helper_text: '',
-    old_name_intent: '',
+    old_name: '',
     notification_text: '',
-    intent_contents: [''],
-    old_intent_contents: [''],
+    content: [''],
+    old_content: [''],
 };
 
 export const addIntent = (state = INITIAL_STATE) => {
-    let new_intent = [...state.intent_contents];
+    let new_intent = [...state.content];
     new_intent.push('')
 
     return {
         ...state,
-        intent_contents: new_intent,
-        old_intent_contents: [...new_intent]
+        content: new_intent,
+        old_content: [...new_intent]
     };
 }
 
 export const setIntentContent = (state = INITIAL_STATE, action) => {
-    let intent_contents = [...state.intent_contents];
-    intent_contents[action.intent_position] = action.text
+    let content = [...state.content];
+    content[action.intent_position] = action.text
 
     return {
         ...state,
-        intent_contents: intent_contents
+        content: content
     };
 }
 
 export const deleteIntentContent = (state = INITIAL_STATE, action) => {
-    let intent_contents = [...state.intent_contents]
-    let old_item_history = [...state.intent_contents]
+    let content = [...state.content]
+    let old_item_history = [...state.content]
 
-    intent_contents.splice(action.intent_position, 1);
+    content.splice(action.intent_position, 1);
 
     return {
         ...state,
-        intent_contents: intent_contents,
-        old_intent_contents: old_item_history
+        content: content,
+        old_content: old_item_history
     };
 }
 
 export const undoDeleteIntentContent = (state = INITIAL_STATE) => {
     return {
         ...state,
-        intent_contents: [...state.old_intent_contents]
+        content: [...state.old_content]
     }
 }
 
 export const selectIntent = (state = INITIAL_STATE, action) => {
     let selected_item = action.item;
     let selected_item_position = action.item_position;
-
+    
     if (selected_item_position < 0) {
         state.intents.find((item, index) => {
             selected_item_position = index;
@@ -69,11 +70,11 @@ export const selectIntent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         id: selected_item.id,
-        name_intent: selected_item.name,
-        old_name_intent: selected_item.name,
+        name: selected_item.name,
+        old_name: selected_item.name,
         selected_item_position: selected_item_position,
-        intent_contents: [...selected_item.samples],
-        old_intent_contents: [...selected_item.samples],
+        content: [...selected_item.samples],
+        old_content: [...selected_item.samples],
         helper_text: ''
     };
 }
@@ -85,17 +86,17 @@ export const createNewIntent = (state = INITIAL_STATE) => {
         ...state,
         id: new_intent.id,
         selected_item_position: -1,
-        name_intent: new_intent.name,
-        old_name_intent: new_intent.name,
-        intent_contents: [...new_intent.samples],
-        old_intent_contents: [...new_intent.samples]
+        name: new_intent.name,
+        old_name: new_intent.name,
+        content: [...new_intent.samples],
+        old_content: [...new_intent.samples]
     };
 }
 
 export const setIntentName = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        name_intent: action.name_intent,
+        name: action.name,
         helper_text: action.helper_text
     };
 }
@@ -125,7 +126,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
                 })
 
             await dispatch(Creators.getIntents());
-            await dispatch(Creators.selectIntent(intent, -1));
+            await dispatch(Creators.selectIntent(intent.id, -1));
 
             dispatch(Creators.notifyAction(message));
         } catch (error) {
@@ -134,19 +135,18 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
     }
 };
 
-
 export const { Types, Creators } = createActions({
     addIntent: [],
-    notifyAction: ['text'],
     createNewIntent: [],
+    notifyAction: ['text'],
     undoDeleteIntentContent: [],
+    setIntentName: ['name', 'helper_text'],
     deleteIntentContent: ['intent_position'],
-    setIntentName: ['name_intent', 'helper_text'],
     setIntentContent: ['intent_position', 'text'],
-    selectIntent: (intent = '', item_position = '') => {
+    selectIntent: (id = '', item_position = -1) => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(INTENT_URL + intent.id);
+                const response = await axios.get(INTENT_URL + id);
                 await dispatch({ type: Types.SELECT_INTENT, item: response.data, item_position: item_position });
             } catch (error) {
                 throw (error);

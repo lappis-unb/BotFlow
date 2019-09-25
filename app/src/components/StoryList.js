@@ -1,18 +1,16 @@
-import React, { Component } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import { Creators as StoryAction } from "../ducks/stories";
-import { Grid, Card } from '@material-ui/core';
+import React, { Component } from "react";
 import { bindActionCreators } from 'redux';
-import DeleteIcon from '@material-ui/icons/Delete';
 import UtterIcon from '../icons/UtterIcon';
+import { message } from "../utils/messages";
 import IntentIcon from '../icons/IntentIcon';
+import { Grid, Card } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { message } from "../utils/messages";
-
-
-
+import SnackbarDelete from '../components/DeleteSnackbar';
+import { Creators as StoryAction } from "../ducks/stories";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const styles = {
     intent_icon: {
@@ -25,7 +23,7 @@ const styles = {
         border: '1px solid #4b3953',
         color: '#4b3953',
         boxShadow: 'none',
-        padding:"12px 12px 6px",
+        padding: "12px 12px 6px",
 
     },
     card_utter: {
@@ -33,7 +31,7 @@ const styles = {
         color: '#f26a53',
         marginLeft: '24px',
         boxShadow: 'none',
-        padding:"12px 12px 6px",
+        padding: "12px 12px 6px",
     }
 }
 
@@ -60,18 +58,21 @@ const getIntentStyle = (isDragging, draggableStyle) => ({
 })
 
 
-
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "#f6f9f9" : "white",
     padding: grid,
-    width:"420px",
-    
+    width: "420px",
+
 });
 
 class StoryList extends Component {
     constructor(props) {
         super(props);
         this.onDragEnd = this.onDragEnd.bind(this);
+        this.state = {
+            undo_delete: false
+        }
+        this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
     }
 
     getIcon(type) {
@@ -109,19 +110,19 @@ class StoryList extends Component {
                                                 provided.draggableProps.style,
                                             )}
                                         >
-                                          <Grid container>
-                                            <Grid item xs={1}>
-                                              {this.getIcon(item.type)}
+                                            <Grid container>
+                                                <Grid item xs={1}>
+                                                    {this.getIcon(item.type)}
+                                                </Grid>
+                                                <Grid item xs={11}>
+                                                    <Typography varant="body1" noWrap>{item.name}</Typography>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={11}>
-                                              <Typography varant="body1" noWrap>{item.name}</Typography>
-                                            </Grid>
-                                          </Grid>
                                         </Card>
                                     </Grid>
                                     <Grid item xs={1}>
                                         <IconButton color="primary" m={0}
-                                            onClick={() => this.props.deleteContent(content_position)}>
+                                            onClick={() => this.handleDelete(content_position)}>
                                             <DeleteIcon style={{ opacity: 0.5 }} />
                                         </IconButton>
                                     </Grid>
@@ -130,7 +131,6 @@ class StoryList extends Component {
                         )}
                     </Draggable>
                 ))}
-                {provided.placeholder}
             </div>
         )
     }
@@ -151,11 +151,24 @@ class StoryList extends Component {
             return <Typography variant="body1">{message.no_dialogs}</Typography>
         }
     }
+    handleSnackbarClick(value) {
+        this.setState({ undo_delete: value });
+    }
+    handleDelete(content_position) {
+        this.handleSnackbarClick(true);
+        this.props.deleteContent(content_position);
+    }
 
     render() {
         return (
             <div>
                 {this.getContent()}
+
+                <SnackbarDelete
+                    handleSnackbarClick={this.handleSnackbarClick}
+                    handleUndo={this.props.undoDeleteContent}
+                    undo={this.state.undo_delete}
+                />
             </div>
         );
     }
