@@ -1,37 +1,41 @@
-export const message={
+export const message = {
     deleted: "Item apagado",
     no_examples: "",
     no_result: "Nenhum item encontrado",
     repeated_name: "Tente um nome diferente, este já existe",
     no_special_char: "Use apenas letras sem acentos, números ou _",
     no_dialogs: "Clique para adicionar exemplos de interação (perguntas e respostas) esperados do usuário com bot",
-    delete_confirmation: "Você tem certeza que deseja deletar este elemento?",
+    delete_confirmation: "Apagar item?",
     download: "Exportar conteúdo",
-    story:{
-        two_intents: "Adicione uma resposta depois de cada pergunta",
-        first_element: "O diálogo deve começar com uma pergunta",
+    story: {
         created: "Diálogo criado",
-        updated: "Diálogo atualizado",
         deleted: "Diálogo apagado",
+        updated: "Diálogo atualizado",
         create_button: "Criar novo diálogo",
+        first_element: "O diálogo deve começar com uma pergunta",
+        two_intents: "Adicione uma resposta depois de cada pergunta",
     },
-    intent:{
+    intent: {
         created: "Pergunta criada",
-        updated: "Pergunta atualizada",
         deleted: "Pergunta apagada",
+        updated: "Pergunta atualizada",
         toolbar_name: "Título da pergunta",
         list_filter: "Perguntas cadastradas",
         create_button: "Criar nova pergunta",
+        placeholder: "Ex: Geral_Cumprimentar, Servico_Como_Cadastrar",
+        name_good_pratice: "Identificador da Perguntas. Boa prática: Contexto + Tipo de pergunta (separado por '_' ).",
     },
-    utter:{
+    utter: {
         created: "Resposta criada",
-        updated: "Resposta atualizada",
         deleted: "Resposta apagada",
-        toolbar_name: "Título da resposta",
-        list_filter: "Respostas cadastradas",
-        create_button: "Criar nova resposta",
         selection: "Balões aparecem:",
+        sequence_text: "em sequência",
+        updated: "Resposta atualizada",
+        toolbar_name: "Título da resposta",
+        create_button: "Criar nova resposta",
+        list_filter: "Respostas cadastradas",
         alternatives_text: "como alternativas",
-        sequence_text: "em sequência"
+        placeholder: "Ex: Utter_ Geral_Cumprimentar, Utter_ Servico_Como_Cadastrar",
+        name_good_pratice: "Identificador das Respostas. Boa prática: Inicie com 'Utter'+ Título da Pergunta Correspondente (se existe).",
     }
 }

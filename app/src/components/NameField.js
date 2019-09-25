@@ -38,17 +38,20 @@ class NameField extends Component {
 
     render() {
         return (
+            <div>
             <TextField
                 fullWidth
                 type="text"
-                id={this.props.label}
                 autoFocus={true}
+                id={this.props.label}
                 value={this.props.name}
                 label={this.props.label}
                 helperText={this.props.helper_text}
+                placeholder={this.props.placeholder}
                 error={this.props.helper_text !== ""}
                 onChange={(e) => this.setName(this.props.items, e.target.value)}
             />
+            </div>
         )
     }
 }

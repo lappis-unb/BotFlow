@@ -19,14 +19,14 @@ const DeletionConfirmationDialog = ({ dialog_status, handleClose, deleteItem }) 
                     color="primary"
                     onClick={() => handleClose(false)}
                 >
-                    Não
+                    Cancelar
                     </Button>
                 <Button
                     autoFocus
                     color="primary"
                     onClick={() => deleteItem()}
                 >
-                    Tenho certeza
+                    Apagar
                     </Button>
             </DialogActions>
         </Dialog>

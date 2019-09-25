@@ -122,6 +122,8 @@ class UtterPage extends Component {
             saveData={this.props.saveData}
             deleteItem={() => this.changeStatusDialog(true)}
             name={this.props.name}
+            placeholder={message.utter.placeholder}
+            name_good_pratice={message.utter.name_good_pratice}
             setItemName={this.props.setUtterName}
             actionClick={this.handleClick}
             helper_text={this.props.helper_text}

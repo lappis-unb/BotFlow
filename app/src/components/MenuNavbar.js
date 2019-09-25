@@ -1,11 +1,16 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-
-import { Tab, Tabs } from '@material-ui/core';
 import StoryIcon from '../icons/StoryIcon';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
+import { Tab, Tabs } from '@material-ui/core';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import AppIcon from '../icons/AppIcon';
+import Button from '@material-ui/core/Button';
+import { message } from '../utils/messages.js';
+import { AppBar, Toolbar } from '@material-ui/core';
+import { DOWNLOAD_URL} from '../utils/url_routes.js';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +46,7 @@ const StyledTab = withStyles(theme => ({
 }))(props => <Tab {...props} />);
 
 
-export default function MainNav() {
+export default function MenuNavbar() {
   const classes = useStyles();
   const [value, setValue] = React.useState(handleChange());
 
@@ -61,13 +66,26 @@ export default function MainNav() {
   }
 
   return (
-    <Tabs className={classes.root}
-      value={value}
-      onChange={handleChange}
-      centered>
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents/new" component={Link} />
-      <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters/new" component={Link} />
-    </Tabs>
+      <AppBar id="app-bar-menu">
+        <Toolbar>
+          <Link onClick={() => handleChange(undefined, 0)} to="/">
+            <AppIcon />
+          </Link>
+            <Tabs className={classes.root}
+              value={value}
+              onChange={handleChange}
+              centered>
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents/new" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters/new" component={Link} />
+            </Tabs>
+          <Button
+            color="secondary"
+            variant="contained"
+            href={DOWNLOAD_URL}>
+            {message.download} 
+          </Button>
+        </Toolbar>
+      </AppBar>
   );
 }

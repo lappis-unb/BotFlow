@@ -8,6 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const style = {
     toolbar: {
@@ -94,17 +96,27 @@ export default class ToolbarName extends Component {
         return (
             <Toolbar style={style.toolbar}>
                 <Grid item xs={2} />
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     {this.props.story ? null : (
                         <NameField
                             name={this.props.name}
                             items={this.props.items}
                             item_id={this.props.item.id}
                             label={this.props.name_label}
+                            placeholder={this.props.placeholder}
                             setItemName={this.props.setItemName}
                             helper_text={this.props.helper_text !== undefined ? this.props.helper_text : ''}
                         />
                     )}
+                </Grid>
+                <Grid item xs={1}>
+                {this.props.story ? null : (
+                    <Tooltip title={<h2>{this.props.name_good_pratice}</h2>}>
+                        <IconButton aria-label="delete">
+                            <InfoIcon />
+                        </IconButton>
+                    </Tooltip>
+                )}
                 </Grid>
                 <Grid item xs={2} />
                 <Grid item xs={3}>

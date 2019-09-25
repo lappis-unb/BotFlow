@@ -109,6 +109,8 @@ class IntentPage extends Component {
             saveData={this.props.saveData}
             deleteItem={() => this.changeStatusDialog(true)}
             name={this.props.name}
+            placeholder={message.intent.placeholder}
+            name_good_pratice={message.intent.name_good_pratice}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
             helper_text={this.props.helper_text}
