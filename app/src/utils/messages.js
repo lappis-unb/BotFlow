@@ -13,23 +13,25 @@ export const message={
         created: "Diálogo criado",
         updated: "Diálogo atualizado",
         deleted: "Diálogo apagado",
+        create_button: "Criar novo diálogo",
     },
     intent:{
-        created: 'Pergunta criada',
-        updated: 'Pergunta atualizada',
-        deleted: 'Pergunta apagada',
-        toolbar_name: 'Título da pergunta',
-        list_filter: 'Perguntas cadastradas',
-        create_button: 'Criar pergunta',
+        created: "Pergunta criada",
+        updated: "Pergunta atualizada",
+        deleted: "Pergunta apagada",
+        toolbar_name: "Título da pergunta",
+        list_filter: "Perguntas cadastradas",
+        create_button: "Criar nova pergunta",
     },
     utter:{
-        created: 'Resposta criada',
-        updated: 'Resposta atualizada',
-        deleted: 'Resposta apagada',
-        toolbar_name: 'Título da resposta',
-        list_filter: 'Respostas cadastradas',
-        create_button: 'Criar resposta',
-        selection: 'Balões aparecem:'
+        created: "Resposta criada",
+        updated: "Resposta atualizada",
+        deleted: "Resposta apagada",
+        toolbar_name: "Título da resposta",
+        list_filter: "Respostas cadastradas",
+        create_button: "Criar nova resposta",
+        selection: "Balões aparecem:",
+        alternatives_text: "como alternativas",
+        sequence_text: "em sequência"
     }
 }
-

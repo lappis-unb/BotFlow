@@ -1,27 +1,23 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import Grid from '@material-ui/core/Grid';
-import { DialogBoxPrimary, DialogBoxSecondary } from '../styles/dialog';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { bindActionCreators } from 'redux';
 import { message } from '../utils/messages';
+import SnackbarDelete from './DeleteSnackbar';
 import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import { bindActionCreators } from 'redux';
 import { Creators as UtterAction } from '../ducks/utters';
-import SnackbarDelete from './DeleteSnackbar'
-
-const ALTERNATIVES_TEXT = "como alternativas";
-const SEQUENCE_TEXT = "em sequência";
+import { DialogBoxPrimary, DialogBoxSecondary } from '../styles/dialog';
 
 class UtterForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      values: [SEQUENCE_TEXT, ALTERNATIVES_TEXT],
-      value: SEQUENCE_TEXT,
+      values: [message.utter.sequence_text, message.utter.alternatives_text],
+      value: message.utter.sequence_text,
       there_is_auto_focus: false,
       undo_delete: false
     }
@@ -92,12 +88,12 @@ class UtterForm extends Component {
   handleChange(event) {
     this.setState({ value: event.target.value });
     if ((event.target.value !== this.props.multiple_alternatives)) {
-      this.props.changeUtterForm(this.props.content, (event.target.value === ALTERNATIVES_TEXT))
+      this.props.changeUtterForm(this.props.content, (event.target.value === message.utter.alternatives_text))
     }
   }
 
   getSelectedOption() {
-    return (this.props.multiple_alternatives) ? ALTERNATIVES_TEXT : SEQUENCE_TEXT;
+    return (this.props.multiple_alternatives) ? message.utter.alternatives_text : message.utter.sequence_text;
   }
 
   handleClick() {

@@ -25,8 +25,7 @@ class IntentPage extends Component {
     super(props);
     this.props.getIntents();
     const id = this.props.history.location.pathname.split('/').pop();
-    //isNaN(id) ? this.props.createNewIntent() : this.props.selectIntent(id);
-    if (isNaN(id)) this.props.selectIntent(id);
+    if (!isNaN(id)) { this.props.selectIntent(id); }
 
     this.state = {
       dialog_status: false

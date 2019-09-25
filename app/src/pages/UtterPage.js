@@ -23,8 +23,7 @@ class UtterPage extends Component {
     super(props);
     this.props.getUtters();
     const id = this.props.history.location.pathname.split('/').pop();
-    //isNaN(id) ? this.props.createNewUtter() : this.props.selectUtter(id);
-    if(isNaN(id)) this.props.selectUtter(id);
+    if(!isNaN(id)) { this.props.selectUtter(id); }
 
     this.state = {
       dialog_status: false
@@ -138,7 +137,6 @@ class UtterPage extends Component {
           />
           <Divider />
           <div style={style.item_form}>
-            {this.state.undo_delete}
             <UtterForm />
           </div>
 

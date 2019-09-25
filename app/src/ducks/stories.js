@@ -69,7 +69,7 @@ export const validationContent = (content) => {
         return message.story.first_element;
     }
 
-    return "";
+    return '';
 }
 
 export const reorderContent = (state = INITIAL_STATE, action) => {
@@ -82,7 +82,8 @@ export const reorderContent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: result,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content)
     }
 }
 
@@ -95,7 +96,18 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: new_content,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content)
+    }
+}
+
+export const undoDeleteContent = (state = INITIAL_STATE) => {
+    const text = validationContent(state.old_content);
+    
+    return {
+        ...state,
+        content_text_validation: text,
+        content: createArrayObjCopyOf(state.old_content)
     }
 }
 
@@ -121,7 +133,8 @@ export const addToStory = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: new_content,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content),
     }
 }
 
@@ -153,6 +166,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
 
 export const { Types, Creators } = createActions({
     createNewStory: [],
+    undoDeleteContent: [],
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
     deleteContent: ['content_position'],
@@ -254,5 +268,6 @@ export default createReducer(INITIAL_STATE, {
     [Types.DELETE_CONTENT]: deleteContent,
     [Types.REORDER_CONTENT]: reorderContent,
     [Types.CREATE_NEW_STORY]: createNewStory,
+    [Types.UNDO_DELETE_CONTENT]: undoDeleteContent,
     [Types.NOTIFY_CONTENT_TEXT_VALIDATION]: notifyContentTextValidation,
 });

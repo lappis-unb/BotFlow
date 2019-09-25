@@ -8,11 +8,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Add } from '../styles/button';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import { message } from '../utils/messages';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import StoryCard from '../components/StoryCard';
 import TextField from '@material-ui/core/TextField';
-import { message } from '../utils/messages';
+import SnackbarDelete from '../components/DeleteSnackbar';
 
 const style = {
   toolbar: {
@@ -36,7 +37,8 @@ class StoriesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ''
+      value: '',
+      undo_delete: false
     }
     this.props.getStories();
   }
@@ -74,9 +76,9 @@ class StoriesPage extends Component {
     )
   }
 
-  cleanFilter(){
+  cleanFilter() {
     this.props.getStories('')
-    this.setState({value: ''})
+    this.setState({ value: '' })
   }
 
   getFilterIcon() {
@@ -102,6 +104,10 @@ class StoriesPage extends Component {
     }
   }
 
+  handleSnackbarClick(value) {
+    this.setState({ undo_delete: value });
+  }
+
   render() {
     return (
       <span>
@@ -111,6 +117,11 @@ class StoriesPage extends Component {
         <div style={style.list_story}>
           {this.getStoriesList()}
         </div>
+        <SnackbarDelete
+          handleSnackbarClick={this.handleSnackbarClick}
+          handleUndo={this.props.undoDeleteContent}
+          undo={this.state.undo_delete}
+        />
       </span>
     )
   }
