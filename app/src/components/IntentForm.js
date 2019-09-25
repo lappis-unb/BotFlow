@@ -70,7 +70,7 @@ class IntentForm extends Component {
                   margin="dense"
                   variant="outlined"
                   value={sample}
-                  onKeyPress={(event) => { this.handleClick(event.key) }}
+                  onKeyUp={(event) => { this.handleClick(event.key) }}
                   autoFocus={this.state.there_is_auto_focus}
                   onChange={(e) => this.props.setIntentContent(sample_index, e.target.value)}
                   InputProps={{
