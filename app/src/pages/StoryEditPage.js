@@ -70,9 +70,9 @@ class StoryEditPage extends Component {
 
     deleteStory() {
         this.props.deleteStory(this.props.story_id)
-        this.props.getStories()
-        this.props.history.push('/');
         this.setState({ dialog_status: false });
+        setTimeout(() => this.props.getStories(), 2000);
+        this.props.history.push('/');
     }
 
     getStory() {
