@@ -131,7 +131,6 @@ class StoryList extends Component {
                         )}
                     </Draggable>
                 ))}
-                {provided.placeholder}
             </div>
         )
     }

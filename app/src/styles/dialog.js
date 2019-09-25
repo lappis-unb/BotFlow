@@ -23,8 +23,6 @@ export const DialogBoxPrimary = styled.div`
     clip-path: polygon(22% 0, 25% 2%, 27% 4%, 100% 69%, 0 99%, 0 0);
   }
 
-
-
   textarea {
     background: inherit;
     width: calc(100% - 28px);

@@ -56,21 +56,21 @@ class UtterForm extends Component {
                 <Grid item xs={10}>
                   {content_index === 0 ?
                     <DialogBoxPrimary>
-                      <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
-                        rows="1"
+                      <textarea type="text" onKeyPress={(event) => { this.handleClick(event.key) }} autoFocus={this.state.there_is_auto_focus} value={alternative_content}
                         onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                         ref={ref => this.multilineTextarea = ref} />
                     </DialogBoxPrimary>
                     :
                     <DialogBoxSecondary>
-                      <textarea type="text" autoFocus={this.state.there_is_auto_focus} value={alternative_content}
-                        rows="1"
+                      <textarea type="text" onKeyPress={(event) => { this.handleClick(event.key) }} autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                        
                         onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                         ref={ref => this.multilineTextarea = ref} />
                     </DialogBoxSecondary>}
                 </Grid>
                 <Grid item xs={2}>
                   <IconButton color="primary" m={0}
+                    tabIndex={-1}
                     onClick={() => this.handleDelete(alternative_index, content_index)}>
                     <DeleteIcon style={{ opacity: 0.5 }} />
                   </IconButton>
@@ -96,11 +96,12 @@ class UtterForm extends Component {
     return (this.props.multiple_alternatives) ? message.utter.alternatives_text : message.utter.sequence_text;
   }
 
-  handleClick() {
-    this.props.addUtterContent();
-    this.setState({ there_is_auto_focus: true });
+  handleClick(key = 'Enter') {
+    if (key === 'Enter') {
+      this.props.addUtterContent();
+      this.setState({ there_is_auto_focus: true });
+    }
   }
-
   render() {
     return (
       <Grid container>
@@ -142,7 +143,6 @@ class UtterForm extends Component {
                   <textarea
                     readOnly
                     type="text"
-                    rows="1"
                     style={{ cursor: "pointer" }}
                     placeholder="Novo balão de resposta" />
                 </DialogBoxPrimary> :
@@ -155,7 +155,6 @@ class UtterForm extends Component {
                   <textarea
                     readOnly
                     type="text"
-                    rows="1"
                     style={{ cursor: "pointer" }}
                     placeholder="Novo exemplo de balão de resposta" />
                 </DialogBoxSecondary>}
