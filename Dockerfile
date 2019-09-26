@@ -1,7 +1,14 @@
-FROM node:10-jessie-slim 
+FROM lappis/botflow-requirements as build-stage
 
-RUN mkdir /botFlow
-WORKDIR /botFlow
+WORKDIR /botflow
 COPY ./app .
-EXPOSE 3000
-CMD ["sh", "-c", "yarn install && yarn start"] 
+
+ENV REACT_APP_URL_API https://botflow-api.dev.lappis.rocks/
+
+ARG configuration=production
+
+RUN npm run build
+
+FROM nginx:1.15
+COPY  ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /botflow/build/ /usr/share/nginx/html

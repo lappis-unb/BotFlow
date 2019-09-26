@@ -4,6 +4,7 @@ import { Card } from '@material-ui/core';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
 import Typography from '@material-ui/core/Typography';
+import { setHighlight } from "../utils/utils";
 
 const styles = {
     intent: {
@@ -28,20 +29,19 @@ const styles = {
     card: {
         background: 'white',
         margin: '0 8px 16px 8px',
-        breakInside: 'avoid',
+        breakInside: 'avoid-column',
         padding: '16px'
     },
 }
 
 export default class StoryCard extends Component {
-
     getContent(content) {
         let list = content.map((item, index) => {
             if (item.type === "intent") {
                 return (
                     <Typography key={'story_card_item_' + index} style={styles.intent} varant="body1" noWrap>
                         <IntentIcon style={styles.intent_icon} />
-                        {item.name}
+                        {setHighlight(item.name, this.props.highlighted_text)}
                     </Typography>
                 )
             }
@@ -49,7 +49,7 @@ export default class StoryCard extends Component {
                 return (
                     <Typography key={'story_card_item_' + index} style={styles.utter} varant="body1" noWrap>
                         <UtterIcon style={styles.utter_icon} />
-                        {item.name}
+                        {setHighlight(item.name, this.props.highlighted_text)}
                     </Typography>
                 )
             }

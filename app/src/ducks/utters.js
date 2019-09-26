@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Utter } from '../utils/DataFormat.js'
-import { createActions, createReducer } from 'reduxsauce'
-import { UTTER_URL } from '../utils/url_routes.js'
+import { Utter } from '../utils/DataFormat.js';
 import { message } from '../utils/messages.js';
+import { UTTER_URL } from '../utils/url_routes.js';
+import { createActions, createReducer } from 'reduxsauce';
 
 const INITIAL_STATE = {
     mode: "Utter",
@@ -10,11 +10,10 @@ const INITIAL_STATE = {
     helper_text: "",
     old_name: "",
     notification_text: "",
-    utter_contents: [[""]],
-    old_utter_contents: [[""]],
+    content: [[""]],
+    old_content: [[""]],
     multiple_alternatives: false,
 };
-
 
 function createArrayCopyOf(items) {
     if (items !== undefined) {
@@ -24,7 +23,7 @@ function createArrayCopyOf(items) {
 }
 
 export const addUtterContent = (state = INITIAL_STATE) => {
-    let new_utter = createArrayCopyOf(state.utter_contents);
+    let new_utter = createArrayCopyOf(state.content);
 
     if (state.multiple_alternatives) {
         new_utter.push(['']);
@@ -34,41 +33,41 @@ export const addUtterContent = (state = INITIAL_STATE) => {
 
     return {
         ...state,
-        utter_contents: new_utter,
-        old_utter_contents: createArrayCopyOf(new_utter)
+        content: new_utter,
+        old_content: createArrayCopyOf(new_utter)
     };
 }
 
 export const setUtterContent = (state = INITIAL_STATE, action) => {
-    let utter_contents = createArrayCopyOf(state.utter_contents);
-    utter_contents[action.utter_position][action.text_position] = action.text
+    let content = createArrayCopyOf(state.content);
+    content[action.utter_position][action.text_position] = action.text
 
     return {
         ...state,
-        utter_contents: utter_contents
+        content: content
     };
 }
 
 export const deleteUtterContent = (state = INITIAL_STATE, action) => {
-    let utter_contents = createArrayCopyOf(state.utter_contents)
-    let old_utter_history = createArrayCopyOf(state.utter_contents)
+    let content = createArrayCopyOf(state.content)
+    let old_utter_history = createArrayCopyOf(state.content)
 
-    utter_contents[action.utter_position].splice(action.text_position, 1);
-    if (utter_contents[action.utter_position].length === 0) {
-        utter_contents.splice(action.utter_position, 1);
+    content[action.utter_position].splice(action.text_position, 1);
+    if (content[action.utter_position].length === 0) {
+        content.splice(action.utter_position, 1);
     }
 
     return {
         ...state,
-        utter_contents: utter_contents,
-        old_utter_contents: old_utter_history
+        content: content,
+        old_content: old_utter_history
     };
 }
 
 export const undoDeleteUtterContent = (state = INITIAL_STATE) => {
     return {
         ...state,
-        utter_contents: createArrayCopyOf(state.old_utter_contents)
+        content: createArrayCopyOf(state.old_content)
     }
 }
 
@@ -90,8 +89,8 @@ export const selectUtter = (state = INITIAL_STATE, action) => {
         name: selected_item.name,
         old_name: selected_item.name,
         selected_item_position: selected_item_position,
-        utter_contents: createArrayCopyOf(selected_item.alternatives),
-        old_utter_contents: createArrayCopyOf(selected_item.alternatives),
+        content: createArrayCopyOf(selected_item.alternatives),
+        old_content: createArrayCopyOf(selected_item.alternatives),
         multiple_alternatives: selected_item.multiple_alternatives,
     };
 }
@@ -103,12 +102,12 @@ export const createNewUtter = (state = INITIAL_STATE) => {
         ...state,
         helper_text: "",
         id: new_utter.id,
-        selected_item_position: -1,
         name: new_utter.name,
         old_name: new_utter.name,
-        utter_contents: createArrayCopyOf(new_utter.alternatives),
-        old_utter_contents: createArrayCopyOf(new_utter.alternatives),
+        selected_item_position: -1,
         multiple_alternatives: new_utter.multiple_alternatives,
+        content: createArrayCopyOf(new_utter.alternatives),
+        old_content: createArrayCopyOf(new_utter.alternatives),
     };
 }
 
@@ -138,7 +137,7 @@ export const changeUtterForm = (state = INITIAL_STATE, action) => {
     let texts = [];
     let new_alternatives = [];
 
-    action.utter_contents.forEach(i => {
+    action.content.forEach(i => {
         i.forEach(j => texts.push(j))
     })
 
@@ -150,7 +149,7 @@ export const changeUtterForm = (state = INITIAL_STATE, action) => {
 
     return {
         ...state,
-        utter_contents: new_alternatives,
+        content: new_alternatives,
         multiple_alternatives: action.multiple_alternatives
     }
 }
@@ -165,7 +164,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
                     utter = resp.data;
                 })
             await dispatch(Creators.getUtters());
-            await dispatch(Creators.selectUtter(utter, -1));
+            await dispatch(Creators.selectUtter(utter.id, -1));
 
             await dispatch(Creators.notifyAction(message));
         } catch (error) {
@@ -174,21 +173,19 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
     }
 };
 
-
 export const { Types, Creators } = createActions({
     createNewUtter: [],
     addUtterContent: [],
     notifyAction: ['text'],
     undoDeleteUtterContent: [],
-    deleteUtterContent: ['utter_position', 'text_position'],
     setUtterName: ['name', 'helper_text'],
+    deleteUtterContent: ['utter_position', 'text_position'],
     setUtterContent: ['text', 'utter_position', 'text_position'],
-    changeUtterForm: ['utter_contents', 'multiple_alternatives'],
-    selectUtter: (utter = "", item_position = "") => {
+    changeUtterForm: ['content', 'multiple_alternatives'],
+    selectUtter: (id = "", item_position = "") => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(UTTER_URL + utter.id);
-
+                const response = await axios.get(UTTER_URL + id);
                 await dispatch({ type: Types.SELECT_UTTER, item: response.data, item_position: item_position });
             } catch (error) {
                 throw (error);
@@ -230,7 +227,6 @@ export const { Types, Creators } = createActions({
 })
 
 export default createReducer(INITIAL_STATE, {
-    [Types.ADD_UTTER_CONTENT]: addUtterContent,
     [Types.GET_UTTERS]: getUtters,
     [Types.SELECT_UTTER]: selectUtter,
     [Types.NOTIFY_ACTION]: notifyAction,
@@ -238,9 +234,7 @@ export default createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_UTTER]: createNewUtter,
     [Types.SET_UTTER_CONTENT]: setUtterContent,
     [Types.CHANGE_UTTER_FORM]: changeUtterForm,
+    [Types.ADD_UTTER_CONTENT]: addUtterContent,
     [Types.DELETE_UTTER_CONTENT]: deleteUtterContent,
     [Types.UNDO_DELETE_UTTER_CONTENT]: undoDeleteUtterContent,
 });
-
-
-

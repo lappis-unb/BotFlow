@@ -8,13 +8,15 @@ import { style } from '../styles/style';
 import { Add } from '../styles/button';
 import Grid from '@material-ui/core/Grid';
 import { Divider } from '@material-ui/core';
+import { message } from '../utils/messages';
 import IntentIcon from '../icons/IntentIcon';
 import Button from '@material-ui/core/Button';
 import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
 import IntentForm from "../components/IntentForm";
 import ToolbarName from '../components/ToolbarName'
-import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
+import { isButtonEnabled } from '../utils/utils';
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
 
 class IntentPage extends Component {
@@ -22,14 +24,17 @@ class IntentPage extends Component {
   constructor(props) {
     super(props);
     this.props.getIntents();
-    this.props.createNewIntent();
+    const id = this.props.history.location.pathname.split('/').pop();
+    if (!isNaN(id)) { this.props.selectIntent(id); }
+
     this.state = {
       dialog_status: false
     }
-    this.changeStatusDialog = this.changeStatusDialog.bind(this)
-    this.deleteIntent = this.deleteIntent.bind(this)
-  }
 
+    this.selectIntent = this.selectIntent.bind(this)
+    this.deleteIntent = this.deleteIntent.bind(this)
+    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+  }
 
   changeStatusDialog(value) {
     this.setState({ dialog_status: value });
@@ -53,23 +58,26 @@ class IntentPage extends Component {
   }
 
   isButtonEnabled() {
-    const intent_contents = this.props.intent_contents;
-    const old_item_content = this.props.old_intent_contents;
-    const no_empty_fields = this.checkEmptyFieldsIntent(intent_contents);
+    const no_empty_fields = this.checkEmptyFieldsIntent(this.props.content);
 
-    const name_changed = (this.props.name_intent !== this.props.old_name_intent);
-    const contents_changed = JSON.stringify(intent_contents) !== JSON.stringify(old_item_content);
-    const have_changes = (contents_changed || name_changed);
-
-    const no_errors = (this.props.helper_text !== undefined ? this.props.helper_text.length === 0 : true);
-    const no_empty_name = this.props.name_intent.length !== 0;
-
-    return (
-      no_errors &&
-      have_changes &&
-      no_empty_name &&
+    return isButtonEnabled(
+      this.props.content,
+      this.props.old_content,
+      this.props.name,
+      this.props.old_name,
+      this.props.helper_text,
       no_empty_fields
     );
+  }
+
+  selectIntent(data, intent_position) {
+    this.props.history.push('/intents/' + data.id);
+    this.props.selectIntent(data.id, intent_position);
+  }
+
+  createIntent() {
+    this.props.createNewIntent();
+    this.props.history.push('/intents/new');
   }
 
   render() {
@@ -80,27 +88,29 @@ class IntentPage extends Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => this.props.createNewIntent()}
+              onClick={() => this.createIntent()}
             >
-              <Add />{"Criar pergunta"}
+              <Add />{message.intent.create_button}
             </Button>
           </div>
           <ListFilter
             icon={<IntentIcon />}
             items={this.props.intents}
-            text="Perguntas cadastradas"
-            actionOnClick={this.props.selectIntent}
+            text={message.intent.list_filter}
+            actionOnClick={this.selectIntent}
             selected_item_position={this.props.selected_item_position} />
         </Grid>
 
         <Grid item xs={9}>
           <ToolbarName
-            name_label="Nome da pergunta"
+            name_label={message.intent.toolbar_name}
             item_id={this.props.id}
             items={this.props.intents}
             saveData={this.props.saveData}
-            deleteIntent={() => this.changeStatusDialog(true)}
-            name={this.props.name_intent}
+            deleteItem={() => this.changeStatusDialog(true)}
+            name={this.props.name}
+            placeholder={message.intent.placeholder}
+            name_good_pratice={message.intent.name_good_pratice}
             setItemName={this.props.setIntentName}
             actionClick={this.handleClick}
             helper_text={this.props.helper_text}
@@ -108,8 +118,8 @@ class IntentPage extends Component {
             item={
               new Intent(
                 this.props.id,
-                this.props.name_intent,
-                this.props.intent_contents
+                this.props.name,
+                this.props.content
               )
             }
           />
@@ -121,12 +131,12 @@ class IntentPage extends Component {
           </div>
 
           <Snackbar
-            handleClose={() => this.props.notifyAction("")}
+            handleClose={() => this.props.notifyAction('')}
             notification_text={this.props.notification_text}
           />
 
-          <DeleteConfirmationDialog
-            handleClose={this.changeStatusDialog}
+          <DeletionConfirmationDialog
+            handleClose={() => this.changeStatusDialog(false)}
             deleteItem={this.deleteIntent}
             dialog_status={this.state.dialog_status}
           />

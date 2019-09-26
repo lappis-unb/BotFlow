@@ -1,8 +1,8 @@
 
 import axios from "axios";
+import { Story } from '../utils/DataFormat';
 import { message } from '../utils/messages';
-import { createActions, createReducer } from 'reduxsauce'
-import { Story } from '../utils/DataFormat'
+import { createActions, createReducer } from 'reduxsauce';
 import { INTENT_URL, UTTER_URL, STORY_URL } from '../utils/url_routes.js';
 
 const INITIAL_STATE = {
@@ -22,7 +22,6 @@ function createArrayObjCopyOf(samples = []) {
 }
 
 export const getIntents = (state = INITIAL_STATE, action) => {
-
     return {
         ...state,
         intents: action.intents
@@ -42,7 +41,6 @@ export const getStories = (state = INITIAL_STATE, action) => {
         stories: action.stories,
     };
 }
-
 
 export const getStory = (state = INITIAL_STATE, action) => {
     return {
@@ -71,8 +69,7 @@ export const validationContent = (content) => {
         return message.story.first_element;
     }
 
-    return "";
-
+    return '';
 }
 
 export const reorderContent = (state = INITIAL_STATE, action) => {
@@ -85,7 +82,8 @@ export const reorderContent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: result,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content)
     }
 }
 
@@ -98,7 +96,18 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: new_content,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content)
+    }
+}
+
+export const undoDeleteContent = (state = INITIAL_STATE) => {
+    const text = validationContent(state.old_content);
+    
+    return {
+        ...state,
+        content_text_validation: text,
+        content: createArrayObjCopyOf(state.old_content)
     }
 }
 
@@ -124,12 +133,14 @@ export const addToStory = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         content: new_content,
-        content_text_validation: text
+        content_text_validation: text,
+        old_content: createArrayObjCopyOf(state.content),
     }
 }
 
-export const createNewStory = (state = INITIAL_STATE, action) => {
+export const createNewStory = (state = INITIAL_STATE) => {
     const new_story = new Story();
+
     return {
         ...state,
         name: new_story.name,
@@ -140,8 +151,22 @@ export const createNewStory = (state = INITIAL_STATE, action) => {
     };
 }
 
+export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
+    return async (dispatch) => {
+        try {
+            const mode_url = (mode === 'post') ? STORY_URL : STORY_URL + new_item.id;
+            const response = await axios[mode](mode_url, new_item);
+            await dispatch(Creators.getStory(response.data.id));
+            await dispatch(Creators.notifyAction(message));
+        } catch (error) {
+            throw (error);
+        }
+    }
+};
+
 export const { Types, Creators } = createActions({
     createNewStory: [],
+    undoDeleteContent: [],
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
     deleteContent: ['content_position'],
@@ -196,17 +221,17 @@ export const { Types, Creators } = createActions({
             }
         }
     },
-    getStories: () => {
+    getStories: (value = '') => {
         return async (dispatch) => {
             try {
-                const response = await axios.get(STORY_URL);
+                const response = await axios.get(STORY_URL + '?filter=' + value);
                 await dispatch({ type: Types.GET_STORIES, stories: response.data });
             } catch (error) {
                 throw (error);
             }
         }
     },
-    getStory: (id) => {
+    getStory: (id = '') => {
         return async (dispatch) => {
             try {
                 if (id !== '') {
@@ -221,14 +246,10 @@ export const { Types, Creators } = createActions({
     deleteStory: (id) => {
         return async (dispatch) => {
             try {
-                if (id.length !== 0) {
+                if (id !== '') {
                     await axios.delete(STORY_URL + id);
-                    //await dispatch(Creators.getIntents());
                     await dispatch(Creators.notifyAction(message.story.deleted));
                 }
-                // Create new_story
-                //await dispatch(Creators.createNewStory())
-
             } catch (error) {
                 throw (error);
             }
@@ -237,29 +258,16 @@ export const { Types, Creators } = createActions({
 
 });
 
-export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
-    return async (dispatch) => {
-        try {
-            const mode_url = (mode === 'post') ? STORY_URL : STORY_URL + new_item.id;
-            await axios[mode](mode_url, new_item);
-            dispatch(Creators.notifyAction(message));
-
-        } catch (error) {
-            throw (error);
-        }
-    }
-};
-
-
 export default createReducer(INITIAL_STATE, {
+    [Types.GET_STORY]: getStory,
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_STORIES]: getStories,
-    [Types.GET_STORY]: getStory,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
-    [Types.DELETE_CONTENT]: deleteContent,
     [Types.NOTIFY_ACTION]: notifyAction,
+    [Types.DELETE_CONTENT]: deleteContent,
     [Types.REORDER_CONTENT]: reorderContent,
     [Types.CREATE_NEW_STORY]: createNewStory,
+    [Types.UNDO_DELETE_CONTENT]: undoDeleteContent,
     [Types.NOTIFY_CONTENT_TEXT_VALIDATION]: notifyContentTextValidation,
 });

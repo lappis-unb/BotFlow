@@ -12,15 +12,14 @@ import SnackbarDelete from './DeleteSnackbar'
 
 import { Creators as IntentAction } from "../ducks/intents";
 
-
 const style = {
   new_question: {
-      opacity: "0.2",
-      position:"relative",
-      cursor: "pointer",
-      border: "solid 1px #000",
-      borderRadius: "4px",
-      padding: "10px 0 10px 14px",
+    opacity: "0.2",
+    position: "relative",
+    cursor: "pointer",
+    border: "solid 1px #000",
+    borderRadius: "4px",
+    padding: "10px 0 10px 14px",
   }
 }
 
@@ -36,7 +35,7 @@ class IntentForm extends Component {
   }
 
   handleDelete(intent_index) {
-    if (this.props.intent_contents.length > 1) {
+    if (this.props.content.length > 1) {
       this.props.deleteIntentContent(intent_index);
       this.handleSnackbarClick(true);
     }
@@ -45,20 +44,22 @@ class IntentForm extends Component {
   handleUndo() {
     this.props.undoDeleteIntentContent();
   }
-  
-  handleClick() {
-    this.props.addIntent()
-    this.setState({ there_is_auto_focus: true });
+
+  handleClick(key = 'Enter') {
+    if (key === 'Enter') {
+      this.props.addIntent()
+      this.setState({ there_is_auto_focus: true });
+    }
   }
 
-  handleSnackbarClick(value){
+  handleSnackbarClick(value) {
     this.setState({ undo_delete: value });
   }
 
   setIntentContents() {
     let samples = [];
-    if (this.props.intent_contents !== undefined) {
-      samples = (this.props.intent_contents).map((sample, sample_index) => {
+    if (this.props.content !== undefined) {
+      samples = (this.props.content).map((sample, sample_index) => {
         return (
           <li key={"sample_content" + sample_index}>
             <Grid container spacing={2} alignItems="flex-end" >
@@ -69,7 +70,8 @@ class IntentForm extends Component {
                   margin="dense"
                   variant="outlined"
                   value={sample}
-                  autoFocus={this.state.there_is_auto_focus} 
+                  onKeyUp={(event) => { this.handleClick(event.key) }}
+                  autoFocus={this.state.there_is_auto_focus}
                   onChange={(e) => this.props.setIntentContent(sample_index, e.target.value)}
                   InputProps={{
                     endAdornment: <InputAdornment position="end"><strong>?</strong></InputAdornment>,
@@ -77,9 +79,9 @@ class IntentForm extends Component {
                 />
               </Grid>
               <Grid item xs={1}>
-                <IconButton color="primary" m={0} onClick={() => this.handleDelete(sample_index)}>
-                    <DeleteIcon style={{ opacity: 0.5 }} />
-                </IconButton>              
+                <IconButton color="primary" m={0} tabIndex={-1} onClick={() => this.handleDelete(sample_index)}>
+                  <DeleteIcon style={{ opacity: 0.5 }} />
+                </IconButton>
               </Grid>
             </Grid>
           </li>
@@ -95,7 +97,7 @@ class IntentForm extends Component {
       <Grid container>
         <Grid item xs={1} />
         <Grid item xs={7}>
-          <ul style={{marginTop:24}}>
+          <ul style={{ marginTop: 24 }}>
             {this.setIntentContents()}
           </ul>
           <Grid container spacing={2} alignItems="flex-end" >
@@ -105,10 +107,11 @@ class IntentForm extends Component {
               undo={this.state.undo_delete}
             />
             <Grid item xs={11}>
-              <div style={style.new_question} 
-                onClick={() => { this.handleClick() }}>
-                  <Typography variant="body2">Nova pergunta</Typography>
-                </div>
+              <div style={style.new_question} tabIndex={0}
+                onClick={() => { this.handleClick() }}
+              >
+                <Typography variant="body2">Nova pergunta</Typography>
+              </div>
             </Grid>
             <Grid item xs={1} />
           </Grid>

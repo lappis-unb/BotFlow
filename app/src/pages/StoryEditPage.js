@@ -7,26 +7,27 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '../components/Snackbar';
 import ErrorSnackbar from '../components/StorySnackbar';
 import { Creators as StoryAction } from "../ducks/stories";
-import Divider from '@material-ui/core/Divider';
-
+import Button from '@material-ui/core/Button';
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
 import StoryList from '../components/StoryList';
-import { Story } from '../utils/DataFormat.js'
+import { Story } from '../utils/DataFormat.js';
 import TextField from '@material-ui/core/TextField';
 import ToolbarName from '../components/ToolbarName';
-
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import ExampleStory from "../components/ExampleStory";
-
+import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
+import { message } from '../utils/messages';
+import { Add } from '../styles/button';
+import { Link } from 'react-router-dom';
 
 const style = {
     grid_item_list: {
         background: "#dae8ea",
         paddingTop: '15px',
-        height: "calc(100vh - 74px - 64px - 17px)",
-        overflowY: "auto"
+        height: "calc(100vh - 74px - 64px - 88px)",
+        overflowY: "auto",
     },
     list_container_utter: {
         paddingLeft: "16px",
@@ -38,10 +39,12 @@ const style = {
     filter_items_container: {
         padding: "12px 8px",
         background: "#dae8ea",
+        width: "100%",
     },
     list: {
         marginTop: '15px',
     },
+    create_button: { padding: "18px 24px", background: "#dae8ea" }
 }
 
 class StoryEditPage extends Component {
@@ -49,11 +52,27 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
-        this.getStory()
-        this.state = {
-            value: ""
-        };
 
+        const id = this.props.history.location.pathname.split('/').pop();
+        isNaN(id) ? this.props.createNewStory() : this.getStory(id);
+
+        this.state = {
+            value: "",
+            dialog_status: false
+        };
+        this.changeStatusDialog = this.changeStatusDialog.bind(this)
+        this.deleteStory = this.deleteStory.bind(this)
+    }
+
+    changeStatusDialog(value) {
+        this.setState({ dialog_status: value });
+    }
+
+    deleteStory() {
+        this.props.deleteStory(this.props.story_id)
+        this.setState({ dialog_status: false });
+        setTimeout(() => this.props.getStories(), 2000);
+        this.props.history.push('/');
     }
 
     getStory() {
@@ -95,13 +114,9 @@ class StoryEditPage extends Component {
     isButtonEnabled() {
         const first_element_is_intent = (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
         const contents_changed = JSON.stringify(this.props.content) !== JSON.stringify(this.props.old_content);
-        let is_enabled = true;
-        const content = this.props.content;
-        for (let i = 1, size = content.length; i < size; i++) {
-            if (content[i - 1].type === 'intent' && content[i].type === 'intent') {
-                is_enabled = false;
-            }
-        }
+        let is_enabled = this.props.content_text_validation.length === 0;
+        
+        
         return first_element_is_intent && contents_changed && is_enabled;
     }
 
@@ -109,6 +124,16 @@ class StoryEditPage extends Component {
         return (
             <Grid container item xs={12}>
                 <Grid container item xs={4} direction='column'>
+                    <div style={style.create_button}>
+                        <Link onClick={() => this.props.createNewStory()} to='/stories/new' style={{ textDecoration: 'none' }}>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                            >
+                                <Add />{message.story.create_button}
+                            </Button>
+                        </Link>
+                    </div>
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={2} sm={6} style={style.list_container_intent}>
                             <Typography variant="body2" color="primary">
@@ -140,27 +165,27 @@ class StoryEditPage extends Component {
                             />
                         </Grid>
                     </Grid>
-                    <Divider />
-                    <div style={style.filter_items_container}>
-                        <TextField
-                            fullWidth
-                            type="text"
-                            label="Filtrar"
-                            variant="outlined"
-                            value={this.state.value}
-                            InputProps={{ endAdornment: this.getFilterIcon() }}
-                            onChange={(e) => this.handleFilterInput(e)}
-                        />
-                    </div>
+                    <Grid container>
+                        <div style={style.filter_items_container}>
+                            <TextField
+                                fullWidth
+                                type="text"
+                                label="Filtrar"
+                                variant="outlined"
+                                value={this.state.value}
+                                InputProps={{ endAdornment: this.getFilterIcon() }}
+                                onChange={(e) => this.handleFilterInput(e)}
+                            />
+                        </div>
+                    </Grid>
                 </Grid>
-
 
                 <Grid item xs={8}>
                     <ToolbarName
                         story
                         is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
-                        deleteItem={this.props.deleteStory}
+                        deleteItem={() => this.changeStatusDialog(true)}
                         item={new Story(this.props.story_id, this.props.content, this.props.name)}
                     />
                     <div style={{
@@ -179,7 +204,6 @@ class StoryEditPage extends Component {
                                 <StoryList />
                             </Grid>
                             <Grid container item xs={4} >
-
                                 <ExampleStory />
                             </Grid>
                         </Grid>
@@ -193,6 +217,11 @@ class StoryEditPage extends Component {
                 <Snackbar
                     handleClose={() => this.props.notifyAction("")}
                     notification_text={this.props.notification_text}
+                />
+                <DeletionConfirmationDialog
+                    handleClose={() => this.changeStatusDialog(false)}
+                    deleteItem={this.deleteStory}
+                    dialog_status={this.state.dialog_status}
                 />
             </Grid>
         )
