@@ -29,6 +29,8 @@ const style = {
     background: "#dae8ea",
     padding: 16,
     height: 'calc(100vh - 74px - 92px - 16px)',
+    maxWidth: '100vw',
+    overflowX: 'auto',
     columnCount: 6,
     columnGap: 0,
     columnFill: 'auto'
