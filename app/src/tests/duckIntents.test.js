@@ -11,6 +11,8 @@ import {
     getIntents
 } from '../ducks/intents';
 
+import { clone } from '../utils/utils';
+
 const INITIAL_STATE = {
     intents: [],
     mode: 'Intent',
@@ -21,16 +23,6 @@ const INITIAL_STATE = {
     content: [''],
     old_content: [''],
 };
-
-function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-}
-
 
 describe('add intent method', () => {
     it('should add an empty intent sample to state', () => {
