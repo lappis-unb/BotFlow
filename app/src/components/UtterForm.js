@@ -62,7 +62,7 @@ class UtterForm extends Component {
                             multiline
                             value={alternative_content}
                             onKeyUp={(event) => { this.handleClick(event.key) }}
-                            autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                            autoFocus={this.state.there_is_auto_focus}
                             onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                             InputProps={{
                                disableUnderline: true
@@ -77,7 +77,7 @@ class UtterForm extends Component {
                             multiline
                             value={alternative_content}
                             onKeyUp={(event) => { this.handleClick(event.key) }}
-                            autoFocus={this.state.there_is_auto_focus} value={alternative_content}
+                            autoFocus={this.state.there_is_auto_focus}
                             onChange={(e) => this.changeTextarea(alternative_index, content_index, e)}
                             InputProps={{
                                disableUnderline: true

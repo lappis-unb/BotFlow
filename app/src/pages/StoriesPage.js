@@ -13,9 +13,9 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import StoryCard from '../components/StoryCard';
 import TextField from '@material-ui/core/TextField';
-import SnackbarDelete from '../components/DeleteSnackbar';
 import Typography from '@material-ui/core/Typography';
-
+import SnackbarDelete from '../components/DeleteSnackbar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const style = {
   toolbar: {
@@ -24,6 +24,10 @@ const style = {
   },
   create_button: {
     marginTop: '9px'
+  },
+  loading: {
+    margin: "auto",
+    width: "100vw"
   },
   list_story: {
     background: "#dae8ea",
@@ -99,12 +103,17 @@ class StoriesPage extends Component {
   }
 
   getStoriesList() {
-    if (this.props.stories !== undefined && this.props.stories.length !== 0) {
-      return this.props.stories.map((story, index) => (
-        <StoryCard key={'story_card_' + index} highlighted_text={this.state.value} story={story} />
-      ));
-    } else {
-      return <div style={{position:'absolute', width:'97%', textAlign:'center'}}><Typography variant="h5" color="secondary">{message.no_result}</Typography></div>;
+    if(this.props.loading){
+      return <div style={style.loading}><center><CircularProgress /></center></div>;
+    }
+    else {
+      if (this.props.stories !== undefined && this.props.stories.length !== 0) {
+        return this.props.stories.map((story, index) => (
+          <StoryCard key={'story_card_' + index} highlighted_text={this.state.value} story={story} />
+        ));
+      } else {
+        return <div style={{position:'absolute', width:'97%', textAlign:'center'}}><Typography variant="h5" color="secondary">{message.no_result}</Typography></div>;
+      }
     }
   }
 
