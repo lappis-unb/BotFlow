@@ -1,4 +1,4 @@
-# BotFlow -  Platform for creating contents for Rasa chatbots
+# BotFlow -  a platform for creating contents for Rasa chatbots
 
 ## About the project
 BotFlow is a platform developed by [LAPPIS](https://lappis.rocks) - Advanced laboratory of production, research and innovation in Software (FGA/UnB) to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the [Rasa](https://blog.rasa.com/) framework for development of chatbot.
