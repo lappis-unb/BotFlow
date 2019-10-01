@@ -1,4 +1,4 @@
-import { Intent } from '../utils/DataFormat';
+import { Intent } from '../../utils/DataFormat';
 import {
     addIntent,
     setIntentContent,
@@ -9,9 +9,9 @@ import {
     setIntentName,
     notifyAction,
     getIntents
-} from '../ducks/intents';
+} from '../../ducks/intents';
 
-import { clone } from '../utils/utils';
+import { clone } from '../../utils/utils';
 
 const INITIAL_STATE = {
     intents: [],
