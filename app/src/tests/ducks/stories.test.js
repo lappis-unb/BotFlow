@@ -1,6 +1,6 @@
-import { Story, Intent, Utter } from '../utils/DataFormat';
-import { clone } from '../utils/utils';
-import { message } from '../utils/messages';
+import { Story, Intent, Utter } from '../../utils/DataFormat';
+import { clone } from '../../utils/utils';
+import { message } from '../../utils/messages';
 
 import {
     getIntents,
@@ -17,7 +17,7 @@ import {
     createNewStory,
     createOrUpdateItem
 
-} from '../ducks/stories';
+} from '../../ducks/stories';
 
 const INITIAL_STATE = {
     utters: [],
