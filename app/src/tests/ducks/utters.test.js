@@ -88,8 +88,78 @@ describe('undo delete utter content', () => {
 
 describe('select utter method', () => {
     it('should add utter info to state', () => {
+        let utter_example = new Utter(1, 'test_utter', false, [['utter example']]);
         let action = {
-            item: new Utter(1, 'test_utter', false, [['utter example']])
+            item: utter_example,
+            item_position: 0
         }
+        let state = clone(INITIAL_STATE);
+        state.utters = [utter_example];
+
+        let new_state = clone(state)
+        new_state.name = action.item.name;
+        new_state.old_name = action.item.name;
+        new_state.content = action.item.alternatives;
+        new_state.old_content = action.item.alternatives;
+        new_state.id = action.item.id;
+        new_state.selected_item_position = 0;
+
+        expect(selectUtter(state, action)).toEqual(new_state);
+    })
+})
+
+describe('create new utter method', () => {
+    it('should add new utter to state', () => {
+        let new_utter = new Utter();
+        let new_state = clone(INITIAL_STATE);
+        new_state.id = new_utter.id
+        new_state.name = new_utter.name
+        new_state.old_name = new_utter.name
+        new_state.selected_item_position = -1
+        new_state.multiple_alternatives = new_utter.multiple_alternatives
+        new_state.content = new_utter.alternatives
+        new_state.old_content = new_utter.alternatives
+
+        expect(createNewUtter(INITIAL_STATE)).toEqual(new_state);
+    })
+})
+
+describe('set utter name method', () => {
+    it('should update utter name on state', () => {
+        let action = {
+            name: 'new name example',
+            helper_text: 'helper text example'
+        }
+        let new_state = clone(INITIAL_STATE);
+        new_state.name = action.name;
+        new_state.helper_text = action.helper_text;
+
+        expect(setUtterName(INITIAL_STATE, action)).toEqual(new_state);
+    })
+})
+
+describe('notify action method', () => {
+    it('should update the notification text on state', () => {
+        let action = {
+            text: 'new notification example'
+        }
+        let new_state = clone(INITIAL_STATE);
+        new_state.notification_text = action.text;        
+
+        expect(notifyAction(INITIAL_STATE, action)).toEqual(new_state);
+    })
+})
+
+describe('get utters method', () => {
+    it('should add utters to state', () => {
+        let utter1 = new Utter(1, 'test_utter1', false, [['utter example']]);
+        let utter2 = new Utter(2, 'test_utter2', true, [['utter example'],['another example']]);
+        let action = {
+            utters: [utter1, utter2]
+        }
+        let new_state = clone(INITIAL_STATE);
+        new_state.utters = action.utters;        
+
+        expect(getUtters(INITIAL_STATE, action)).toEqual(new_state);
     })
 })
