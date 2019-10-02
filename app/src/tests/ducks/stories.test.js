@@ -28,7 +28,8 @@ const INITIAL_STATE = {
     old_content: [],
     story_id: "",
     notification_text: "",
-    content_text_validation: ""
+    content_text_validation: "",
+    loading: false
 };
 
 describe('get intents method', () =>{
