@@ -29,6 +29,20 @@ To run the BotFlow on your computer, just run `docker-compose up` on the app's f
 
 To run application properly you'll have to run the API as well. To do so, clone the [API repository](https://github.com/lappis-unb/botFlowAPI) and run `docker-compose up`.
 
+## Run the tests
+
+* To run the tests use the command on the app/ folder:
+
+    ``` sh
+    npm test
+    ```
+
+* To run the tests and see the final coverage run:
+
+    ``` sh
+    npm test -- --coverage --watchAll=false
+    ```
+
 ## License
 The entire BotFlow platform is developed under the license [GPL3](https://github.com/lappis-unb/BotFlow/blob/master/LICENSE)
 
