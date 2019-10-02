@@ -21,9 +21,10 @@ export class Intent {
 };
 
 export class Story {
-    constructor(id = '', content = [], name = ''){
+    constructor(id = '', content = [], name = '', is_checkpoint = false){
         this.id = id;
         this.name = name;
         this.content = content;
+        this.is_checkpoint = is_checkpoint;
     }
 };

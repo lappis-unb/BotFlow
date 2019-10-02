@@ -115,8 +115,8 @@ class StoryEditPage extends Component {
         const first_element_is_intent = (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
         const contents_changed = JSON.stringify(this.props.content) !== JSON.stringify(this.props.old_content);
         let is_enabled = this.props.content_text_validation.length === 0;
-        
-        
+
+
         return first_element_is_intent && contents_changed && is_enabled;
     }
 
@@ -186,7 +186,7 @@ class StoryEditPage extends Component {
                         is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
                         deleteItem={() => this.changeStatusDialog(true)}
-                        item={new Story(this.props.story_id, this.props.content, this.props.name)}
+                        item={new Story(this.props.story_id, this.props.content, this.props.name, this.props.is_checkpoint)}
                     />
                     <div style={{
                         height: "calc(100vh - 74px - 72px)",
