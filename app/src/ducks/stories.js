@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     intents: [],
     stories: [],
     content: [],
+    loading: true,
     name: "",
     old_content: [],
     story_id: "",
@@ -39,6 +40,7 @@ export const getStories = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         stories: action.stories,
+        loading: false
     };
 }
 
