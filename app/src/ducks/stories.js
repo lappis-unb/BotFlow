@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     old_content: [],
     story_id: "",
     notification_text: "",
-    content_text_validation: ""
+    content_text_validation: "",
+    is_checkpoint: false
 };
 
 function createArrayObjCopyOf(samples = []) {
@@ -50,7 +51,8 @@ export const getStory = (state = INITIAL_STATE, action) => {
         name: action.story.name,
         story_id: action.story.id,
         content: action.story.content,
-        old_content: action.story.content
+        old_content: action.story.content,
+        is_checkpoint: action.story.is_checkpoint
     };
 }
 
@@ -105,7 +107,7 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
 
 export const undoDeleteContent = (state = INITIAL_STATE) => {
     const text = validationContent(state.old_content);
-    
+
     return {
         ...state,
         content_text_validation: text,
@@ -137,7 +139,14 @@ export const addToStory = (state = INITIAL_STATE, action) => {
         content: new_content,
         content_text_validation: text,
         old_content: createArrayObjCopyOf(state.content),
-    }
+    };
+}
+
+export const setCheckpoint = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        is_checkpoint: action.is_checkpoint
+    };
 }
 
 export const createNewStory = (state = INITIAL_STATE) => {
@@ -171,6 +180,7 @@ export const { Types, Creators } = createActions({
     undoDeleteContent: [],
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
+    setCheckpoint: ['is_checkpoint'],
     deleteContent: ['content_position'],
     notifyContentTextValidation: ['text'],
     reorderContent: ['start_index', 'end_index'],
@@ -266,6 +276,7 @@ export default createReducer(INITIAL_STATE, {
     [Types.GET_STORIES]: getStories,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
+    [Types.SET_CHECKPOINT]: setCheckpoint,
     [Types.NOTIFY_ACTION]: notifyAction,
     [Types.DELETE_CONTENT]: deleteContent,
     [Types.REORDER_CONTENT]: reorderContent,

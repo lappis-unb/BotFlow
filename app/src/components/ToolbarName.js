@@ -94,6 +94,10 @@ export default class ToolbarName extends Component {
         }
     }
 
+    handleCheckbox(event){
+        this.props.setCheckpoint(event.target.checked);
+    }
+
     render() {
         return (
             <Toolbar style={style.toolbar}>
@@ -102,7 +106,10 @@ export default class ToolbarName extends Component {
                     {this.props.story ?
                         <FormControlLabel
                             control={
-                                <Checkbox checked={this.props.item.is_checkpoint} value="checkedA"/>
+                                <Checkbox
+                                    checked={this.props.item.is_checkpoint}
+                                    onChange={e => this.handleCheckbox(e)}
+                                />
                             }
                             label="Checkpoint"
                         />

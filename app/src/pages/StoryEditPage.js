@@ -187,6 +187,7 @@ class StoryEditPage extends Component {
                         saveData={this.props.saveData}
                         deleteItem={() => this.changeStatusDialog(true)}
                         item={new Story(this.props.story_id, this.props.content, this.props.name, this.props.is_checkpoint)}
+                        setCheckpoint={this.props.setCheckpoint}
                     />
                     <div style={{
                         height: "calc(100vh - 74px - 72px)",
