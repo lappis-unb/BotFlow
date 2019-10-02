@@ -115,9 +115,9 @@ class StoryEditPage extends Component {
         const first_element_is_intent = (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
         const contents_changed = JSON.stringify(this.props.content) !== JSON.stringify(this.props.old_content);
         let is_enabled = this.props.content_text_validation.length === 0;
+        const checkpoint_changed = this.props.is_checkpoint !== this.props.old_checkpoint;
 
-
-        return first_element_is_intent && contents_changed && is_enabled;
+        return first_element_is_intent && (contents_changed || checkpoint_changed) && is_enabled;
     }
 
     render() {

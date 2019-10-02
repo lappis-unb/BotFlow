@@ -16,7 +16,8 @@ const INITIAL_STATE = {
     story_id: "",
     notification_text: "",
     content_text_validation: "",
-    is_checkpoint: false
+    is_checkpoint: false,
+    old_checkpoint: false
 };
 
 function createArrayObjCopyOf(samples = []) {
@@ -52,7 +53,8 @@ export const getStory = (state = INITIAL_STATE, action) => {
         story_id: action.story.id,
         content: action.story.content,
         old_content: action.story.content,
-        is_checkpoint: action.story.is_checkpoint
+        is_checkpoint: action.story.is_checkpoint,
+        old_checkpoint: action.story.is_checkpoint
     };
 }
 
@@ -145,7 +147,8 @@ export const addToStory = (state = INITIAL_STATE, action) => {
 export const setCheckpoint = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        is_checkpoint: action.is_checkpoint
+        is_checkpoint: action.is_checkpoint,
+        old_checkpoint: !action.is_checkpoint
     };
 }
 
