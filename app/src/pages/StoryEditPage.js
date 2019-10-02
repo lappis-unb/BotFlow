@@ -10,6 +10,7 @@ import { Creators as StoryAction } from "../ducks/stories";
 import Button from '@material-ui/core/Button';
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
+import CheckpointIcon from '../icons/CheckpointIcon'
 import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js';
 import TextField from '@material-ui/core/TextField';
@@ -52,6 +53,7 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
+        this.props.getStories()
 
         const id = this.props.history.location.pathname.split('/').pop();
         isNaN(id) ? this.props.createNewStory() : this.getStory(id);
@@ -161,6 +163,19 @@ class StoryEditPage extends Component {
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addUtter}
                                 items={this.filterItems(this.props.utters)}
+                                selected_item_position={this.props.selected_item_position}
+                            />
+                            <Typography variant="body2" color="primary">
+                                Checkpoints
+                            </Typography>
+                            <ItemsList
+                                story={true}
+                                icon={<CheckpointIcon />}
+                                isSelected={this.isSelected}
+                                content={this.props.content}
+                                highlighted_text={this.state.value}
+                                actionOnClick={this.props.addUtter}
+                                items={this.props.stories}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
