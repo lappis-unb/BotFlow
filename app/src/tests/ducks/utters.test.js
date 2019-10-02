@@ -9,8 +9,7 @@ import {
     setUtterName,
     notifyAction,
     getUtters,
-    changeUtterForm,
-    createOrUpdateItem
+    changeUtterForm
 } from '../../ducks/utters';
 
 import { clone } from '../../utils/utils';
@@ -161,5 +160,29 @@ describe('get utters method', () => {
         new_state.utters = action.utters;        
 
         expect(getUtters(INITIAL_STATE, action)).toEqual(new_state);
+    })
+})
+
+describe('change utter form method', () => {
+    it('should change the utter content with sequence option', () => {
+        let action = {
+            content: [['utter example'], ['another example']],
+            multiple_alternatives: false
+        }
+        let new_state = clone(INITIAL_STATE);
+        new_state.multiple_alternatives = action.multiple_alternatives;
+        new_state.content = [['utter example', 'another example']];
+        expect(changeUtterForm(INITIAL_STATE, action)).toEqual(new_state);
+    })
+
+    it('should change the utter content with alternatives option', () => {
+        let action = {
+            content: [['utter example', 'another example']],
+            multiple_alternatives: true
+        }
+        let new_state = clone(INITIAL_STATE);
+        new_state.multiple_alternatives = action.multiple_alternatives;
+        new_state.content = [['utter example'], ['another example']];
+        expect(changeUtterForm(INITIAL_STATE, action)).toEqual(new_state);
     })
 })
