@@ -53,7 +53,7 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
-        this.props.getStories()
+        this.props.getCheckpoints()
 
         const id = this.props.history.location.pathname.split('/').pop();
         isNaN(id) ? this.props.createNewStory() : this.getStory(id);
@@ -175,7 +175,7 @@ class StoryEditPage extends Component {
                                 content={this.props.content}
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addUtter}
-                                items={this.props.stories}
+                                items={this.props.checkpoints}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>

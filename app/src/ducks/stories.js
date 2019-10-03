@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     intents: [],
     stories: [],
     content: [],
+    checkpoints: [],
     loading: true,
     name: "",
     old_content: [],
@@ -22,6 +23,13 @@ const INITIAL_STATE = {
 
 function createArrayObjCopyOf(samples = []) {
     return samples.map(text => { return { ...text } });
+}
+
+export const getCheckpoints = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        checkpoints: action.checkpoints
+    };
 }
 
 export const getIntents = (state = INITIAL_STATE, action) => {
@@ -207,6 +215,16 @@ export const { Types, Creators } = createActions({
             }
         }
     },
+    getCheckpoints: () => {
+      return async (dispatch) => {
+          try {
+              const response = await axios.get(STORY_URL + 'checkpoints');
+              await dispatch({ type: Types.GET_CHECKPOINTS, checkpoints: response.data });
+          } catch (error) {
+              throw (error);
+          }
+      }
+    },
     getIntents: () => {
         return async (dispatch) => {
             try {
@@ -275,6 +293,7 @@ export const { Types, Creators } = createActions({
 
 export default createReducer(INITIAL_STATE, {
     [Types.GET_STORY]: getStory,
+    [Types.GET_CHECKPOINTS]: getCheckpoints,
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_STORIES]: getStories,
     [Types.GET_INTENTS]: getIntents,
