@@ -215,6 +215,16 @@ export const { Types, Creators } = createActions({
             }
         }
     },
+    addCheckpoint: (checkpoint) => {
+        return async (dispatch) => {
+            try {
+                const response = await axios.get(STORY_URL + checkpoint.id + '/checkpoint');
+                await dispatch({ type: Types.ADD_TO_STORY, item: response.data, mode: "checkpoint" });
+            } catch (error) {
+                throw (error);
+            }
+        }
+    },
     getCheckpoints: () => {
       return async (dispatch) => {
           try {

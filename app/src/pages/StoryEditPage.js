@@ -147,7 +147,6 @@ class StoryEditPage extends Component {
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addIntent}
                                 items={this.filterItems(this.props.intents)}
-                                content={this.props.content}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
@@ -158,8 +157,6 @@ class StoryEditPage extends Component {
                             <ItemsList
                                 story={true}
                                 icon={<UtterIcon />}
-                                isSelected={this.isSelected}
-                                content={this.props.content}
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addUtter}
                                 items={this.filterItems(this.props.utters)}
@@ -171,10 +168,8 @@ class StoryEditPage extends Component {
                             <ItemsList
                                 story={true}
                                 icon={<CheckpointIcon />}
-                                isSelected={this.isSelected}
-                                content={this.props.content}
                                 highlighted_text={this.state.value}
-                                actionOnClick={this.props.addUtter}
+                                actionOnClick={this.props.addCheckpoint}
                                 items={this.props.checkpoints}
                                 selected_item_position={this.props.selected_item_position}
                             />
