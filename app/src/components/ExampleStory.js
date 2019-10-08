@@ -65,7 +65,7 @@ class ExampleStory extends Component {
         let index = 0;
 
         for (let i = 0, size = content.length; i < size; i++) {
-            console.log(content[i])
+
             if (content[i].type === "checkpoint"){
                 let checkpoint = content[i].content;
                 for (let i = 0, size = checkpoint.length; i < size; i++) {
@@ -95,23 +95,10 @@ class ExampleStory extends Component {
 
         }
 
-        console.log(new_content);
-
         return new_content.map((item, index) => {
             let element;
             if (item.type === "intent") { element = this.exampleIntent(item, index) }
             else if (item.sequence) { element = this.exampleSimpleUtter(item, index) }
-            // else if (item.type === "checkpoint") {
-            //     for (let i = 0, size = item.content.length; i < size; i++) {
-            //         if (item.content[i].type === "intent") {
-            //             element = this.exampleIntent(item.content[i], index);
-            //         } else if(item.content[i].sequence) {
-            //             element = this.exampleSimpleUtter(item.content[i], index);
-            //         } else {
-            //             element = this.exampleUtter(item.content[i], index);
-            //         }
-            //     }
-            // }
             else { element = this.exampleUtter(item, index) };
             return element;
         })

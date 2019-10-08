@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Card } from '@material-ui/core';
 import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
+import CheckpointIcon from '../icons/CheckpointIcon';
 import Typography from '@material-ui/core/Typography';
 import { setHighlight } from "../utils/utils";
 
@@ -44,11 +45,17 @@ export default class StoryCard extends Component {
                         {setHighlight(item.name, this.props.highlighted_text)}
                     </Typography>
                 )
-            }
-            else {
+            } else if (item.type === "utter") {
                 return (
                     <Typography key={'story_card_item_' + index} style={styles.utter} varant="body1" noWrap>
                         <UtterIcon style={styles.utter_icon} />
+                        {setHighlight(item.name, this.props.highlighted_text)}
+                    </Typography>
+                )
+            } else if (item.type === "checkpoint") {
+                return (
+                    <Typography key={'story_card_item_' + index} style={styles.utter} varant="body1" noWrap>
+                        <CheckpointIcon style={styles.utter_icon} />
                         {setHighlight(item.name, this.props.highlighted_text)}
                     </Typography>
                 )
