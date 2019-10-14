@@ -22,4 +22,13 @@ export const setHighlight = (name, highlighted_text) => {
     return texts.map((text, index) => (
       (text === highlighted_text) ? <span key={index + "filter_text"} style={{ color: "#f15035" }}>{text}</span> : text
     ));
+}
+
+export function clone(obj) {
+  if (null == obj || "object" != typeof obj) return obj;
+  var copy = obj.constructor();
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
   }
+  return copy;
+}

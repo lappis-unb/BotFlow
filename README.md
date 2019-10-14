@@ -1,116 +1,80 @@
-# BotFlow-Platform for creating and editing contents of Rasa chatbot.
+# BotFlow -  a platform for creating contents for Rasa chatbots
 
 ## About the project
-BotFlow is a platform developed by [LAPPIS](https://lappis.rocks)-Advanced laboratory of production, research and innovation in Software (FGA/UnB) to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the [Rasa](https://blog.rasa.com/) framework for development of chatbot.
+BotFlow is a platform developed by [LAPPIS](https://lappis.rocks) - Advanced laboratory of production, research and innovation in Software (FGA/UnB) to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the [Rasa](https://blog.rasa.com/) framework for development of chatbot.
 
-<!-- Useful Links: -->
-* **Want to know how a chatbot is developed using the RASA Framework?? ✏️** [Access here](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
+This platform is part of a project done by a partnership with Brazil's Ministry of Citizenship, it is used to create the content for [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
 
+* **Want to develop a chatbot using the RASA Framework?? ✏️** [Access Rasa Boiler Plate](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
 
-
-## BotFlow Features
-* Utterance (answer) creation and editing
-* Interaction test for content created or edited
+* **Want to see BotFlow on pruduction?? 💻** [Access here](https://botflow.lappis.rocks)
 
 
-## Technologies Used
-The BotFlow platform is developed through the use of the following technologies:
+## The Architecture
 
-- React. JS - Used in our frontend layer
+The BotFlow is developed using React JS and Redux for the frontend layer. The backend is developed with Django REST, in the [BotFlow API repository](https://github.com/lappis-unb/botFlowAPI).
 
-- Node. JS - Used in our backend layer for implementation of our API
+The frontend is divided in Pages, Components and Ducks:
+* **Ducks** - The ducks folder contains the actions and reducers for Intents, Uttters and Stories. It configures the store and have all the functions needed for data manipulation and API connection.
+* **Components** - The application pages are componentized, and this folder contain all its separate compontents.
+* **Pages** - Contain the website pages.
 
-- API - designed to handle data from creations and content edits within the BotFlow platform
+In [Tais architecture](https://lappis-unb.github.io/tais/documentacao/arquitetura/), this platform generates the training data.
 
-- MongoDB - Used for construction of the database responsible for keeping the information added on the platform.
+![image](app/public/botflow-architecture.png)
 
-In addition our platform works with the export of data in the MarkDown format because it is the type of source format used in the creation of Chatbots implemented with the RASA framework.
+## How does it work?
+Botflow is a framework for editing Rasa bots contents. Therefore it is used to add and edit intents, utters and stories without managing markdown and yaml files.
 
-API repository: [Access here](https://github.com/lappis-unb/BotFlowAPI)
+### Intents
+To add the intents, just go to the Questions page and add examples of user's inputs to that intent. You can also edit or delete a intent by selecting it on the sidebar.
 
+![](./app/public/add_intent.gif)
 
+### Utters
+To add utters, just go to the Answers page and add your bot's answer. You can edit or delete a existing utter as well, just select it on the sidebar. The utters may be displayed as sequence or chosed between alternatives.
 
-## How to Contribute
-To contribute to the BotFlow platform and facilitate the interaction of more people in creating and editing content is very easy!
+![](./app/public/add_utter.gif)
 
+### Stories
+A Story is a sequence of intents and utters. To create one, go to Dialogs page and select an existing story or create a new one. You can drag the elements to place it in the correct order. See an example of conversation on the right side of the screen.
 
--First we will enable a local environment for work, so just follow the step by step described below:
-    
-* Check Prerequisites:
+![](./app/public/add_story.gif)
 
-    It is necessary to have a Docker or Node8 machine installed and (Yarn or NPM)
+### Save Content
 
-    * [Docker](https://www.docker.com/)
-
-    * [Node8](https://nodejs.org/es/blog/release/v8.0.0/)
-
-    * [Yarn](https://yarnpkg.com/pt-BR/)
-
-    * [Npm](https://www.npmjs.com/)
-
-
-* Clone repository:
-
-    `git clone https://github.com/lappis-unb/BotFlow`
+After all content is ready, click on the Export Content button on the Navbar and it will download the created content.
 
 
-- Run Botflow using Docker
-    Make sure you are in the root folder of the project and run the command below:
+## Running the application
+ 
+To run application properly you'll have to run the API as well. To do so, clone the [API repository](https://github.com/lappis-unb/botFlowAPI) and run `docker-compose up`.
 
-    `sudo docker-compose -up --build`
+To run the BotFlow on your computer, you'll have to change the API url on Botflow's frontend to where your API is being hosted. If your API is in localhost, open the Dockerfile and change the `REACT_APP_URL_API` env line to:
 
+```
+ENV REACT_APP_URL_API http://localhost:8000/
+```
+If you API is running on another server just place the correct DNS or IP address.
 
-- Run Botflow using NODE8 with Yarn
-    Make sure it is in the app folder by running the command below
-
-    `cd /app`
-
-    Then run the following commands
-
-     `yarn install`
-
-    `yarn start`
+After all API configuration is done, to run the application just run the `docker-compose up` command.
 
 
-- Run Botflow using NODE8 with NPM
-    Make sure it is in the app folder by running the command below
+## Run the tests
 
-    `cd /app`
+* To run the tests use the command on the app/ folder:
 
-    Then run the following commands
+    ``` sh
+    npm test
+    ```
 
-    `npm install`
+* To run the tests and see the final coverage run:
 
-    `npm start`
+    ``` sh
+    npm test -- --coverage --watchAll=false
+    ```
 
-
-Then the execution according to the choice of one of the previous operations, the platform will be available through access in:
-    
-`http://localhost:3000/`
-
-
-
-
-- Now that you have understood how to enable the environment locally, we will be very happy to receive and incorporate your contributions. For this we have some additional information about the style of the Code and documentation.
-
-    In general the process is very simple:
-
-
-    - Create an issue in our repository describing a feature that you want to work with
-
-
-    - Write your code, tests or documentation
-
-
-    - Open a pull request describing your proposed changes
-        Your pull request will be revised by one of the maintainers, who can raise questions for you about any necessary changes or issues.
-
-
-
-## Access the Platform
-To test the most stable version of the platform [Access here](https://botflow.lappis.rocks/)
-
-## Lincese
+## License
 The entire BotFlow platform is developed under the license [GPL3](https://github.com/lappis-unb/BotFlow/blob/master/LICENSE)
 
-
+View all the license dependencies [here](https://libraries.io/github/lappis-unb/BotFlow).
