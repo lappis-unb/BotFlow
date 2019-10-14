@@ -10,16 +10,26 @@ const INITIAL_STATE = {
     intents: [],
     stories: [],
     content: [],
+    checkpoints: [],
     loading: true,
     name: "",
     old_content: [],
     story_id: "",
     notification_text: "",
-    content_text_validation: ""
+    content_text_validation: "",
+    is_checkpoint: false,
+    old_checkpoint: false
 };
 
 function createArrayObjCopyOf(samples = []) {
     return samples.map(text => { return { ...text } });
+}
+
+export const getCheckpoints = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        checkpoints: action.checkpoints
+    };
 }
 
 export const getIntents = (state = INITIAL_STATE, action) => {
@@ -50,7 +60,9 @@ export const getStory = (state = INITIAL_STATE, action) => {
         name: action.story.name,
         story_id: action.story.id,
         content: action.story.content,
-        old_content: action.story.content
+        old_content: action.story.content,
+        is_checkpoint: action.story.is_checkpoint,
+        old_checkpoint: action.story.is_checkpoint
     };
 }
 
@@ -105,7 +117,7 @@ export const deleteContent = (state = INITIAL_STATE, action) => {
 
 export const undoDeleteContent = (state = INITIAL_STATE) => {
     const text = validationContent(state.old_content);
-    
+
     return {
         ...state,
         content_text_validation: text,
@@ -137,7 +149,15 @@ export const addToStory = (state = INITIAL_STATE, action) => {
         content: new_content,
         content_text_validation: text,
         old_content: createArrayObjCopyOf(state.content),
-    }
+    };
+}
+
+export const setCheckpoint = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        is_checkpoint: action.is_checkpoint,
+        old_checkpoint: !action.is_checkpoint
+    };
 }
 
 export const createNewStory = (state = INITIAL_STATE) => {
@@ -171,6 +191,7 @@ export const { Types, Creators } = createActions({
     undoDeleteContent: [],
     notifyAction: ['text'],
     addToStory: ['item', 'mode'],
+    setCheckpoint: ['is_checkpoint'],
     deleteContent: ['content_position'],
     notifyContentTextValidation: ['text'],
     reorderContent: ['start_index', 'end_index'],
@@ -193,6 +214,26 @@ export const { Types, Creators } = createActions({
                 throw (error);
             }
         }
+    },
+    addCheckpoint: (checkpoint) => {
+        return async (dispatch) => {
+            try {
+                const response = await axios.get(STORY_URL + checkpoint.id + '/checkpoint');
+                await dispatch({ type: Types.ADD_TO_STORY, item: response.data, mode: "checkpoint" });
+            } catch (error) {
+                throw (error);
+            }
+        }
+    },
+    getCheckpoints: () => {
+      return async (dispatch) => {
+          try {
+              const response = await axios.get(STORY_URL + 'checkpoints');
+              await dispatch({ type: Types.GET_CHECKPOINTS, checkpoints: response.data });
+          } catch (error) {
+              throw (error);
+          }
+      }
     },
     getIntents: () => {
         return async (dispatch) => {
@@ -262,10 +303,12 @@ export const { Types, Creators } = createActions({
 
 export default createReducer(INITIAL_STATE, {
     [Types.GET_STORY]: getStory,
+    [Types.GET_CHECKPOINTS]: getCheckpoints,
     [Types.GET_UTTERS]: getUtters,
     [Types.GET_STORIES]: getStories,
     [Types.GET_INTENTS]: getIntents,
     [Types.ADD_TO_STORY]: addToStory,
+    [Types.SET_CHECKPOINT]: setCheckpoint,
     [Types.NOTIFY_ACTION]: notifyAction,
     [Types.DELETE_CONTENT]: deleteContent,
     [Types.REORDER_CONTENT]: reorderContent,

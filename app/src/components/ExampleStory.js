@@ -61,18 +61,41 @@ class ExampleStory extends Component {
 
         let last_item = {};
         let content = this.props.content;
+        let new_content = [];
+        let index = 0;
 
         for (let i = 0, size = content.length; i < size; i++) {
-            if (last_item.type === "utter") {
-                content[i] = { ...content[i], sequence: true };
+
+            if (content[i].type === "checkpoint"){
+                let checkpoint = content[i].content;
+                for (let i = 0, size = checkpoint.length; i < size; i++) {
+
+                    if (last_item.type === "utter") {
+                        new_content[index] = { ...checkpoint[i], sequence: true };
+                    } else {
+                        new_content[index] = { ...checkpoint[i], sequence: false};
+                    }
+                    last_item = new_content[index];
+                    index++;
+                }
+            } else if (last_item.type === "utter") {
+                new_content[index] = { ...content[i], sequence: true };
+                last_item = new_content[index];
+                index++;
             } else if (content[i].sequence) {
-                content[i].sequence = false;
+                new_content[index].sequence = false;
+                last_item = new_content[index];
+                index++;
+            } else {
+                new_content[index] = content[i];
+                last_item = new_content[index];
+                index++;
             }
 
-            last_item = content[i];
+
         }
 
-        return content.map((item, index) => {
+        return new_content.map((item, index) => {
             let element;
             if (item.type === "intent") { element = this.exampleIntent(item, index) }
             else if (item.sequence) { element = this.exampleSimpleUtter(item, index) }

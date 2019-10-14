@@ -10,6 +10,7 @@ import { Creators as StoryAction } from "../ducks/stories";
 import Button from '@material-ui/core/Button';
 import IntentIcon from '../icons/IntentIcon';
 import UtterIcon from '../icons/UtterIcon';
+import CheckpointIcon from '../icons/CheckpointIcon'
 import StoryList from '../components/StoryList';
 import { Story } from '../utils/DataFormat.js';
 import TextField from '@material-ui/core/TextField';
@@ -52,6 +53,7 @@ class StoryEditPage extends Component {
         super(props);
         this.props.getIntents()
         this.props.getUtters()
+        this.props.getCheckpoints()
 
         const id = this.props.history.location.pathname.split('/').pop();
         isNaN(id) ? this.props.createNewStory() : this.getStory(id);
@@ -115,9 +117,9 @@ class StoryEditPage extends Component {
         const first_element_is_intent = (this.props.content.length !== 0 && this.props.content[0].type !== 'utter');
         const contents_changed = JSON.stringify(this.props.content) !== JSON.stringify(this.props.old_content);
         let is_enabled = this.props.content_text_validation.length === 0;
-        
-        
-        return first_element_is_intent && contents_changed && is_enabled;
+        const checkpoint_changed = this.props.is_checkpoint !== this.props.old_checkpoint;
+
+        return first_element_is_intent && (contents_changed || checkpoint_changed) && is_enabled;
     }
 
     render() {
@@ -145,7 +147,6 @@ class StoryEditPage extends Component {
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addIntent}
                                 items={this.filterItems(this.props.intents)}
-                                content={this.props.content}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
@@ -156,11 +157,20 @@ class StoryEditPage extends Component {
                             <ItemsList
                                 story={true}
                                 icon={<UtterIcon />}
-                                isSelected={this.isSelected}
-                                content={this.props.content}
                                 highlighted_text={this.state.value}
                                 actionOnClick={this.props.addUtter}
                                 items={this.filterItems(this.props.utters)}
+                                selected_item_position={this.props.selected_item_position}
+                            />
+                            <Typography variant="body2" color="primary">
+                                Checkpoints
+                            </Typography>
+                            <ItemsList
+                                story={true}
+                                icon={<CheckpointIcon />}
+                                highlighted_text={this.state.value}
+                                actionOnClick={this.props.addCheckpoint}
+                                items={this.props.checkpoints}
                                 selected_item_position={this.props.selected_item_position}
                             />
                         </Grid>
@@ -186,7 +196,8 @@ class StoryEditPage extends Component {
                         is_enabled={this.isButtonEnabled()}
                         saveData={this.props.saveData}
                         deleteItem={() => this.changeStatusDialog(true)}
-                        item={new Story(this.props.story_id, this.props.content, this.props.name)}
+                        item={new Story(this.props.story_id, this.props.content, this.props.name, this.props.is_checkpoint)}
+                        setCheckpoint={this.props.setCheckpoint}
                     />
                     <div style={{
                         height: "calc(100vh - 74px - 72px)",

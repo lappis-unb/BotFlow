@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import  Checkbox  from '@material-ui/core/Checkbox'
 
 const style = {
     toolbar: {
@@ -92,12 +94,26 @@ export default class ToolbarName extends Component {
         }
     }
 
+    handleCheckbox(event){
+        this.props.setCheckpoint(event.target.checked);
+    }
+
     render() {
         return (
             <Toolbar style={style.toolbar}>
                 <Grid item xs={2} />
                 <Grid item xs={4}>
-                    {this.props.story ? null : (
+                    {this.props.story ?
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={this.props.item.is_checkpoint}
+                                    onChange={e => this.handleCheckbox(e)}
+                                />
+                            }
+                            label="Checkpoint"
+                        />
+                        : (
                         <NameField
                             name={this.props.name}
                             items={this.props.items}
@@ -118,7 +134,7 @@ export default class ToolbarName extends Component {
                     </Tooltip>
                 )}
                 </Grid>
-                <Grid item xs={2} />
+                <Grid item xs={2}/>
                 <Grid item xs={3}>
                     <Button
                         color="secondary"

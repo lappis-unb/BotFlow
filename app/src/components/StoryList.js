@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import UtterIcon from '../icons/UtterIcon';
 import { message } from "../utils/messages";
 import IntentIcon from '../icons/IntentIcon';
+import CheckpointIcon from '../icons/CheckpointIcon';
 import { Grid, Card } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -76,7 +77,12 @@ class StoryList extends Component {
     }
 
     getIcon(type) {
-        return type === "intent" ? <IntentIcon style={styles.intent_icon} /> : <UtterIcon style={styles.utter_icon} />
+        if(type === "intent")
+            return <IntentIcon style={styles.intent_icon} />
+        else if (type === "utter")
+            return <UtterIcon style={styles.utter_icon} />
+        else
+            return <CheckpointIcon style={styles.utter_icon} />
     }
 
     onDragEnd(result) {
