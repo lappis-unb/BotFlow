@@ -23,11 +23,42 @@ In [Tais architecture](https://lappis-unb.github.io/tais/documentacao/arquitetur
 
 ![image](app/public/botflow-architecture.png)
 
+## How does it work?
+Botflow is a framework for editing Rasa bots contents. Therefore it is used to add and edit intents, utters and stories without managing markdown and yaml files.
+
+### Intents
+To add the intents, just go to the Questions page and add examples of user's inputs to that intent. You can also edit or delete a intent by selecting it on the sidebar.
+
+![](./app/public/add_intent.gif)
+
+### Utters
+To add utters, just go to the Answers page and add your bot's answer. You can edit or delete a existing utter as well, just select it on the sidebar. The utters may be displayed as sequence or chosed between alternatives.
+
+![](./app/public/add_utter.gif)
+
+### Stories
+A Story is a sequence of intents and utters. To create one, go to Dialogs page and select an existing story or create a new one. You can drag the elements to place it in the correct order. See an example of conversation on the right side of the screen.
+
+![](./app/public/add_story.gif)
+
+### Save Content
+
+After all content is ready, click on the Export Content button on the Navbar and it will download the created content.
+
+
 ## Running the application
  
-To run the BotFlow on your computer, just run `docker-compose up` on the app's folder. The platform will be running on `localhost:3000`.
-
 To run application properly you'll have to run the API as well. To do so, clone the [API repository](https://github.com/lappis-unb/botFlowAPI) and run `docker-compose up`.
+
+To run the BotFlow on your computer, you'll have to change the API url on Botflow's frontend to where your API is being hosted. If your API is in localhost, open the Dockerfile and change the `REACT_APP_URL_API` env line to:
+
+```
+ENV REACT_APP_URL_API http://localhost:8000/
+```
+If you API is running on another server just place the correct DNS or IP address.
+
+After all API configuration is done, to run the application just run the `docker-compose up` command.
+
 
 ## Run the tests
 
