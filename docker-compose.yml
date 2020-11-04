@@ -6,6 +6,9 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
+    environment:
+       REACT_APP_URL_API: http://localhost:8000/ # API 
+    stdin_open: true
     volumes:
       - ./app:/botflow/
       - /app/node_modules

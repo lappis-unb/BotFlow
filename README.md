@@ -50,12 +50,7 @@ After all content is ready, click on the Export Content button on the Navbar and
  
 To run application properly you'll have to run the API as well. To do so, clone the [API repository](https://github.com/lappis-unb/botFlowAPI) and run `docker-compose up`.
 
-To run the BotFlow on your computer, you'll have to change the API url on Botflow's frontend to where your API is being hosted. If your API is in localhost, open the Dockerfile and change the `REACT_APP_URL_API` env line to:
-
-```
-ENV REACT_APP_URL_API http://localhost:8000/
-```
-If you API is running on another server just place the correct DNS or IP address.
+Make sure the frontend is linked correctly with your API endpoint by checking the `REACT_APP_URL_API` env variable in the `docker-compose.yml` file on the frontend repository. If you API is running on another server just place the correct DNS or IP address.
 
 After all API configuration is done, to run the application just run the `docker-compose up` command.
 
