@@ -1,7 +1,7 @@
-# BotFlow -  a platform for creating contents for Rasa chatbots
+# BotFlow - visual content editor for simple for Rasa chatbots
 
 ## About the project
-BotFlow is an app developed by [LAPPIS](https://lappis.rocks) to help edit content of simple [Rasa](https://blog.rasa.com/) chatbots.
+BotFlow is visual content editor for simple [Rasa](https://blog.rasa.com/) chatbots. BotFlow was created by [LAPPIS](https://lappis.rocks).
 
 It was originally part of a project done in partnership with the Brazilian Ministry of Citizenship to create the content for [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
 
