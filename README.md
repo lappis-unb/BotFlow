@@ -1,14 +1,12 @@
-# BotFlow - visual content editor for simple for Rasa chatbots
+# BotFlow - visual content manager for simple for [Rasa](https://blog.rasa.com/) chatbots
 
 ## About the project
-BotFlow is visual content editor for simple [Rasa](https://blog.rasa.com/) chatbots. BotFlow was created by [LAPPIS](https://lappis.rocks).
+BotFlow was originally created by [LAPPIS](https://lappis.rocks) as part of a project done in partnership with the Brazilian Ministry of Citizenship to manage the content of [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
 
-It was originally part of a project done in partnership with the Brazilian Ministry of Citizenship to create the content for [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
-
-* **Want to develop a chatbot using the RASA Framework?? ✏️** [Access Rasa Boiler Plate PTBR](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
+**Want to develop a chatbot using the RASA Framework?? ✏️** [Access Rasa Boiler Plate PTBR](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
 
 
-## The Architecture
+## Architecture
 
 BotFlow is developed using React JS and Redux for the frontend layer. The backend is developed with Django REST, in the [BotFlow API repository](https://github.com/lappis-unb/botFlowAPI).
 
