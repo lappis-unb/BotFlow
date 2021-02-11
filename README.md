@@ -1,18 +1,16 @@
 # BotFlow -  a platform for creating contents for Rasa chatbots
 
 ## About the project
-BotFlow is a platform developed by [LAPPIS](https://lappis.rocks) - Advanced laboratory of production, research and innovation in Software (FGA/UnB) to facilitate the creation and editing of content inserted in chatbots developed through the Implementation of the [Rasa](https://blog.rasa.com/) framework for development of chatbot.
+BotFlow is an interface developed by [LAPPIS](https://lappis.rocks) to help edit content of simple [Rasa](https://blog.rasa.com/) chatbots.
 
-This platform is part of a project done by a partnership with Brazil's Ministry of Citizenship, it is used to create the content for [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
+It was originally part of a project done in partnership with the Brazilian Ministry of Citizenship to create the content for [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
 
-* **Want to develop a chatbot using the RASA Framework?? ✏️** [Access Rasa Boiler Plate](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
-
-* **Want to see BotFlow on pruduction?? 💻** [Access here](https://botflow.lappis.rocks)
+* **Want to develop a chatbot using the RASA Framework?? ✏️** [Access Rasa Boiler Plate PTBR](https://github.com/lappis-unb/rasa-ptbr-boilerplate)
 
 
 ## The Architecture
 
-The BotFlow is developed using React JS and Redux for the frontend layer. The backend is developed with Django REST, in the [BotFlow API repository](https://github.com/lappis-unb/botFlowAPI).
+BotFlow is developed using React JS and Redux for the frontend layer. The backend is developed with Django REST, in the [BotFlow API repository](https://github.com/lappis-unb/botFlowAPI).
 
 The frontend is divided in Pages, Components and Ducks:
 * **Ducks** - The ducks folder contains the actions and reducers for Intents, Uttters and Stories. It configures the store and have all the functions needed for data manipulation and API connection.
@@ -24,7 +22,7 @@ In [Tais architecture](https://lappis-unb.github.io/tais/documentacao/arquitetur
 ![image](app/public/botflow-architecture.png)
 
 ## How does it work?
-Botflow is a framework for editing Rasa bots contents. Therefore it is used to add and edit intents, utters and stories without managing markdown and yaml files.
+Botflow allows you to add and edit intents, utters and stories without handling markdown or yaml files. 
 
 ### Intents
 To add the intents, just go to the Questions page and add examples of user's inputs to that intent. You can also edit or delete a intent by selecting it on the sidebar.
