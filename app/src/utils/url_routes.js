@@ -1,4 +1,4 @@
-export const BASE = process.env.REACT_APP_URL_API + 'api/v1/';
+export const BASE = 'http://localhost:8000/api/v1/'; 
 export const ITEMS_BASE = BASE + 'projects/1/';
 
 export const UTTER_URL = ITEMS_BASE + "utters/";
