@@ -1,4 +1,4 @@
-# BotFlow - visual content manager for simple for [Rasa](https://blog.rasa.com/) chatbots
+# BotFlow - visual content manager for simple [Rasa](https://blog.rasa.com/) chatbots
 
 ## About the project
 BotFlow was originally created by [LAPPIS](https://lappis.rocks) as part of a project done in partnership with the Brazilian Ministry of Citizenship to manage the content of [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
