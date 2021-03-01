@@ -1,37 +1,27 @@
-## Welcome to GitHub Pages
+## How does it work?
+Botflow allows you to add and edit intents, utters and stories without handling markdown or yaml files. 
 
-You can use the [editor on GitHub](https://github.com/lappis-unb/BotFlow/edit/GitHubPages/docs/index.md) to maintain and preview the content for your website in Markdown files.
+### Intents
+To add the intents, just go to the Questions page and add examples of user's inputs to that intent. You can also edit or delete a intent by selecting it on the sidebar.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+![](./add_intent.gif)
 
-### Markdown
+### Utters
+To add utters, just go to the Answers page and add your bot's answer. You can edit or delete a existing utter as well, just select it on the sidebar. The utters may be displayed as sequence or chosed between alternatives.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+![](./add_utter.gif)
 
-```markdown
-Syntax highlighted code block
+### Stories
+A Story is a sequence of intents and utters. To create one, go to Dialogs page and select an existing story or create a new one. You can drag the elements to place it in the correct order. See an example of conversation on the right side of the screen.
 
-# Header 1
-## Header 2
-### Header 3
+![](./add_story.gif)
 
-- Bulleted
-- List
+### Save Content
 
-1. Numbered
-2. List
+After all content is ready, click on the Export Content button on the Navbar and it will download the created content.
 
-**Bold** and _Italic_ and `Code` text
+## About the project
+BotFlow was originally created by [LAPPIS](https://lappis.rocks) as part of a project done in partnership with the Brazilian Ministry of Citizenship to manage the content of [Tais](https://github.com/lappis-unb/tais), a chatbot for the [culture incentive law](http://leideincentivoacultura.cultura.gov.br/).
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/lappis-unb/BotFlow/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## License
+The entire BotFlow platform is developed under the license [GPL3](https://github.com/lappis-unb/BotFlow/blob/master/LICENSE)
