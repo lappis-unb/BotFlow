@@ -34,6 +34,14 @@ class IntentForm extends Component {
     this.handleSnackbarClick = this.handleSnackbarClick.bind(this)
   }
 
+  checkFields() {
+    if(this.props.content.length<=1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   handleDelete(intent_index) {
     if (this.props.content.length > 1) {
       this.props.deleteIntentContent(intent_index);
@@ -79,7 +87,7 @@ class IntentForm extends Component {
                 />
               </Grid>
               <Grid item xs={1}>
-                <IconButton color="primary" m={0} tabIndex={-1} onClick={() => this.handleDelete(sample_index)}>
+                <IconButton color="primary" m={0} tabIndex={-1} disabled={this.checkFields()} onClick={() => this.handleDelete(sample_index)}>
                   <DeleteIcon style={{ opacity: 0.5 }} />
                 </IconButton>
               </Grid>

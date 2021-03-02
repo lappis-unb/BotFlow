@@ -31,6 +31,16 @@ class UtterForm extends Component {
     this.props.setUtterContent(e.target.value, utter_index, text_index)
   }
 
+  checkFields() {
+    console.log("teste:", this.props.content);
+    if(this.props.content.length >1|| this.props.content[0].length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
   handleDelete(utter_index, text_index) {
     const utters_length = this.props.content.length;
     const utters_text_length = this.props.content[0].length;
@@ -88,6 +98,7 @@ class UtterForm extends Component {
                 <Grid item xs={2}>
                   <IconButton color="primary" m={0}
                     tabIndex={-1}
+                    disabled={this.checkFields()}
                     onClick={() => this.handleDelete(alternative_index, content_index)}>
                     <DeleteIcon style={{ opacity: 0.5 }} />
                   </IconButton>
