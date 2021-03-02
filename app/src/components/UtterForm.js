@@ -32,10 +32,11 @@ class UtterForm extends Component {
   }
 
   checkFields() {
-    if(this.props.content.length<=1) {
-      return true;
-    } else {
+    console.log("teste:", this.props.content);
+    if(this.props.content.length >1|| this.props.content[0].length > 1) {
       return false;
+    } else {
+      return true;
     }
   }
 
