@@ -82,6 +82,16 @@ export const selectUtter = (state = INITIAL_STATE, action) => {
         });
     }
 
+    
+    for (let i=0; i< selected_item.alternatives[0].length; i++) {
+        if (selected_item.alternatives[0][i].trim().length === 0){
+            selected_item.alternatives[0].splice(i, 1);
+            console.log("ACERTOU!: ", selected_item.alternatives[0]);
+        };
+    }
+
+
+
     return {
         ...state,
         helper_text: "",
