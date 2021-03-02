@@ -69,7 +69,17 @@ export default class ToolbarName extends Component {
     }
 
     handleClick() {
-        this.props.saveData(this.props.item);
+        let realContent = [];
+        let newIntent = this.props.item;
+
+        this.props.item.samples.forEach(content => {
+            if (content.trim().length !== 0) { 
+              realContent.push(content);
+            }
+        });
+        newIntent.samples = realContent;
+        //console.log("Formatado:", newIntent);
+        this.props.saveData(newIntent);
     }
 
     handleDelete() {

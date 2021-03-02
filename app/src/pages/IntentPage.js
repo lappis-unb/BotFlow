@@ -46,15 +46,25 @@ class IntentPage extends Component {
   }
 
   checkEmptyFieldsIntent(samples) {
-    let changed = true;
+    let status = true;
+    let emptyField = false;
+    let fullfilledIntents = 0;
     if (samples !== undefined) {
       samples.forEach(sample => {
-        if (sample.trim().length === 0) {
-          changed = false;
+        if (sample.trim().length === 0) { 
+          emptyField = true;
+        } else {
+          fullfilledIntents++;
         }
       });
+
+      if (fullfilledIntents === 0 && emptyField) {
+        status = false;
+      } else {
+        status = true;
+      }
     }
-    return changed;
+    return status;
   }
 
   isButtonEnabled() {
