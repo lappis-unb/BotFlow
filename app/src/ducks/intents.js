@@ -59,6 +59,7 @@ export const undoDeleteIntentContent = (state = INITIAL_STATE) => {
 export const selectIntent = (state = INITIAL_STATE, action) => {
     let selected_item = action.item;
     let selected_item_position = action.item_position;
+    let nonEmptySamples=[];
     
     if (selected_item_position < 0) {
         state.intents.find((item, index) => {
@@ -66,6 +67,14 @@ export const selectIntent = (state = INITIAL_STATE, action) => {
             return (item.id === action.item.id || item.name === action.item.name);
         });
     }
+
+    selected_item.samples.forEach(sample => {
+        if (sample.trim().length !== 0) { 
+          nonEmptySamples.push(sample);
+        } 
+    });
+
+    selected_item.samples=nonEmptySamples;
 
     return {
         ...state,
