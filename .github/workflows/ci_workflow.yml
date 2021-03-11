@@ -16,3 +16,19 @@ jobs:
       - name: Run tests
         run: |
           yarn test --ci --coverage --color
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: Install dependencies
+        run: |
+          yarn install
+          yarn global add eslint@5.16.0
+          yarn global add eslint-plugin-react@7.13.0
+          yarn global add babel-eslint@10.0.2
+      - name: Run eslint
+        run: |
+          npx eslint ./src/**/*.{js,jsx}
