@@ -3,9 +3,9 @@ name: CI
 on: [pull_request]
 
 jobs:
-  env:
-    working-directory: ./app
   test:
+    env:
+      working-directory: ./app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,6 +21,8 @@ jobs:
           yarn test --ci --coverage --color
         working-directory: ${{env.working-directory}}
   lint:
+    env:
+      working-directory: ./app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
