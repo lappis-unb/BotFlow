@@ -15,6 +15,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
+          yarn global add eslint@6.6.0
         working-directory: ${{env.working-directory}}
       - name: Run tests
         run: |
