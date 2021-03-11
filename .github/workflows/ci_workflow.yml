@@ -38,5 +38,5 @@ jobs:
         working-directory: ${{env.working-directory}}
       - name: Run eslint
         run: |
-          npx eslint ./src/**/*.{js,jsx}
+          npx eslint ./src/**/*.js
         working-directory: ${{env.working-directory}}
