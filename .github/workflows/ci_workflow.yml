@@ -3,9 +3,12 @@ name: CI
 on: [pull_request]
 
 jobs:
+  env:
+    working-directory: ./app
   test:
     runs-on: ubuntu-latest
     steps:
+      - working-directory: ${{env.working-directory}}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -19,6 +22,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - working-directory: ${{env.working-directory}}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -27,7 +31,6 @@ jobs:
         run: |
           yarn install
           yarn global add eslint@5.16.0
-          yarn global add eslint-plugin-react@7.13.0
           yarn global add babel-eslint@10.0.2
           yarn global add eslint-plugin-react@latest
       - name: Run eslint
