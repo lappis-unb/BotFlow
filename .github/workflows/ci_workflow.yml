@@ -29,6 +29,7 @@ jobs:
           yarn global add eslint@5.16.0
           yarn global add eslint-plugin-react@7.13.0
           yarn global add babel-eslint@10.0.2
+          yarn global add eslint-plugin-react@latest
       - name: Run eslint
         run: |
-          npx eslint ./app/**/*.{js,jsx}
+          npx eslint ./app/src/**/*.{js,jsx}
