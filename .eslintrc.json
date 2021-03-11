@@ -1,33 +1,22 @@
 {
-  "settings": {
-    "react": {
-      "version": "^16.8.6"
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
     }
-  },
-   "extends": [
-     "eslint:recommended",
-     "plugin:react/recommended",
-     "plugin:prettier/recommended"
-   ],
-   "env": {
-     "node": true,
-     "browser": true,
-     "jest": true,
-     "es6": true
-   },
-   "plugins": [
-     "react",
-     "prettier"
-   ],
-   "parserOptions": {
-     "ecmaVersion": 6,
-     "sourceType": "module",
-     "ecmaFeatures": {
-       "jsx": true
-     }
-   },
-   "rules": {
-     "complexity": "error"
-   },
-   "parser": "babel-eslint"
 }
