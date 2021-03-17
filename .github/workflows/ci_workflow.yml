@@ -15,7 +15,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-          yarn global add eslint@6.6.0
         working-directory: ${{env.working-directory}}
       - name: Run tests
         run: |
@@ -33,11 +32,8 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-          yarn global add eslint@5.16.0
-          yarn global add babel-eslint@10.0.2
-          yarn global add eslint-plugin-react@latest
         working-directory: ${{env.working-directory}}
       - name: Run eslint
         run: |
-          npx eslint ./src/**/*.js
+          yarn lint
         working-directory: ${{env.working-directory}}
