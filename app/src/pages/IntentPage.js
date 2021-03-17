@@ -1,26 +1,24 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Intent } from '../utils/DataFormat'
+import Grid from '@material-ui/core/Grid';
+import { Divider } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import { Intent } from '../utils/DataFormat';
 import { Creators as IntentAction } from '../ducks/intents';
 
 import { style } from '../styles/style';
 import { Add } from '../styles/button';
-import Grid from '@material-ui/core/Grid';
-import { Divider } from '@material-ui/core';
 import { message } from '../utils/messages';
 import IntentIcon from '../icons/IntentIcon';
-import Button from '@material-ui/core/Button';
 import Snackbar from '../components/Snackbar';
 import ListFilter from '../components/ListFilter';
-import IntentForm from "../components/IntentForm";
-import ToolbarName from '../components/ToolbarName'
+import IntentForm from '../components/IntentForm';
+import ToolbarName from '../components/ToolbarName';
 import { isButtonEnabled } from '../utils/utils';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
-
 class IntentPage extends Component {
-
   constructor(props) {
     super(props);
     this.props.getIntents();
@@ -28,12 +26,12 @@ class IntentPage extends Component {
     if (!isNaN(id)) { this.props.selectIntent(id); }
 
     this.state = {
-      dialog_status: false
-    }
+      dialog_status: false,
+    };
 
-    this.selectIntent = this.selectIntent.bind(this)
-    this.deleteIntent = this.deleteIntent.bind(this)
-    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+    this.selectIntent = this.selectIntent.bind(this);
+    this.deleteIntent = this.deleteIntent.bind(this);
+    this.changeStatusDialog = this.changeStatusDialog.bind(this);
   }
 
   changeStatusDialog(value) {
@@ -41,14 +39,14 @@ class IntentPage extends Component {
   }
 
   deleteIntent() {
-    this.props.deleteIntent(this.props.id)
+    this.props.deleteIntent(this.props.id);
     this.setState({ dialog_status: false });
   }
 
   checkEmptyFieldsIntent(samples) {
     let changed = true;
     if (samples !== undefined) {
-      samples.forEach(sample => {
+      samples.forEach((sample) => {
         if (sample.trim().length === 0) {
           changed = false;
         }
@@ -66,12 +64,12 @@ class IntentPage extends Component {
       this.props.name,
       this.props.old_name,
       this.props.helper_text,
-      no_empty_fields
+      no_empty_fields,
     );
   }
 
   selectIntent(data, intent_position) {
-    this.props.history.push('/intents/' + data.id);
+    this.props.history.push(`/intents/${data.id}`);
     this.props.selectIntent(data.id, intent_position);
   }
 
@@ -90,7 +88,8 @@ class IntentPage extends Component {
               variant="contained"
               onClick={() => this.createIntent()}
             >
-              <Add />{message.intent.create_button}
+              <Add />
+              {message.intent.create_button}
             </Button>
           </div>
           <ListFilter
@@ -98,7 +97,8 @@ class IntentPage extends Component {
             items={this.props.intents}
             text={message.intent.list_filter}
             actionOnClick={this.selectIntent}
-            selected_item_position={this.props.selected_item_position} />
+            selected_item_position={this.props.selected_item_position}
+          />
         </Grid>
 
         <Grid item xs={9}>
@@ -119,7 +119,7 @@ class IntentPage extends Component {
               new Intent(
                 this.props.id,
                 this.props.name,
-                this.props.content
+                this.props.content,
               )
             }
           />
@@ -141,13 +141,13 @@ class IntentPage extends Component {
             dialog_status={this.state.dialog_status}
           />
         </Grid>
-      </Grid >
-    )
+      </Grid>
+    );
   }
 }
 
-const mapStateToProps = state => { return { ...state.intent } };
+const mapStateToProps = (state) => ({ ...state.intent });
 
-const mapDispatchToProps = dispatch => bindActionCreators(IntentAction, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(IntentAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntentPage);

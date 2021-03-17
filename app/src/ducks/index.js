@@ -1,19 +1,18 @@
 import thunk from 'redux-thunk';
-import { combineReducers } from 'redux'
-import { createStore, applyMiddleware } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
 
-import utterReducer from './utters'
-import storyReducer from './stories'
-import intentReducer from './intents'
+import utterReducer from './utters';
+import storyReducer from './stories';
+import intentReducer from './intents';
 
 function configureStore() {
   return createStore(
     combineReducers({
       intent: intentReducer,
       utter: utterReducer,
-      story: storyReducer
+      story: storyReducer,
     }),
-    applyMiddleware(thunk)
+    applyMiddleware(thunk),
   );
 }
 

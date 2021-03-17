@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const SvgAppIcon = props => (
+const SvgAppIcon = (props) => (
   <svg width={98} height={48} {...props}>
     <path
       fill="#FFF"
