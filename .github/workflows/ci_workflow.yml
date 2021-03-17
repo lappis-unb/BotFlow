@@ -12,10 +12,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12'
-      run: |
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t bot-flow .
-      working-directory: ${{env.working-directory}}
+      - name: Build
+        run: |
+          - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          - docker build -t bot-flow .
+        working-directory: ${{env.working-directory}}
   test:
     env:
       working-directory: ./app
