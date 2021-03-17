@@ -1,14 +1,21 @@
 {
     "env": {
         "browser": true,
-        "es2019": false
+        "es6": true
     },
     "extends": [
         "plugin:react/recommended",
         "airbnb"
     ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
     "parserOptions": {
-        "ecmaVersion": 10,
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": [
