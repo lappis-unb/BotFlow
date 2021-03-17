@@ -6,4 +6,4 @@ COPY /app/package.json .
 RUN yarn install
 COPY ./app .
 EXPOSE 3000
-CMD ["sh", "-c", "yarn start"] 
+CMD ["sh", "-c", "yarn start"]
