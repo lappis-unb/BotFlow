@@ -3,6 +3,13 @@ name: CI
 on: [pull_request]
 
 jobs:
+  build:
+    env:
+      working-directory: ./app
+    runs-on: ubuntu-latest
+      run:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t bot-flow .
   test:
     env:
       working-directory: ./app
@@ -37,25 +44,3 @@ jobs:
         run: |
           yarn lint
         working-directory: ${{env.working-directory}}
-  build:
-    env:
-      working-directory: ./app
-    runs-on: ubuntu-latest
-    - stage: master_stage
-      if: branch = master
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t bot-flow . 
-        - docker images
-        - docker tag bot-flow lappis/bot-flow:master
-        - docker push lappis/bot-flow:master
-
-    - stage: homolog_stage
-      if: branch = devel
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t bot-flow . 
-        - docker images
-        - docker tag bot-flow lappis/bot-flow:devel
-        - docker push lappis/bot-flow:devel
-
