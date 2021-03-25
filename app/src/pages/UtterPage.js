@@ -1,19 +1,19 @@
-import { connect } from "react-redux";
-import { Add } from '../styles/button';
-import React, { Component } from "react";
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import UtterIcon from '../icons/UtterIcon';
-import { Divider } from "@material-ui/core";
+import { Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import UtterForm from "../components/UtterForm";
+import { bindActionCreators } from 'redux';
+import { Add } from '../styles/button';
+import UtterIcon from '../icons/UtterIcon';
+import UtterForm from '../components/UtterForm';
 import { isButtonEnabled } from '../utils/utils';
-import ListFilter from "../components/ListFilter";
+import ListFilter from '../components/ListFilter';
 import ToolbarName from '../components/ToolbarName';
 import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog';
 
-import { style } from '../styles/style'
-import { bindActionCreators } from 'redux';
-import { Utter } from "../utils/DataFormat";
+import { style } from '../styles/style';
+import { Utter } from '../utils/DataFormat';
 import Snackbar from '../components/Snackbar';
 import { Creators as UtterAction } from '../ducks/utters';
 import { message } from '../utils/messages';
@@ -23,24 +23,23 @@ class UtterPage extends Component {
     super(props);
     this.props.getUtters();
     const id = this.props.history.location.pathname.split('/').pop();
-    if(!isNaN(id)) { this.props.selectUtter(id); }
+    if (!isNaN(id)) { this.props.selectUtter(id); }
 
     this.state = {
-      dialog_status: false
-    }
+      dialog_status: false,
+    };
 
-    this.selectUtter = this.selectUtter.bind(this)
-    this.deleteUtter = this.deleteUtter.bind(this)
-    this.changeStatusDialog = this.changeStatusDialog.bind(this)
+    this.selectUtter = this.selectUtter.bind(this);
+    this.deleteUtter = this.deleteUtter.bind(this);
+    this.changeStatusDialog = this.changeStatusDialog.bind(this);
   }
-
 
   changeStatusDialog(value) {
     this.setState({ dialog_status: value });
   }
 
   deleteUtter() {
-    this.props.deleteUtter(this.props.id)
+    this.props.deleteUtter(this.props.id);
     this.setState({ dialog_status: false });
   }
 
@@ -50,7 +49,7 @@ class UtterPage extends Component {
 
   handleSnackbarClick(value) {
     if (value === false) {
-      this.props.deleteUtter(this.props.id)
+      this.props.deleteUtter(this.props.id);
     }
     value = (value === undefined ? false : value);
     this.setState({ undo_delete: value });
@@ -59,12 +58,12 @@ class UtterPage extends Component {
   checkEmptyFieldsUtter(alternatives) {
     let changed = true;
     if (alternatives !== undefined) {
-      alternatives.forEach(alternative => {
-        alternative.forEach(text => {
+      alternatives.forEach((alternative) => {
+        alternative.forEach((text) => {
           if (text.trim().length === 0) {
             changed = false;
           }
-        })
+        });
       });
     }
     return changed;
@@ -79,12 +78,12 @@ class UtterPage extends Component {
       this.props.name,
       this.props.old_name,
       this.props.helper_text,
-      no_empty_fields
+      no_empty_fields,
     );
   }
 
   selectUtter(data, utter_position) {
-    this.props.history.push('/utters/' + data.id);
+    this.props.history.push(`/utters/${data.id}`);
     this.props.selectUtter(data.id, utter_position);
   }
 
@@ -103,7 +102,8 @@ class UtterPage extends Component {
               variant="contained"
               onClick={() => this.createUtter()}
             >
-              <Add />{message.utter.create_button}
+              <Add />
+              {message.utter.create_button}
             </Button>
           </div>
           <ListFilter
@@ -111,7 +111,8 @@ class UtterPage extends Component {
             items={this.props.utters}
             text={message.utter.list_filter}
             actionOnClick={this.selectUtter}
-            selected_item_position={this.props.selected_item_position} />
+            selected_item_position={this.props.selected_item_position}
+          />
         </Grid>
 
         <Grid item xs={9}>
@@ -133,7 +134,7 @@ class UtterPage extends Component {
                 this.props.id,
                 this.props.name,
                 this.props.multiple_alternatives,
-                this.props.content
+                this.props.content,
               )
             }
           />
@@ -153,13 +154,13 @@ class UtterPage extends Component {
             dialog_status={this.state.dialog_status}
           />
         </Grid>
-      </Grid >
-    )
+      </Grid>
+    );
   }
 }
 
-const mapStateToProps = state => { return { ...state.utter } };
+const mapStateToProps = (state) => ({ ...state.utter });
 
-const mapDispatchToProps = dispatch => bindActionCreators(UtterAction, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(UtterAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UtterPage);

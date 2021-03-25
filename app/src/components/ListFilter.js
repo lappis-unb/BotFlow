@@ -1,35 +1,35 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import ItemsList from "./ItemsList";
 
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import ItemsList from './ItemsList';
 
 const style = {
   filter_items_container: {
-    padding: "12px 8px",
-    //position: "relative",
-    //background: "yellow",
-    //bottom: 0
+    padding: '12px 8px',
+    // position: "relative",
+    // background: "yellow",
+    // bottom: 0
   },
   list_container: {
-    height: "calc(100vh - 74px - 64px - 80px - 10px)",
-    paddingLeft: "24px",
-    overflowY: "auto"
-  }
-}
+    height: 'calc(100vh - 74px - 64px - 80px - 10px)',
+    paddingLeft: '24px',
+    overflowY: 'auto',
+  },
+};
 
 export default class ListFilter extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = { value: '' };
   }
 
   filterItems(items) {
     if (items !== undefined) {
-      return items.filter(item => (item.name).includes(this.state.value));
+      return items.filter((item) => (item.name).includes(this.state.value));
     }
     return [];
   }
@@ -44,18 +44,18 @@ export default class ListFilter extends Component {
 
   getFilterIcon() {
     if ((this.state.value).trim().length === 0) {
-      return <SearchIcon />
+      return <SearchIcon />;
     }
     return (
       <CloseIcon
         onClick={() => this.cleanFilter()}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: 'pointer' }}
       />
-    )
+    );
   }
 
   cleanFilter() {
-    this.setState({ value: "" });
+    this.setState({ value: '' });
   }
 
   render() {
@@ -88,6 +88,6 @@ export default class ListFilter extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

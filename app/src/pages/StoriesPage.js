@@ -1,53 +1,53 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { Creators as StoryAction } from '../ducks/stories';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { Add } from '../styles/button';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import { message } from '../utils/messages';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import StoryCard from '../components/StoryCard';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import SnackbarDelete from '../components/DeleteSnackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SnackbarDelete from '../components/DeleteSnackbar';
+import StoryCard from '../components/StoryCard';
+import { message } from '../utils/messages';
+import { Add } from '../styles/button';
+import { Creators as StoryAction } from '../ducks/stories';
 
 const style = {
   toolbar: {
-    background: "#f6f9f9",
-    padding: "6px 24px"
+    background: '#f6f9f9',
+    padding: '6px 24px',
   },
   create_button: {
-    marginTop: '9px'
+    marginTop: '9px',
   },
   loading: {
-    margin: "auto",
-    width: "100vw"
+    margin: 'auto',
+    width: '100vw',
   },
   list_story: {
-    background: "#dae8ea",
+    background: '#dae8ea',
     padding: 16,
     height: 'calc(100vh - 74px - 92px - 16px)',
     maxWidth: '100vw',
     overflowX: 'auto',
     columnCount: 6,
     columnGap: 0,
-    columnFill: 'auto'
-  }
-}
+    columnFill: 'auto',
+  },
+};
 
 class StoriesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
-      undo_delete: false
-    }
+      undo_delete: false,
+    };
     this.props.getStories();
   }
 
@@ -63,9 +63,10 @@ class StoriesPage extends Component {
     return (
       <Grid container>
         <Grid item xs={9}>
-          <Link to='/stories/new' style={{ textDecoration: 'none' }}>
+          <Link to="/stories/new" style={{ textDecoration: 'none' }}>
             <Button color="primary" variant="contained" style={style.create_button}>
-              <Add />Criar novo diálogo
+              <Add />
+              Criar novo diálogo
             </Button>
           </Link>
         </Grid>
@@ -81,40 +82,37 @@ class StoriesPage extends Component {
           />
         </Grid>
       </Grid>
-    )
+    );
   }
 
   cleanFilter() {
-    this.props.getStories('')
-    this.setState({ value: '' })
+    this.props.getStories('');
+    this.setState({ value: '' });
   }
 
   getFilterIcon() {
     if ((this.state.value).trim().length === 0) {
-      return <SearchIcon />
-    } else {
-      return (
-        <CloseIcon
-          onClick={() => this.cleanFilter()}
-          style={{ cursor: "pointer" }}
-        />
-      )
+      return <SearchIcon />;
     }
+    return (
+      <CloseIcon
+        onClick={() => this.cleanFilter()}
+        style={{ cursor: 'pointer' }}
+      />
+    );
   }
 
   getStoriesList() {
-    if(this.props.loading){
+    if (this.props.loading) {
       return <div style={style.loading}><center><CircularProgress /></center></div>;
     }
-    else {
-      if (this.props.stories !== undefined && this.props.stories.length !== 0) {
-        return this.props.stories.map((story, index) => (
-          <StoryCard key={'story_card_' + index} highlighted_text={this.state.value} story={story} />
-        ));
-      } else {
-        return <div style={{position:'absolute', width:'97%', textAlign:'center'}}><Typography variant="h5" color="secondary">{message.no_result}</Typography></div>;
-      }
+
+    if (this.props.stories !== undefined && this.props.stories.length !== 0) {
+      return this.props.stories.map((story, index) => (
+        <StoryCard key={`story_card_${index}`} highlighted_text={this.state.value} story={story} />
+      ));
     }
+    return <div style={{ position: 'absolute', width: '97%', textAlign: 'center' }}><Typography variant="h5" color="secondary">{message.no_result}</Typography></div>;
   }
 
   handleSnackbarClick(value) {
@@ -136,12 +134,12 @@ class StoriesPage extends Component {
           undo={this.state.undo_delete}
         />
       </span>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => { return { ...state.story } };
+const mapStateToProps = (state) => ({ ...state.story });
 
-const mapDispatchToProps = dispatch => bindActionCreators(StoryAction, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(StoryAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesPage);

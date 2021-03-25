@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const DialogBoxPrimary = styled.div`
     position:relative;
     margin-top: 24px;
@@ -26,7 +25,7 @@ export const DialogBoxPrimary = styled.div`
     textarea {
         line-height: 1.5rem;
     }
-`
+`;
 
 export const DialogBoxSecondary = styled.div`
     position:relative;
@@ -42,8 +41,7 @@ export const DialogBoxSecondary = styled.div`
     line-height: 1.5rem;
   }
 
-`
-
+`;
 
 export const NewPrimaryDialog = styled.div`
     margin-top: 24px;
@@ -67,8 +65,7 @@ export const NewPrimaryDialog = styled.div`
         background: #FDE9E6;
         clip-path: polygon(22% 0, 25% 2%, 27% 4%, 100% 69%, 0 99%, 0 0);
     }
-`
-
+`;
 
 export const NewSecondaryDialog = styled.div`
     margin-top: -12px;
@@ -79,4 +76,4 @@ export const NewSecondaryDialog = styled.div`
     opacity: 0.6;
     cursor: pointer;
     filter: drop-shadow(0px 2px 0px rgba(241, 80, 53, 0.3));
-`
+`;

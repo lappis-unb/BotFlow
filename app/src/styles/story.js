@@ -27,4 +27,4 @@ export const StoryBox = styled.div`
       border-color: transparent;
       overflow: auto;
 }
-`
+`;
