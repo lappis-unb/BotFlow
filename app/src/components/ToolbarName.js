@@ -11,6 +11,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { Alert } from 'react-alert';
+
 const style = {
     toolbar: {
         background: "#f6f9f9",
@@ -68,8 +70,51 @@ export default class ToolbarName extends Component {
         }
     }
 
+    sendAlert() {
+        alert("Balões vazios foram removidos!");
+    }
+
     handleClick() {
-        this.props.saveData(this.props.item);
+        let realContent = [];
+        let newIntent = this.props.item;
+
+        this.sendAlert();
+
+
+
+        if (this.props.item.samples !== undefined) {
+            this.props.item.samples.forEach(content => {
+                if (content.trim().length !== 0) { 
+                  realContent.push(content);
+                }
+            });
+            newIntent.samples = realContent;
+            this.props.saveData(newIntent);
+        } 
+        //code above reffers to intents, so we need to treat utters also
+        else if (this.props.item.alternatives !== undefined) {
+                if (this.props.item.alternatives.length === 1) {
+                    this.props.item.alternatives[0].forEach(content => {
+                        if (content.trim().length !== 0) { 
+                          realContent.push(content);
+                        }
+                    });
+                    newIntent.alternatives[0] = realContent;
+                    this.props.saveData(newIntent);
+                } else {
+                    this.props.item.alternatives.forEach(content => {
+                        if (content[0].trim().length !== 0) { 
+                          realContent.push(content);
+                        }
+                    });
+                    newIntent.alternatives = realContent;
+                    this.props.saveData(newIntent);
+                }
+        }
+         else {
+            this.props.saveData(this.props.item);
+        }
+        //console.log("Formatado:", newIntent);
     }
 
     handleDelete() {
