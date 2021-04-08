@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Creators as StoryAction } from '../ducks/stories';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import i18n from '../translate/i18n'
 
 import { Add } from '../styles/button';
 import { Link } from 'react-router-dom';
@@ -65,7 +66,7 @@ class StoriesPage extends Component {
         <Grid item xs={9}>
           <Link to='/stories/new' style={{ textDecoration: 'none' }}>
             <Button color="primary" variant="contained" style={style.create_button}>
-              <Add />Criar novo diálogo
+              <Add /> {i18n.t('stories_page.create_button')}
             </Button>
           </Link>
         </Grid>
