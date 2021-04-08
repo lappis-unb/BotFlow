@@ -80,7 +80,28 @@ export default class ToolbarName extends Component {
             });
             newIntent.samples = realContent;
             this.props.saveData(newIntent);
-        } else {
+        } 
+        //code above reffers to intents, so we need to treat utters also
+        else if (this.props.item.alternatives !== undefined) {
+                if (this.props.item.alternatives.length === 1) {
+                    this.props.item.alternatives[0].forEach(content => {
+                        if (content.trim().length !== 0) { 
+                          realContent.push(content);
+                        }
+                    });
+                    newIntent.alternatives[0] = realContent;
+                    this.props.saveData(newIntent);
+                } else {
+                    this.props.item.alternatives.forEach(content => {
+                        if (content[0].trim().length !== 0) { 
+                          realContent.push(content);
+                        }
+                    });
+                    newIntent.alternatives = realContent;
+                    this.props.saveData(newIntent);
+                }
+        }
+         else {
             this.props.saveData(this.props.item);
         }
         //console.log("Formatado:", newIntent);

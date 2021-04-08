@@ -58,16 +58,27 @@ class UtterPage extends Component {
 
   checkEmptyFieldsUtter(alternatives) {
     let changed = true;
+    let emptyField = false;
+    let fullfilledUtters = 0;
+
     if (alternatives !== undefined) {
-      alternatives.forEach(alternative => {
-        alternative.forEach(text => {
-          if (text.trim().length === 0) {
-            changed = false;
-          }
-        })
-      });
-    }
-    return changed;
+        alternatives.forEach(alternative => {
+          alternative.forEach(content => {
+            if (content.trim().length === 0) {
+              emptyField = true;
+            } else {
+              fullfilledUtters++;
+            }
+          })
+        });
+
+        if (fullfilledUtters === 0 && emptyField) {
+          changed = false;
+        } else {
+          changed = true;
+        }
+      }
+      return changed;
   }
 
   isButtonEnabled() {
