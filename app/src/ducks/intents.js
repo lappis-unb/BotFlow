@@ -15,6 +15,18 @@ const INITIAL_STATE = {
     old_content: [''],
 };
 
+
+function sendAlert(response) {
+    if (response.status === 404) {
+        alert("Desculpe, não foi possível encontrar o objeto de pesquisa!");
+    } else if (response.status === 400) {
+        alert("Desculpe, algum caracter inválido foi inserido ou falta alguma informação\nFavor revisar.")
+    }
+    else if (response.status === undefined) {
+        alert("Desculpe, houve um erro de rede.\nFavor verificar a conexão!");
+    }
+}
+
 export const addIntent = (state = INITIAL_STATE) => {
     let new_intent = [...state.content];
     new_intent.push('')
@@ -132,13 +144,14 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = '') => {
             await axios[mode](mode_url, new_item)
                 .then((resp) => {
                     intent = resp.data;
-                })
+                });
 
             await dispatch(Creators.getIntents());
             await dispatch(Creators.selectIntent(intent.id, -1));
 
             dispatch(Creators.notifyAction(message));
         } catch (error) {
+            sendAlert(error.response);
             throw (error);
         }
     }
@@ -158,6 +171,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(INTENT_URL + id);
                 await dispatch({ type: Types.SELECT_INTENT, item: response.data, item_position: item_position });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -168,6 +182,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(INTENT_URL);
                 await dispatch({ type: Types.GET_INTENTS, intents: response.data });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -185,11 +200,14 @@ export const { Types, Creators } = createActions({
         return async (dispatch) => {
             try {
                 await axios.delete(INTENT_URL + delete_intent_id);
+
                 await dispatch(Creators.getIntents());
                 await dispatch(Creators.notifyAction(message.intent.deleted));
                 await dispatch(Creators.createNewIntent())
+                
 
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }

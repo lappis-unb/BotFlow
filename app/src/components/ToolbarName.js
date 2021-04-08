@@ -11,7 +11,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { Alert } from 'react-alert';
 
 const style = {
     toolbar: {

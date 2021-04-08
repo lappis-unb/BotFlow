@@ -15,6 +15,17 @@ const INITIAL_STATE = {
     multiple_alternatives: false,
 };
 
+function sendAlert(response) {
+    if (response.status === 404) {
+        alert("Desculpe, não foi possível encontrar o objeto de pesquisa!");
+    } else if (response.status === 400) {
+        alert("Desculpe, algum caracter inválido foi inserido ou falta alguma informação\nFavor revisar.")
+    }
+    else if (response.status === undefined) {
+        alert("Desculpe, houve um erro de rede.\nFavor verificar a conexão!");
+    }
+}
+
 function createArrayCopyOf(items) {
     if (items !== undefined) {
         return items.map(utter => utter.map(text => text));
@@ -178,6 +189,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
 
             await dispatch(Creators.notifyAction(message));
         } catch (error) {
+            sendAlert(error.response);
             throw (error);
         }
     }
@@ -198,6 +210,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(UTTER_URL + id);
                 await dispatch({ type: Types.SELECT_UTTER, item: response.data, item_position: item_position });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -208,6 +221,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(UTTER_URL);
                 await dispatch({ type: Types.GET_UTTERS, utters: response.data });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -230,6 +244,7 @@ export const { Types, Creators } = createActions({
                 await dispatch(Creators.createNewUtter())
 
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
