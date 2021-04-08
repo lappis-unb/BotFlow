@@ -171,7 +171,7 @@ class StoryEditPage extends Component {
                             <TextField
                                 fullWidth
                                 type="text"
-                                label="Filtrar"
+                                label={i18n.t('stories_edit_page.filter')}
                                 variant="outlined"
                                 value={this.state.value}
                                 InputProps={{ endAdornment: this.getFilterIcon() }}

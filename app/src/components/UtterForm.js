@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import i18n from '../translate/i18n'
 
 import { Creators as UtterAction } from '../ducks/utters';
 import { DialogBoxPrimary, DialogBoxSecondary, NewPrimaryDialog, NewSecondaryDialog } from '../styles/dialog';
@@ -152,10 +153,10 @@ class UtterForm extends Component {
             <Grid item xs={10}>
               {this.props.multiple_alternatives ?
                 <NewPrimaryDialog onClick={() => { this.handleClick() }}>
-                    <Typography variant="body1">Novo balão de resposta</Typography>
+                    <Typography variant="body1">{i18n.t('uttter_form.new_balloon')}</Typography>
                 </NewPrimaryDialog> :
                 <NewSecondaryDialog onClick={() => { this.handleClick() }}>
-                    <Typography variant="body1">Novo balão de resposta</Typography>
+                    <Typography variant="body1">{i18n.t('uttter_form.new_balloon')}</Typography>
                 </NewSecondaryDialog>
               }
             </Grid>

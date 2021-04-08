@@ -7,11 +7,13 @@ const messages = {
         answers: 'Answers'
       },
       stories_page: {
-        create_dialogue: "Create"
+        create_dialogue: "Create",
+        filter: 'Filter'
       },
       stories_edit_page: {
         questions: 'Questions',
-        answers: 'Answers'
+        answers: 'Answers',
+        filter: 'Filter'
       },
       deleted: "Item deleted",
       no_result: "No items found",
@@ -50,6 +52,14 @@ const messages = {
         alternatives_text: "as alternative",
         placeholder: "Ex: Ans_Gen_Greet, Ans_How_To_Reg_Serv",
         name_good_pratice: "To identify the answers clearly, use 'Resp_' and the title of the corresponding question, if any",
+      },
+      toolbar_name: "Save",
+      list_filter: 'Filter',
+      intent_form: {
+        new_question: 'New question'
+      },
+      uttter_form: {
+        new_balloon: 'New answer balloon'
       }
     }
   }

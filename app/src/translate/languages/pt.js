@@ -8,10 +8,12 @@ const messages = {
       },
       stories_page: {
         create_dialogue: "Criar novo diálogo",
+        filter: 'Filtrar'
       },
       stories_edit_page: {
         questions: 'Perguntas',
-        answers: 'Respostas'
+        answers: 'Respostas',
+        filter: 'Filtrar'
       },
       deleted: "Item apagado",
       no_result: "Nenhum item encontrado",
@@ -50,6 +52,14 @@ const messages = {
         alternatives_text: "como alternativas",
         placeholder: "Ex: Resp_Geral_Cumprimentar, Resp_Servico_Como_Cadastrar",
         name_good_pratice: "Para identificar as respostas claramente, use 'Resp_' e o título da pergunta correspondente, se existir",
+      },
+      toolbar_name: "Gravar",
+      list_filter: 'Filtrar',
+      intent_form: {
+        new_question: 'Nova pergunta'
+      },
+      uttter_form: {
+        new_balloon: 'Novo balão de resposta'
       }
     }
   }

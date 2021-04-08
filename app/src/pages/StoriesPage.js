@@ -74,7 +74,7 @@ class StoriesPage extends Component {
           <TextField
             fullWidth
             type="text"
-            label="Filtrar"
+            label={i18n.t('stories_page.filter')}
             value={this.state.value}
             variant="outlined"
             InputProps={{ endAdornment: this.getFilterIcon() }}

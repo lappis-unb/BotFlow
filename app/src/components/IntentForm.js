@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import SnackbarDelete from './DeleteSnackbar'
+import i18n from '../translate/i18n'
 
 import { Creators as IntentAction } from "../ducks/intents";
 
@@ -110,7 +111,7 @@ class IntentForm extends Component {
               <div style={style.new_question} tabIndex={0}
                 onClick={() => { this.handleClick() }}
               >
-                <Typography variant="body2">Nova pergunta</Typography>
+                <Typography variant="body2">{i18n.t('intent_form.new_question')}</Typography>
               </div>
             </Grid>
             <Grid item xs={1} />
