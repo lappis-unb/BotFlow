@@ -3,10 +3,9 @@
 import { messages as ptBrTranslations } from './pt'
 import { messages as enUsTranslations } from './en'
 
-const messages = {
-  ... ptBrTranslations,
-  ... enUsTranslations
-}
+const messages={
+  ...ptBrTranslations,
+  ...enUsTranslations}
 
 
 export default messages

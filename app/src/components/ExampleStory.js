@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Typography from '@material-ui/core/Typography';
 import { IntentBalloon, UtterFirstBalloon, UtterBalloon } from '../styles/exampleBalloon';
 import { message } from '../utils/messages';
+import i18n from '../translate/i18n'
 
 const styles = {
     title: {
@@ -85,7 +86,7 @@ class ExampleStory extends Component {
         return (
             <div style={styles.container}>
                 <Typography variant="body2" style={styles.title} color="primary">
-                    {this.props.content.length !== 0 ? "Exemplo:" : message.no_examples}
+                    {this.props.content.length !== 0 ? i18n.t('example_story') : message.no_examples}
                 </Typography>
                 {this.getExamples()}
             </div>

@@ -60,7 +60,8 @@ const messages = {
       },
       uttter_form: {
         new_balloon: 'New answer balloon'
-      }
+      },
+      example_story:  'Example:'
     }
   }
 }

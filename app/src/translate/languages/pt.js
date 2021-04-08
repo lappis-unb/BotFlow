@@ -60,7 +60,8 @@ const messages = {
       },
       uttter_form: {
         new_balloon: 'Novo balão de resposta'
-      }
+      },
+      example_story:  'Exemplo:'
     }
   }
 }
