@@ -11,6 +11,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { Alert } from 'react-alert';
+
 const style = {
     toolbar: {
         background: "#f6f9f9",
@@ -68,9 +70,17 @@ export default class ToolbarName extends Component {
         }
     }
 
+    sendAlert() {
+        alert("Balões vazios foram removidos!");
+    }
+
     handleClick() {
         let realContent = [];
         let newIntent = this.props.item;
+
+        this.sendAlert();
+
+
 
         if (this.props.item.samples !== undefined) {
             this.props.item.samples.forEach(content => {
