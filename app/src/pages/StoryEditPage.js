@@ -138,7 +138,7 @@ class StoryEditPage extends Component {
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={2} sm={6} style={style.list_container_intent}>
                             <Typography variant="body2" color="primary">
-                                {i18n.t('stories_edit_page.questions')}
+                                {i18n.t('stories_edit_page.itents')}
                             </Typography>
                             <ItemsList
                                 story={true}
@@ -152,7 +152,7 @@ class StoryEditPage extends Component {
                         </Grid>
                         <Grid item xs={2} sm={6} style={style.list_container_utter}>
                             <Typography variant="body2" color="primary">
-                                {i18n.t('stories_edit_page.answers')}
+                                {i18n.t('stories_edit_page.utters')}
                             </Typography>
                             <ItemsList
                                 story={true}

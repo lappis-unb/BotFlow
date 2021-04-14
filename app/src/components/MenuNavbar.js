@@ -76,9 +76,9 @@ export default function MenuNavbar() {
               value={value}
               onChange={handleChange}
               centered>
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label={i18n.t('menu_nav_bar.dialogues')} to="/" component={Link} />
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label={i18n.t('menu_nav_bar.questions')} to="/intents/new" component={Link} />
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label={i18n.t('menu_nav_bar.answers')} to="/utters/new" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label={i18n.t('menu_nav_bar.stories')} to="/" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label={i18n.t('menu_nav_bar.intents')} to="/intents/new" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label={i18n.t('menu_nav_bar.utters')} to="/utters/new" component={Link} />
             </Tabs>
           <Button
             color="secondary"

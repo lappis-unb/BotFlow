@@ -2,17 +2,17 @@ const messages = {
   pt: {
     translations: { // Mesmo valor usado nas configurações (defaultNS)
       menu_nav_bar: {
-        dialogues: 'Diálogos',
-        questions: 'Perguntas',
-        answers: 'Respostas'
+        stories: 'Diálogos',
+        intents: 'Perguntas',
+        utters: 'Respostas'
       },
       stories_page: {
         create_dialogue: "Criar novo diálogo",
         filter: 'Filtrar'
       },
       stories_edit_page: {
-        questions: 'Perguntas',
-        answers: 'Respostas',
+        itents: 'Perguntas',
+        utters: 'Respostas',
         filter: 'Filtrar'
       },
       deleted: "Item apagado",
