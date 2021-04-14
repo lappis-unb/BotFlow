@@ -19,7 +19,7 @@ const messages = {
       no_result: "Nenhum item encontrado",
       repeated_name: "Tente um nome diferente, este já existe",
       no_special_char: "Use apenas letras sem acentos, números ou _",
-      no_dialogs: "Clique nas perguntas e respostas para montar um diálogo com exemplos de interação esperados",
+      no_dialogs: "Clique nas perguntas e nas respostas para montar um diálogo",
       delete_confirmation: "Apagar item?",
       exportar_conteudo: 'Exportar conteúdo',
       story: {
@@ -59,7 +59,7 @@ const messages = {
         new_question: 'Nova pergunta'
       },
       uttter_form: {
-        new_balloon: 'Novo balão de resposta'
+        new_balloon: 'Novo balão'
       },
       example_story:  'Exemplo:'
     }
