@@ -1,8 +1,8 @@
-
 import React, { Component } from "react";
 import {message} from '../utils/messages';
 import { Button } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
+import i18n from '../translate/i18n'
 
 class DeleteSnackbar extends Component {
     handleUndoSnack() {
@@ -30,7 +30,7 @@ class DeleteSnackbar extends Component {
                         color="secondary"
                         size="small"
                         onClick={() => this.handleUndoSnack()}>
-                        Desfazer
+                        {i18n.t('delete_snackbar')}
                     </Button>
                 ]}
             />

@@ -21,6 +21,11 @@ const messages = {
       no_special_char: "Use only letters without accents, numbers or _",
       no_dialogs: "Click on intents and utters to set up a story",
       delete_confirmation: "Delete item?",
+      delete_confirmation_dialog: {
+        delete: "Delete",
+        cancel: "Cancel"
+      },
+      delete_snackbar: "Undo",
       exportar_conteudo: 'Export content',
       story: {
         created: "Story created",
@@ -53,7 +58,10 @@ const messages = {
         placeholder: "Ex: Utter_General_Greet, Utter_How_To_Register",
         name_good_pratice: "To identify utters clearly, use 'Utter_' and the title of the corresponding question, if any",
       },
-      toolbar_name: "Save",
+      toolbar_name: {
+        save: "Save",
+        delete: "Delete"
+      },
       list_filter: 'Filter',
       intent_form: {
         new_question: 'New intent'

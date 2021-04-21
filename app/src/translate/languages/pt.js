@@ -21,6 +21,11 @@ const messages = {
       no_special_char: "Use apenas letras sem acentos, números ou _",
       no_dialogs: "Clique nas perguntas e nas respostas para montar um diálogo",
       delete_confirmation: "Apagar item?",
+      delete_confirmation_dialog: {
+        delete: "Apagar",
+        cancel: "Cancelar"
+      },
+      delete_snackbar: "Desfazer",
       exportar_conteudo: 'Exportar conteúdo',
       story: {
         created: "Diálogo criado",
@@ -53,7 +58,10 @@ const messages = {
         placeholder: "Ex: Resp_Geral_Cumprimentar, Resp_Servico_Como_Cadastrar",
         name_good_pratice: "Para identificar as respostas claramente, use 'Resp_' e o título da pergunta correspondente, se existir",
       },
-      toolbar_name: "Gravar",
+      toolbar_name: {
+        save: "Gravar",
+        delete: "Apagar"
+      },
       list_filter: 'Filtrar',
       intent_form: {
         new_question: 'Nova pergunta'
@@ -65,5 +73,3 @@ const messages = {
     }
   }
 }
-
-export { messages }
