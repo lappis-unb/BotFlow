@@ -32,7 +32,9 @@ describe('add utter content method', () => {
         new_state.old_content = [['', '']]
         expect(addUtterContent(INITIAL_STATE)).toEqual(new_state);
     })
+})
 
+describe('add utter to state in alternatives', () => {
     it('should add utter to state in alternatives', () => {
         let state = clone(INITIAL_STATE);
         state.multiple_alternatives = true
