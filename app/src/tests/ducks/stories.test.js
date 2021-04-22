@@ -91,17 +91,21 @@ describe('get story method', () => {
     })
 })
 
-describe('validate content method', () => {
+describe('warn about two intents problem', () => {
     it('should warn about two intents problem', () => {
         let content = [{ id: 1, type: 'utter' }, { id: 1, type: 'intent' }, { id: 2, type: 'intent' }];
         expect(validationContent(content)).toEqual(message.story.two_intents)
-    })
+    })  
+})
 
+describe('warn about starting with intents problem', () => {
     it('should warn about starting with intents problem', () => {
         let content = [{ id: 1, type: 'utter' }, { id: 1, type: 'intent' }, { id: 1, type: 'utter' }];
         expect(validationContent(content)).toEqual(message.story.first_element)
     })
+})
 
+describe('return a empty string when everything is fine', () => {
     it('should return a empty string when everything is fine', () => {
         let content = [{ id: 1, type: 'intent' }, { id: 1, type: 'utter' }];
         expect(validationContent(content)).toEqual('')
