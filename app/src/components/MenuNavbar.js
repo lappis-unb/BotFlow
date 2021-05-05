@@ -5,6 +5,7 @@ import UtterIcon from '../icons/UtterIcon';
 import IntentIcon from '../icons/IntentIcon';
 import { Tab, Tabs } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import i18n from '../translate/i18n'
 
 import AppIcon from '../icons/AppIcon';
 import Button from '@material-ui/core/Button';
@@ -75,9 +76,9 @@ export default function MenuNavbar() {
               value={value}
               onChange={handleChange}
               centered>
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label="Diálogos" to="/" component={Link} />
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label="Perguntas" to="/intents/new" component={Link} />
-              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label="Respostas" to="/utters/new" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<StoryIcon />} label={i18n.t('menu_nav_bar.stories')} to="/" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<IntentIcon />} label={i18n.t('menu_nav_bar.intents')} to="/intents/new" component={Link} />
+              <StyledTab classes={{ wrapper: classes.tabWrapper }} icon={<UtterIcon />} label={i18n.t('menu_nav_bar.utters')} to="/utters/new" component={Link} />
             </Tabs>
           <Button
             color="secondary"

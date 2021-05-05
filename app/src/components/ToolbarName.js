@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
+import i18n from '../translate/i18n'
 
 const style = {
     toolbar: {
@@ -18,7 +19,7 @@ const style = {
     },
 }
 
-const options = ['Apagar']
+const options = [i18n.t('toolbar_name.delete')]
 
 export default class ToolbarName extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ export default class ToolbarName extends Component {
                     options.map(option => (
                         <MenuItem
                             key={option}
-                            selected={option === 'Apagar'}
+                            selected={option === i18n.t('toolbar_name.delete')}
                             onClick={() => this.handleDelete()}
                         >
                             {option}
@@ -126,7 +127,7 @@ export default class ToolbarName extends Component {
                         disabled={!this.props.is_enabled}
                         onClick={() => this.handleClick()}
                     >
-                        <Done />Gravar
+                        <Done /> {i18n.t('toolbar_name.save')}
                     </Button>
 
                     {this.getDeleteOption()}

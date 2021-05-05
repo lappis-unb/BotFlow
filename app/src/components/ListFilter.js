@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import ItemsList from "./ItemsList";
+import i18n from '../translate/i18n'
 
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
@@ -79,7 +80,7 @@ export default class ListFilter extends Component {
           <TextField
             fullWidth
             type="text"
-            label="Filtrar"
+            label={i18n.t('list_filter')}
             variant="outlined"
             value={this.state.value}
             style={style.field_form}

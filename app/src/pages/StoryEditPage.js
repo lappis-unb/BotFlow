@@ -21,6 +21,7 @@ import DeletionConfirmationDialog from '../components/DeletionConfirmationDialog
 import { message } from '../utils/messages';
 import { Add } from '../styles/button';
 import { Link } from 'react-router-dom';
+import i18n from '../translate/i18n'
 
 const style = {
     grid_item_list: {
@@ -137,7 +138,7 @@ class StoryEditPage extends Component {
                     <Grid container direction='row' style={style.grid_item_list}>
                         <Grid item xs={2} sm={6} style={style.list_container_intent}>
                             <Typography variant="body2" color="primary">
-                                Perguntas
+                                {i18n.t('stories_edit_page.itents')}
                             </Typography>
                             <ItemsList
                                 story={true}
@@ -151,7 +152,7 @@ class StoryEditPage extends Component {
                         </Grid>
                         <Grid item xs={2} sm={6} style={style.list_container_utter}>
                             <Typography variant="body2" color="primary">
-                                Respostas
+                                {i18n.t('stories_edit_page.utters')}
                             </Typography>
                             <ItemsList
                                 story={true}
@@ -170,7 +171,7 @@ class StoryEditPage extends Component {
                             <TextField
                                 fullWidth
                                 type="text"
-                                label="Filtrar"
+                                label={i18n.t('stories_edit_page.filter')}
                                 variant="outlined"
                                 value={this.state.value}
                                 InputProps={{ endAdornment: this.getFilterIcon() }}
