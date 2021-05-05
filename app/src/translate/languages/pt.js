@@ -73,3 +73,5 @@ const messages = {
     }
   }
 }
+
+export { messages }
