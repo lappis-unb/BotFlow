@@ -18,6 +18,22 @@ const INITIAL_STATE = {
     content_text_validation: ""
 };
 
+function sendAlert(response) {
+    if (response === undefined ) {
+        alert('Desculpe! Não conseguimos conectar. Verifique sua conexão com a internet ou nossas redes sociais para checar se estamos online!');
+        return;
+    }
+
+    if (response.status === 404) {
+        alert("Desculpe, não foi possível encontrar o objeto de pesquisa!");
+    } else if (response.status === 400) {
+        alert("Desculpe, algum caracter inválido foi inserido ou falta alguma informação\nFavor revisar.")
+    }
+    else if (response.status === undefined) {
+        alert("Desculpe, houve um erro de rede.\nFavor verificar a conexão!");
+    }
+}
+
 function createArrayObjCopyOf(samples = []) {
     return samples.map(text => { return { ...text } });
 }
@@ -161,6 +177,7 @@ export const createOrUpdateItem = (mode = 'post', new_item, message = "") => {
             await dispatch(Creators.getStory(response.data.id));
             await dispatch(Creators.notifyAction(message));
         } catch (error) {
+            sendAlert(error.response);
             throw (error);
         }
     }
@@ -180,6 +197,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(INTENT_URL + intent.id + '/example');
                 await dispatch({ type: Types.ADD_TO_STORY, item: response.data, mode: "intent" });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -190,6 +208,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(UTTER_URL + utter.id + '/example');
                 await dispatch({ type: Types.ADD_TO_STORY, item: response.data, mode: "utter" });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -200,6 +219,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(INTENT_URL);
                 await dispatch({ type: Types.GET_INTENTS, intents: response.data });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -210,6 +230,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(UTTER_URL);
                 await dispatch({ type: Types.GET_UTTERS, utters: response.data });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -229,6 +250,7 @@ export const { Types, Creators } = createActions({
                 const response = await axios.get(STORY_URL + '?filter=' + value);
                 await dispatch({ type: Types.GET_STORIES, stories: response.data });
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -241,6 +263,7 @@ export const { Types, Creators } = createActions({
                     await dispatch({ type: Types.GET_STORY, story: response.data });
                 }
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
@@ -253,6 +276,7 @@ export const { Types, Creators } = createActions({
                     await dispatch(Creators.notifyAction(message.story.deleted));
                 }
             } catch (error) {
+                sendAlert(error.response);
                 throw (error);
             }
         }
