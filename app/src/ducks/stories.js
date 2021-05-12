@@ -19,6 +19,11 @@ const INITIAL_STATE = {
 };
 
 function sendAlert(response) {
+    if (response === undefined ) {
+        alert('Desculpe! Não conseguimos conectar. Verifique sua conexão com a internet ou nossas redes sociais para checar se estamos online!');
+        return;
+    }
+
     if (response.status === 404) {
         alert("Desculpe, não foi possível encontrar o objeto de pesquisa!");
     } else if (response.status === 400) {
